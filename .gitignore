@@ -1,3 +1,5 @@
 .env
 .DS_Store
 .claude/
+data/
+정리해줘/
