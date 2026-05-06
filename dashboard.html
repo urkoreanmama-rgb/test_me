@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김비서 대시보드</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 32px;
+      border-bottom: 1px solid #e8e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; }
+    header h1 span { color: #6c63ff; }
+    header .date { font-size: 0.85rem; color: #888; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 28px 32px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── 1. 할 일 목록 ── */
+    .todo-list { display: flex; flex-direction: column; gap: 10px; }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      transition: background 0.15s;
+    }
+    .todo-item:hover { background: #f4f3ff; }
+    .todo-item input[type="checkbox"] {
+      width: 17px; height: 17px;
+      accent-color: #6c63ff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .todo-item.done .todo-text { text-decoration: line-through; color: #aaa; }
+    .todo-text { flex: 1; font-size: 0.875rem; }
+    .todo-meta { font-size: 0.75rem; color: #999; }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .badge-high   { background: #ffe4e6; color: #e11d48; }
+    .badge-medium { background: #fef9c3; color: #ca8a04; }
+    .badge-low    { background: #dcfce7; color: #16a34a; }
+    .badge-done   { background: #f0fdf4; color: #86efac; }
+
+    /* ── 2. 주간 일정 ── */
+    .schedule-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .schedule-table th {
+      background: #6c63ff;
+      color: #fff;
+      padding: 8px 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .schedule-table th:first-child { border-radius: 8px 0 0 0; }
+    .schedule-table th:last-child  { border-radius: 0 8px 0 0; }
+    .schedule-table td {
+      padding: 8px 10px;
+      vertical-align: top;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table tr:nth-child(even) td { background: #fafafe; }
+    .time { color: #6c63ff; font-weight: 600; font-size: 0.75rem; white-space: nowrap; }
+    .schedule-items { display: flex; flex-direction: column; gap: 4px; }
+    .schedule-chip {
+      background: #f0effe;
+      color: #4c3fd0;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+    .schedule-chip.highlight { background: #fef3c7; color: #92400e; }
+
+    /* ── 3. 프로젝트 진행률 ── */
+    .project-list { display: flex; flex-direction: column; gap: 16px; }
+    .project-item {}
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .project-name { font-size: 0.875rem; font-weight: 600; }
+    .project-pct  { font-size: 0.85rem; font-weight: 700; color: #6c63ff; }
+    .progress-bar-bg {
+      height: 8px;
+      background: #ede9fe;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      font-size: 0.72rem;
+      color: #aaa;
+    }
+    .status-badge {
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+    .s-active  { background: #e0f2fe; color: #0284c7; }
+    .s-prep    { background: #fef9c3; color: #a16207; }
+    .s-final   { background: #dcfce7; color: #15803d; }
+    .s-plan    { background: #f3f4f6; color: #6b7280; }
+
+    /* ── 4. 매출 요약 ── */
+    .sales-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .sales-card {
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid #f0f0f0;
+    }
+    .sales-card.total {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #6c63ff 0%, #8b83ff 100%);
+      color: #fff;
+      border: none;
+    }
+    .sales-label { font-size: 0.75rem; opacity: 0.8; margin-bottom: 6px; }
+    .sales-value { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+    .sales-card:not(.total) .sales-value { color: #1a1a2e; }
+    .sales-sub { font-size: 0.72rem; margin-top: 4px; opacity: 0.75; }
+    .sales-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>김비서 <span>대시보드</span></h1>
+  <span class="date">2026년 3월 10일 (월)</span>
+</header>
+
+<div class="grid">
+
+  <!-- ① 할 일 목록 -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon" style="background:#ede9fe;">✅</div>
+      할 일 목록
+    </div>
+    <div class="todo-list">
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">파트너사 계약서 검토</span>
+        <span class="todo-meta">정팀장 · 3/11</span>
+        <span class="badge badge-high">높음</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">3월 프로모션 기획안 작성</span>
+        <span class="todo-meta">김대리 · 3/12</span>
+        <span class="badge badge-high">높음</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">고객 설문조사 결과 분석</span>
+        <span class="todo-meta">정팀장 · 3/13</span>
+        <span class="badge badge-medium">보통</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">인플루언서 미팅 일정 잡기</span>
+        <span class="todo-meta">이과장 · 3/14</span>
+        <span class="badge badge-high">높음</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">영상 광고 3개 추가 제작</span>
+        <span class="todo-meta">박사원 · 3/14</span>
+        <span class="badge badge-medium">보통</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">경쟁사 C사 캠페인 분석</span>
+        <span class="todo-meta">박사원 · 3/16</span>
+        <span class="badge badge-medium">보통</span>
+      </div>
+
+      <div class="todo-item">
+        <input type="checkbox" />
+        <span class="todo-text">블로그 포스트 2건 작성</span>
+        <span class="todo-meta">이과장 · 3/18</span>
+        <span class="badge badge-low">낮음</span>
+      </div>
+
+      <div class="todo-item done">
+        <input type="checkbox" checked />
+        <span class="todo-text">SNS 계정 주간 콘텐츠 업로드</span>
+        <span class="todo-meta">김대리 · 3/10</span>
+        <span class="badge" style="background:#f0fdf4;color:#86efac;">완료</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ② 이번 주 일정 -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon" style="background:#fef9c3;">📅</div>
+      이번 주 일정 (3/10 ~ 3/14)
+    </div>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>요일</th>
+          <th>일정</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="time">월 3/10</td>
+          <td class="schedule-items">
+            <span class="schedule-chip">10:00 마케팅팀 주간회의</span>
+            <span class="schedule-chip">14:00 신제품 런칭 킥오프 미팅</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="time">화 3/11</td>
+          <td class="schedule-items">
+            <span class="schedule-chip">09:00 3월 프로모션 기획안 마감</span>
+            <span class="schedule-chip">11:00 디자인팀 협업 미팅</span>
+            <span class="schedule-chip">15:00 파트너사 계약서 검토</span>
+            <span class="schedule-chip highlight">19:00 클로드 코드 워크숍</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="time">수 3/12</td>
+          <td class="schedule-items">
+            <span class="schedule-chip">10:00 인플루언서 미팅</span>
+            <span class="schedule-chip">14:00 고객 설문 결과 공유</span>
+            <span class="schedule-chip">16:00 콘텐츠 편집 회의</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="time">목 3/13</td>
+          <td class="schedule-items">
+            <span class="schedule-chip">09:30 영상 광고 촬영 (스튜디오)</span>
+            <span class="schedule-chip">13:00 점심 미팅 — 광고 대행사</span>
+            <span class="schedule-chip">15:00 SNS 콘텐츠 리뷰</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="time">금 3/14</td>
+          <td class="schedule-items">
+            <span class="schedule-chip">10:00 유튜브 채널 리뉴얼 최종</span>
+            <span class="schedule-chip">14:00 주간 성과 리뷰</span>
+            <span class="schedule-chip">16:00 다음 주 콘텐츠 캘린더 확정</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ③ 프로젝트 진행률 -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon" style="background:#dcfce7;">📊</div>
+      프로젝트 진행률
+    </div>
+    <div class="project-list">
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">봄맞이 프로모션</span>
+          <span class="project-pct">65%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:65%;background:linear-gradient(90deg,#6c63ff,#a78bfa);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 김대리 · ~3/31</span>
+          <span class="status-badge s-active">진행중</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">유튜브 채널 리뉴얼</span>
+          <span class="project-pct">80%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:80%;background:linear-gradient(90deg,#10b981,#6ee7b7);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 박사원 · ~3/15</span>
+          <span class="status-badge s-final">마무리</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">홈페이지 리뉴얼</span>
+          <span class="project-pct">45%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:45%;background:linear-gradient(90deg,#f59e0b,#fcd34d);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 이과장 · ~4/15</span>
+          <span class="status-badge s-active">진행중</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">인플루언서 협업</span>
+          <span class="project-pct">35%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:35%;background:linear-gradient(90deg,#8b5cf6,#c4b5fd);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 이과장 · ~3/28</span>
+          <span class="status-badge s-active">진행중</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">신제품 런칭 캠페인</span>
+          <span class="project-pct">20%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:20%;background:linear-gradient(90deg,#ef4444,#fca5a5);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 정팀장 · ~4/30</span>
+          <span class="status-badge s-prep">준비중</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <span class="project-name">고객 리텐션 프로그램</span>
+          <span class="project-pct">10%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:10%;background:linear-gradient(90deg,#94a3b8,#cbd5e1);"></div>
+        </div>
+        <div class="project-footer">
+          <span>담당: 정팀장 · ~5/31</span>
+          <span class="status-badge s-plan">기획중</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ④ 매출 요약 -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon" style="background:#fce7f3;">💰</div>
+      매출 요약 (1~2월)
+    </div>
+    <div class="sales-grid">
+
+      <div class="sales-card total">
+        <div class="sales-label">전체 누적 매출</div>
+        <div class="sales-value">7,100만원</div>
+        <div class="sales-sub">2026년 1월 ~ 2월 합산</div>
+      </div>
+
+      <div class="sales-card">
+        <div class="sales-label">
+          <span class="sales-dot" style="background:#6c63ff;"></span>1월 매출
+        </div>
+        <div class="sales-value">4,650만원</div>
+        <div class="sales-sub">↑ 전월 대비 집계 시작</div>
+      </div>
+
+      <div class="sales-card">
+        <div class="sales-label">
+          <span class="sales-dot" style="background:#10b981;"></span>2월 매출
+        </div>
+        <div class="sales-value">2,451만원</div>
+        <div class="sales-sub">데이터: 2/1 ~ 2/10</div>
+      </div>
+
+      <div class="sales-card">
+        <div class="sales-label">
+          <span class="sales-dot" style="background:#f59e0b;"></span>전자기기
+        </div>
+        <div class="sales-value">5,332만원</div>
+        <div class="sales-sub">전체의 75%</div>
+      </div>
+
+      <div class="sales-card">
+        <div class="sales-label">
+          <span class="sales-dot" style="background:#ec4899;"></span>생활용품
+        </div>
+        <div class="sales-value">1,769만원</div>
+        <div class="sales-sub">전체의 25%</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
