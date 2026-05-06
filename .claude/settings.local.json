@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://www.subtrac.kr/_next/static/chunks/01f5df9579150bef.js?dpl=dpl_8KpabFrY77NeKjD181AiAYML9kFr\")",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

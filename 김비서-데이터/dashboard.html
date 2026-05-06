@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김비서 대시보드</title>
+  <style>
+    /* ══════════════════════════════════════════
+       CSS 변수 — 라이트 / 다크
+    ══════════════════════════════════════════ */
+    :root {
+      --bg-grad-a: #c7d2fe;
+      --bg-grad-b: #e0e7ff;
+      --bg-grad-c: #fce7f3;
+      --bg-grad-d: #ddd6fe;
+
+      --glass-bg:      rgba(255,255,255,0.55);
+      --glass-border:  rgba(255,255,255,0.75);
+      --glass-shadow:  0 8px 32px rgba(99,102,241,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      --glass-blur:    blur(20px);
+
+      --header-bg:     rgba(255,255,255,0.70);
+      --header-border: rgba(255,255,255,0.80);
+
+      --text-primary:  #1a1a2e;
+      --text-secondary:#5a5a7a;
+      --text-muted:    #9494b0;
+
+      --divider:       rgba(0,0,0,0.06);
+      --inner-bg:      rgba(255,255,255,0.60);
+      --inner-border:  rgba(255,255,255,0.80);
+
+      --badge-bg:      rgba(99,102,241,0.10);
+      --badge-color:   #4f46e5;
+
+      --accent:        #4f46e5;
+      --accent-light:  rgba(99,102,241,0.15);
+
+      --todo-border:   rgba(0,0,0,0.05);
+      --event-bg:      rgba(99,102,241,0.10);
+      --event-highlight-bg: rgba(245,158,11,0.12);
+
+      --bar-track:     rgba(0,0,0,0.07);
+
+      --kpi-bg:        rgba(255,255,255,0.55);
+
+      --toggle-bg:     rgba(99,102,241,0.15);
+      --toggle-icon:   "🌙";
+    }
+
+    [data-theme="dark"] {
+      --bg-grad-a: #0f0f23;
+      --bg-grad-b: #1a1040;
+      --bg-grad-c: #0f1a30;
+      --bg-grad-d: #12082a;
+
+      --glass-bg:      rgba(255,255,255,0.06);
+      --glass-border:  rgba(255,255,255,0.12);
+      --glass-shadow:  0 8px 40px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+      --glass-blur:    blur(24px);
+
+      --header-bg:     rgba(15,15,35,0.80);
+      --header-border: rgba(255,255,255,0.08);
+
+      --text-primary:  #e0e0f0;
+      --text-secondary:#a0a0c0;
+      --text-muted:    #606080;
+
+      --divider:       rgba(255,255,255,0.07);
+      --inner-bg:      rgba(255,255,255,0.05);
+      --inner-border:  rgba(255,255,255,0.08);
+
+      --badge-bg:      rgba(99,102,241,0.20);
+      --badge-color:   #a5b4fc;
+
+      --accent:        #818cf8;
+      --accent-light:  rgba(129,140,248,0.18);
+
+      --todo-border:   rgba(255,255,255,0.06);
+      --event-bg:      rgba(99,102,241,0.14);
+      --event-highlight-bg: rgba(245,158,11,0.14);
+
+      --bar-track:     rgba(255,255,255,0.08);
+
+      --kpi-bg:        rgba(255,255,255,0.05);
+
+      --toggle-bg:     rgba(250,204,21,0.15);
+      --toggle-icon:   "☀️";
+    }
+
+    /* ══════════════════════════════════════════
+       기본 레이아웃
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      color: var(--text-primary);
+      transition: color 0.35s, background 0.35s;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 그라디언트 배경 */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 10%,  var(--bg-grad-a) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 70% at 90% 5%,   var(--bg-grad-d) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 80% at 80% 90%,  var(--bg-grad-c) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 20% 90%,  var(--bg-grad-b) 0%, transparent 60%);
+      background-color: var(--bg-grad-a);
+      transition: background 0.5s;
+    }
+
+    /* ══════════════════════════════════════════
+       헤더
+    ══════════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--header-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--header-border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      transition: background 0.35s, border-color 0.35s;
+    }
+
+    .logo-wrap {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.40);
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 17px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-date {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* 다크/라이트 토글 */
+    #theme-toggle {
+      width: 44px; height: 24px;
+      border-radius: 99px;
+      border: 1.5px solid var(--glass-border);
+      background: var(--toggle-bg);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex; align-items: center;
+      padding: 2px;
+      transition: background 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    #theme-toggle::after {
+      content: "";
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      box-shadow: 0 2px 6px rgba(99,102,241,0.50);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+    [data-theme="dark"] #theme-toggle::after {
+      transform: translateX(20px);
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: 0 2px 6px rgba(251,191,36,0.50);
+    }
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    /* ══════════════════════════════════════════
+       그리드
+    ══════════════════════════════════════════ */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px 32px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════════════════
+       글래스 카드
+    ══════════════════════════════════════════ */
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+    }
+    .card:hover {
+      box-shadow: var(--glass-shadow), 0 0 0 1px var(--glass-border);
+      transform: translateY(-1px);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .icon {
+      width: 38px; height: 38px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px;
+      border: 1px solid var(--glass-border);
+      background: var(--inner-bg);
+      backdrop-filter: blur(8px);
+    }
+    .card-header h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .badge {
+      margin-left: auto;
+      font-size: 11.5px;
+      background: var(--badge-bg);
+      color: var(--badge-color);
+      padding: 3px 11px;
+      border-radius: 20px;
+      font-weight: 600;
+      border: 1px solid var(--accent-light);
+    }
+
+    /* ══════════════════════════════════════════
+       1. 할 일 목록
+    ══════════════════════════════════════════ */
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--todo-border);
+      border-radius: 10px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .todo-item:last-child { border-bottom: none; }
+    .todo-item:hover { background: var(--inner-bg); }
+
+    .todo-item input[type="checkbox"] {
+      width: 17px; height: 17px;
+      accent-color: var(--accent);
+      margin-top: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .todo-text { flex: 1; }
+    .todo-text .title {
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+    .todo-text .meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .todo-item.done .title {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+    .priority {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .priority.high   { background: rgba(220,38,38,0.12);  color: #ef4444; border: 1px solid rgba(220,38,38,0.20); }
+    .priority.medium { background: rgba(217,119,6,0.12);  color: #f59e0b; border: 1px solid rgba(217,119,6,0.20); }
+    .priority.low    { background: rgba(22,163,74,0.12);  color: #22c55e; border: 1px solid rgba(22,163,74,0.20); }
+
+    /* ══════════════════════════════════════════
+       2. 주간 일정
+    ══════════════════════════════════════════ */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .day-col { display: flex; flex-direction: column; gap: 5px; }
+
+    .day-label {
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 7px 4px;
+      border-radius: 10px;
+      background: var(--inner-bg);
+      border: 1px solid var(--inner-border);
+      color: var(--text-secondary);
+      backdrop-filter: blur(8px);
+    }
+    .day-label.today {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.40);
+    }
+
+    .event {
+      background: var(--event-bg);
+      border-left: 2.5px solid var(--accent);
+      border-radius: 7px;
+      padding: 5px 7px;
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      transition: background 0.2s;
+    }
+    .event:hover { background: var(--accent-light); }
+    .event .time {
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 1px;
+      font-size: 10px;
+    }
+    .event.highlight {
+      background: var(--event-highlight-bg);
+      border-left-color: #f59e0b;
+    }
+    .event.highlight .time { color: #f59e0b; }
+
+    /* ══════════════════════════════════════════
+       3. 프로젝트 진행률
+    ══════════════════════════════════════════ */
+    .project-item { margin-bottom: 15px; }
+    .project-item:last-child { margin-bottom: 0; }
+    .project-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+    .project-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+    .project-right { display: flex; align-items: center; gap: 8px; }
+    .project-pct {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .status-badge {
+      font-size: 10.5px;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .status-진행중 { background: rgba(59,130,246,0.12); color: #60a5fa; border-color: rgba(59,130,246,0.20); }
+    .status-준비중 { background: rgba(245,158,11,0.12); color: #fbbf24; border-color: rgba(245,158,11,0.20); }
+    .status-마무리 { background: rgba(16,185,129,0.12); color: #34d399; border-color: rgba(16,185,129,0.20); }
+    .status-기획중 { background: rgba(148,163,184,0.12);color: #94a3b8; border-color: rgba(148,163,184,0.20); }
+
+    .bar-bg {
+      background: var(--bar-track);
+      border-radius: 99px;
+      height: 7px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #6366f1, #a78bfa);
+      box-shadow: 0 0 8px rgba(99,102,241,0.45);
+      transition: width 0.8s cubic-bezier(.25,.8,.25,1);
+    }
+    .bar-fill.high {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      box-shadow: 0 0 8px rgba(16,185,129,0.45);
+    }
+    .project-sub { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+    /* ══════════════════════════════════════════
+       4. 매출 요약
+    ══════════════════════════════════════════ */
+    .sales-kpi {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .kpi-card {
+      background: var(--kpi-bg);
+      border: 1px solid var(--inner-border);
+      border-radius: 14px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+      transition: background 0.35s;
+    }
+    .kpi-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+    .kpi-value { font-size: 22px; font-weight: 900; color: var(--text-primary); line-height: 1; }
+    .kpi-value span { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-left: 2px; }
+    .kpi-sub { font-size: 11px; color: var(--accent); margin-top: 6px; font-weight: 700; }
+
+    .sales-breakdown { margin-top: 4px; }
+    .breakdown-title {
+      font-size: 11.5px; font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      border-bottom: 1px solid var(--todo-border);
+      font-size: 13px;
+      transition: background 0.15s;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-row:hover { background: var(--inner-bg); }
+    .breakdown-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .breakdown-name { flex: 1; color: var(--text-secondary); font-size: 12.5px; }
+    .breakdown-val { font-weight: 800; color: var(--text-primary); font-size: 12.5px; }
+    .breakdown-pct { color: var(--text-muted); font-size: 11.5px; width: 38px; text-align: right; }
+
+    /* ══════════════════════════════════════════
+       전환 애니메이션
+    ══════════════════════════════════════════ */
+    .card, header, body::before {
+      transition:
+        background 0.40s ease,
+        border-color 0.40s ease,
+        box-shadow 0.40s ease,
+        color 0.40s ease;
+    }
+
+    /* ══════════════════════════════════════════
+       내비게이션 탭
+    ══════════════════════════════════════════ */
+    .nav-bar {
+      position: sticky;
+      top: 73px;
+      z-index: 90;
+      background: var(--header-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--header-border);
+      padding: 0 32px;
+      transition: background 0.35s, border-color 0.35s;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      max-width: 1440px;
+      margin: 0 auto;
+      list-style: none;
+    }
+
+    .nav-tabs a {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 2.5px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      border-radius: 10px 10px 0 0;
+      margin-bottom: -1px;
+    }
+
+    .nav-tabs a:hover {
+      color: var(--text-primary);
+      background: var(--accent-light);
+    }
+
+    .nav-tabs a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .nav-tabs a .nav-icon {
+      font-size: 15px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">🤖</div>
+  <h1>김비서 대시보드</h1>
+  <div class="header-right">
+    <span class="header-date">2026년 3월 10일 (월) &middot; 마케팅팀</span>
+    <span class="toggle-label" id="toggle-label">🌙</span>
+    <button id="theme-toggle" aria-label="테마 전환" title="다크/라이트 모드 전환"></button>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <ul class="nav-tabs">
+    <li><a href="dashboard.html" class="active"><span class="nav-icon">🏠</span> 대시보드</a></li>
+    <li><a href="meeting-result.html"><span class="nav-icon">📝</span> 회의록</a></li>
+    <li><a href="chart.html"><span class="nav-icon">📈</span> 매출 현황</a></li>
+    <li><a href="diagram.svg"><span class="nav-icon">🔄</span> 업무 프로세스</a></li>
+    <li><a href="../report.html"><span class="nav-icon">🔍</span> 사이트 분석</a></li>
+  </ul>
+</nav>
+
+<div class="grid">
+
+  <!-- ① 할 일 목록 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon">📋</div>
+      <h2>할 일 목록</h2>
+      <span class="badge">이번 주</span>
+    </div>
+    <div id="todo-list"></div>
+  </div>
+
+  <!-- ② 이번 주 일정 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon">📅</div>
+      <h2>이번 주 일정</h2>
+      <span class="badge">3/10 – 3/14</span>
+    </div>
+    <div class="schedule-grid" id="schedule-grid"></div>
+  </div>
+
+  <!-- ③ 프로젝트 진행률 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon">📊</div>
+      <h2>프로젝트 진행률</h2>
+      <span class="badge">6개 프로젝트</span>
+    </div>
+    <div id="project-list"></div>
+  </div>
+
+  <!-- ④ 매출 요약 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon">💰</div>
+      <h2>매출 요약</h2>
+      <span class="badge">1–2월 누적</span>
+    </div>
+    <div class="sales-kpi" id="kpi-cards"></div>
+    <div class="sales-breakdown" id="sales-breakdown"></div>
+  </div>
+
+</div>
+
+<script>
+/* ────────────── 테마 토글 ────────────── */
+(function () {
+  const root    = document.documentElement;
+  const btn     = document.getElementById("theme-toggle");
+  const label   = document.getElementById("toggle-label");
+  const saved   = localStorage.getItem("kb-theme") || "light";
+
+  function applyTheme(t) {
+    root.setAttribute("data-theme", t);
+    label.textContent = t === "dark" ? "☀️" : "🌙";
+    localStorage.setItem("kb-theme", t);
+  }
+
+  applyTheme(saved);
+  btn.addEventListener("click", () => {
+    applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  });
+})();
+
+/* ────────────── 데이터 ────────────── */
+const todos = [
+  { title: "파트너사 계약서 검토",        priority: "높음", status: "대기",   owner: "정팀장", due: "3/11", cat: "운영"   },
+  { title: "3월 프로모션 기획안 작성",    priority: "높음", status: "진행중", owner: "김대리", due: "3/12", cat: "마케팅" },
+  { title: "인플루언서 미팅 일정 잡기",   priority: "높음", status: "대기",   owner: "이과장", due: "3/14", cat: "마케팅" },
+  { title: "고객 설문조사 결과 분석",     priority: "보통", status: "진행중", owner: "정팀장", due: "3/13", cat: "리서치" },
+  { title: "영상 광고 3개 추가 제작",     priority: "보통", status: "진행중", owner: "박사원", due: "3/14", cat: "콘텐츠" },
+  { title: "경쟁사 C사 캠페인 분석",      priority: "보통", status: "대기",   owner: "박사원", due: "3/16", cat: "리서치" },
+  { title: "블로그 포스트 2건 작성",      priority: "낮음", status: "대기",   owner: "이과장", due: "3/18", cat: "콘텐츠" },
+  { title: "4월 신제품 티저 콘텐츠 기획", priority: "높음", status: "대기",   owner: "정팀장", due: "3/21", cat: "마케팅" },
+  { title: "월간 마케팅 보고서 작성",     priority: "높음", status: "대기",   owner: "김대리", due: "3/31", cat: "보고"   },
+  { title: "SNS 계정 주간 콘텐츠 업로드", priority: "보통", status: "완료",   owner: "김대리", due: "3/10", cat: "콘텐츠" },
+];
+
+const schedule = {
+  "월\n3/10": [
+    { time: "10:00", title: "마케팅팀 주간회의" },
+    { time: "14:00", title: "신제품 런칭 킥오프 미팅" },
+  ],
+  "화\n3/11": [
+    { time: "09:00", title: "프로모션 기획안 마감" },
+    { time: "11:00", title: "디자인팀 협업 미팅" },
+    { time: "15:00", title: "파트너사 계약서 검토" },
+    { time: "19:00", title: "클로드 코드 워크숍", highlight: true },
+  ],
+  "수\n3/12": [
+    { time: "10:00", title: "인플루언서 미팅 (김OO)" },
+    { time: "14:00", title: "고객 설문 결과 공유" },
+    { time: "16:00", title: "콘텐츠 편집 회의" },
+  ],
+  "목\n3/13": [
+    { time: "09:30", title: "영상 광고 촬영 (스튜디오)" },
+    { time: "13:00", title: "점심 미팅 — 광고 대행사" },
+    { time: "15:00", title: "SNS 콘텐츠 리뷰" },
+  ],
+  "금\n3/14": [
+    { time: "10:00", title: "유튜브 채널 리뉴얼 검토" },
+    { time: "14:00", title: "주간 성과 리뷰" },
+    { time: "16:00", title: "콘텐츠 캘린더 확정" },
+  ],
+};
+
+const projects = [
+  { name: "봄맞이 프로모션",      pct: 65, status: "진행중", budget: 500,  spent: 325, due: "3/31" },
+  { name: "신제품 런칭 캠페인",   pct: 20, status: "준비중", budget: 1200, spent: 240, due: "4/30" },
+  { name: "인플루언서 협업",      pct: 35, status: "진행중", budget: 300,  spent: 105, due: "3/28" },
+  { name: "유튜브 채널 리뉴얼",   pct: 80, status: "마무리", budget: 150,  spent: 120, due: "3/15" },
+  { name: "고객 리텐션 프로그램", pct: 10, status: "기획중", budget: 800,  spent: 80,  due: "5/31" },
+  { name: "홈페이지 리뉴얼",      pct: 45, status: "진행중", budget: 600,  spent: 270, due: "4/15" },
+];
+
+const salesRaw = [
+  { date:"2026-01-05", product:"무선 이어폰",     cat:"전자기기", qty:45,  price:89000,  amt:4005000, region:"서울" },
+  { date:"2026-01-05", product:"보조배터리",       cat:"전자기기", qty:32,  price:35000,  amt:1120000, region:"서울" },
+  { date:"2026-01-05", product:"텀블러",           cat:"생활용품", qty:78,  price:25000,  amt:1950000, region:"부산" },
+  { date:"2026-01-08", product:"무선 이어폰",     cat:"전자기기", qty:52,  price:89000,  amt:4628000, region:"서울" },
+  { date:"2026-01-08", product:"블루투스 스피커", cat:"전자기기", qty:18,  price:120000, amt:2160000, region:"대구" },
+  { date:"2026-01-08", product:"텀블러",           cat:"생활용품", qty:65,  price:25000,  amt:1625000, region:"서울" },
+  { date:"2026-01-12", product:"보조배터리",       cat:"전자기기", qty:41,  price:35000,  amt:1435000, region:"부산" },
+  { date:"2026-01-12", product:"무선 충전기",     cat:"전자기기", qty:29,  price:45000,  amt:1305000, region:"서울" },
+  { date:"2026-01-12", product:"에코백",           cat:"생활용품", qty:93,  price:15000,  amt:1395000, region:"대구" },
+  { date:"2026-01-15", product:"무선 이어폰",     cat:"전자기기", qty:38,  price:89000,  amt:3382000, region:"부산" },
+  { date:"2026-01-15", product:"블루투스 스피커", cat:"전자기기", qty:22,  price:120000, amt:2640000, region:"서울" },
+  { date:"2026-01-15", product:"텀블러",           cat:"생활용품", qty:84,  price:25000,  amt:2100000, region:"서울" },
+  { date:"2026-01-19", product:"보조배터리",       cat:"전자기기", qty:55,  price:35000,  amt:1925000, region:"대구" },
+  { date:"2026-01-19", product:"에코백",           cat:"생활용품", qty:110, price:15000,  amt:1650000, region:"서울" },
+  { date:"2026-01-19", product:"무선 충전기",     cat:"전자기기", qty:33,  price:45000,  amt:1485000, region:"부산" },
+  { date:"2026-01-22", product:"무선 이어폰",     cat:"전자기기", qty:61,  price:89000,  amt:5429000, region:"서울" },
+  { date:"2026-01-22", product:"텀블러",           cat:"생활용품", qty:72,  price:25000,  amt:1800000, region:"대구" },
+  { date:"2026-01-22", product:"블루투스 스피커", cat:"전자기기", qty:15,  price:120000, amt:1800000, region:"부산" },
+  { date:"2026-01-26", product:"보조배터리",       cat:"전자기기", qty:48,  price:35000,  amt:1680000, region:"서울" },
+  { date:"2026-01-26", product:"에코백",           cat:"생활용품", qty:88,  price:15000,  amt:1320000, region:"서울" },
+  { date:"2026-01-26", product:"무선 충전기",     cat:"전자기기", qty:37,  price:45000,  amt:1665000, region:"대구" },
+  { date:"2026-02-01", product:"무선 이어폰",     cat:"전자기기", qty:70,  price:89000,  amt:6230000, region:"서울" },
+  { date:"2026-02-01", product:"텀블러",           cat:"생활용품", qty:95,  price:25000,  amt:2375000, region:"부산" },
+  { date:"2026-02-01", product:"보조배터리",       cat:"전자기기", qty:43,  price:35000,  amt:1505000, region:"서울" },
+  { date:"2026-02-05", product:"블루투스 스피커", cat:"전자기기", qty:25,  price:120000, amt:3000000, region:"서울" },
+  { date:"2026-02-05", product:"에코백",           cat:"생활용품", qty:120, price:15000,  amt:1800000, region:"대구" },
+  { date:"2026-02-05", product:"무선 충전기",     cat:"전자기기", qty:31,  price:45000,  amt:1395000, region:"부산" },
+  { date:"2026-02-10", product:"무선 이어폰",     cat:"전자기기", qty:58,  price:89000,  amt:5162000, region:"대구" },
+  { date:"2026-02-10", product:"텀블러",           cat:"생활용품", qty:67,  price:25000,  amt:1675000, region:"서울" },
+  { date:"2026-02-10", product:"보조배터리",       cat:"전자기기", qty:39,  price:35000,  amt:1365000, region:"서울" },
+];
+
+/* ────────────── 렌더링 ────────────── */
+
+// 1. 할 일 목록
+const pMap   = { "높음": "high", "보통": "medium", "낮음": "low" };
+const todosOrdered = [...todos].sort((a, b) => {
+  const ord = { "높음": 0, "보통": 1, "낮음": 2 };
+  return ord[a.priority] - ord[b.priority];
+});
+const todoEl = document.getElementById("todo-list");
+todosOrdered.forEach(t => {
+  const done = t.status === "완료";
+  todoEl.innerHTML += `
+    <label class="todo-item${done ? " done" : ""}" style="cursor:pointer">
+      <input type="checkbox" ${done ? "checked" : ""}
+        onclick="this.closest('.todo-item').classList.toggle('done')" />
+      <div class="todo-text">
+        <div class="title">${t.title}</div>
+        <div class="meta">${t.owner} &middot; 마감 ${t.due} &middot; ${t.cat}</div>
+      </div>
+      <span class="priority ${pMap[t.priority]}">${t.priority}</span>
+    </label>`;
+});
+
+// 2. 주간 일정
+const schedEl = document.getElementById("schedule-grid");
+const todayKey = "월\n3/10";
+Object.entries(schedule).forEach(([day, events]) => {
+  const isToday = day === todayKey;
+  const [d, date] = day.split("\n");
+  let html = `<div class="day-col">
+    <div class="day-label${isToday ? " today" : ""}">${d}<br/><small>${date}</small></div>`;
+  events.forEach(e => {
+    html += `<div class="event${e.highlight ? " highlight" : ""}">
+      <span class="time">${e.time}</span>${e.title}</div>`;
+  });
+  html += `</div>`;
+  schedEl.innerHTML += html;
+});
+
+// 3. 프로젝트 진행률
+const projEl = document.getElementById("project-list");
+projects.forEach(p => {
+  projEl.innerHTML += `
+    <div class="project-item">
+      <div class="project-row">
+        <span class="project-name">${p.name}</span>
+        <div class="project-right">
+          <span class="project-pct">${p.pct}%</span>
+          <span class="status-badge status-${p.status}">${p.status}</span>
+        </div>
+      </div>
+      <div class="bar-bg">
+        <div class="bar-fill${p.pct >= 70 ? " high" : ""}" style="width:${p.pct}%"></div>
+      </div>
+      <div class="project-sub">예산 ${p.budget.toLocaleString()}만원 중 ${p.spent.toLocaleString()}만원 집행 &middot; 마감 ${p.due}</div>
+    </div>`;
+});
+
+// 4. 매출 요약
+const totalAmt = salesRaw.reduce((s, r) => s + r.amt, 0);
+const totalQty = salesRaw.reduce((s, r) => s + r.qty, 0);
+
+const byMonth = {};
+salesRaw.forEach(r => { const m = r.date.slice(0,7); byMonth[m] = (byMonth[m]||0) + r.amt; });
+const janAmt = byMonth["2026-01"] || 0;
+const febAmt = byMonth["2026-02"] || 0;
+const mom    = (((febAmt - janAmt) / janAmt) * 100).toFixed(1);
+
+const byProduct = {};
+salesRaw.forEach(r => { byProduct[r.product] = (byProduct[r.product]||0) + r.amt; });
+const topProduct = Object.entries(byProduct).sort((a,b)=>b[1]-a[1])[0];
+const fmt = v => (v/1e6).toFixed(1) + "M";
+
+document.getElementById("kpi-cards").innerHTML = `
+  <div class="kpi-card">
+    <div class="kpi-label">누적 총 매출</div>
+    <div class="kpi-value">${(totalAmt/1e6).toFixed(1)}<span>백만원</span></div>
+    <div class="kpi-sub">총 ${totalQty.toLocaleString()}개 판매</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">월 성장률 (1→2월)</div>
+    <div class="kpi-value">${mom > 0 ? "+" : ""}${mom}<span>%</span></div>
+    <div class="kpi-sub">1월 ${fmt(janAmt)} → 2월 ${fmt(febAmt)}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">최고 매출 제품</div>
+    <div class="kpi-value" style="font-size:17px">${topProduct[0]}</div>
+    <div class="kpi-sub">${(topProduct[1]/1e6).toFixed(1)}백만원</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">거래 건수</div>
+    <div class="kpi-value">${salesRaw.length}<span>건</span></div>
+    <div class="kpi-sub">1월 21건 &middot; 2월 9건</div>
+  </div>`;
+
+const colors = ["#6366f1","#f59e0b","#10b981","#3b82f6","#f43f5e","#a78bfa"];
+const sortedProducts = Object.entries(byProduct).sort((a,b)=>b[1]-a[1]);
+const breakdownEl = document.getElementById("sales-breakdown");
+breakdownEl.innerHTML = `<div class="breakdown-title">제품별 매출</div>`;
+sortedProducts.forEach(([name, amt], i) => {
+  const pct = ((amt / totalAmt) * 100).toFixed(1);
+  breakdownEl.innerHTML += `
+    <div class="breakdown-row">
+      <span class="breakdown-dot" style="background:${colors[i % colors.length]}"></span>
+      <span class="breakdown-name">${name}</span>
+      <span class="breakdown-val">${(amt/1e4).toLocaleString()}만원</span>
+      <span class="breakdown-pct">${pct}%</span>
+    </div>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SubTrackr 사이트 분석 리포트</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: #fff;
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #e0e7ff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .header .url { color: #93c5fd; font-size: 15px; margin-bottom: 16px; }
+    .header .meta { color: #94a3b8; font-size: 13px; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6b7280;
+      margin: 40px 0 16px;
+      padding-left: 4px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── Card Base ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Summary stats ── */
+    .stat-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+    .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
+    .stat-card .value { font-size: 26px; font-weight: 800; color: #0f3460; margin-bottom: 4px; }
+    .stat-card .label { font-size: 13px; color: #6b7280; }
+
+    /* ── Overview card ── */
+    .overview-card {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(15,52,96,0.3);
+    }
+    .overview-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .overview-card .tagline {
+      font-size: 14px;
+      color: #93c5fd;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .overview-card p { font-size: 14px; color: #cbd5e1; line-height: 1.7; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e0e7ff;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    /* ── Feature card ── */
+    .feature-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f3460;
+    }
+    .feature-card h3 .icon { font-size: 20px; }
+    .feature-card p { font-size: 13.5px; color: #475569; line-height: 1.65; }
+
+    /* ── Design card ── */
+    .design-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+    .design-card p { font-size: 13.5px; color: #475569; }
+
+    /* ── Color swatches ── */
+    .swatch-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .swatch-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+
+    /* ── Pros / Cons ── */
+    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .pros-cons { grid-template-columns: 1fr; } }
+
+    .pros-card {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .cons-card {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .pros-card h3 { color: #15803d; font-size: 15px; margin-bottom: 14px; }
+    .cons-card h3 { color: #c2410c; font-size: 15px; margin-bottom: 14px; }
+
+    .item-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .item-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #374151;
+    }
+    .item-list li .dot {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+    .pros-card .dot { background: #dcfce7; color: #15803d; }
+    .cons-card .dot { background: #ffedd5; color: #c2410c; }
+
+    /* ── Structure list ── */
+    .structure-card { grid-column: 1 / -1; }
+    .section-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .section-list li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+    }
+    .section-list li:last-child { border-bottom: none; }
+    .section-list .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #0f3460;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-list .name { font-weight: 600; color: #0f3460; min-width: 120px; }
+    .section-list .desc { color: #6b7280; font-size: 13px; }
+
+    /* ── Tech badge ── */
+    .tech-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .tech-badge {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Rating ── */
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .stars { color: #f59e0b; font-size: 18px; letter-spacing: 2px; }
+    .rating-val { font-size: 22px; font-weight: 800; color: #0f3460; }
+    .rating-count { color: #6b7280; font-size: 13px; }
+
+    /* ── Footer ── */
+    .footer {
+      background: #1a1a2e;
+      color: #64748b;
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      margin-top: 20px;
+    }
+    .footer span { color: #93c5fd; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="badge">Site Analysis Report</div>
+  <h1>SubTrackr 사이트 분석</h1>
+  <div class="url">🔗 https://www.subtrac.kr</div>
+  <div class="meta">분석일: 2026년 5월 6일 &nbsp;|&nbsp; 제작: HELLOVR, INC.</div>
+</div>
+
+<div class="container">
+
+  <!-- STATS -->
+  <p class="section-title">주요 지표</p>
+  <div class="grid-4">
+    <div class="stat-card">
+      <div class="icon">🌐</div>
+      <div class="value">11</div>
+      <div class="label">지원 언어</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">💱</div>
+      <div class="value">16</div>
+      <div class="label">지원 통화</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">📦</div>
+      <div class="value">130+</div>
+      <div class="label">지원 서비스</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">⭐</div>
+      <div class="value">4.8</div>
+      <div class="label">평균 평점 (120개)</div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <p class="section-title">서비스 개요</p>
+  <div class="overview-card">
+    <h2>SubTrackr — 은행 연동 없는 AI 구독 관리</h2>
+    <div class="tagline">"No bank login. No signup. Just track." / "은행 연동 없이. 가입 없이. 바로 시작."</div>
+    <p>
+      SubTrackr는 기존 구독 관리 앱의 가장 큰 장벽인 <strong>은행 계정 연동</strong>을 제거한 서비스입니다.
+      스크린샷 1장이나 결제 문자를 붙여넣기만 하면 AI가 구독 정보를 자동으로 인식합니다.
+      데이터는 기기 로컬에 저장되어 개인정보를 보호하며, PWA 방식으로 앱 설치 없이도 사용 가능합니다.
+      무료(광고 지원) + 일회성 결제(광고 제거)의 단순한 비즈니스 모델을 채택하고 있습니다.
+    </p>
+    <div class="tag-list">
+      <span class="tag">Next.js</span>
+      <span class="tag">PWA</span>
+      <span class="tag">AI OCR</span>
+      <span class="tag">로컬 스토리지</span>
+      <span class="tag">Google/Kakao 로그인</span>
+      <span class="tag">무료 + 일회성 결제</span>
+      <span class="tag">한국 / 글로벌</span>
+    </div>
+  </div>
+
+  <!-- STRUCTURE -->
+  <p class="section-title">사이트 구조</p>
+  <div class="card structure-card">
+    <ul class="section-list">
+      <li>
+        <div class="num">1</div>
+        <div class="name">홈 / 대시보드</div>
+        <div class="desc">구독 목록, 월간 지출 요약, 다가오는 결제일 카드 형태 표시</div>
+      </li>
+      <li>
+        <div class="num">2</div>
+        <div class="name">AI 감지</div>
+        <div class="desc">스크린샷·PDF·텍스트 업로드 → AI 자동 구독 추출. 텍스트 붙여넣기도 지원</div>
+      </li>
+      <li>
+        <div class="num">3</div>
+        <div class="name">구독 추가/편집</div>
+        <div class="desc">서비스 검색(130+) or 수동 입력. 결제 주기·통화·카테고리·계정 연결 설정</div>
+      </li>
+      <li>
+        <div class="num">4</div>
+        <div class="name">지출 분석</div>
+        <div class="desc">카테고리별 지출 차트, 카드/계정별 지출, 연간 절감 예상액 제공</div>
+      </li>
+      <li>
+        <div class="num">5</div>
+        <div class="name">캘린더 뷰</div>
+        <div class="desc">결제 일정을 캘린더로 시각화. 7일 내 결제 예정 알림</div>
+      </li>
+      <li>
+        <div class="num">6</div>
+        <div class="name">설정 / 데이터</div>
+        <div class="desc">JSON/CSV 내보내기·가져오기, 계정 연동(Google·Kakao), 광고 제거 결제</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- FEATURES -->
+  <p class="section-title">주요 기능</p>
+  <div class="grid-3">
+    <div class="card feature-card">
+      <h3><span class="icon">🤖</span> AI 자동 감지</h3>
+      <p>스크린샷, PDF, 카드 명세 HTML, 결제 문자 텍스트를 업로드하면 구독 서비스명·금액·결제일을 자동 추출. 드래그로 수동 선택도 가능.</p>
+    </div>
+    <div class="card feature-card">
+      <h3><span class="icon">🔒</span> 프라이버시 우선</h3>
+      <p>은행 계정 연동 없이 작동. 비회원 시 데이터는 브라우저 로컬 스토리지에만 저장. 비밀번호는 수집하지 않음.</p>
+    </div>
+    <div class="card feature-card">
+      <h3><span class="icon">🌍</span> 글로벌 다국어</h3>
+      <p>한국어·영어·일본어·중국어·스페인어·포르투갈어·독일어·프랑스어·힌디어·아랍어·베트남어 11개 언어 지원. 16개 통화.</p>
+    </div>
+    <div class="card feature-card">
+      <h3><span class="icon">📱</span> PWA (앱 설치 불필요)</span></h3>
+      <p>iOS·Android 홈 화면에 추가 가능. 결제 알림을 네이티브 앱처럼 수신. 앱스토어 없이 설치.</p>
+    </div>
+    <div class="card feature-card">
+      <h3><span class="icon">📊</span> 지출 분석</h3>
+      <p>카테고리별 지출 차트, 카드·계정별 분류, 월→연간 전환 시 예상 절감액(~15%) 자동 계산.</p>
+    </div>
+    <div class="card feature-card">
+      <h3><span class="icon">💳</span> 단순 비즈니스 모델</h3>
+      <p>무료(광고 포함) + 일회성 결제로 광고 영구 제거. "구독 없는 구독 관리 앱"이라는 일관된 메시지.</p>
+    </div>
+  </div>
+
+  <!-- DESIGN -->
+  <p class="section-title">디자인 & 기술</p>
+  <div class="grid-2">
+    <div class="card design-card">
+      <h3>🎨 컬러 팔레트</h3>
+      <p>다크 네이비 계열을 기조로 한 신뢰감 있는 배색. 명도 대비가 명확해 가독성이 좋음.</p>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#414042;"></div>
+          <span>#414042 (테마)</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#0f3460;"></div>
+          <span>#0f3460 (포인트)</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#16213e;"></div>
+          <span>#16213e (다크)</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#93c5fd; border-color:#bfdbfe;"></div>
+          <span>#93c5fd (라이트)</span>
+        </div>
+      </div>
+    </div>
+    <div class="card design-card">
+      <h3>⚙️ 기술 스택</h3>
+      <p>Next.js 기반 React 앱. Nunito 폰트로 친근한 인상. PWA manifest와 다국어 hreflang 완비.</p>
+      <div class="tech-badges">
+        <span class="tech-badge">Next.js (App Router)</span>
+        <span class="tech-badge">React</span>
+        <span class="tech-badge">Tailwind CSS</span>
+        <span class="tech-badge">Nunito Font</span>
+        <span class="tech-badge">PWA</span>
+        <span class="tech-badge">Schema.org</span>
+        <span class="tech-badge">Google AdSense</span>
+      </div>
+    </div>
+    <div class="card design-card">
+      <h3>📐 레이아웃</h3>
+      <p>모바일 우선(Mobile-First) 반응형. 카드 기반 UI로 구독 정보를 직관적으로 표현. 하단 탭 내비게이션 추정(PWA 최적화 구조).</p>
+    </div>
+    <div class="card design-card">
+      <h3>⭐ 평점 & 신뢰 요소</h3>
+      <div class="rating-row">
+        <span class="stars">★★★★★</span>
+        <span class="rating-val">4.8</span>
+        <span class="rating-count">/ 5.0 &nbsp;(120개 리뷰)</span>
+      </div>
+      <p style="margin-top:10px;">JSON-LD 구조화 데이터로 검색 결과에 별점 노출. Naver·Google 사이트 인증 완비.</p>
+    </div>
+  </div>
+
+  <!-- PROS / CONS -->
+  <p class="section-title">잘한 점 & 개선 제안</p>
+  <div class="pros-cons">
+    <div class="pros-card">
+      <h3>✅ 잘한 점</h3>
+      <ul class="item-list">
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>명확한 차별화</strong> — "은행 연동 없음"을 핵심 메시지로 일관되게 전달. 3단어 tagline이 경쟁 앱과 즉각적으로 구분됨.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>프라이버시 설계</strong> — 비회원 로컬 저장, 비밀번호 미수집. 보안 민감 유저를 잘 공략함.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>AI 다양한 입력 지원</strong> — 스크린샷·PDF·HTML명세·문자 텍스트 모두 지원. 사용자 진입 장벽이 낮음.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>PWA 완성도</strong> — iOS·Android 설치 가이드까지 제공. 앱스토어 배포 없이 네이티브 앱 경험 제공.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>글로벌 확장성</strong> — 11개 언어·16개 통화·hreflang 완비. 초기부터 해외 시장 고려.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>일관된 수익 모델</strong> — "구독 없는 구독 관리" 메시지와 일치하는 일회성 결제. 브랜드 스토리와 완벽한 정합성.</div>
+        </li>
+        <li>
+          <div class="dot">✓</div>
+          <div><strong>SEO 최적화</strong> — JSON-LD, hreflang, OpenGraph, Twitter Card 모두 구현. 별점 스니펫도 노출 가능.</div>
+        </li>
+      </ul>
+    </div>
+    <div class="cons-card">
+      <h3>🔧 개선 제안</h3>
+      <ul class="item-list">
+        <li>
+          <div class="dot">!</div>
+          <div><strong>랜딩 페이지 SSR 부재</strong> — Next.js임에도 클라이언트 렌더링이라 초기 크롤링 시 콘텐츠가 빔. 핵심 섹션은 서버 사이드 렌더링 전환 필요.</div>
+        </li>
+        <li>
+          <div class="dot">!</div>
+          <div><strong>소셜 프루프 노출 강화</strong> — 4.8점/120개 리뷰가 있으나 랜딩에서 충분히 부각되지 않음. 실제 사용 후기·숫자를 히어로 섹션 근처에 배치하면 전환율 향상.</div>
+        </li>
+        <li>
+          <div class="dot">!</div>
+          <div><strong>온보딩 흐름 명시화</strong> — "스크린샷 업로드 → AI 감지 → 추가" 3단계 흐름을 랜딩에서 시각적으로 보여주면 이탈률 감소.</div>
+        </li>
+        <li>
+          <div class="dot">!</div>
+          <div><strong>서비스 목록 시각화</strong> — 130+ 서비스 로고를 스크롤 배너로 노출하면 신뢰도·인지도 상승.</div>
+        </li>
+        <li>
+          <div class="dot">!</div>
+          <div><strong>AI 분석 월 한도 표시</strong> — 무료 티어 한도(월 50회 등)가 명세서에 언급되나, 가격 정책 페이지가 명확하지 않음. 별도 요금제 비교 섹션 추가 권장.</div>
+        </li>
+        <li>
+          <div class="dot">!</div>
+          <div><strong>다크 모드 지원</strong> — 테마 색상이 다크 계열임에도 라이트/다크 전환 여부가 불명확. 다크 모드 명시적 지원으로 UX 완성도 향상.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  분석 대상: <span>https://www.subtrac.kr</span> &nbsp;|&nbsp; 생성일: 2026-05-06 &nbsp;|&nbsp; Claude Code 자동 분석 리포트
+</div>
+
+</body>
+</html>
