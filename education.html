@@ -635,7 +635,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <p id="heroP" data-i18n="hero_sub">매일 5분 · 오늘 배운 말을 내일 현장에서 써요</p>
     </div>
 
-    <div class="slabel" data-i18n="lbl_curriculum">📅 2주일 커리큘럼 (Day 1–14)</div>
+    <div class="slabel" data-i18n="lbl_curriculum">📅 3주일 MVP 커리큘럼 (Day 1–21)</div>
     <div class="day-grid" id="dayGrid"></div>
 
     <div class="prog-card">
@@ -1482,6 +1482,389 @@ const CUR = [
     {tag:'종합', q:'전기 작업 시 착용해야 하는 보호구는?', qu:'Elektr ishi paytida kiyilishi kerak bo\'lgan himoya vositasi?', opts:['방진마스크','안전대','절연장갑 (izolyatsiya qo\'lqopi)','귀마개'], ans:2},
     {tag:'종합', q:'부상 시 상처에서 피가 날 때 먼저 하는 것은?', qu:"Jarohatdan qon kelganda birinchi nima qilish kerak?", opts:['달리기','상처 누르기 (bosib turish)','잠자기','음식 먹기'], ans:1},
   ]
+},
+
+// ── WEEK 3 · 작업 지시 ──────────────────────────────
+{
+  day:15, icon:'📋',
+  ncs:{code:'06010101',label:'작업지시·작업점검'},
+  titleKo:'이렇게 해요! 작업 순서', titleUz:"Shunday qiling! Ish tartibi",
+  subKo:'오늘의 목표: 작업 지시 받기 + 순서 표현 이해하기', subUz:"Bugungi maqsad: Ish ko'rsatmalarini qabul qilish + tartib ifodalarini tushunish",
+  level:'A2',
+  goal:{
+    ko:'"먼저 ~하고, 그다음 ~하세요" 로 순서대로 지시를 이해하고 확인할 수 있어요',
+    uz:'"Avval ~qilib, keyin ~qiling" bilan tartibli ko\'rsatmalarni tushunib, tasdiqlaya olasiz',
+    can:['먼저 기계를 점검하세요.','그다음 작업을 시작하세요.','마지막으로 정리하세요.','알겠습니다!','다시 한번 말씀해 주세요.']
+  },
+  listen:{
+    ctx:'🏭 공장 아침 — 작업 지시 시간 / Zavod ertalabi — ish ko\'rsatma vaqti',
+    bubbles:[
+      {who:'👔',name:'관리자 (Manager)',ko:'오늘 작업 순서 알려줄게요. 잘 들어요!',uz:"Bugungi ish tartibini aytaman. Diqqat bilan eshiting!",side:'left'},
+      {who:'👷',name:'근로자',ko:'네, 알겠습니다!',uz:'Ha, tushundim!',side:'right'},
+      {who:'👔',name:'관리자',ko:'먼저 안전장비를 착용하세요.\n그다음 기계를 점검하세요.',uz:"Avval xavfsizlik jihozlarini kiyib oling.\nKeyin mashinani tekshiring.",side:'left'},
+      {who:'👷',name:'근로자',ko:'안전장비 착용 후 기계 점검이요?',uz:"Xavfsizlik jihozlarini kiyib, mashina tekshirishmi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'맞아요! 마지막으로 작업일지에 서명하세요.',uz:"To'g'ri! Oxirida ish jurnalida imzo qo'ying.",side:'left'},
+      {who:'👷',name:'근로자',ko:'다시 한번 말씀해 주세요. 천천히요.',uz:'Yana bir bor aytib bering. Sekinroq.',side:'right'},
+    ]
+  },
+  words:[
+    {ko:'먼저', syl:'먼·저', rom:'meon-jeo', uz:'avval / birinchi (first/firstly)', ex:'먼저 장갑을 끼세요.', e:'1️⃣'},
+    {ko:'그다음', syl:'그·다·음', rom:'geu-da-eum', uz:'keyin / undan keyin (then/next)', ex:'그다음 기계를 켜세요.', e:'2️⃣'},
+    {ko:'마지막으로', syl:'마·지·막·으·로', rom:'ma-ji-ma-geu-ro', uz:'oxirida / nihoyat (finally/lastly)', ex:'마지막으로 정리하세요.', e:'3️⃣'},
+    {ko:'알겠습니다', syl:'알·겠·습·니·다', rom:'al-get-seum-ni-da', uz:'tushundim / mayli (I understand/Yes sir)', ex:'네, 알겠습니다!', e:'✅'},
+    {ko:'다시 한번', syl:'다·시·한·번', rom:'da-si han-beon', uz:'yana bir bor (one more time)', ex:'다시 한번 말씀해 주세요.', e:'🔄'},
+  ],
+  pattern:{
+    labelKo:'문형: 먼저 [동사]고, 그다음 [동사]세요.',
+    labelUz:"Shakl: Avval [fe'l]ib, keyin [fe'l]ing.",
+    template:'먼저 [___]고, 그다음 [___]세요.',
+    desc:'작업 순서를 말할 때 · Ish tartibini aytishda',
+    drills:[
+      {blank:'안전장비를 착용하', full:'먼저 안전장비를 착용하고, 그다음 작업하세요.', uz:'Avval xavfsizlik jihozlarini kiyib, keyin ishlang.'},
+      {blank:'기계를 점검하', full:'먼저 기계를 점검하고, 그다음 켜세요.', uz:'Avval mashinani tekshirib, keyin yoqing.'},
+      {blank:'전원을 끄', full:'먼저 전원을 끄고, 그다음 청소하세요.', uz:"Avval quvvatni o'chirib, keyin tozalang."},
+      {blank:'서명하', full:'마지막으로 서명하세요.', uz:"Oxirida imzo qo'ying."},
+    ]
+  },
+  speak:[
+    {situation:'📋 관리자가 오늘 작업 순서를 알려줘요. 따라 말해요.', prompt:"'먼저'와 '그다음'을 써봐요.", phrase:'먼저 안전장비를 착용하고, 그다음 기계를 점검하세요!', uz:'Avval xavfsizlik jihozlarini kiyib, keyin mashinani tekshiring!'},
+    {situation:'🔄 지시를 잘 못 들었어요. 다시 말해달라고 해요.', prompt:"'다시 한번 말씀해 주세요'를 써봐요.", phrase:'죄송합니다. 다시 한번 천천히 말씀해 주세요.', uz:"Kechirasiz. Yana bir bor sekin aytib bering."},
+    {situation:'✅ 지시를 다 이해했어요. 확인해요.', prompt:"'알겠습니다'로 말해봐요.", phrase:'알겠습니다! 먼저 안전장비 착용하고, 기계 점검하고, 마지막에 서명할게요.', uz:"Tushundim! Avval xavfsizlik jihozlarini kiyib, mashinani tekshirib, oxirida imzo qo'yaman."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"그다음" 은 무슨 뜻이에요?', qu:'"Keyin" nima degani?', opts:["avval (먼저)",'keyin (then/next)',"oxirida (마지막으로)",'birga (함께)'], ans:1},
+    {tag:'문형', q:'"먼저 안전장비를 착용___고, 그다음 작업하세요." 빈칸은?', qu:'"Avval xavfsizlik jihozlarini kiyib___, keyin ishlang." Bo\'shliq?', opts:['아','하','나','이'], ans:1},
+    {tag:'의사소통', q:'작업 지시를 이해했을 때 뭐라고 해요?', qu:"Ko'rsatmani tushunganda nima deysiz?", opts:['모르겠어요','괜찮아요','알겠습니다 (tushundim)','안 해요'], ans:2},
+    {tag:'의사소통', q:'지시를 못 들었을 때 뭐라고 해요?', qu:"Ko'rsatmani eshitmagan paytda nima deysiz?", opts:['됐어요','다시 한번 말씀해 주세요 (yana bir bor)','안 돼요','가세요'], ans:1},
+  ]
+},
+
+{
+  day:16, icon:'📊',
+  ncs:{code:'06010101',label:'작업점검·보고'},
+  titleKo:'다 했어요! 작업 보고', titleUz:"Tamom! Ish hisoboti",
+  subKo:'오늘의 목표: 작업 완료 보고 + 문제 보고하기', subUz:"Bugungi maqsad: Ish tugallanishi va muammo haqida hisobot berish",
+  level:'A2',
+  goal:{
+    ko:'"다 됐어요." "문제가 있어요." 로 작업 완료와 이상을 보고할 수 있어요',
+    uz:'"Tamom." "Muammo bor." bilan ish tugallanishi va muammoni xabar bera olasiz',
+    can:['다 됐어요.','불량품이 나왔어요.','기계에 이상이 있어요.','교체가 필요해요.','확인해 주세요.']
+  },
+  listen:{
+    ctx:'🏭 오후 — 작업 완료 보고 / Tushdan keyin — ish tugallash hisoboti',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'관리자님, 작업 다 했어요.',uz:"Menejer, ish tamom bo'ldi.",side:'right'},
+      {who:'👔',name:'관리자',ko:'수량 확인했어요?',uz:"Miqdorni tekshirdingizmi?",side:'left'},
+      {who:'👷',name:'근로자',ko:'네, 200개 완료했어요.\n그런데 불량품이 3개 나왔어요.',uz:"Ha, 200 ta tayyor.\nLekin 3 ta nuqsonli mahsulot chiqdi.",side:'right'},
+      {who:'👔',name:'관리자',ko:'불량품은 어디 있어요?',uz:"Nuqsonli mahsulotlar qayerda?",side:'left'},
+      {who:'👷',name:'근로자',ko:'빨간 박스에 넣었어요.\n기계에도 이상이 있어요. 확인해 주세요.',uz:"Qizil qutichaiga qo'ydim.\nMashinada ham muammo bor. Tekshirib bering.",side:'right'},
+      {who:'👔',name:'관리자',ko:'알겠어요. 수고했어요!',uz:"Tushundim. Rahmat!",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'다 됐어요', syl:'다·됐·어·요', rom:'da-dwaesseo-yo', uz:"tamom bo'ldi / tugadi (all done)", ex:'작업 다 됐어요!', e:'✅'},
+    {ko:'불량품', syl:'불·량·품', rom:'bul-lyang-pum', uz:'nuqsonli mahsulot (defective product)', ex:'불량품이 3개 나왔어요.', e:'❌'},
+    {ko:'이상', syl:'이·상', rom:'i-sang', uz:"muammo / nosozlik (problem/abnormality)", ex:'기계에 이상이 있어요.', e:'⚠️'},
+    {ko:'교체', syl:'교·체', rom:'gyo-che', uz:'almashtirish (replacement)', ex:'부품 교체가 필요해요.', e:'🔧'},
+    {ko:'수량', syl:'수·량', rom:'su-ryang', uz:'miqdor / soni (quantity/amount)', ex:'수량을 확인해요.', e:'🔢'},
+  ],
+  pattern:{
+    labelKo:'문형: 다 [동사]아요/어요. / [명사]에 이상이 있어요.',
+    labelUz:"Shakl: Hammasi [fe'l]di. / [ot]da muammo bor.",
+    template:'다 [___]아요/어요. / [___]에 이상이 있어요.',
+    desc:'작업 완료/이상을 보고할 때 · Ish tugallanishi/muammoni xabar berishda',
+    drills:[
+      {blank:'다 확인했', full:'다 확인했어요.', uz:'Hammasini tekshirdim.'},
+      {blank:'다 포장했', full:'다 포장했어요.', uz:'Hammasini qadoqladim.'},
+      {blank:'기계', full:'기계에 이상이 있어요.', uz:"Mashinada muammo bor."},
+      {blank:'전원', full:'전원에 이상이 있어요.', uz:"Quvvatda muammo bor."},
+    ]
+  },
+  speak:[
+    {situation:'📊 관리자에게 작업이 끝났다고 보고해요.', prompt:"'다 됐어요'를 써봐요.", phrase:'관리자님, 작업 다 됐어요. 200개 완료했어요.', uz:"Menejer, ish tamom. 200 ta tayyor."},
+    {situation:'⚠️ 기계에 문제가 생겼어요. 보고해요.', prompt:"'이상이 있어요'를 써봐요.", phrase:'관리자님, 기계에 이상이 있어요. 확인해 주세요!', uz:"Menejer, mashinada muammo bor. Tekshirib bering!"},
+    {situation:'❌ 불량품을 발견했어요. 어떻게 말해요?', prompt:'불량품 수와 위치를 말해봐요.', phrase:'불량품이 5개 나왔어요. 교체가 필요해요.', uz:"5 ta nuqsonli mahsulot chiqdi. Almashtirish kerak."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"불량품" 은 무엇이에요?', qu:'"Nuqsonli mahsulot" nima?', opts:['좋은 물건','nuqsonli mahsulot (defective product)','새 기계','작업복'], ans:1},
+    {tag:'문형', q:'"기계에 ___ 있어요." 빈칸에 맞는 말은?', qu:'"Mashinada ___ bor." Bo\'shliqqa to\'g\'ri so\'z?', opts:['맛이','이상이','소리만','냄새'], ans:1},
+    {tag:'의사소통', q:'작업을 다 마쳤을 때 어떻게 말해요?', qu:"Ishni tugatganda qanday deyish kerak?", opts:['몰라요','나중에 할게요','다 됐어요 (tamom)','아직이요'], ans:2},
+    {tag:'의사소통', q:'문제를 발견했을 때 관리자에게 뭐라고 해요?', qu:"Muammo topganda menejerlga nima deysiz?", opts:['괜찮아요','혼자 고쳐요','이상이 있어요. 확인해 주세요.','숨겨요'], ans:2},
+  ]
+},
+
+{
+  day:17, icon:'⚙️',
+  ncs:{code:'06010201',label:'기계·설비 조작 안전'},
+  titleKo:'기계를 조작해요 — 켜고 끄고', titleUz:"Mashinani boshqarish — yoqish va o'chirish",
+  subKo:'오늘의 목표: 기계 조작 지시 이해 + 속도/온도 표현', subUz:"Bugungi maqsad: Mashina boshqaruv ko'rsatmalarini tushunish + tezlik/harorat ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"기계를 켜세요/끄세요" "속도를 줄이세요" "비상정지 누르세요!" 를 이해할 수 있어요',
+    uz:'"Mashinani yoqing/o\'chiring" "Tezlikni kamaytiring" "Favqulodda to\'xtatishni bosing!" ni tushuna olasiz',
+    can:['기계를 켜세요.','속도를 줄이세요.','온도를 확인하세요.','비상정지 누르세요!','절대 혼자 고치지 마세요.']
+  },
+  listen:{
+    ctx:'⚙️ 기계 조작 시작 — 선배의 지시 / Mashina boshqarish — ustaning ko\'rsatmasi',
+    bubbles:[
+      {who:'🧑‍🏭',name:'선배 (Usta)',ko:'오늘부터 이 기계 담당이에요.\n먼저 전원 스위치 찾아봐요.',uz:"Bugundan boshlab bu mashina sizga topshirildi.\nAvval quvvat kalitini toping.",side:'left'},
+      {who:'👷',name:'근로자',ko:'이거요?',uz:"Shu?",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'맞아요. 켜보세요!',uz:"To'g'ri. Yoqing!",side:'left'},
+      {who:'👷',name:'근로자',ko:'켰어요. 그런데 속도가 너무 빠른 것 같아요.',uz:"Yoqdim. Lekin tezlik juda tez bo'lsa kerak.",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'이 버튼으로 속도를 줄이세요. 온도도 항상 확인하세요.',uz:"Bu tugma bilan tezlikni kamaytiring. Haroratni ham doimo tekshiring.",side:'left'},
+      {who:'👷',name:'근로자',ko:'만약 이상하면 어떻게 해요?',uz:"Agar noto'g'ri bo'lsa, nima qilaman?",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'비상정지 버튼 누르세요! 절대 혼자 고치지 마세요!',uz:"Favqulodda to'xtatish tugmasini bosing! Hech qachon o'zingiz tuzatmang!",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'가동', syl:'가·동', rom:'ga-dong', uz:'ishga tushirish / yoqish (start/operation)', ex:'기계를 가동하세요.', e:'▶️'},
+    {ko:'정지', syl:'정·지', rom:'jeong-ji', uz:"to'xtatish / o'chirish (stop/shutdown)", ex:'비상정지 버튼이에요.', e:'⏹️'},
+    {ko:'속도', syl:'속·도', rom:'sok-do', uz:'tezlik (speed)', ex:'속도를 줄이세요.', e:'🏎️'},
+    {ko:'온도', syl:'온·도', rom:'on-do', uz:'harorat (temperature)', ex:'온도를 확인하세요.', e:'🌡️'},
+    {ko:'비상정지', syl:'비·상·정·지', rom:'bi-sang-jeong-ji', uz:"favqulodda to'xtatish (emergency stop)", ex:'이상하면 비상정지 누르세요!', e:'🔴'},
+  ],
+  pattern:{
+    labelKo:'문형: [기계]를 켜세요/끄세요. / [수치]를 줄이세요/높이세요.',
+    labelUz:"Shakl: [mashina]ni yoqing/o'chiring. / [ko'rsatkich]ni kamaytiring/oshiring.",
+    template:'[___]를 [___]세요.',
+    desc:'조작 지시를 내리거나 받을 때 · Boshqaruv ko\'rsatmasi berishda',
+    drills:[
+      {blank:'기계', full:'기계를 켜세요.', uz:"Mashinani yoqing."},
+      {blank:'전원', full:'전원을 끄세요.', uz:"Quvvatni o'chiring."},
+      {blank:'속도', full:'속도를 줄이세요.', uz:'Tezlikni kamaytiring.'},
+      {blank:'비상정지', full:'비상정지를 누르세요!', uz:"Favqulodda to'xtatish tugmasini bosing!"},
+    ]
+  },
+  speak:[
+    {situation:'▶️ 기계 시작을 지시받았어요.', prompt:"'켜세요'와 '확인하세요'를 써봐요.", phrase:'기계를 켜고, 속도와 온도를 확인하세요.', uz:"Mashinani yoqing va tezlik bilan haroratni tekshiring."},
+    {situation:'⚠️ 기계가 이상해요! 어떻게 해요?', prompt:"'비상정지'를 써봐요.", phrase:'기계가 이상해요! 비상정지 누를게요!', uz:"Mashina noto'g'ri! Favqulodda to'xtatishni bosaman!"},
+    {situation:'🌡️ 온도가 너무 높아요. 관리자에게 보고해요.', prompt:'상황을 설명해봐요.', phrase:'온도가 너무 높아요. 이상이 있는 것 같아요. 확인해 주세요!', uz:"Harorat juda baland. Muammo bo'lsa kerak. Tekshirib bering!"},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"속도" 는 무슨 뜻이에요?', qu:'"Tezlik" nima degani?', opts:["harorat (온도)",'tezlik (speed)',"to'xtatish (정지)",'ish (작업)'], ans:1},
+    {tag:'의사소통', q:'기계에 이상이 생겼을 때 가장 먼저 해야 할 것은?', qu:"Mashinada muammo bo'lganda birinchi nima qilish kerak?", opts:["o'zingiz tuzatish",'혼자 고치기','비상정지 누르기 (favqulodda to\'xtatish)','무시하기'], ans:2},
+    {tag:'어휘', q:'"비상정지" 란 무엇이에요?', qu:'"Favqulodda to\'xtatish" nima?', opts:["normal to'xtatish",'비상시 기계를 바로 세우는 장치 (emergency stop)',"tezlik oshirish",'quvvat yoqish'], ans:1},
+    {tag:'문형', q:'"속도를 ___ 세요." 빈칸에 맞는 것은?', qu:'"Tezlikni ___ ing." Bo\'shliqqa to\'g\'ri so\'z?', opts:['먹','줄이','들','자'], ans:1},
+  ]
+},
+
+// ── WEEK 3 · 병원/건강 ──────────────────────────────
+{
+  day:18, icon:'🤒',
+  ncs:null,
+  titleKo:'아파요! 어디가 아파요?', titleUz:"Og'riyapman! Qayeringiz og'riydi?",
+  subKo:'오늘의 목표: 아픈 부위와 증상을 한국어로 말하기', subUz:"Bugungi maqsad: Og'rigan joy va belgilarni koreycha aytish",
+  level:'A1-A2',
+  goal:{
+    ko:'"머리가 아파요." "열이 나요." "기침이 심해요." 로 증상을 설명할 수 있어요',
+    uz:'"Boshim og\'riydi." "Isitmam bor." "Yo\'talim kuchli." bilan belgilarni tushuntira olasiz',
+    can:['머리가 아파요.','배가 아파요.','열이 나요.','기침이 심해요.','온몸이 아파요.']
+  },
+  listen:{
+    ctx:'🏥 공장 — 몸이 아파요 / Zavod — kasal bo\'ldim',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'선배님, 오늘 몸이 좀 안 좋아요.',uz:"Usta, bugun o'zimni yaxshi sezmayapman.",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'어디가 아파요?',uz:"Qayeringiz og'riydi?",side:'left'},
+      {who:'👷',name:'근로자',ko:'머리가 아프고, 열도 나요.\n기침도 좀 해요.',uz:"Boshim og'riydi va isitmam ham bor.\nYo'talim ham bor.",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'많이 아파요? 병원에 가야 할 것 같은데요.',uz:"Juda og'riyaptimi? Kasalxonaga borish kerak bo'lsa kerak.",side:'left'},
+      {who:'👷',name:'근로자',ko:'네, 온몸이 다 아파요. 어느 병원에 가요?',uz:"Ha, butun vujudim og'riydi. Qaysi kasalxonaga boraman?",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'가까운 내과에 가봐요. 제가 연락할게요.',uz:"Yaqin ichki kasalliklar bo'limiga boring. Men qo'ng'iroq qilaman.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'머리가 아파요', syl:'머·리·아·파·요', rom:'meo-ri a-pa-yo', uz:"boshim og'riydi (I have a headache)", ex:'어제부터 머리가 아파요.', e:'🤕'},
+    {ko:'열이 나요', syl:'열·이·나·요', rom:'yeo-ri na-yo', uz:"isitmam bor (I have a fever)", ex:'38도 열이 나요.', e:'🌡️'},
+    {ko:'기침', syl:'기·침', rom:'gi-chim', uz:"yo'tal (cough)", ex:'기침이 심해요.', e:'😷'},
+    {ko:'배가 아파요', syl:'배·아·파·요', rom:'bae-ga a-pa-yo', uz:"qorniim og'riydi (stomach hurts)", ex:'배가 많이 아파요.', e:'🤢'},
+    {ko:'온몸', syl:'온·몸', rom:'on-mom', uz:"butun vujud (whole body)", ex:'온몸이 다 아파요.', e:'😫'},
+  ],
+  pattern:{
+    labelKo:'문형: [신체부위]이/가 아파요. / [증상]이/가 나요/심해요.',
+    labelUz:"Shakl: [tana a'zosi] og'riydi. / [belgi] bor/kuchli.",
+    template:'[___]이/가 아파요.',
+    desc:'아픈 증상을 말할 때 · Kasallik belgilarini aytishda',
+    drills:[
+      {blank:'머리', full:'머리가 아파요.', uz:"Boshim og'riydi."},
+      {blank:'배', full:'배가 아파요.', uz:"Qorniim og'riydi."},
+      {blank:'기침이 심', full:'기침이 심해요.', uz:"Yo'talim kuchli."},
+      {blank:'열이 나', full:'열이 나요.', uz:'Isitmam bor.'},
+    ]
+  },
+  speak:[
+    {situation:'😷 오늘 몸이 좋지 않아요. 선배에게 말해요.', prompt:"'아파요'를 써봐요.", phrase:'선배님, 오늘 머리도 아프고 열도 나요. 좀 쉬어도 될까요?', uz:"Usta, bugun boshim ham og'riydi, isitmam ham bor. Biroz dam olsa bo'ladimi?"},
+    {situation:'🌡️ 증상이 심해요. 병원에 가고 싶어요.', prompt:'증상을 구체적으로 말해봐요.', phrase:'온몸이 다 아파요. 열도 나고 기침도 심해요. 병원에 가야 할 것 같아요.', uz:"Butun vujudim og'riydi. Isitmam bor va yo'talim kuchli. Kasalxonaga borish kerak bo'lsa kerak."},
+    {situation:'🏥 병원 접수할 때 증상을 말해요.', prompt:'의사에게 증상을 설명해봐요.', phrase:'머리가 아파요. 38도 열이 나요. 어제부터 시작됐어요.', uz:"Boshim og'riydi. 38 daraja isitmam bor. Kechadan boshlandi."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"열이 나요" 는 무슨 뜻이에요?', qu:'"Isitmam bor" nima degani?', opts:["boshim og'riydi",'isitmam bor (I have a fever)',"qorniim og'riydi",'yo\'talim bor'], ans:1},
+    {tag:'문형', q:'"배___ 아파요." 빈칸은?', qu:'"Qorniim og\'riydi." Bo\'shliq?', opts:['은','가','에','와'], ans:1},
+    {tag:'의사소통', q:'몸이 안 좋을 때 가장 먼저 해야 할 것은?', qu:"O'zingizni yaxshi sezmayotganda birinchi nima qilish kerak?", opts:['일을 계속해요','혼자 참아요','선배/관리자에게 말해요','집에 그냥 가요'], ans:2},
+    {tag:'어휘', q:'전신이 다 아플 때 어떻게 말해요?', qu:"Butun vujudingiz og'riganda qanday deysiz?", opts:['다리만 아파요','머리만 아파요','온몸이 다 아파요','괜찮아요'], ans:2},
+  ]
+},
+
+{
+  day:19, icon:'🏥',
+  ncs:null,
+  titleKo:'어느 병원에 가요? 진료과 찾기', titleUz:"Qaysi kasalxonaga boraman? Bo'limni topish",
+  subKo:'오늘의 목표: 증상에 맞는 진료과 선택하기', subUz:"Bugungi maqsad: Belgilarga mos bo'limni tanlash",
+  level:'A2',
+  goal:{
+    ko:'"내과에 가세요." "정형외과에 가야 해요." 로 진료과를 찾아갈 수 있어요',
+    uz:'"Ichki kasalliklar bo\'limiga boring." bilan to\'g\'ri bo\'limga bora olasiz',
+    can:['내과에 가야 해요.','정형외과에 가세요.','응급실은 어디예요?','접수는 어디서 해요?','진료를 예약하고 싶어요.']
+  },
+  listen:{
+    ctx:'🏥 병원 — 접수 데스크 / Kasalxona — qabul xonasi',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'저기요, 저 어느 과에 가야 해요?',uz:"Kechirasiz, men qaysi bo'limga borish kerak?",side:'right'},
+      {who:'🏥',name:'접수담당',ko:'어디가 아프세요?',uz:"Qayeringiz og'riydi?",side:'left'},
+      {who:'👷',name:'근로자',ko:'열이 나고 기침이 심해요.',uz:"Isitmam bor va yo'talim kuchli.",side:'right'},
+      {who:'🏥',name:'접수담당',ko:'내과로 가세요. 3번 창구에서 접수하세요.',uz:"Ichki kasalliklar bo'limiga boring. 3-oynachada ro'yxatdan o'ting.",side:'left'},
+      {who:'👷',name:'근로자',ko:'일하다가 허리를 다쳤어요.',uz:"Ishda belimni shikastladim.",side:'right'},
+      {who:'🏥',name:'접수담당',ko:'그럼 정형외과로 가세요. 2층이에요.',uz:"Unda ortopediya bo'limiga boring. 2-qavat.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'내과', syl:'내·과', rom:'nae-gwa', uz:"ichki kasalliklar bo'limi (internal medicine)", ex:'열이 나면 내과에 가세요.', e:'🩺'},
+    {ko:'정형외과', syl:'정·형·외·과', rom:'jeong-hyeong-oe-gwa', uz:"ortopediya / suyak bo'g'im (orthopedics)", ex:'허리 다치면 정형외과에 가요.', e:'🦴'},
+    {ko:'응급실', syl:'응·급·실', rom:'eung-geup-sil', uz:"favqulodda yordam (emergency room)", ex:'사고 나면 응급실로 가요!', e:'🚨'},
+    {ko:'접수', syl:'접·수', rom:'jeop-su', uz:"ro'yxatdan o'tish (registration/reception)", ex:'접수는 1층에서 해요.', e:'📝'},
+    {ko:'진료', syl:'진·료', rom:'jin-ryo', uz:"tibbiy ko'rik (medical consultation)", ex:'진료 예약하고 싶어요.', e:'👨‍⚕️'},
+  ],
+  pattern:{
+    labelKo:'문형: [증상]이면 [진료과]에 가세요.',
+    labelUz:"Shakl: [belgi] bo'lsa [bo'lim]ga boring.",
+    template:'[___]이/가 아프면 [___]과/실에 가세요.',
+    desc:'증상에 맞는 진료과를 찾을 때 · Belgilarga mos bo\'limni topishda',
+    drills:[
+      {blank:'열이 나', full:'열이 나면 내과에 가세요.', uz:"Isitmangiz bo'lsa ichki kasalliklar bo'limiga boring."},
+      {blank:'허리가 아프', full:'허리가 아프면 정형외과에 가세요.', uz:"Belingiz og'risa ortopediyaga boring."},
+      {blank:'크게 다치', full:'크게 다치면 응급실에 가세요!', uz:"Kattaroq yaralanganingizda favqulodda yordamga boring!"},
+      {blank:'먼저 접수', full:'먼저 접수를 하세요.', uz:"Avval ro'yxatdan o'ting."},
+    ]
+  },
+  speak:[
+    {situation:'🏥 병원에 도착했어요. 어디로 가야 할지 물어봐요.', prompt:"'어느 과에 가야 해요?'를 써봐요.", phrase:'저기요, 저 열이 나고 기침이 심해요. 어느 과에 가야 해요?', uz:"Kechirasiz, isitmam bor va yo'talim kuchli. Qaysi bo'limga borish kerak?"},
+    {situation:'🦴 공장에서 허리를 다쳤어요. 병원에서 말해요.', prompt:'어디서 다쳤는지 말해봐요.', phrase:'일하다가 허리를 다쳤어요. 정형외과에 가야 해요?', uz:"Ishda belimni shikastladim. Ortopediyaga borishim kerakmi?"},
+    {situation:'📝 접수할 때 이름과 증상을 말해요.', prompt:'접수할 때 뭐라고 해요?', phrase:'안녕하세요. 접수하고 싶어요. 내과 진료요. 열이 나고 기침해요.', uz:"Salom. Ro'yxatdan o'tmoqchiman. Ichki kasalliklar ko'rigi. Isitmam bor va yo'talim bor."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'열이 나고 기침이 심할 때 가는 곳은?', qu:"Isitma va kuchli yo'tal bo'lganda qayerga borish kerak?", opts:["ortopediya (정형외과)",'내과 (ichki kasalliklar bo\'limi)',"dorixona (약국)",'응급실'], ans:1},
+    {tag:'어휘', q:'허리나 무릎을 다쳤을 때 가는 곳은?', qu:"Bel yoki tizza shikastlanganda qayerga borish kerak?", opts:['내과','정형외과 (ortopediya)',"ko'z bo'limi",'응급실'], ans:1},
+    {tag:'의사소통', q:'병원에서 가장 먼저 해야 하는 것은?', qu:"Kasalxonada birinchi nima qilish kerak?", opts:['바로 의사실 들어가기','약국 가기','접수하기 (ro\'yxatdan o\'tish)','집에 가기'], ans:2},
+    {tag:'어휘', q:'큰 사고나 응급 상황에서는 어디로 가요?', qu:"Katta baxtsiz hodisa yoki favqulodda vaziyatda qayerga borish kerak?", opts:['약국','내과','응급실 (favqulodda yordam)','정형외과'], ans:2},
+  ]
+},
+
+{
+  day:20, icon:'🩺',
+  ncs:null,
+  titleKo:'의사 선생님, 이렇게 아파요', titleUz:"Doktor, shunday og'riyapman",
+  subKo:'오늘의 목표: 진료실에서 증상을 자세히 설명하기', subUz:"Bugungi maqsad: Qabul xonasida belgilarni batafsil tushuntirish",
+  level:'A2',
+  goal:{
+    ko:'"어제부터 아팠어요." "누르면 아파요." "점점 심해지고 있어요." 로 진료실에서 증상을 설명할 수 있어요',
+    uz:'"Kechadan og\'riydi." "Bossam og\'riydi." "Tobora kuchaymoqda." bilan qabul xonasida belgilarni tushuntira olasiz',
+    can:['언제부터 아팠어요?','어제부터 아팠어요.','여기를 누르면 아파요.','잠을 못 자요.','점점 심해지고 있어요.']
+  },
+  listen:{
+    ctx:'🩺 내과 진료실 / Ichki kasalliklar qabul xonasi',
+    bubbles:[
+      {who:'👨‍⚕️',name:'의사 (Doktor)',ko:'어디가 아프세요?',uz:"Qayeringiz og'riydi?",side:'left'},
+      {who:'👷',name:'환자',ko:'머리가 아프고, 열이 나요.',uz:"Boshim og'riydi va isitmam bor.",side:'right'},
+      {who:'👨‍⚕️',name:'의사',ko:'언제부터 아팠어요?',uz:"Qachondan beri og'riydi?",side:'left'},
+      {who:'👷',name:'환자',ko:'어제 저녁부터요. 점점 심해지고 있어요.',uz:"Kecha kechqurundan beri. Tobora kuchaymoqda.",side:'right'},
+      {who:'👨‍⚕️',name:'의사',ko:'여기 누르면 아파요? (배를 눌러요)',uz:"Shu joyni bassam og'riyaptimi?",side:'left'},
+      {who:'👷',name:'환자',ko:'네, 아파요! 그리고 밥을 먹으면 더 아파요.',uz:"Ha, og'riydi! Ovqat yesam yanada og'riydi.",side:'right'},
+      {who:'👨‍⚕️',name:'의사',ko:'알겠어요. 혈액검사를 할게요.',uz:"Tushundim. Qon tekshiruvini o'tkazamiz.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'언제부터', syl:'언·제·부·터', rom:'eon-je-bu-teo', uz:'qachondan beri (since when)', ex:'언제부터 아팠어요?', e:'📅'},
+    {ko:'점점 심해요', syl:'점·점·심·해·요', rom:'jeom-jeom sim-hae-yo', uz:'tobora kuchaymoqda (getting worse)', ex:'점점 심해지고 있어요.', e:'📈'},
+    {ko:'누르면', syl:'누·르·면', rom:'nu-reu-myeon', uz:'bossam (when pressed)', ex:'여기 누르면 아파요.', e:'👆'},
+    {ko:'검사', syl:'검·사', rom:'geom-sa', uz:"tekshiruv / tahlil (examination/test)", ex:'혈액검사를 할게요.', e:'🔬'},
+    {ko:'처방', syl:'처·방', rom:'cheo-bang', uz:"retsept / dori tayinlash (prescription)", ex:'약을 처방해 드릴게요.', e:'💊'},
+  ],
+  pattern:{
+    labelKo:'문형: [시간]부터 아팠어요. / [동작]하면 아파요.',
+    labelUz:"Shakl: [vaqt]dan beri og'riydi. / [harakat] qilsam og'riydi.",
+    template:'[___]부터 아팠어요. / [___]하면 아파요.',
+    desc:'증상의 시작과 악화를 말할 때 · Belgi boshlanishi va kuchayishini aytishda',
+    drills:[
+      {blank:'어제 저녁', full:'어제 저녁부터 아팠어요.', uz:"Kecha kechqurundan beri og'riydi."},
+      {blank:'3일 전', full:'3일 전부터 아팠어요.', uz:"3 kun oldindan beri og'riydi."},
+      {blank:'밥을 먹으', full:'밥을 먹으면 아파요.', uz:"Ovqat yesam og'riydi."},
+      {blank:'여기를 누르', full:'여기를 누르면 아파요.', uz:"Bu joyni bassam og'riydi."},
+    ]
+  },
+  speak:[
+    {situation:'🩺 의사가 언제부터 아팠냐고 물어봐요.', prompt:"'부터'를 써봐요.", phrase:'어제 저녁부터 아팠어요. 점점 심해지고 있어요.', uz:"Kecha kechqurundan beri og'riydi. Tobora kuchaymoqda."},
+    {situation:'👆 의사가 어떤 때 더 아프냐고 물어봐요.', prompt:"'하면 아파요'를 써봐요.", phrase:'여기를 누르면 아파요. 밥을 먹으면 더 심해요.', uz:"Bu joyni bassam og'riydi. Ovqat yesam yanada kuchayadi."},
+    {situation:'💊 의사에게 다른 증상도 모두 말해봐요.', prompt:'증상을 다 말해봐요.', phrase:'머리도 아프고, 열도 나고, 기침도 해요. 잠도 잘 못 자요.', uz:"Boshim ham og'riydi, isitmam ham bor, yo'talim ham bor. Uyqum ham kelmaydi."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"언제부터" 는 무슨 뜻이에요?', qu:'"Qachondan beri" nima degani?', opts:["qayerda (어디)",'qachondan beri (since when)',"nima (뭐)",'nima uchun (왜)'], ans:1},
+    {tag:'문형', q:'"어제 ___ 아팠어요." 빈칸에 맞는 말은?', qu:'"Kecha ___ og\'riydi." Bo\'shliqqa to\'g\'ri so\'z?', opts:['부터','가서','와서','때문에'], ans:0},
+    {tag:'문형', q:'"밥을 ___ 아파요." 어떤 상황이에요?', qu:'"Ovqat ___ og\'riydi." Qanday vaziyat?', opts:['먹으면 (yesam)','먹기 전에','먹어서','먹지'], ans:0},
+    {tag:'의사소통', q:'증상이 악화될 때 의사에게 어떻게 말해요?', qu:"Belgi kuchayayotganda doktorga qanday deyish kerak?", opts:['괜찮아요','점점 좋아져요','점점 심해지고 있어요','몰라요'], ans:2},
+  ]
+},
+
+{
+  day:21, icon:'💊',
+  ncs:null,
+  titleKo:'약국에서 — 약을 받아요', titleUz:"Dorixonada — dori olish",
+  subKo:'오늘의 목표: 약 복용법 이해 + 종류별 약 사용법 묻기', subUz:"Bugungi maqsad: Dori qabul usulini tushunish + tur bo'yicha so'rash",
+  level:'A2',
+  goal:{
+    ko:'"하루에 세 번, 식후에 드세요." 로 약 복용법을 이해하고 물을 수 있어요',
+    uz:'"Kuniga 3 marta, ovqatdan keyin iching." bilan dori qabul qilish usulini tushunib, so\'raya olasiz',
+    can:['하루에 몇 번이에요?','식후에 드세요.','이 약 어떻게 먹어요?','바르는 거예요, 붙이는 거예요?','부작용이 있어요?']
+  },
+  listen:{
+    ctx:'💊 약국 — 처방전을 들고 왔어요 / Dorixona — retsept bilan keldim',
+    bubbles:[
+      {who:'👷',name:'환자',ko:'안녕하세요. 처방전이에요.',uz:"Salom. Mana retsept.",side:'right'},
+      {who:'💊',name:'약사 (Dorixonachi)',ko:'네, 잠깐만요... 약이 세 가지예요.',uz:"Ha, bir daqiqa... Uch xil dori bor.",side:'left'},
+      {who:'👷',name:'환자',ko:'어떻게 먹어요?',uz:"Qanday qabul qilaman?",side:'right'},
+      {who:'💊',name:'약사',ko:'이 흰 약은 하루 세 번, 식후에 드세요.\n이 시럽은 기침에 좋아요.',uz:"Bu oq dori kuniga 3 marta, ovqatdan keyin.\nBu sirops yo'talga yaxshi.",side:'left'},
+      {who:'👷',name:'환자',ko:'이건 바르는 거예요, 붙이는 거예요?',uz:"Bu surtiladi yoki yopishtiriladi?",side:'right'},
+      {who:'💊',name:'약사',ko:'이건 파스예요. 아픈 곳에 붙이세요.',uz:"Bu plastyr. Og'rigan joyga yopishtirib qo'ying.",side:'left'},
+      {who:'👷',name:'환자',ko:'알겠어요. 감사합니다!',uz:"Tushundim. Rahmat!",side:'right'},
+    ]
+  },
+  words:[
+    {ko:'처방전', syl:'처·방·전', rom:'cheo-bang-jeon', uz:'retsept (prescription)', ex:'약사에게 처방전을 줘요.', e:'📄'},
+    {ko:'식후', syl:'식·후', rom:'si-ku', uz:"ovqatdan keyin (after meal)", ex:'식후 30분에 드세요.', e:'🍽️'},
+    {ko:'알약', syl:'알·약', rom:'a-ryak', uz:'tabletka (pill/tablet)', ex:'알약을 물과 함께 드세요.', e:'💊'},
+    {ko:'붙이다', syl:'붙·이·다', rom:'bu-chi-da', uz:"yopishtirib qo'ymoq (to apply a patch)", ex:'파스를 아픈 곳에 붙이세요.', e:'🩹'},
+    {ko:'부작용', syl:'부·작·용', rom:'bu-ja-gyong', uz:"yon ta'sir (side effect)", ex:'이 약 부작용이 있어요?', e:'⚠️'},
+  ],
+  pattern:{
+    labelKo:'문형: 하루에 [횟수] 번, 식[전/후]에 드세요.',
+    labelUz:"Shakl: Kuniga [marta], ovqat[dan oldin/keyin] iching.",
+    template:'하루에 [___] 번, 식[전/후]에 드세요.',
+    desc:'약 복용 방법을 이해하거나 물을 때 · Dori qabul usulini tushunish yoki so\'rashda',
+    drills:[
+      {blank:'세', full:'하루에 세 번, 식후에 드세요.', uz:'Kuniga 3 marta, ovqatdan keyin iching.'},
+      {blank:'두', full:'하루에 두 번, 식전에 드세요.', uz:'Kuniga 2 marta, ovqatdan oldin iching.'},
+      {blank:'한', full:'하루에 한 번, 자기 전에 드세요.', uz:"Kuniga 1 marta, uxlashdan oldin iching."},
+      {blank:'파스를 아픈 곳에', full:'파스를 아픈 곳에 붙이세요.', uz:"Plastyrni og'rigan joyga yopishtirib qo'ying."},
+    ]
+  },
+  speak:[
+    {situation:'💊 약 복용법을 모르겠어요. 약사에게 물어봐요.', prompt:"'어떻게 먹어요?'를 써봐요.", phrase:'이 약 어떻게 먹어요? 하루에 몇 번이에요?', uz:"Bu dorini qanday qabul qilaman? Kuniga necha marta?"},
+    {situation:'🩹 파스를 어떻게 쓰는지 물어봐요.', prompt:'바르는지 붙이는지 물어봐요.', phrase:'이게 바르는 거예요, 아니면 붙이는 거예요?', uz:"Bu surtiladi yoki yopishtiriladi?"},
+    {situation:'⚠️ 약 부작용에 대해 물어봐요.', prompt:"'부작용'을 써봐요.", phrase:'이 약에 부작용이 있어요? 운전해도 괜찮아요?', uz:"Bu dorining yon ta'siri bormi? Mashina haydash mumkinmi?"},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"식후" 는 무슨 뜻이에요?', qu:'"Ovqatdan keyin" nima degani?', opts:["ovqatdan oldin (식전)",'ovqatdan keyin (after meal)',"uxlashdan oldin",'ertalab (아침에)'], ans:1},
+    {tag:'문형', q:'"하루에 세 번, 식후에 ___세요." 빈칸은?', qu:'"Kuniga 3 marta, ovqatdan keyin ___ing." Bo\'shliq?', opts:['가','드','해','써'], ans:1},
+    {tag:'어휘', q:'"붙이다" 는 무슨 뜻이에요?', qu:'"Yopishtirib qo\'ymoq" nima degani?', opts:["ichmoq (먹다)",'yopishtirib qo\'ymoq (to stick/apply)',"surtmoq (바르다)",'tashlamoq (버리다)'], ans:1},
+    {tag:'의사소통', q:'약을 잘못 복용하면 어떻게 될 수 있어요?', qu:"Dorini noto'g'ri qabul qilsa nima bo'lishi mumkin?", opts:['더 빨리 낫다','부작용이 생길 수 있어요','상관없어요','더 좋아요'], ans:1},
+  ]
 }
 ];
 
@@ -1527,7 +1910,7 @@ const STRINGS = {
     err_name:'이름을 입력해주세요', err_phone:'핸드폰 번호를 입력해주세요', err_code:'업체 코드를 입력해주세요',
     hero_title:'한국어로 안전하게 일해요',
     hero_sub:'매일 5분 · 오늘 배운 말을 내일 현장에서 써요',
-    lbl_curriculum:'📅 2주일 커리큘럼 (Day 1–14)',
+    lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'📊 나의 진행률',
     lbl_profile:'나의 학습 현황',
     steps:['목표','듣기','뜯어봐요','패턴드릴','말해봐요','퀴즈','완료'],
@@ -1546,7 +1929,7 @@ const STRINGS = {
     err_name:"Ismingizni kiriting", err_phone:"Telefon raqamini kiriting", err_code:"Korxona kodini kiriting",
     hero_title:"Koreys tilida xavfsiz ishlang",
     hero_sub:"Har kuni 5 daqiqa · O'rgangan gapni ertaga ish joyida ishlating",
-    lbl_curriculum:"📅 2 haftalik o'quv dasturi (1–14-kun)",
+    lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
     lbl_progress:'📊 Mening progressim',
     lbl_profile:"Mening o'quv holatim",
     steps:['Maqsad','Tinglang','Tahlil','Mashq','Gapiring','Test','Tugadi'],
@@ -1565,7 +1948,7 @@ const STRINGS = {
     err_name:'Vui lòng nhập họ tên', err_phone:'Vui lòng nhập số điện thoại', err_code:'Vui lòng nhập mã công ty',
     hero_title:'Làm việc an toàn bằng tiếng Hàn',
     hero_sub:'Mỗi ngày 5 phút · Dùng từ đã học ngay tại nơi làm việc ngày mai',
-    lbl_curriculum:'📅 Chương trình 2 tuần (Ngày 1–14)',
+    lbl_curriculum:'📅 Chương trình MVP 3 tuần (Ngày 1–21)',
     lbl_progress:'📊 Tiến độ của tôi',
     lbl_profile:'Tình trạng học tập của tôi',
     steps:['Mục tiêu','Nghe','Phân tích','Luyện tập','Nói','Kiểm tra','Xong'],
@@ -1584,7 +1967,7 @@ const STRINGS = {
     err_name:'नाम राख्नुस्', err_phone:'फोन नम्बर राख्नुस्', err_code:'कम्पनी कोड राख्नुस्',
     hero_title:'कोरियन भाषामा सुरक्षित काम गर्नुस्',
     hero_sub:'प्रतिदिन ५ मिनेट · आज सिकेको कुरा भोलि कामको ठाउँमा प्रयोग गर्नुस्',
-    lbl_curriculum:'📅 २ हप्ताको पाठ्यक्रम (दिन १–१४)',
+    lbl_curriculum:'📅 MVP ३ हप्ताको पाठ्यक्रम (दिन १–२१)',
     lbl_progress:'📊 मेरो प्रगति',
     lbl_profile:'मेरो अध्ययन अवस्था',
     steps:['लक्ष्य','सुन्नुस्','विश्लेषण','अभ्यास','बोल्नुस्','परीक्षा','सकियो'],
@@ -1603,7 +1986,7 @@ const STRINGS = {
     err_name:'Атыңызды енгізіңіз', err_phone:'Телефон нөмірін енгізіңіз', err_code:'Кәсіпорын кодын енгізіңіз',
     hero_title:'Корей тілінде қауіпсіз жұмыс жасаңыз',
     hero_sub:'Күн сайын 5 минут · Бүгін үйренгенді ертең жұмыста қолданыңыз',
-    lbl_curriculum:'📅 2 аптаның оқу бағдарламасы (1–14-күн)',
+    lbl_curriculum:'📅 MVP 3 аптаның оқу бағдарламасы (1–21-күн)',
     lbl_progress:'📊 Менің үлгерімім',
     lbl_profile:'Оқу жағдайым',
     steps:['Мақсат','Тыңдаңыз','Талдау','Жаттығу','Сөйлеңіз','Тест','Аяқталды'],
@@ -1622,7 +2005,7 @@ const STRINGS = {
     err_name:'Favor hatama ita-nia naran', err_phone:'Favor hatama númeru telefone', err_code:'Favor hatama kódigu kompañia',
     hero_title:"Servisu ho seguransa iha lian Korea",
     hero_sub:"Minutu 5 loroloron · Uza liafuan ne'ebé aprende ohin iha fatin servisu aban",
-    lbl_curriculum:'📅 Kuríkulu semana 2 (Loron 1–14)',
+    lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
     lbl_progress:"📊 Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
     steps:['Meta','Rona','Analiza','Prátika',"Ko'alia",'Teste','Remata'],
@@ -1641,7 +2024,7 @@ const STRINGS = {
     err_name:'Введите ваше имя', err_phone:'Введите номер телефона', err_code:'Введите код предприятия',
     hero_title:'Работайте безопасно на корейском языке',
     hero_sub:'Каждый день 5 минут · Используйте выученные слова завтра на работе',
-    lbl_curriculum:'📅 Учебная программа 2 недели (День 1–14)',
+    lbl_curriculum:'📅 Учебная программа MVP 3 недели (День 1–21)',
     lbl_progress:'📊 Мой прогресс',
     lbl_profile:'Мой статус обучения',
     steps:['Цель','Слушать','Разбор','Практика','Говорить','Тест','Готово'],
@@ -1660,7 +2043,7 @@ const STRINGS = {
     err_name:'Please enter your name', err_phone:'Please enter your phone number', err_code:'Please enter company code',
     hero_title:'Work safely in Korean',
     hero_sub:'Every day 5 minutes · Use today\'s words at work tomorrow',
-    lbl_curriculum:'📅 2-week curriculum (Day 1–14)',
+    lbl_curriculum:'📅 MVP 3-week curriculum (Day 1–21)',
     lbl_progress:'📊 My progress',
     lbl_profile:'My learning status',
     steps:['Goal','Listen','Break down','Pattern drill','Speak','Quiz','Done'],
@@ -2492,6 +2875,7 @@ function renderProfile(){
   // 주차별 완료 수
   const w1done = done.filter(d=>d<=7).length;
   const w2done = done.filter(d=>d>7&&d<=14).length;
+  const w3done = done.filter(d=>d>14&&d<=21).length;
 
   // 프로필 서브타이틀
   const sub = user?.type==='company'
@@ -2595,6 +2979,10 @@ function renderProfile(){
       <div class="wk-row" style="margin-top:10px">
         <div class="wk-label"><span>Week 2 — 화재·화학·응급처치</span><span>${w2done}/7</span></div>
         <div class="wk-bar"><div class="wk-fill w2" style="width:${Math.round(w2done/7*100)}%"></div></div>
+      </div>
+      <div class="wk-row" style="margin-top:10px">
+        <div class="wk-label"><span>Week 3 — 작업 지시 · 병원 한국어</span><span>${w3done}/7</span></div>
+        <div class="wk-bar"><div class="wk-fill w2" style="width:${Math.round(w3done/7*100)}%;background:linear-gradient(90deg,var(--orange),#f7c59f)"></div></div>
       </div>
     </div>
 
