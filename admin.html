@@ -145,6 +145,18 @@ tr:hover td{background:#fafbfc}
 .lesson-fill{height:100%;border-radius:4px;background:var(--blue-m)}
 .lesson-pct{font-size:12px;font-weight:700;color:var(--blue-m);width:38px;text-align:right;flex-shrink:0}
 
+/* ── VISA ── */
+.visa-row{display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);gap:12px}
+.visa-row:last-child{border-bottom:none}
+.visa-days{font-size:22px;font-weight:900;text-align:center;min-width:52px}
+.visa-days.red{color:var(--red)}.visa-days.orange{color:var(--orange)}.visa-days.ok{color:var(--green)}
+.visa-days small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.visa-chip{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.visa-chip.red{background:#fff0f0;color:var(--red-d)}
+.visa-chip.orange{background:#fff8e1;color:#92400e}
+.visa-chip.ok{background:#f0fff4;color:#1a7a3a}
+
 /* ── ALERT PANEL ── */
 .alert-row{display:flex;align-items:center;justify-content:space-between;
   padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
@@ -308,6 +320,11 @@ tr:hover td{background:#fafbfc}
       <div class="nav-item" data-panel="kpi" onclick="nav('kpi')">
         <span class="nav-icon">🎯</span><span class="nav-label">KPI 관리</span>
       </div>
+      <div class="nav-item" data-panel="visa" onclick="nav('visa')">
+        <span class="nav-icon">🪪</span><span class="nav-label">비자 관리</span>
+        <span id="visaBadge" style="margin-left:auto;background:var(--red);color:#fff;
+          border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;display:none"></span>
+      </div>
     </div>
 
     <!-- Main -->
@@ -400,6 +417,35 @@ tr:hover td{background:#fafbfc}
           </div>
           <div style="padding:0 18px 14px" id="alertList"></div>
         </div>
+      </div>
+
+      <!-- ── 비자 관리 ── -->
+      <div id="panel-visa" class="panel">
+        <div class="page-title">🪪 비자 관리</div>
+        <div class="page-sub">E-9·E-7·H-2 비자 만료일 추적 · 90일 전부터 갱신 알림 대상</div>
+
+        <div class="stat-row" id="visaStatRow"></div>
+
+        <div class="slabel">🚨 만료 임박 근로자 (90일 이내)</div>
+        <div class="tbl-wrap">
+          <div class="tbl-head">
+            <h3 id="visaAlertTitle">만료 임박</h3>
+            <div class="tbl-search">
+              <select id="visaFilter" onchange="renderVisa()">
+                <option value="90">90일 이내</option>
+                <option value="60">60일 이내</option>
+                <option value="30">30일 이내</option>
+              </select>
+              <button class="btn-export" style="background:var(--orange)" onclick="sendVisaAlerts()">
+                📢 갱신 알림 발송 (시뮬레이션)
+              </button>
+            </div>
+          </div>
+          <div style="padding:0 18px 14px" id="visaAlertList"></div>
+        </div>
+
+        <div class="slabel">📋 전체 비자 현황</div>
+        <div class="tbl-wrap" id="visaAllTbl"></div>
       </div>
 
       <!-- ── KPI 관리 ── -->
@@ -516,6 +562,7 @@ function nav(id){
   else if(id==='compliance') renderCompliance();
   else if(id==='alerts') renderAlerts();
   else if(id==='kpi') renderKPI();
+  else if(id==='visa') renderVisa();
 }
 
 // ══════════════════════
@@ -625,6 +672,31 @@ function renderOverview(){
   const badge = document.getElementById('alertBadge');
   if(missing>0){ badge.textContent=missing; badge.style.display=''; }
   else badge.style.display='none';
+
+  // 비자 뱃지 업데이트
+  const visaUrgent = users.filter(u=>{ const d=getVisaDays(u); return d!==null&&d<=30; }).length;
+  const vb=document.getElementById('visaBadge');
+  if(vb){ if(visaUrgent>0){vb.textContent=visaUrgent;vb.style.display='';}else vb.style.display='none'; }
+
+  // 개요에 비자 요약 카드 추가
+  const v90=users.filter(u=>{ const d=getVisaDays(u); return d!==null&&d<=90&&d>0; }).length;
+  const vExp=users.filter(u=>{ const d=getVisaDays(u); return d!==null&&d<=0; }).length;
+  if(visaUrgent>0||vExp>0){
+    const existing=document.getElementById('visaSummaryCard');
+    if(!existing){
+      const card=document.createElement('div');
+      card.id='visaSummaryCard';
+      card.style.cssText='background:#fff0f0;border:1.5px solid var(--red);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;cursor:pointer';
+      card.innerHTML=`<span style="font-size:24px">🪪</span>
+        <div style="flex:1">
+          <div style="font-weight:800;font-size:13px;color:var(--red-d)">비자 만료 임박 ${visaUrgent}명 · 만료됨 ${vExp}명</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">비자 관리 패널에서 확인 및 알림 발송</div>
+        </div>
+        <span style="color:var(--red);font-weight:700;font-size:13px" onclick="nav('visa')">확인 →</span>`;
+      const statRow=document.getElementById('statRow');
+      if(statRow) statRow.insertAdjacentElement('afterend',card);
+    }
+  }
 }
 
 // ══════════════════════
@@ -929,6 +1001,120 @@ function exportCSV(){
 
 function exportCompliance(){
   window.print();
+}
+
+// ══════════════════════
+// VISA
+// ══════════════════════
+function getVisaDays(u){
+  if(!u.visaExpiry) return null;
+  return Math.ceil((new Date(u.visaExpiry)-new Date())/(1000*60*60*24));
+}
+function visaCls(d){ return d===null?'gray':d<=30?'red':d<=90?'orange':'ok'; }
+function visaLabel(d){
+  if(d===null) return '<span class="badge gray">미등록</span>';
+  if(d<=0)  return '<span class="badge red">⚠️ 만료됨</span>';
+  if(d<=30) return `<span class="badge red">🚨 D-${d}</span>`;
+  if(d<=90) return `<span class="badge yellow">⚠️ D-${d}</span>`;
+  return `<span class="badge green">✅ D-${d}</span>`;
+}
+
+function renderVisa(){
+  const users=getAllUsers();
+  const threshold=parseInt(document.getElementById('visaFilter')?.value||'90');
+  const now=new Date();
+
+  // Stats
+  const withVisa=users.filter(u=>u.visaExpiry);
+  const expired=withVisa.filter(u=>getVisaDays(u)<=0).length;
+  const urgent=withVisa.filter(u=>{ const d=getVisaDays(u); return d>0&&d<=30; }).length;
+  const soon=withVisa.filter(u=>{ const d=getVisaDays(u); return d>30&&d<=90; }).length;
+  const safe=withVisa.filter(u=>getVisaDays(u)>90).length;
+  const noVisa=users.filter(u=>!u.visaExpiry).length;
+
+  document.getElementById('visaStatRow').innerHTML=`
+    <div class="stat-c red"><div class="stat-lbl">만료됨</div>
+      <div class="stat-val">${expired}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">즉시 조치 필요</div></div>
+    <div class="stat-c orange"><div class="stat-lbl">30일 이내 만료</div>
+      <div class="stat-val">${urgent}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">긴급 갱신 필요</div></div>
+    <div class="stat-c blue"><div class="stat-lbl">90일 이내 만료</div>
+      <div class="stat-val">${soon}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">갱신 준비 시작</div></div>
+    <div class="stat-c green"><div class="stat-lbl">비자 미등록</div>
+      <div class="stat-val">${noVisa}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">만료일 입력 필요</div></div>`;
+
+  // 뱃지
+  const alertCount=expired+urgent;
+  const vb=document.getElementById('visaBadge');
+  if(vb){ if(alertCount>0){vb.textContent=alertCount;vb.style.display='';}else vb.style.display='none'; }
+
+  // 임박 목록
+  const targets=users.filter(u=>{
+    const d=getVisaDays(u);
+    return d!==null && d<=threshold;
+  }).sort((a,b)=>getVisaDays(a)-getVisaDays(b));
+
+  document.getElementById('visaAlertTitle').textContent=
+    `${threshold}일 이내 만료 근로자 (${targets.length}명)`;
+
+  const alertRows=targets.map(u=>{
+    const d=getVisaDays(u);
+    const cls=visaCls(d);
+    return `<div class="visa-row">
+      <div class="alert-info">
+        <div class="alert-name">${u.name}
+          <span class="visa-chip ${cls}" style="margin-left:6px">${u.visaType||'비자'}</span>
+        </div>
+        <div class="alert-meta">${u.type==='company'?'🏭 '+u.companyCode:' 👤 개인'}
+          · ${u.phone||'번호 미등록'} · 만료일: ${u.visaExpiry}</div>
+      </div>
+      <div class="visa-days ${cls}">${d<=0?'만료':d}
+        <small>${d<=0?'':d+'일 남음'}</small>
+      </div>
+      <button class="btn-send" id="vbtn-${u.id}"
+        onclick="simVisaAlert('${u.id}','${u.name}','${u.phone||''}','${u.visaExpiry||''}')">
+        📲 갱신 알림
+      </button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('visaAlertList').innerHTML=alertRows||
+    '<div style="padding:20px;text-align:center;color:var(--muted)">✅ 만료 임박 근로자가 없어요!</div>';
+
+  // 전체 목록
+  const allRows=users.map(u=>{
+    const d=getVisaDays(u);
+    return `<tr>
+      <td class="td-name">${u.name}<small>${u.type==='company'?'🏭 '+u.companyCode:'👤 개인'}</small></td>
+      <td>${u.visaType?`<span class="badge blue">${u.visaType}</span>`:'<span class="badge gray">미등록</span>'}</td>
+      <td>${u.visaExpiry||'<span style="color:var(--muted)">-</span>'}</td>
+      <td>${visaLabel(d)}</td>
+      <td style="font-size:11px;color:var(--muted)">${u.phone||'-'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('visaAllTbl').innerHTML=`
+    <div class="tbl-head"><h3>전체 근로자 비자 현황</h3></div>
+    <table><thead><tr>
+      <th>이름/업체</th><th>비자 종류</th><th>만료일</th><th>상태</th><th>연락처</th>
+    </tr></thead><tbody>
+      ${allRows||'<tr><td colspan="5" class="tbl-empty">등록된 근로자가 없어요</td></tr>'}
+    </tbody></table>`;
+}
+
+function simVisaAlert(uid,name,phone,expiry){
+  const btn=document.getElementById('vbtn-'+uid);
+  if(btn){btn.textContent='✅ 발송완료';btn.classList.add('sent');btn.disabled=true;}
+  alert(`📲 [시뮬레이션]\n${name} (${phone||'번호없음'})에게\n비자 갱신 알림을 발송했어요.\n만료일: ${expiry}\n\n실제 발송은 Supabase + Solapi 연동 후 활성화됩니다.`);
+}
+function sendVisaAlerts(){
+  const threshold=parseInt(document.getElementById('visaFilter').value||'90');
+  const targets=getAllUsers().filter(u=>{ const d=getVisaDays(u); return d!==null&&d<=threshold; });
+  if(!targets.length){alert('발송 대상이 없어요.');return;}
+  targets.forEach(u=>simVisaAlert(u.id,u.name,u.phone||'',u.visaExpiry||''));
 }
 
 // ══════════════════════

@@ -221,6 +221,25 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 }
 .btn-hear:hover{background:var(--red-d)}
 .speak-tip{font-size:11px;color:var(--muted);line-height:1.6}
+.btn-mic{display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:13px;background:var(--blue);color:#fff;
+  border:none;border-radius:11px;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:8px;transition:all .2s}
+.btn-mic:hover{background:#16304d}
+.btn-mic.recording{background:var(--red);animation:pulse .8s ease infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.65}}
+.mic-result{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;border:2px solid}
+.mic-result.pass{background:#f0fff4;border-color:var(--green)}
+.mic-result.warn{background:#fff8e1;border-color:var(--orange)}
+.mic-result.fail{background:#fff0f0;border-color:var(--red)}
+.mic-pct{font-size:40px;font-weight:900;line-height:1;margin-bottom:4px}
+.mic-msg{font-size:13px;font-weight:700;margin-bottom:6px}
+.mic-heard{font-size:11px;color:var(--muted)}
+.visa-banner{border-radius:12px;padding:11px 14px;
+  display:flex;align-items:center;gap:10px;margin:0 16px 12px;font-size:12px}
+.visa-banner.red{background:#fff0f0;border:1px solid var(--red);color:var(--red-d)}
+.visa-banner.orange{background:#fff8e1;border:1px solid var(--orange);color:#92400e}
+.visa-banner.blue{background:#E8F4FD;border:1px solid var(--blue-m);color:var(--blue)}
 
 /* ── Quiz ── */
 .qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
@@ -471,6 +490,18 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         <div class="field-hint" data-i18n="hint_phone">📲 카카오톡 또는 문자로 공부 알림을 보내드려요</div>
         <label data-i18n="lbl_notif">알람 시간</label>
         <input type="time" id="notif-time" value="20:00">
+        <label>비자 종류 / Visa type</label>
+        <select id="ind-visa-type" style="width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff">
+          <option value="E-9">E-9 비전문취업 (고용허가제)</option>
+          <option value="E-7">E-7 특정활동</option>
+          <option value="H-2">H-2 방문취업</option>
+          <option value="F-4">F-4 재외동포</option>
+          <option value="기타">기타 / Other</option>
+        </select>
+        <label>비자 만료일 / Visa expiry date</label>
+        <input type="date" id="ind-visa-expiry"
+          style="width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff">
+        <div class="field-hint">📅 만료 90일 전부터 갱신 알림을 보내드려요</div>
         <label data-i18n="lbl_lang">언어 선택</label>
         <div class="lang-pick">
           <button id="lp-ko" class="on" onclick="pickLang('ko')">🇰🇷 한국어</button>
@@ -492,6 +523,18 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         <div class="field-hint" data-i18n="hint_phone">📲 카카오톡 또는 문자로 공부 알림을 보내드려요</div>
         <label data-i18n="lbl_notif">알람 시간</label>
         <input type="time" id="notif-time2" value="20:00">
+        <label>비자 종류 / Visa type</label>
+        <select id="co-visa-type" style="width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff">
+          <option value="E-9">E-9 비전문취업 (고용허가제)</option>
+          <option value="E-7">E-7 특정활동</option>
+          <option value="H-2">H-2 방문취업</option>
+          <option value="F-4">F-4 재외동포</option>
+          <option value="기타">기타 / Other</option>
+        </select>
+        <label>비자 만료일 / Visa expiry date</label>
+        <input type="date" id="co-visa-expiry"
+          style="width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff">
+        <div class="field-hint">📅 만료 90일 전부터 갱신 알림을 보내드려요</div>
         <label data-i18n="lbl_emp">직원 번호 (선택)</label>
         <input type="text" id="co-num" placeholder="예: EMP-001" maxlength="20">
         <label data-i18n="lbl_lang">언어 선택</label>
@@ -1593,20 +1636,142 @@ function toggleLang(){
 }
 
 // ════════════════════════
-// SPEECH
+// SPEECH — 상황별 TTS
 // ════════════════════════
-function say(text, cb){
+const TTS_CTX = {
+  dialogue: {rate:0.88, pitch:1.06},  // 대화체: 자연스러운 회화 속도
+  word:     {rate:0.68, pitch:0.98},  // 어휘:   또렷하고 천천히
+  drill:    {rate:0.84, pitch:1.03},  // 패턴:   자연스러운 연습
+  speak:    {rate:0.92, pitch:1.05},  // 말하기: 현장 속도
+  default:  {rate:0.82, pitch:1.00},
+};
+
+function say(text, cb, ctx='default'){
   if(!window.speechSynthesis){cb&&cb();return}
   window.speechSynthesis.cancel();
+  const {rate,pitch} = TTS_CTX[ctx]||TTS_CTX.default;
   const u = new SpeechSynthesisUtterance(text);
-  u.lang='ko-KR'; u.rate=0.82; u.pitch=1;
+  u.lang='ko-KR'; u.rate=rate; u.pitch=pitch;
   if(cb) u.onend=cb;
   setTimeout(()=>window.speechSynthesis.speak(u), 60);
 }
 
 // ════════════════════════
+// SPEECH RECOGNITION — 발음 인식
+// ════════════════════════
+function levenshtein(a,b){
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+function calcSimilarity(spoken,target){
+  // 공백·구두점 제거 후 비교
+  const clean=s=>s.replace(/[\s.,!?。、]/g,'').toLowerCase();
+  const a=clean(spoken), b=clean(target);
+  if(!a||!b) return 0;
+  if(a===b) return 1;
+  const dist=levenshtein(a,b);
+  return Math.max(0,(Math.max(a.length,b.length)-dist)/Math.max(a.length,b.length));
+}
+
+let _recInstance=null;
+function startMicRec(phrase, attempt){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    document.getElementById('mic-result-area').innerHTML=
+      `<div class="mic-result warn"><div class="mic-msg">⚠️ 이 브라우저는 음성인식을 지원하지 않아요</div>
+       <div class="mic-heard">Chrome 또는 Safari를 사용해주세요</div></div>`;
+    document.getElementById('mic-skip-btn').style.display='';
+    return;
+  }
+  if(_recInstance){try{_recInstance.stop();}catch(e){}}
+  const rec=new SR();
+  _recInstance=rec;
+  rec.lang='ko-KR'; rec.interimResults=false; rec.maxAlternatives=5;
+
+  const micBtn=document.getElementById('mic-btn');
+  const wav=document.getElementById('wav');
+  if(micBtn){micBtn.textContent='🔴 듣는 중... (말하세요)'; micBtn.classList.add('recording');}
+  if(wav) wav.style.display='flex';
+
+  rec.onresult=e=>{
+    if(micBtn){micBtn.textContent='🎤 다시 말하기'; micBtn.classList.remove('recording');}
+    if(wav) wav.style.display='none';
+    let best=0, bestText='';
+    for(let i=0;i<e.results[0].length;i++){
+      const spoken=e.results[0][i].transcript;
+      const sim=calcSimilarity(spoken,phrase);
+      if(sim>best){best=sim;bestText=spoken;}
+    }
+    showMicResult(best,bestText,phrase,attempt);
+  };
+  rec.onerror=err=>{
+    if(micBtn){micBtn.textContent='🎤 다시 말하기'; micBtn.classList.remove('recording');}
+    if(wav) wav.style.display='none';
+    const msg=err.error==='not-allowed'?'마이크 권한을 허용해주세요':'인식 실패 — 다시 해봐요';
+    document.getElementById('mic-result-area').innerHTML=
+      `<div class="mic-result fail"><div class="mic-msg">⚠️ ${msg}</div></div>`;
+  };
+  rec.start();
+}
+
+function showMicResult(sim, spoken, phrase, attempt){
+  const pct=Math.round(sim*100);
+  const pass=pct>=80;
+  const cls=pct>=80?'pass':pct>=55?'warn':'fail';
+  const emoji=pct>=80?'🎉':pct>=55?'😊':'🔄';
+  const msg=pct>=80?'완벽해요! 통과! 🎉':pct>=55?'거의 다 왔어요! 다시 해봐요':'다시 한번 천천히 해봐요';
+  const area=document.getElementById('mic-result-area');
+  const skipBtn=document.getElementById('mic-skip-btn');
+  const nextBtn=document.getElementById('mic-next-btn');
+  area.innerHTML=`
+    <div class="mic-result ${cls}">
+      <div class="mic-pct" style="color:${pct>=80?'var(--green)':pct>=55?'var(--orange)':'var(--red)'}">${pct}%</div>
+      <div class="mic-msg">${emoji} ${msg}</div>
+      ${spoken?`<div class="mic-heard">들린 내용: "${spoken}"</div>`:''}
+    </div>`;
+  if(pass){
+    if(nextBtn) nextBtn.style.display='';
+    const micBtn=document.getElementById('mic-btn');
+    if(micBtn) micBtn.style.display='none';
+  } else {
+    if(attempt>=2 && skipBtn) skipBtn.style.display='';
+  }
+}
+
+// ════════════════════════
 // HOME
 // ════════════════════════
+function getVisaDays(user){
+  if(!user?.visaExpiry) return null;
+  return Math.ceil((new Date(user.visaExpiry)-new Date())/(1000*60*60*24));
+}
+
+function renderVisaBanner(){
+  const u=getUser(); if(!u) return;
+  const days=getVisaDays(u); if(days===null) return;
+  const home=document.getElementById('homeScr');
+  let old=document.getElementById('visaBannerHome');
+  if(old) old.remove();
+  if(days>90) return;
+  const cls=days<=30?'red':days<=90?'orange':'blue';
+  const icon=days<=30?'🚨':days<=90?'⚠️':'📋';
+  const msg=days<=0
+    ?'비자가 만료됐어요! 즉시 출입국사무소 방문 필요'
+    :days<=30
+      ?`비자 만료 D-${days} — 즉시 갱신 신청하세요!`
+      :`비자 만료 D-${days} — 갱신 준비를 시작하세요 (90일 전 권장)`;
+  const el=document.createElement('div');
+  el.id='visaBannerHome';
+  el.className=`visa-banner ${cls}`;
+  el.innerHTML=`<span style="font-size:18px">${icon}</span>
+    <div><strong>${u.visaType||'비자'} 만료일: ${u.visaExpiry}</strong><br>${msg}</div>`;
+  const heroDiv=home.querySelector('.hero');
+  if(heroDiv) heroDiv.insertAdjacentElement('afterend',el);
+}
+
 function renderHome(){
   const g = document.getElementById('dayGrid');
   g.innerHTML='';
@@ -1628,6 +1793,7 @@ function renderHome(){
   const pct = Math.round(ST.done.length/CUR.length*100);
   document.getElementById('pf').style.width=pct+'%';
   document.getElementById('pt').textContent=`${ST.done.length} / ${CUR.length} 완료 (${pct}%)`;
+  renderVisaBanner();
 }
 
 // ════════════════════════
@@ -1720,7 +1886,7 @@ function rListen(d,el,uz){
     <button class="btn gray" onclick="next()">다음 → 단어 / Davom: So'zlar</button>
   `;
 }
-function sayDialog(text){say(text);}
+function sayDialog(text){say(text,null,'dialogue');}
 
 // ── Step 2: 뜯어봐요 (Word breakdown) ──
 function rWords(d,el,uz){
@@ -1748,7 +1914,7 @@ function rWords(d,el,uz){
 function playW(i,text){
   document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
   const el=document.getElementById('wc'+i); if(el) el.classList.add('playing');
-  say(text,()=>{const e=document.getElementById('wc'+i);if(e)e.classList.remove('playing')});
+  say(text,()=>{const e=document.getElementById('wc'+i);if(e)e.classList.remove('playing')},'word');
 }
 
 // ── Step 3: 패턴 드릴 ──
@@ -1796,10 +1962,10 @@ function rDrill(d,el,uz){
 function playDrill(i,text){
   document.querySelectorAll('.drill-item').forEach(x=>x.classList.remove('playing'));
   const el=document.getElementById('di'+i); if(el)el.classList.add('playing');
-  say(text,()=>{const e=document.getElementById('di'+i);if(e)e.classList.remove('playing')});
+  say(text,()=>{const e=document.getElementById('di'+i);if(e)e.classList.remove('playing')},'drill');
 }
 
-// ── Step 4: 말해봐요 (Speak) ──
+// ── Step 4: 말해봐요 (Speak + 발음 인식) ──
 function rSpeak(d,el,uz){
   const si=ST.speakIdx;
   if(si>=d.speak.length){
@@ -1807,40 +1973,64 @@ function rSpeak(d,el,uz){
       <div class="speak-card" style="padding:28px">
         <div style="font-size:52px;margin-bottom:12px">🗣️✅</div>
         <div class="speak-phrase">말하기 완료!</div>
-        <div class="speak-prompt">Gapirish tugadi! Ajoyib!</div>
+        <div class="speak-prompt" style="font-size:13px;color:var(--muted)">Gapirish tugadi! Ajoyib!</div>
       </div>
-      <button class="btn red" onclick="ST.quizIdx=0;ST.quizScore=0;next()">✏️ 확인 테스트 → / Test</button>
+      <button class="btn red" onclick="ST.quizIdx=0;ST.quizScore=0;next()">✏️ 확인 테스트 →</button>
     `;
     return;
   }
   const sp=d.speak[si];
+  const phraseJson=JSON.stringify(sp.phrase);
   el.innerHTML=`
-    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">상황 ${si+1} / ${d.speak.length} · Vaziyat ${si+1} / ${d.speak.length}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">
+      상황 ${si+1} / ${d.speak.length}
+    </div>
     <div class="speak-card">
       <div class="speak-situation">${sp.situation}</div>
-      <div class="speak-prompt">${uz?'Nima deysiz? / ':''}${sp.prompt}</div>
+      <div class="speak-prompt">${sp.prompt}</div>
       <div class="speak-phrase">${sp.phrase}</div>
+      ${sp.uz?`<div style="font-size:12px;color:var(--muted);margin-bottom:10px;font-style:italic">${sp.uz}</div>`:''}
+
       <div class="wave" id="wav" style="display:none">
         <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
         <div class="wbar"></div><div class="wbar"></div>
       </div>
-      <button class="btn-hear" onclick="hearSpeak(${JSON.stringify(sp.phrase)})">
-        🔊 한국어 듣기 / Koreycha eshiting
+
+      <!-- ① 듣기 -->
+      <button class="btn-hear" onclick="hearSpeak(${phraseJson})">
+        🔊 원어민 발음 듣기
       </button>
-      <div class="speak-tip">
-        1️⃣ 듣기 → 2️⃣ 따라 말하기 → 3️⃣ 다음으로<br>
-        <small>1. Eshiting → 2. Takrorlang → 3. Davom eting</small>
+
+      <!-- ② 발음 인식 -->
+      <button class="btn-mic" id="mic-btn" onclick="startMicRec(${phraseJson},0)">
+        🎤 따라 말해봐요 (80% 이상 통과)
+      </button>
+
+      <!-- 결과 표시 영역 -->
+      <div id="mic-result-area"></div>
+
+      <div class="speak-tip" style="margin-top:8px">
+        1️⃣ 원어민 발음 듣기 → 2️⃣ 마이크 버튼 → 3️⃣ 80% 이상이면 통과!<br>
+        <small style="opacity:.7">마이크 권한 허용이 필요해요 · Chrome / Safari 권장</small>
       </div>
     </div>
-    <button class="btn red" onclick="ST.speakIdx++;renderLesson()">
-      ${si<d.speak.length-1?'다음 상황 → / Keyingi vaziyat':'테스트로 → / Testga o\'tish'}
+
+    <!-- 통과 시 표시 (처음엔 숨김) -->
+    <button class="btn red" id="mic-next-btn" style="display:none"
+      onclick="ST.speakIdx++;renderLesson()">
+      ✅ 통과! ${si<d.speak.length-1?'다음 상황 →':'테스트로 →'}
     </button>
-    ${si>0?`<button class="btn gray" onclick="ST.speakIdx--;renderLesson()">← 이전 / Oldingi</button>`:''}
+    <!-- 3회 실패 시 건너뛰기 -->
+    <button class="btn gray" id="mic-skip-btn" style="display:none"
+      onclick="ST.speakIdx++;renderLesson()">
+      ⏭ 건너뛰기 (다음에 다시 도전해요)
+    </button>
+    ${si>0?`<button class="btn gray" style="margin-top:6px" onclick="ST.speakIdx--;renderLesson()">← 이전</button>`:''}
   `;
 }
 function hearSpeak(text){
   const w=document.getElementById('wav'); if(w)w.style.display='flex';
-  say(text,()=>{const ww=document.getElementById('wav');if(ww)ww.style.display='none'});
+  say(text,()=>{const ww=document.getElementById('wav');if(ww)ww.style.display='none'},'speak');
 }
 
 // ── Step 5: 퀴즈 ──
@@ -2035,25 +2225,31 @@ function doSignup(){
     const name = document.getElementById('ind-name').value.trim();
     const phone = document.getElementById('ind-phone').value.trim();
     const notifTime = document.getElementById('notif-time').value;
+    const visaType = document.getElementById('ind-visa-type').value;
+    const visaExpiry = document.getElementById('ind-visa-expiry').value;
     if(!name){ alert(t('err_name')); return; }
     if(!phone){ alert(t('err_phone')); return; }
     user = { id:genId(), username:'user_'+Date.now().toString(36), password:null,
       name, phone, lang:_authLang, type:'individual',
       companyCode:null, companyName:null, employeeNum:null,
-      notifTime, registeredAt:new Date().toISOString() };
+      notifTime, visaType, visaExpiry:visaExpiry||null,
+      registeredAt:new Date().toISOString() };
   } else {
     const code = document.getElementById('co-code').value.trim().toUpperCase();
     const name = document.getElementById('co-name').value.trim();
     const phone = document.getElementById('co-phone').value.trim();
     const num = document.getElementById('co-num').value.trim();
     const notifTime = document.getElementById('notif-time2').value;
+    const visaType = document.getElementById('co-visa-type').value;
+    const visaExpiry = document.getElementById('co-visa-expiry').value;
     if(!code){ alert(t('err_code')); return; }
     if(!name){ alert(t('err_name')); return; }
     if(!phone){ alert(t('err_phone')); return; }
     user = { id:genId(), username:'emp_'+Date.now().toString(36), password:null,
       name, phone, lang:_authLang2, type:'company',
       companyCode:code, companyName:null, employeeNum:num||null,
-      notifTime, registeredAt:new Date().toISOString() };
+      notifTime, visaType, visaExpiry:visaExpiry||null,
+      registeredAt:new Date().toISOString() };
   }
   const users = getAllUsers();
   users.push(user);
@@ -2208,6 +2404,33 @@ function renderProfile(){
     ? `📲 매일 ${user.notifTime} 카카오/문자 알림 예정`
     : '';
 
+  // 비자 D-day 카드
+  const visaDays = getVisaDays(user);
+  let visaCardHTML = '';
+  if(user?.visaExpiry){
+    const dCls = visaDays<=0?'red':visaDays<=30?'red':visaDays<=90?'orange':'blue';
+    const dIcon = visaDays<=30?'🚨':visaDays<=90?'⚠️':'✅';
+    const dMsg = visaDays<=0?'만료됨 — 즉시 출입국사무소 방문'
+      :visaDays<=30?`D-${visaDays} — 즉시 갱신 신청하세요!`
+      :visaDays<=90?`D-${visaDays} — 갱신 준비를 시작하세요`
+      :`D-${visaDays} — 여유 있어요 (90일 전부터 신청 가능)`;
+    visaCardHTML = `
+    <div style="background:var(--card);border-radius:var(--r);padding:14px;border:1px solid var(--border);margin-bottom:14px">
+      <h3 style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">🪪 비자 현황</h3>
+      <div class="visa-banner ${dCls}" style="margin:0;border-radius:10px">
+        <span style="font-size:22px">${dIcon}</span>
+        <div>
+          <div style="font-weight:800;font-size:13px">${user.visaType||'비자'} · 만료일 ${user.visaExpiry}</div>
+          <div style="font-size:12px;margin-top:2px">${dMsg}</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6">
+        💡 E-9 비자 연장 신청: 만료 3개월 전부터 가능<br>
+        📞 출입국·외국인청 외국인 종합안내: <strong>1345</strong>
+      </div>
+    </div>`;
+  }
+
   // 최근 세션 5개
   const recentHTML = sessions.slice(0,8).map(s=>{
     const cls = s.pct>=80?'good':s.pct>=60?'mid':'low';
@@ -2279,6 +2502,8 @@ function renderProfile(){
       <h3>🏆 성취 뱃지</h3>
       <div style="margin-top:2px">${badgeHTML}</div>
     </div>
+
+    ${visaCardHTML}
 
     <div class="session-list">
       <h3>📅 최근 학습 기록</h3>
