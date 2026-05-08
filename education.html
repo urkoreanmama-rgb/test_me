@@ -420,6 +420,78 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
 .install-banner .ib-close{background:none;border:none;color:rgba(255,255,255,.7);
   font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
+
+/* ═══ GAME SCREEN ═══ */
+.game-hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
+  border-radius:var(--r);padding:18px;color:#fff;text-align:center;margin:16px 16px 4px}
+.game-hero .gh-e{font-size:40px;margin-bottom:6px}
+.game-hero h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.game-hero p{font-size:11px;opacity:.8;line-height:1.5}
+
+.game-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px 16px}
+.gmode-card{background:var(--card);border-radius:var(--r);border:2px solid var(--border);
+  padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:6px}
+.gmode-card:hover{border-color:var(--blue-m);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
+.gmode-card .gmc-icon{font-size:32px}
+.gmode-card .gmc-name{font-size:12px;font-weight:800;color:var(--blue);line-height:1.3}
+.gmode-card .gmc-desc{font-size:10px;color:var(--muted);line-height:1.4}
+.gmode-card.m1{border-top:4px solid var(--blue-m)}
+.gmode-card.m2{border-top:4px solid var(--green)}
+.gmode-card.m3{border-top:4px solid var(--orange)}
+.gmode-card.m4{border-top:4px solid var(--red)}
+
+.gq-wrap{padding:14px 16px}
+.gpbar-wrap{margin-bottom:14px}
+.gpbar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.gpbar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.gpbar-fill{height:100%;background:linear-gradient(90deg,var(--blue-m),var(--blue));border-radius:3px;transition:width .4s}
+
+.gq-card{border-radius:var(--r);padding:22px 16px;
+  text-align:center;margin-bottom:14px;min-height:150px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,var(--blue),var(--blue-m));color:#fff}
+.gq-mode-badge{font-size:10px;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
+.gq-emoji{font-size:80px;line-height:1}
+.gq-text{font-size:18px;font-weight:800;line-height:1.4}
+.gq-sub{font-size:12px;opacity:.75;line-height:1.4}
+.gq-play-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);
+  color:#fff;border-radius:30px;padding:8px 22px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:background .2s}
+.gq-play-btn:hover{background:rgba(255,255,255,.35)}
+
+.gq-opts{display:grid;gap:8px;margin-bottom:12px}
+.gq-opts.grid2{grid-template-columns:1fr 1fr}
+.gopt{padding:14px 10px;border-radius:var(--r);border:2px solid var(--border);
+  cursor:pointer;font-size:14px;font-weight:700;transition:all .15s;
+  text-align:center;background:var(--card);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:70px;gap:4px;line-height:1.3}
+.gopt:hover:not(.off){border-color:var(--blue-m);background:#f0f7ff;transform:scale(1.02)}
+.gopt.ok{border-color:var(--green)!important;background:#f0fff4!important;color:#1a7a3a}
+.gopt.no{border-color:var(--red)!important;background:#fff0f0!important;color:var(--red-d)}
+.gopt.off{cursor:not-allowed}
+.gopt .go-e{font-size:40px;display:block}
+.gopt .go-ko{font-size:13px}
+.gopt .go-native{font-size:10px;color:var(--muted);font-weight:400}
+
+.gq-fb{display:none;border-radius:10px;padding:11px 14px;text-align:center;
+  font-size:13px;font-weight:700;margin-bottom:8px;border:2px solid}
+.gq-fb.ok{background:#f0fff4;color:#1a7a3a;border-color:var(--green)}
+.gq-fb.no{background:#fff0f0;color:var(--red-d);border-color:var(--red)}
+
+.gr-card{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;margin:16px}
+.gr-emoji{font-size:64px;margin-bottom:8px}
+.gr-score{font-size:56px;font-weight:900;line-height:1;margin-bottom:6px}
+.gr-msg{font-size:18px;font-weight:800;margin-bottom:4px}
+.gr-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+.gr-mode-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
+.gr-chip{display:inline-flex;align-items:center;gap:5px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--muted)}
+.gr-chip.active{background:#E8F4FD;border-color:var(--blue-m);color:var(--blue)}
+
+.game-btn-row{display:flex;flex-direction:column;gap:8px;padding:0 16px 20px}
 </style>
 </head>
 <body>
@@ -571,6 +643,21 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
       <div class="ptxt" id="pt">0 / 7</div>
     </div>
+
+    <div class="slabel">🎮 단어 게임</div>
+    <div style="background:linear-gradient(135deg,#1D3557,#457B9D);border-radius:var(--r);
+      padding:16px;color:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;
+      margin-bottom:14px;transition:opacity .2s" onclick="goGame()" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+      <div style="font-size:44px;flex-shrink:0">🃏</div>
+      <div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">단어 카드 게임으로 연습!</div>
+        <div style="font-size:11px;opacity:.8;line-height:1.5">
+          그림+소리 · 그림+한국어 · 자국어+한국어 · 멀티모달<br>
+          <span style="opacity:.65">4가지 교육학 기반 게임 모드</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;font-size:20px;flex-shrink:0">▶</div>
+    </div>
   </div>
 </div>
 
@@ -584,6 +671,18 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     </div>
   </div>
   <div class="prof" id="profContent"></div>
+</div>
+
+<!-- GAME -->
+<div id="gameScr" class="scr">
+  <div class="lhdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="lhdr-info">
+      <h2 id="gameScrTitle">🎮 단어 게임</h2>
+      <p id="gameScrSub">단어를 재미있게 연습해봐요</p>
+    </div>
+  </div>
+  <div id="gameContent"></div>
 </div>
 
 <!-- LESSON -->
@@ -1814,6 +1913,7 @@ function goHome(){
   ST.dayIdx=null;
   document.getElementById('lessonScr').classList.remove('on');
   document.getElementById('profileScr').classList.remove('on');
+  document.getElementById('gameScr').classList.remove('on');
   document.getElementById('homeScr').classList.add('on');
   renderHome();
 }
@@ -2372,7 +2472,7 @@ function getStreak(){
 function goProfile(){
   window.speechSynthesis&&window.speechSynthesis.cancel();
   ST.dayIdx=null;
-  ['homeScr','lessonScr'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  ['homeScr','lessonScr','gameScr'].forEach(id=>document.getElementById(id).classList.remove('on'));
   document.getElementById('profileScr').classList.add('on');
   renderProfile();
 }
@@ -2537,6 +2637,263 @@ function doLogout(){
 // ════════════════════════════════════
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+// ════════════════════════════════════
+// WORD CARD GAME — 언어교육학 기반 4모드
+// ════════════════════════════════════
+const GAME_MODES = [
+  { id:1, icon:'🔊', name:'그림 + 소리', nameEn:'Picture & Sound',
+    desc:'소리를 듣고 그림을 골라요 (TPR)', color:'var(--blue-m)' },
+  { id:2, icon:'🖼️', name:'그림 + 한국어', nameEn:'Picture → Korean',
+    desc:'그림을 보고 한국어 단어를 골라요', color:'var(--green)' },
+  { id:3, icon:'🌐', name:'자국어 + 한국어', nameEn:'Native → Korean',
+    desc:'자국어를 보고 한국어를 골라요 (번역)', color:'var(--orange)' },
+  { id:4, icon:'🎯', name:'멀티모달', nameEn:'Full Multimodal',
+    desc:'자국어 + 소리로 한국어를 골라요', color:'var(--red)' },
+];
+
+const GS = { mode:null, qs:[], qIdx:0, score:0, answered:false };
+
+function buildGameWords(){
+  return CUR.flatMap(d => d.words.map(w => ({...w, day:d.day, dayIcon:d.icon})));
+}
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+function buildGameQs(mode, n=10){
+  const all = buildGameWords();
+  const pool = shuffle(all).slice(0, Math.min(n, all.length));
+  return pool.map(w => {
+    const others = shuffle(all.filter(x => x.ko !== w.ko));
+    const distractors = others.slice(0, 3);
+    if(mode === 1){
+      // Prompt: play Korean audio; Options: 4 emojis — pick matching picture
+      const opts = shuffle([w, ...distractors]);
+      return { word:w, opts, correctIdx:opts.indexOf(w), optType:'emoji' };
+    } else {
+      // Prompt: emoji (mode2) or native language (mode 3,4); Options: 4 Korean words
+      const opts = shuffle([w.ko, ...distractors.map(d=>d.ko)]);
+      return { word:w, opts, correctIdx:opts.indexOf(w.ko), optType:'ko' };
+    }
+  });
+}
+
+function goGame(){
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  ST.dayIdx=null;
+  document.getElementById('homeScr').classList.remove('on');
+  document.getElementById('gameScr').classList.add('on');
+  renderGameMenu();
+}
+
+function renderGameMenu(){
+  document.getElementById('gameScrTitle').textContent='🎮 단어 게임';
+  document.getElementById('gameScrSub').textContent='게임 모드를 선택하세요';
+  const all = buildGameWords();
+  document.getElementById('gameContent').innerHTML=`
+    <div class="game-hero">
+      <div class="gh-e">🃏</div>
+      <h3>단어 카드 게임</h3>
+      <p>배운 단어 ${all.length}개 중 10개를 골라 연습해요<br>
+      언어교육학 기반 4가지 모드로 실력을 키워요</p>
+    </div>
+    <div class="game-mode-grid">
+      ${GAME_MODES.map(m=>`
+        <div class="gmode-card m${m.id}" onclick="startGameMode(${m.id})">
+          <div class="gmc-icon">${m.icon}</div>
+          <div class="gmc-name">${m.name}</div>
+          <div class="gmc-desc">${m.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="padding:0 16px 20px">
+      <div style="background:#E8F4FD;border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--blue);line-height:1.7">
+        💡 <strong>교수법 안내</strong><br>
+        1️⃣ <strong>그림+소리</strong> — 소리→이미지 연결 (TPR 전신반응법)<br>
+        2️⃣ <strong>그림+한국어</strong> — 시각→어휘 연결 (직접법)<br>
+        3️⃣ <strong>자국어+한국어</strong> — 번역 기반 어휘 확인<br>
+        4️⃣ <strong>멀티모달</strong> — 시각+청각 통합 입력 (최고 효과)
+      </div>
+    </div>
+  `;
+}
+
+function startGameMode(mode){
+  GS.mode=mode; GS.qs=buildGameQs(mode); GS.qIdx=0; GS.score=0; GS.answered=false;
+  const m = GAME_MODES.find(x=>x.id===mode);
+  document.getElementById('gameScrTitle').textContent=`${m.icon} ${m.name}`;
+  document.getElementById('gameScrSub').textContent=`10문제 · ${m.desc}`;
+  renderGameQ();
+}
+
+function renderGameQ(){
+  if(GS.qIdx >= GS.qs.length){ showGameResult(); return; }
+  const q = GS.qs[GS.qIdx];
+  const w = q.word;
+  const m = GS.mode;
+  const total = GS.qs.length;
+  GS.answered = false;
+
+  // Build prompt area
+  let promptHTML = '';
+  if(m === 1){
+    // Mode 1: audio prompt — show ??? emoji until user plays/answers
+    promptHTML = `
+      <div class="gq-mode-badge">🔊 소리를 듣고 그림을 고르세요</div>
+      <div class="gq-emoji" id="gq-mystery">❓</div>
+      <button class="gq-play-btn" onclick="playGameWord()">🔊 소리 듣기</button>
+      <div style="font-size:11px;opacity:.65">버튼을 눌러 소리를 들은 후 그림을 선택하세요</div>
+    `;
+  } else if(m === 2){
+    // Mode 2: show emoji → pick Korean
+    promptHTML = `
+      <div class="gq-mode-badge">🖼️ 그림을 보고 한국어를 고르세요</div>
+      <div class="gq-emoji">${w.e}</div>
+    `;
+  } else if(m === 3){
+    // Mode 3: show native word → pick Korean
+    promptHTML = `
+      <div class="gq-mode-badge">🌐 자국어를 보고 한국어를 고르세요</div>
+      <div class="gq-text">${w.uz}</div>
+      <div class="gq-sub">[${w.rom}]</div>
+    `;
+  } else {
+    // Mode 4: native word + auto-play audio → pick Korean
+    promptHTML = `
+      <div class="gq-mode-badge">🎯 자국어를 보고 소리를 들어봐요</div>
+      <div class="gq-text">${w.uz}</div>
+      <button class="gq-play-btn" id="gq-replay-btn" onclick="playGameWord()">🔊 다시 듣기</button>
+    `;
+  }
+
+  // Build options
+  const isEmojiOpts = q.optType === 'emoji';
+  const optsHTML = q.opts.map((o, i) => {
+    if(isEmojiOpts){
+      return `<button class="gopt" id="go${i}" onclick="ansGame(${i})">
+        <span class="go-e">${o.e}</span>
+        <span class="go-ko" style="font-size:11px;opacity:0" id="go-ko${i}">${o.ko}</span>
+      </button>`;
+    } else {
+      return `<button class="gopt" id="go${i}" onclick="ansGame(${i})">
+        <span class="go-ko">${o}</span>
+      </button>`;
+    }
+  }).join('');
+
+  document.getElementById('gameContent').innerHTML=`
+    <div class="gq-wrap">
+      <div class="gpbar-wrap">
+        <div class="gpbar-top">
+          <span>문제 ${GS.qIdx+1} / ${total}</span>
+          <span style="color:var(--green);font-weight:700">✅ ${GS.score}점</span>
+        </div>
+        <div class="gpbar"><div class="gpbar-fill" style="width:${GS.qIdx/total*100}%"></div></div>
+      </div>
+
+      <div class="gq-card" id="gq-card">${promptHTML}</div>
+
+      <div class="gq-fb" id="gq-fb"></div>
+
+      <div class="gq-opts ${isEmojiOpts?'grid2':'grid2'}" id="gq-opts">
+        ${optsHTML}
+      </div>
+    </div>
+  `;
+
+  // Auto-play for mode 1 and 4
+  if(m === 1 || m === 4){
+    setTimeout(()=>playGameWord(), 400);
+  }
+}
+
+function playGameWord(){
+  const w = GS.qs[GS.qIdx].word;
+  say(w.ko, null, 'word');
+}
+
+function ansGame(chosenIdx){
+  if(GS.answered) return;
+  GS.answered = true;
+  const q = GS.qs[GS.qIdx];
+  const correct = q.correctIdx;
+  const ok = chosenIdx === correct;
+  if(ok) GS.score++;
+
+  // Disable all buttons
+  for(let i=0;i<q.opts.length;i++){
+    const el=document.getElementById('go'+i);
+    if(el){ el.classList.add('off'); el.onclick=null; }
+  }
+
+  // Mark correct / wrong
+  const okEl=document.getElementById('go'+correct);
+  const noEl=document.getElementById('go'+chosenIdx);
+  if(okEl) okEl.classList.add('ok');
+  if(!ok && noEl) noEl.classList.add('no');
+
+  // Reveal Korean labels in emoji mode
+  if(q.optType==='emoji'){
+    for(let i=0;i<q.opts.length;i++){
+      const lbl=document.getElementById('go-ko'+i);
+      if(lbl){ lbl.style.opacity='1'; lbl.style.fontWeight='700'; }
+    }
+    // Show the answer emoji big in prompt card
+    const mystery=document.getElementById('gq-mystery');
+    if(mystery){ mystery.textContent=q.opts[correct].e; mystery.style.textShadow='0 0 0 transparent'; }
+  }
+
+  // Feedback bar
+  const fb=document.getElementById('gq-fb');
+  if(fb){
+    fb.className=`gq-fb ${ok?'ok':'no'}`;
+    const koWord = q.optType==='emoji' ? q.opts[correct].ko : q.opts[correct];
+    fb.innerHTML = ok
+      ? `✅ 정답! <strong>${koWord}</strong> — ${q.word.uz}`
+      : `❌ 정답: <strong>${koWord}</strong> (${q.word.uz})`;
+    fb.style.display='block';
+  }
+
+  // Play correct answer audio
+  say(q.word.ko, null, 'word');
+
+  // Auto-advance after 1.8s
+  setTimeout(()=>{ GS.qIdx++; renderGameQ(); }, 1800);
+}
+
+function showGameResult(){
+  const total = GS.qs.length;
+  const pct = Math.round(GS.score/total*100);
+  const cls = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--red)';
+  const e = pct>=80?'🏆':pct>=60?'⭐':'📖';
+  const msg = pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 조금 더 연습해요 👍':'다시 한번 도전해봐요 💪';
+  const m = GAME_MODES.find(x=>x.id===GS.mode);
+
+  document.getElementById('gameScrTitle').textContent='게임 결과';
+  document.getElementById('gameScrSub').textContent=`${m.icon} ${m.name}`;
+
+  document.getElementById('gameContent').innerHTML=`
+    <div class="gr-card">
+      <div class="gr-emoji">${e}</div>
+      <div class="gr-score" style="color:${cls}">${pct}%</div>
+      <div class="gr-msg">${msg}</div>
+      <div class="gr-sub">${GS.score} / ${total} 정답 · ${m.name} 모드</div>
+
+      <div class="gr-mode-chips">
+        ${GAME_MODES.map(gm=>`
+          <div class="gr-chip ${gm.id===GS.mode?'active':''}">
+            ${gm.icon} ${gm.name}${gm.id===GS.mode?' ✓':''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="game-btn-row">
+      <button class="btn red" onclick="startGameMode(${GS.mode})">🔄 같은 모드로 다시</button>
+      <button class="btn gray" onclick="renderGameMenu()">🎮 다른 모드 선택</button>
+      <button class="btn gray" onclick="goHome()">🏠 홈으로</button>
+    </div>
+  `;
 }
 
 // ════════════
