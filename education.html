@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#E63946">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="안전 한국어">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>안전 한국어 Safety Korean</title>
+<style>
+:root{
+  --red:#E63946; --red-d:#c1121f;
+  --blue:#1D3557; --blue-m:#457B9D; --blue-l:#A8DADC;
+  --green:#2DC653; --orange:#F4A261; --yellow:#FFD43B;
+  --bg:#F1F3F5; --card:#fff; --text:#1D3557; --muted:#6C757D; --border:#DEE2E6;
+  --r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;max-width:540px;margin:0 auto}
+
+/* Header */
+.hdr{background:var(--red);color:#fff;padding:13px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hdr-title{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.hdr-sub{font-size:10px;opacity:.75;margin-top:1px}
+.lang-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);
+  color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+
+/* Screens */
+.scr{display:none}.scr.on{display:block}
+
+/* ═══ HOME ═══ */
+.home{padding:16px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
+  border-radius:var(--r);padding:22px 18px;color:#fff;text-align:center;margin-bottom:14px}
+.hero .e{font-size:48px;margin-bottom:8px}
+.hero h2{font-size:19px;font-weight:800;margin-bottom:5px}
+.hero p{font-size:13px;opacity:.85;line-height:1.6}
+
+/* Goal badge */
+.goal-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff3cd;border:1px solid var(--yellow);
+  border-radius:20px;padding:5px 12px;font-size:12px;color:#664d03;font-weight:600;
+  margin-bottom:14px
+}
+
+.slabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.day-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.dc{background:var(--card);border-radius:var(--r);padding:14px 12px;
+  cursor:pointer;border:2px solid var(--border);transition:all .2s;position:relative;overflow:hidden}
+.dc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+  background:var(--border);border-radius:var(--r) 0 0 var(--r)}
+.dc.done::before{background:var(--green)}
+.dc.open::before{background:var(--red)}
+.dc:hover:not(.locked){transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.1);border-color:var(--blue-m)}
+.dc.locked{opacity:.5;cursor:not-allowed}
+.dc .dnum{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:2px}
+.dc .dice{font-size:20px;margin-bottom:4px}
+.dc .dtitle{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:2px}
+.dc .dgoal{font-size:11px;color:var(--blue-m);font-style:italic}
+.dc .dstat{position:absolute;top:9px;right:9px;font-size:13px}
+
+.prog-card{background:var(--card);border-radius:var(--r);padding:13px 15px;border:1px solid var(--border)}
+.prog-card h3{font-size:12px;color:var(--muted);margin-bottom:8px}
+.pbar{background:var(--border);border-radius:10px;height:9px;overflow:hidden;margin-bottom:5px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--green),#52d68a);border-radius:10px;transition:width .5s}
+.ptxt{font-size:11px;color:var(--muted);text-align:right}
+
+/* ═══ LESSON ═══ */
+.lhdr{background:var(--card);border-bottom:1px solid var(--border);
+  padding:11px 14px;display:flex;align-items:center;gap:10px}
+.back{width:34px;height:34px;background:var(--bg);border:1px solid var(--border);
+  border-radius:9px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lhdr-info h2{font-size:15px;font-weight:800}
+.lhdr-info p{font-size:11px;color:var(--muted)}
+
+/* Step progress */
+.sbar{display:flex;gap:4px;padding:9px 14px;background:var(--card);border-bottom:1px solid var(--border)}
+.sdot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+.sdot.done{background:var(--green)}.sdot.cur{background:var(--red)}
+
+/* Step label */
+.step-lbl{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 0;
+}
+.step-name{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--red);color:#fff;
+  border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700
+}
+.step-hint{font-size:11px;color:var(--muted);font-style:italic}
+
+.lbody{padding:14px 16px}
+
+/* ── 목표 (Goal) ── */
+.goal-box{
+  background:linear-gradient(135deg,#fff9e6,#fffbf0);
+  border:2px solid var(--yellow);border-radius:var(--r);
+  padding:18px;text-align:center;margin-bottom:12px
+}
+.goal-box .g-label{font-size:11px;font-weight:700;color:#8B6914;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.goal-box .g-ko{font-size:20px;font-weight:800;color:var(--blue);margin-bottom:6px;line-height:1.3}
+.goal-box .g-uz{font-size:13px;color:#664d03;line-height:1.5}
+.goal-box .g-level{
+  display:inline-block;margin-top:10px;
+  background:var(--blue);color:#fff;
+  border-radius:12px;padding:3px 10px;font-size:11px;font-weight:700
+}
+
+/* ── 들어봐요 (Listen) ── */
+.listen-box{
+  background:linear-gradient(135deg,var(--blue),var(--blue-m));
+  color:#fff;border-radius:var(--r);padding:18px;margin-bottom:12px
+}
+.listen-box .scene{font-size:44px;text-align:center;margin-bottom:10px}
+.listen-box .ctx-tag{font-size:10px;opacity:.65;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.listen-box .dial{
+  background:rgba(255,255,255,.12);border-radius:10px;
+  padding:11px;font-size:14px;line-height:1.85;white-space:pre-line;
+  margin-bottom:8px
+}
+.listen-box .dial-uz{font-size:12px;opacity:.8;line-height:1.6;white-space:pre-line;font-style:italic}
+.listen-box .listen-hint{font-size:11px;opacity:.6;text-align:center;margin-top:10px}
+
+/* Speaker bubble for dialogue */
+.bubble-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.bubble-row.right{flex-direction:row-reverse}
+.bubble-avatar{font-size:22px;flex-shrink:0;margin-top:2px}
+.bubble-body{}
+.bubble-name{font-size:10px;opacity:.65;margin-bottom:3px}
+.bubble-text{
+  background:rgba(255,255,255,.15);
+  border-radius:12px;padding:8px 12px;font-size:13px;line-height:1.5;
+}
+.bubble-row.right .bubble-text{background:rgba(255,200,0,.25)}
+.bubble-uz{font-size:11px;opacity:.7;margin-top:3px;font-style:italic}
+
+/* ── 뜯어봐요 (Break-down) ── */
+.word-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.word-card{
+  background:var(--card);border-radius:var(--r);
+  border:2px solid var(--border);
+  display:flex;align-items:stretch;overflow:hidden;
+  cursor:pointer;transition:border-color .2s
+}
+.word-card:hover{border-color:var(--blue-m)}
+.word-card.playing{border-color:var(--red);background:#fff5f5}
+.wc-left{
+  background:var(--blue);color:#fff;
+  padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:80px;
+}
+.wc-ko{font-size:20px;font-weight:800;margin-bottom:3px}
+.wc-syl{font-size:10px;opacity:.7;letter-spacing:1px}
+.wc-right{padding:10px 12px;flex:1}
+.wc-rom{font-size:11px;color:var(--muted);margin-bottom:3px}
+.wc-uz{font-size:13px;font-weight:600;margin-bottom:4px}
+.wc-ex{font-size:12px;color:var(--blue-m);font-style:italic}
+.wc-play{
+  background:var(--red);color:#fff;width:36px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px
+}
+
+/* ── 패턴 드릴 (Pattern Drill) ── */
+.pattern-box{
+  background:#F0F7FF;border:2px solid var(--blue-m);border-radius:var(--r);
+  padding:14px;margin-bottom:12px
+}
+.pat-label{font-size:11px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.pat-template{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:12px;line-height:1.4}
+.pat-blank{
+  display:inline-block;border-bottom:3px solid var(--red);
+  min-width:80px;color:var(--red);font-weight:800;
+  padding:0 4px;text-align:center
+}
+.drill-items{display:flex;flex-direction:column;gap:7px}
+.drill-item{
+  background:var(--card);border-radius:10px;border:2px solid var(--border);
+  padding:11px 14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;transition:all .2s;font-size:14px
+}
+.drill-item:hover{border-color:var(--blue-m);background:#f0f7ff}
+.drill-item.playing{border-color:var(--red);background:#fff5f5}
+.drill-item .di-full{font-weight:700;color:var(--blue)}
+.drill-item .di-uz{font-size:12px;color:var(--muted)}
+.drill-item .di-play{font-size:16px}
+
+/* ── 말해봐요 (Speaking Practice) ── */
+.speak-card{
+  background:var(--card);border-radius:var(--r);
+  border:2px dashed var(--border);
+  padding:20px;text-align:center;margin-bottom:12px
+}
+.speak-situation{
+  background:var(--blue);color:#fff;
+  border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;
+  margin-bottom:14px;text-align:left
+}
+.speak-prompt{font-size:12px;color:var(--muted);margin-bottom:6px}
+.speak-phrase{font-size:24px;font-weight:800;color:var(--blue);margin-bottom:14px;line-height:1.3}
+.wave{display:flex;justify-content:center;gap:4px;height:28px;align-items:flex-end;margin-bottom:12px}
+.wbar{width:5px;border-radius:3px;background:var(--red);animation:wv .8s ease infinite alternate}
+.wbar:nth-child(2){animation-delay:.1s}.wbar:nth-child(3){animation-delay:.2s}
+.wbar:nth-child(4){animation-delay:.3s}.wbar:nth-child(5){animation-delay:.4s}
+@keyframes wv{from{height:5px}to{height:24px}}
+.btn-hear{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:13px;background:var(--red);color:#fff;
+  border:none;border-radius:11px;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:8px;transition:background .2s
+}
+.btn-hear:hover{background:var(--red-d)}
+.speak-tip{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* ── Quiz ── */
+.qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.qprog{font-size:12px;color:var(--muted);font-weight:600}
+.qscore{font-size:12px;color:var(--green);font-weight:700}
+.qcard{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.qtag{font-size:10px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.qq{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.4}
+.qsub{font-size:11px;color:var(--muted);margin-bottom:15px}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qopt{
+  padding:12px 13px;border-radius:9px;border:2px solid var(--border);
+  cursor:pointer;font-size:13px;transition:all .2s;text-align:left;background:var(--card)
+}
+.qopt:hover{border-color:var(--blue-m);background:#f0f7ff}
+.qopt.ok{border-color:var(--green);background:#f0fff4;color:#1a7a3a;font-weight:700}
+.qopt.no{border-color:var(--red);background:#fff0f0;color:var(--red-d)}
+.qopt.off{cursor:not-allowed}
+.qfb{margin-top:10px;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:600;display:none}
+.qfb.ok{background:#f0fff4;color:#1a7a3a;border:1px solid var(--green)}
+.qfb.no{background:#fff0f0;color:var(--red-d);border:1px solid var(--red)}
+
+/* ── Result ── */
+.rcard{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center}
+.rscore{font-size:56px;font-weight:900;line-height:1;margin:10px 0 6px}
+.rscore.g{color:var(--green)}.rscore.m{color:var(--orange)}.rscore.b{color:var(--red)}
+.rmsg{font-size:17px;font-weight:700;margin-bottom:5px}
+.rsub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.rpass{background:#f0fff4;border:1px solid var(--green);border-radius:10px;padding:11px;font-size:12px;color:#1a7a3a;margin-bottom:16px}
+
+/* Buttons */
+.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:2px}
+.btn.red{background:var(--red);color:#fff}.btn.red:hover{background:var(--red-d);transform:translateY(-1px)}
+.btn.gray{background:var(--border);color:var(--text)}.btn.gray:hover{background:#c8d0d9}
+
+.info{background:#E8F4FD;border-left:4px solid var(--blue-m);border-radius:0 8px 8px 0;
+  padding:9px 13px;font-size:12px;line-height:1.6;margin-bottom:12px;color:var(--text)}
+
+/* ═══ AUTH SCREEN ═══ */
+.auth-wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:24px 20px;background:linear-gradient(160deg,var(--blue) 0%,var(--blue-m) 100%)}
+.auth-logo{text-align:center;margin-bottom:28px}
+.auth-logo .al-icon{font-size:56px;margin-bottom:8px}
+.auth-logo h1{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px}
+.auth-logo p{color:rgba(255,255,255,.75);font-size:12px;line-height:1.6}
+.auth-card{background:#fff;border-radius:20px;padding:22px 20px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.auth-tabs{display:flex;gap:6px;margin-bottom:20px}
+.auth-tab{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);
+  font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);text-align:center;transition:all .2s}
+.auth-tab.on{background:var(--red);color:#fff;border-color:var(--red)}
+.auth-form label{display:block;font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;margin-top:14px}
+.auth-form label:first-child{margin-top:0}
+.auth-form input,.auth-form select{
+  width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;
+  font-size:14px;font-family:inherit;color:var(--text);background:#fff;
+  transition:border-color .2s;-webkit-appearance:none}
+.auth-form input:focus,.auth-form select:focus{outline:none;border-color:var(--blue-m)}
+.auth-form .field-hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+.auth-form .lang-pick{display:flex;gap:8px;margin-top:0}
+.auth-form .lang-pick button{flex:1;padding:11px;border:2px solid var(--border);border-radius:10px;
+  font-size:14px;cursor:pointer;background:#fff;transition:all .2s;font-weight:600}
+.auth-form .lang-pick button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.notif-row{display:flex;align-items:center;justify-content:space-between;
+  margin-top:14px;padding:10px 12px;background:var(--bg);border-radius:10px}
+.notif-row label{font-size:13px;font-weight:600;color:var(--text);margin:0}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:12px;cursor:pointer;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;
+  background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked + .toggle-slider{background:var(--green)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(18px)}
+.auth-divider{text-align:center;font-size:11px;color:var(--muted);margin:14px 0 10px;
+  position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;
+  width:40%;height:1px;background:var(--border)}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+
+/* ═══ PROFILE SCREEN ═══ */
+.prof{padding:14px 16px}
+.prof-hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
+  border-radius:var(--r);padding:18px;color:#fff;margin-bottom:14px}
+.prof-name{font-size:18px;font-weight:800;margin-bottom:3px}
+.prof-meta{font-size:12px;opacity:.75;margin-bottom:12px}
+.streak-row{display:flex;align-items:center;gap:10px}
+.streak-badge{background:rgba(255,255,255,.15);border-radius:12px;
+  padding:8px 14px;text-align:center}
+.streak-num{font-size:28px;font-weight:900;line-height:1}
+.streak-lbl{font-size:10px;opacity:.8;margin-top:2px}
+.streak-msg{font-size:12px;opacity:.85;line-height:1.5}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:var(--card);border-radius:var(--r);padding:14px;
+  border:1px solid var(--border);text-align:center}
+.stat-val{font-size:26px;font-weight:900;color:var(--blue);margin-bottom:3px}
+.stat-lbl{font-size:11px;color:var(--muted)}
+
+.week-prog{background:var(--card);border-radius:var(--r);padding:14px;
+  border:1px solid var(--border);margin-bottom:14px}
+.week-prog h3{font-size:12px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.wk-row{margin-bottom:8px}
+.wk-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.wk-label span:first-child{font-weight:700}
+.wk-label span:last-child{color:var(--muted)}
+.wk-bar{background:var(--border);border-radius:6px;height:8px;overflow:hidden}
+.wk-fill{height:100%;border-radius:6px;transition:width .5s}
+.wk-fill.w1{background:linear-gradient(90deg,var(--green),#52d68a)}
+.wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),var(--blue-l))}
+
+.session-list{background:var(--card);border-radius:var(--r);padding:14px;
+  border:1px solid var(--border);margin-bottom:14px}
+.session-list h3{font-size:12px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.sess-item{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--border)}
+.sess-item:last-child{border-bottom:none}
+.sess-day{font-size:13px;font-weight:700}
+.sess-date{font-size:11px;color:var(--muted);margin-top:1px}
+.sess-score{font-size:13px;font-weight:700;
+  padding:3px 9px;border-radius:10px}
+.sess-score.good{background:#f0fff4;color:#1a7a3a}
+.sess-score.mid{background:#fff8e1;color:#b45309}
+.sess-score.low{background:#fff0f0;color:var(--red-d)}
+
+.notif-banner{
+  background:#FFF3CD;border:1px solid var(--yellow);
+  border-radius:10px;padding:11px 14px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;font-size:12px;cursor:pointer
+}
+.notif-banner .nb-icon{font-size:20px;flex-shrink:0}
+.notif-banner .nb-text{flex:1;line-height:1.5}
+.notif-banner .nb-btn{background:var(--red);color:#fff;
+  border:none;border-radius:8px;padding:6px 12px;
+  font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+
+/* install banner */
+.install-banner{
+  background:linear-gradient(90deg,var(--blue),var(--blue-m));
+  color:#fff;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;font-size:12px;
+  position:sticky;bottom:0;z-index:100
+}
+.install-banner .ib-icon{font-size:20px;flex-shrink:0}
+.install-banner .ib-text{flex:1;line-height:1.5}
+.install-banner .ib-btn{background:#fff;color:var(--blue);
+  border:none;border-radius:8px;padding:7px 13px;
+  font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
+.install-banner .ib-close{background:none;border:none;color:rgba(255,255,255,.7);
+  font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="hdr" id="mainHdr" style="display:none">
+  <div>
+    <div class="hdr-sub">언어교육 기반 | Language-based Safety Korean</div>
+    <div class="hdr-title">🦺 안전 한국어 Safety Korean</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">🇺🇿 UZ</button>
+    <button class="lang-btn" id="profBtn" onclick="goProfile()" style="font-size:17px;padding:6px 9px">👤</button>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="authScr" class="scr on">
+  <div class="auth-wrap">
+    <div class="auth-logo">
+      <div class="al-icon">🦺</div>
+      <h1>안전 한국어 Safety Korean</h1>
+      <p>외국인 공장 근로자를 위한 산업안전 한국어<br>
+      <small>Xorijiy zavod ishchilari uchun koreys tili xavfsizlik ta'limi</small></p>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs" style="grid-template-columns:1fr 1fr 1fr;display:grid;gap:5px">
+        <button class="auth-tab on" id="tab-login" onclick="switchAuthTab('login')">🔐 로그인</button>
+        <button class="auth-tab" id="tab-ind" onclick="switchAuthTab('ind')">👤 개인 가입</button>
+        <button class="auth-tab" id="tab-co" onclick="switchAuthTab('co')">🏭 업체 직원</button>
+      </div>
+
+      <!-- 로그인 -->
+      <div id="form-login" class="auth-form">
+        <label>아이디 / Login</label>
+        <input type="text" id="login-id" placeholder="kim001" maxlength="30"
+          autocomplete="username" style="letter-spacing:.5px">
+        <label>비밀번호 / Parol</label>
+        <input type="password" id="login-pw" placeholder="••••••••" maxlength="30"
+          autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')doLogin()">
+        <div id="login-err" style="display:none;margin-top:8px;padding:8px 12px;
+          background:#fff0f0;border-radius:8px;font-size:12px;color:var(--red-d)"></div>
+        <div style="margin-top:18px">
+          <button class="btn red" onclick="doLogin()">🔐 로그인 / Kirish</button>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:14px;font-size:11px;line-height:1.9;color:var(--muted)">
+          <strong style="color:var(--text)">🧪 테스트 계정</strong><br>
+          kim001 / safe1234 — 김현우 (개인, KO)<br>
+          abdulla / safe1234 — Abdulla (개인, UZ)<br>
+          rustam01 / abc1234 — Rustam (SAFE01, UZ)<br>
+          bobur02 / abc1234 — Bobur (SAFE01, UZ)<br>
+          lee_sm / safe5678 — 이성민 (SAFE01, KO)
+        </div>
+      </div>
+
+      <!-- 개인 가입 -->
+      <div id="form-ind" class="auth-form">
+        <label>이름 / Ism</label>
+        <input type="text" id="ind-name" placeholder="홍길동 / Abdulla" maxlength="30">
+        <label>핸드폰 번호 / Telefon raqami</label>
+        <input type="tel" id="ind-phone" placeholder="010-0000-0000"
+          maxlength="13" oninput="fmtPhone(this)">
+        <div class="field-hint">📲 카카오톡 또는 문자로 공부 알림을 보내드려요<br>Kakaotalk yoki SMS orqali eslatma yuboramiz</div>
+        <label>알람 시간 / Eslatma vaqti</label>
+        <input type="time" id="notif-time" value="20:00">
+        <label>언어 선택 / Til tanlash</label>
+        <div class="lang-pick">
+          <button id="lp-ko" class="on" onclick="pickLang('ko')">🇰🇷 한국어</button>
+          <button id="lp-uz" onclick="pickLang('uz')">🇺🇿 O'zbek</button>
+        </div>
+      </div>
+
+      <!-- 업체 직원 가입 -->
+      <div id="form-co" class="auth-form" style="display:none">
+        <label>업체 코드 / Korxona kodi</label>
+        <input type="text" id="co-code" placeholder="예: ABC123" maxlength="10"
+          style="text-transform:uppercase;letter-spacing:2px;font-weight:700">
+        <div class="field-hint">💼 업체 담당자에게 코드를 받으세요 · Korxona mas'ulidan kodni oling</div>
+        <label>이름 / Ism</label>
+        <input type="text" id="co-name" placeholder="홍길동 / Abdulla" maxlength="30">
+        <label>핸드폰 번호 / Telefon raqami</label>
+        <input type="tel" id="co-phone" placeholder="010-0000-0000"
+          maxlength="13" oninput="fmtPhone(this)">
+        <div class="field-hint">📲 카카오톡 또는 문자로 공부 알림을 보내드려요<br>Kakaotalk yoki SMS orqali eslatma yuboramiz</div>
+        <label>알람 시간 / Eslatma vaqti</label>
+        <input type="time" id="notif-time2" value="20:00">
+        <label>직원 번호 (선택) / Xodim raqami (ixtiyoriy)</label>
+        <input type="text" id="co-num" placeholder="예: EMP-001" maxlength="20">
+        <label>언어 선택 / Til tanlash</label>
+        <div class="lang-pick">
+          <button id="lp-ko2" class="on" onclick="pickLang2('ko')">🇰🇷 한국어</button>
+          <button id="lp-uz2" onclick="pickLang2('uz')">🇺🇿 O'zbek</button>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <button class="btn red" onclick="doSignup()">🚀 시작하기 / Boshlash</button>
+      </div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted)">
+        이미 가입했어요? / Allaqachon ro'yxatdan o'tganmisiz?<br>
+        <span style="color:var(--blue-m);cursor:pointer;font-weight:700" onclick="doSignup()">바로 시작 →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="homeScr" class="scr">
+  <div class="home">
+    <div class="hero">
+      <div class="e">🗣️</div>
+      <h2 id="heroT">한국어로 안전하게 일해요</h2>
+      <p id="heroP">매일 5분 · 오늘 배운 말을 내일 현장에서 써요<br>
+      <small>Har kuni 5 daqiqa · O'rgangan gapni ertaga ishlating</small></p>
+    </div>
+
+    <div class="slabel">📅 2주일 커리큘럼 (Day 1–14)</div>
+    <div class="day-grid" id="dayGrid"></div>
+
+    <div class="prog-card">
+      <h3>📊 나의 진행률 / Progressim</h3>
+      <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
+      <div class="ptxt" id="pt">0 / 7</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profileScr" class="scr">
+  <div class="lhdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="lhdr-info">
+      <h2>나의 학습 현황</h2>
+      <p id="profSubtitle"></p>
+    </div>
+  </div>
+  <div class="prof" id="profContent"></div>
+</div>
+
+<!-- LESSON -->
+<div id="lessonScr" class="scr">
+  <div class="lhdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="lhdr-info">
+      <h2 id="lTitle"></h2>
+      <p id="lSub"></p>
+    </div>
+  </div>
+  <div class="sbar" id="sbar"></div>
+  <div class="step-lbl">
+    <span class="step-name" id="stepName"></span>
+    <span class="step-hint" id="stepHint"></span>
+  </div>
+  <div class="lbody" id="lcontent"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// CURRICULUM — 언어교육 기반 설계
+// 구조: 목표 → 듣기 → 뜯어봐요 → 패턴드릴 → 말해봐요 → 퀴즈
+// ══════════════════════════════════════════════════
+const CUR = [
+{
+  day:1, icon:'👋',
+  titleKo:'안전이 먼저예요', titleUz:'Avvalo xavfsizlik',
+  subKo:'오늘의 목표: 자기소개 + 도움 요청', subUz:"Bugungi maqsad: O'zini tanishtirish + yordam so'rash",
+  level:'A1',
+  // ── 오늘의 목표
+  goal:{
+    ko:'"안전이 먼저예요." "도와주세요!" 라고 말할 수 있어요',
+    uz:'"안전이 먼저예요." "도와주세요!" deya olasiz',
+    can:['저는 근로자예요.', '안전이 먼저예요.', '도와주세요!', '모르겠어요.']
+  },
+  // ── 들어봐요 (Listening — dialogue bubbles)
+  listen:{
+    ctx:'🏭 공장 첫날 / Zavodda birinchi kun',
+    bubbles:[
+      {who:'👔', name:'관리자 (Manager)', ko:'안녕하세요! 저는 김 관리자예요.', uz:'Salom! Men Kim boshqaruvchiman.', side:'left'},
+      {who:'👷', name:'근로자 (Worker)', ko:'안녕하세요! 저는 압둘라예요.', uz:'Salom! Men Abdullaman.', side:'right'},
+      {who:'👔', name:'관리자', ko:'여기는 위험해요. 안전이 먼저예요!', uz:'Bu yer xavfli. Avvalo xavfsizlik!', side:'left'},
+      {who:'👷', name:'근로자', ko:'모르겠어요. 도와주세요.', uz:'Bilmayman. Menga yordam bering.', side:'right'},
+      {who:'👔', name:'관리자', ko:'네, 괜찮아요. 같이 해요!', uz:'Ha, yaxshi. Birga qilamiz!', side:'left'},
+    ]
+  },
+  // ── 뜯어봐요 (Word breakdown)
+  words:[
+    {ko:'안전', syl:'안·전', rom:'an-jeon', uz:'xavfsizlik (safety)', ex:'안전이 먼저예요.', e:'🛡️'},
+    {ko:'위험', syl:'위·험', rom:'wi-heom', uz:'xavfli / xavf (danger)', ex:'여기는 위험해요.', e:'⚠️'},
+    {ko:'도움', syl:'도·움', rom:'do-um', uz:"yordam (help)", ex:'도와주세요!', e:'🤝'},
+    {ko:'먼저', syl:'먼·저', rom:'meon-jeo', uz:'avvalo / birinchi (first)', ex:'안전이 먼저예요.', e:'1️⃣'},
+    {ko:'괜찮아요', syl:'괜·찮·아·요', rom:'gwaen-cha-na-yo', uz:'yaxshi / muammo emas (it\'s okay)', ex:'괜찮아요. 같이 해요.', e:'👌'},
+  ],
+  // ── 패턴 드릴
+  pattern:{
+    labelKo:'문형: A은/는 B이에요/예요.',
+    labelUz:'Shakl: A — bu B.',
+    template:'[___]은/는 [___]이에요/예요.',
+    desc:'어떤 것이 무엇인지 말할 때 써요 · Biror narsa nima ekanini aytish uchun',
+    drills:[
+      {blank:'안전', full:'안전이 먼저예요.', uz:'Xavfsizlik birinchi.'},
+      {blank:'저', full:'저는 근로자예요.', uz:'Men ishchiman.'},
+      {blank:'여기', full:'여기는 공장이에요.', uz:'Bu yerda zavod.'},
+      {blank:'이것', full:'이것은 위험이에요.', uz:'Bu xavf.'},
+    ]
+  },
+  // ── 말해봐요 (Speaking role-play)
+  speak:[
+    {situation:'👔 관리자가 물어봐요: "이름이 뭐예요?"', prompt:'나는 뭐라고 해요?', phrase:'저는 [이름]이에요.', uz:'Men [ism]man.'},
+    {situation:'⚠️ 위험한 곳을 봤어요. 친구에게 말해요.', prompt:'뭐라고 해요?', phrase:'여기 위험해요!', uz:'Bu yer xavfli!'},
+    {situation:'🤔 모르는 게 있어요. 관리자에게 말해요.', prompt:'뭐라고 해요?', phrase:'모르겠어요. 도와주세요.', uz:'Bilmayman. Menga yordam bering.'},
+  ],
+  // ── 퀴즈 (Language-focused)
+  quiz:[
+    {tag:'어휘', q:'"안전" 이 들어가는 올바른 문장은?', qu:'"안전" so\'zi to\'g\'ri ishlatilgan gap?', opts:['안전을 먹어요.','안전이 먼저예요.','안전이 자요.','안전을 입어요.'], ans:1},
+    {tag:'문형', q:'자기소개를 할 때: "저는 근로자___."', qu:"O'zini tanishtirish: 'Men ishchi___.'", opts:['해요','예요','가요','봐요'], ans:1},
+    {tag:'의사소통', q:'모르는 것이 있을 때 뭐라고 해요?', qu:"Bilmasangiz nima deysiz?", opts:['감사합니다','괜찮아요','도와주세요','안녕하세요'], ans:2},
+    {tag:'어휘', q:'"위험" 은 무슨 뜻이에요?', qu:'"위험" nima degani?', opts:['xavfsiz (safe)','birinchi (first)','xavfli/xavf (danger)','yordam (help)'], ans:2},
+  ]
+},
+
+{
+  day:2, icon:'⚖️',
+  titleKo:'해야 해요 / 안 돼요', titleUz:"Kerak / Mumkin emas",
+  subKo:'오늘의 목표: 의무와 금지 표현하기', subUz:"Bugungi maqsad: Majburiyat va taqiqni ifodalash",
+  level:'A1',
+  goal:{
+    ko:'"~해야 해요" "~하면 안 돼요" 로 말할 수 있어요',
+    uz:'"~해야 해요" "~하면 안 돼요" deb ayta olasiz',
+    can:['교육을 받아야 해요.','보호구를 착용해야 해요.','여기 들어가면 안 돼요.','전원을 꺼야 해요.']
+  },
+  listen:{
+    ctx:'📋 채용 첫날 — 안전 교육 시간 / Ishga qabul — xavfsizlik ta\'limi',
+    bubbles:[
+      {who:'👔',name:'관리자',ko:'오늘 안전 교육을 받아야 해요.',uz:"Bugun xavfsizlik ta'limini olish kerak.",side:'left'},
+      {who:'👷',name:'근로자',ko:'왜요? 꼭 받아야 해요?',uz:"Nima uchun? Albatta olish kerakmi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'네. 법이에요. 8시간이에요.\n안 받으면 안 돼요!',uz:"Ha. Qonun. 8 soat.\nOlmaslik mumkin emas!",side:'left'},
+      {who:'👷',name:'근로자',ko:'알겠어요. 그러면 보호구도 써야 해요?',uz:"Tushunarli. Unday bo'lsa himoya vositasini ham kiyish kerakmi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'맞아요! 공장에서는 꼭 써야 해요.',uz:"To'g'ri! Zavodda albatta kiyish kerak.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'해야 해요', syl:'해·야·해·요', rom:'hae-ya-hae-yo', uz:'qilish kerak (must do)', ex:'교육을 받아야 해요.', e:'✅'},
+    {ko:'안 돼요', syl:'안·돼·요', rom:'an-dwae-yo', uz:'mumkin emas (cannot/must not)', ex:'여기 들어가면 안 돼요.', e:'🚫'},
+    {ko:'착용', syl:'착·용', rom:'cha-gyong', uz:'kiyish (wearing/using)', ex:'보호구를 착용해야 해요.', e:'🦺'},
+    {ko:'의무', syl:'의·무', rom:'ui-mu', uz:'majburiyat (obligation)', ex:'이것은 의무예요.', e:'📋'},
+    {ko:'꼭', syl:'꼭', rom:'kkok', uz:'albatta / har holda (definitely/must)', ex:'꼭 받아야 해요.', e:'💯'},
+  ],
+  pattern:{
+    labelKo:'문형: [동사] + 아야/어야 해요',
+    labelUz:"Shakl: [fe'l] + a야/어야 해요 (= kerak)",
+    template:'[___]아야/어야 해요.',
+    desc:'반드시 해야 하는 것을 말할 때 · Albatta qilish kerak bo\'lganda',
+    drills:[
+      {blank:'교육을 받', full:'교육을 받아야 해요.', uz:"Ta'lim olish kerak."},
+      {blank:'보호구를 착용하', full:'보호구를 착용해야 해요.', uz:'Himoya vositasini kiyish kerak.'},
+      {blank:'전원을 끄', full:'전원을 꺼야 해요.', uz:"Quvvatni o'chirish kerak."},
+      {blank:'신고하', full:'신고해야 해요.', uz:'Xabar berish kerak.'},
+    ]
+  },
+  speak:[
+    {situation:'📢 새로 온 친구에게 안전 교육에 대해 말해요.', prompt:"'받아야 해요'를 써서 말해봐요.", phrase:'안전 교육을 받아야 해요!', uz:"Xavfsizlik ta'limini olish kerak!"},
+    {situation:'🚫 친구가 위험한 곳에 가려고 해요.', prompt:"'안 돼요'를 써서 말해봐요.", phrase:'여기 들어가면 안 돼요!', uz:"Bu yerga kirish mumkin emas!"},
+    {situation:'🦺 아침에 일 시작 전, 스스로에게 말해요.', prompt:'오늘 할 일을 말해봐요.', phrase:'보호구를 착용해야 해요.', uz:'Himoya vositasini kiyish kerak.'},
+  ],
+  quiz:[
+    {tag:'문형', q:'"보호구를 착용___ 해요." 빈칸에 들어갈 말은?', qu:"'보護구를 착용___ 해요.' Bo'shliqni to'ldiring:", opts:['하면 안','해야','하고','하지'], ans:1},
+    {tag:'어휘', q:'"꼭" 은 무슨 뜻이에요?', qu:'"꼭" nima degani?', opts:['yaxshi (good)','albatta/har holda (definitely)','kerak emas (not needed)','tez (fast)'], ans:1},
+    {tag:'의사소통', q:'친구가 위험한 곳에 가려고 해요. 뭐라고 해요?', qu:'Do\'stingiz xavfli joyga borishga urunmoqda. Nima deysiz?', opts:['괜찮아요','같이 가요','들어가면 안 돼요!','빨리 가요'], ans:2},
+    {tag:'법령', q:'채용 시 안전교육 시간은?', qu:"Ishga qabul paytidagi ta'lim soati?", opts:['2시간','4시간','8시간 이상','1시간'], ans:2},
+  ]
+},
+
+{
+  day:3, icon:'⚙️',
+  titleKo:'지게차 조심해요!', titleUz:'Forkliftdan ehtiyot bo\'ling!',
+  subKo:'오늘의 목표: 위험 경고 + 기계 이름 말하기', subUz:"Bugungi maqsad: Xavf haqida ogohlantirish + mashina nomlarini aytish",
+  level:'A1',
+  goal:{
+    ko:'"[기계] 조심해요!" "[기계]에 가까이 가면 안 돼요!" 라고 말할 수 있어요',
+    uz:'"[mashina]dan ehtiyot bo\'ling!" "[mashina]ga yaqin borish mumkin emas!" deya olasiz',
+    can:['지게차 조심해요!','기계를 만지지 마세요.','방호장치를 제거하면 안 돼요.','점검할 때 전원을 꺼야 해요.']
+  },
+  listen:{
+    ctx:'⚙️ 공장 현장 — 기계 작업 중 / Zavod — mashina ishida',
+    bubbles:[
+      {who:'🧑‍🏭',name:'선배 (Senior)',ko:'잠깐요! 저기 지게차가 와요!',uz:'Bir daqiqa! U yerda forklift kelmoqda!',side:'left'},
+      {who:'👷',name:'근로자',ko:'아, 위험해요! 비켜요!',uz:'Oh, xavfli! Chetga!',side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'이 길로 다니면 안 돼요.\n지게차 전용 통로예요.',uz:"Bu yo'ldan yurish mumkin emas.\nFaqat forklift yo'li.",side:'left'},
+      {who:'👷',name:'근로자',ko:'저 프레스 기계는요?',uz:'U press mashinasi-chi?',side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'만지지 마세요! 방호장치 절대 제거하면 안 돼요.',uz:'Tegmang! Himoya qurilmasini hech qachon olib tashlang.',side:'left'},
+    ]
+  },
+  words:[
+    {ko:'지게차', syl:'지·게·차', rom:'ji-ge-cha', uz:'forklift', ex:'지게차 조심해요!', e:'🚜'},
+    {ko:'프레스', syl:'프·레·스', rom:'peu-re-seu', uz:'press mashina (press)', ex:'프레스를 만지지 마세요.', e:'🔩'},
+    {ko:'방호장치', syl:'방·호·장·치', rom:'bang-ho-jang-chi', uz:'himoya qurilmasi (safety guard)', ex:'방호장치를 제거하면 안 돼요.', e:'🛡️'},
+    {ko:'점검', syl:'점·검', rom:'jeom-geom', uz:'tekshirish (inspection/check)', ex:'점검할 때 전원을 꺼요.', e:'🔍'},
+    {ko:'조심', syl:'조·심', rom:'jo-sim', uz:'ehtiyot bo\'lish (careful/caution)', ex:'지게차 조심해요!', e:'⚠️'},
+  ],
+  pattern:{
+    labelKo:'문형: [명사] 조심해요! / [동사]지 마세요!',
+    labelUz:"Shakl: [ot]dan ehtiyot bo'ling! / [fe'l]mang!",
+    template:'[___] 조심해요! / [___]지 마세요!',
+    desc:'위험을 경고할 때 · Xavf haqida ogohlantirish uchun',
+    drills:[
+      {blank:'지게차', full:'지게차 조심해요!', uz:'Forkliftdan ehtiyot bo\'ling!'},
+      {blank:'기계를 만지', full:'기계를 만지지 마세요!', uz:'Mashinaga tegmang!'},
+      {blank:'방호장치를 제거하', full:'방호장치를 제거하지 마세요!', uz:'Himoya qurilmasini olib tashlang!'},
+      {blank:'크레인', full:'크레인 조심해요!', uz:'Krandan ehtiyot bo\'ling!'},
+    ]
+  },
+  speak:[
+    {situation:'🚜 지게차가 지나가고 있어요. 친구에게 경고해요.', prompt:"'조심' 을 써서 말해봐요.", phrase:'지게차 조심해요!', uz:'Forkliftdan ehtiyot bo\'ling!'},
+    {situation:'🔩 친구가 프레스를 만지려고 해요!', prompt:"'만지지 마세요'를 써서 말해봐요.", phrase:'프레스를 만지지 마세요!', uz:'Pressga tegmang!'},
+    {situation:'🔧 기계 점검 시간이에요. 전원에 대해 말해요.', prompt:"'꺼야 해요'를 써서 말해봐요.", phrase:'점검할 때 전원을 꺼야 해요.', uz:"Tekshirishda quvvatni o'chirish kerak."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"방호장치" 는 무엇이에요?', qu:'"방호장치" nima?', opts:['forklift','xavfsizlik kaskogi','himoya qurilmasi (safety guard)','quvvat'], ans:2},
+    {tag:'문형', q:'친구에게 기계를 만지지 말라고 해요. 뭐라고 해요?', qu:'Do\'stingizga mashinaga tegmasligini ayting. Nima deysiz?', opts:['기계를 만져요!','기계 좋아요!','기계를 만지지 마세요!','기계 비싸요.'], ans:2},
+    {tag:'의사소통', q:'기계 점검 전에 꼭 해야 하는 것은?', qu:'Mashinani tekshirishdan oldin nima qilish kerak?', opts:["quvvatni yoqish (켜기)",'밥 먹기','전원 끄기 (quvvatni o\'chirish)','잠자기'], ans:2},
+    {tag:'어휘', q:'"조심해요" 는 무슨 뜻이에요?', qu:'"조심해요" nima degani?', opts:['yaxshi (good)',"ehtiyot bo'ling (be careful)",'shoshiling (hurry)','tushunaman (I understand)'], ans:1},
+  ]
+},
+
+{
+  day:4, icon:'🚨',
+  titleKo:'사고 났어요! 119!', titleUz:"Baxtsiz hodisa! 119!",
+  subKo:'오늘의 목표: 사고 신고 + 과거형 말하기', subUz:"Bugungi maqsad: Hodisani xabar berish + o'tgan zamon",
+  level:'A1-A2',
+  goal:{
+    ko:'"사고가 났어요!" "119에 전화하세요!" 라고 말할 수 있어요',
+    uz:'"사고가 났어요!" "119에 전화하세요!" deya olasiz',
+    can:['사고가 났어요!','사람이 다쳤어요.','119에 전화하세요!','기계에 손이 끼었어요.']
+  },
+  listen:{
+    ctx:'🚨 공장 내 사고 발생 / Zavodda baxtsiz hodisa',
+    bubbles:[
+      {who:'👷',name:'근로자A',ko:'야! 사고 났어요! 저기요!',uz:'Hey! Baxtsiz hodisa bo\'ldi! U yerda!',side:'left'},
+      {who:'🧑‍🏭',name:'근로자B',ko:'어디요? 무슨 일이에요?',uz:"Qayerda? Nima bo'ldi?",side:'right'},
+      {who:'👷',name:'근로자A',ko:'기계에 손이 끼었어요!\n사람이 다쳤어요!',uz:"Qo'l mashinaga qisib qoldi!\nOdam yaralandi!",side:'left'},
+      {who:'🧑‍🏭',name:'근로자B',ko:'제가 119에 전화할게요!\n전원 끄세요!',uz:"Men 119 ga qo'ng'iroq qilaman!\nQuvvatni o'chiring!",side:'right'},
+      {who:'📞',name:'119',ko:'119입니다. 어디예요?',uz:"Bu 119. Qayerda?",side:'left'},
+      {who:'🧑‍🏭',name:'근로자B',ko:'○○ 공장이에요! 빨리 와주세요!',uz:"○○ zavodi! Tez keling!",side:'right'},
+    ]
+  },
+  words:[
+    {ko:'사고가 났어요', syl:'사·고·가·났·어·요', rom:'sa-go-ga na-sseo-yo', uz:"baxtsiz hodisa bo'ldi (accident occurred)", ex:'공장에서 사고가 났어요.', e:'🚨'},
+    {ko:'다쳤어요', syl:'다·쳤·어·요', rom:'da-chyeo-sseo-yo', uz:'yaralandi (got hurt)', ex:'사람이 다쳤어요.', e:'🤕'},
+    {ko:'끼었어요', syl:'끼·었·어·요', rom:'kki-eosseo-yo', uz:'qisib qoldi (got caught/stuck)', ex:'기계에 손이 끼었어요.', e:'🤚'},
+    {ko:'전화하세요', syl:'전·화·하·세·요', rom:'jeon-hwa-ha-se-yo', uz:"qo'ng'iroq qiling (please call)", ex:'119에 전화하세요!', e:'📞'},
+    {ko:'빨리', syl:'빨·리', rom:'ppal-li', uz:'tez / shoshilinch (quickly/fast)', ex:'빨리 와주세요!', e:'⚡'},
+  ],
+  pattern:{
+    labelKo:"문형: [동사] + 았/었어요. (과거형 — 사고 신고 시 필수!)",
+    labelUz:"Shakl: [fe'l] + 았/었어요. (o'tgan zamon — hodisani xabar berishda kerak!)",
+    template:'[___]았/었어요.',
+    desc:'이미 일어난 일을 말할 때 · Allaqachon sodir bo\'lgan hodisani aytish uchun',
+    drills:[
+      {blank:'사고가 났', full:'사고가 났어요!', uz:"Baxtsiz hodisa bo'ldi!"},
+      {blank:'사람이 다쳤', full:'사람이 다쳤어요.', uz:'Odam yaralandi.'},
+      {blank:'기계가 멈췄', full:'기계가 멈췄어요.', uz:'Mashina to\'xtadi.'},
+      {blank:'불이 났', full:'불이 났어요!', uz:"Yong'in chiqdi!"},
+    ]
+  },
+  speak:[
+    {situation:'🚨 지금 공장에서 사고가 났어요! 크게 말해요!', prompt:"'사고가 났어요'를 써서 외쳐봐요.", phrase:'사고가 났어요! 119에 전화하세요!', uz:"Baxtsiz hodisa bo'ldi! 119 ga qo'ng'iroq qiling!"},
+    {situation:'📞 119에 전화했어요. 뭐라고 해요?', prompt:'상황을 설명해봐요.', phrase:'○○ 공장이에요. 사람이 다쳤어요. 빨리 와주세요!', uz:"○○ zavodi. Odam yaralandi. Tez keling!"},
+    {situation:'👷 친구에게 전원을 끄라고 해요.', prompt:"'끄세요'를 써서 말해봐요.", phrase:'전원 끄세요! 빨리요!', uz:"Quvvatni o'chiring! Tez!"},
+  ],
+  quiz:[
+    {tag:'의사소통', q:'한국 응급 전화번호는?', qu:"Koreyadagi favqulodda raqam?", opts:['112','119','120','110'], ans:1},
+    {tag:'문형', q:'"불이 나___." 과거형으로 말해봐요.', qu:'"불이 나___." O\'tgan zamonda to\'ldiring.', opts:['고 싶어요','겠어요','았어요','면 안 돼요'], ans:2},
+    {tag:'어휘', q:'"다쳤어요" 는 무슨 뜻이에요?', qu:'"다쳤어요" nima degani?', opts:["to'xtadi (stopped)",'yaralandi (got hurt)',"qo'ng'iroq qildi (called)",'keldi (came)'], ans:1},
+    {tag:'의사소통', q:'119에 전화할 때 가장 먼저 말해야 할 것은?', qu:"119 ga qo'ng'iroq qilganda birinchi nima deyish kerak?", opts:['오늘 날씨 얘기','어디인지, 무슨 일인지 (qayerda, nima bo\'lgani)','맛있는 음식 얘기','좋아하는 노래'], ans:1},
+  ]
+},
+
+{
+  day:5, icon:'✅',
+  titleKo:'치워주세요! 확인해요!', titleUz:"Tozalang! Tekshiring!",
+  subKo:'오늘의 목표: 지시/요청 표현 + 작업 전 확인', subUz:"Bugungi maqsad: Ko'rsatma/so'rov ifodalash + ishdan oldin tekshirish",
+  level:'A2',
+  goal:{
+    ko:'"[명사]를 [동사]주세요" 로 요청하고, 작업 전 확인 표현을 말할 수 있어요',
+    uz:'"[ot]ni [fe'l]ing" bilan so'rov qilib, ishdan oldin tekshirish gaplarini ayta olasiz',
+    can:['통로를 치워주세요.','작업 전에 확인해요.','정리정돈을 해야 해요.','출입금지 구역에 들어가면 안 돼요.']
+  },
+  listen:{
+    ctx:'🗂️ 아침 작업 시작 전 / Ertalab ishdan oldin',
+    bubbles:[
+      {who:'👔',name:'관리자',ko:'작업 시작 전에 항상 확인해요!',uz:'Ishdan oldin har doim tekshiring!',side:'left'},
+      {who:'👷',name:'근로자A',ko:'저기 통로에 박스가 있어요!',uz:"U yerda yo'lakda quti bor!",side:'right'},
+      {who:'👔',name:'관리자',ko:'잘 봤어요! 빨리 치워주세요.',uz:'Yaxshi ko\'rdingiz! Tez tozalang.',side:'left'},
+      {who:'👷',name:'근로자B',ko:'저기 바닥에 기름이 있어요.',uz:'U yerda yerda moy bor.',side:'right'},
+      {who:'👔',name:'관리자',ko:'미끄러우니까 닦아주세요!\n출입금지 구역에도 들어가면 안 돼요.',uz:"Sirpanadi, arting!\nKirish taqiqlangan joyga ham kirish mumkin emas.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'정리정돈', syl:'정·리·정·돈', rom:'jeong-ri-jeong-don', uz:'tartibga solish/tozalik (housekeeping)', ex:'정리정돈을 해야 해요.', e:'🗂️'},
+    {ko:'통로', syl:'통·로', rom:'tong-ro', uz:"yo'lak / o'tish yo'li (aisle/pathway)", ex:'통로를 막지 마세요.', e:'🚶'},
+    {ko:'치워주세요', syl:'치·워·주·세·요', rom:'chi-wo-ju-se-yo', uz:"tozalang / olib qo'ying (please clear)", ex:'통로를 치워주세요.', e:'🧹'},
+    {ko:'확인', syl:'확·인', rom:'hwa-gin', uz:'tekshirish / tasdiqlash (check/confirm)', ex:'작업 전에 확인해요.', e:'✅'},
+    {ko:'출입금지', syl:'출·입·금·지', rom:'chul-ip-geum-ji', uz:"kirish taqiqlangan (no entry/restricted area)", ex:'출입금지 구역이에요.', e:'🚫'},
+  ],
+  pattern:{
+    labelKo:'문형: [명사]를/을 [동사]주세요. (정중한 요청)',
+    labelUz:"Shakl: [ot]ni [fe'l]ing. (iltimos, so'rov)",
+    template:'[___]를/을 [___]주세요.',
+    desc:'다른 사람에게 무언가를 해달라고 부탁할 때 · Birovdan biror narsa qilishini so\'raganda',
+    drills:[
+      {blank:'통로를 치워', full:'통로를 치워주세요.', uz:"Yo'lakni tozalang."},
+      {blank:'전원을 꺼', full:'전원을 꺼주세요.', uz:"Quvvatni o'chiring."},
+      {blank:'보호구를 착용해', full:'보호구를 착용해주세요.', uz:'Himoya vositasini kiyib oling.'},
+      {blank:'119에 전화해', full:'119에 전화해주세요.', uz:"119 ga qo'ng'iroq qiling."},
+    ]
+  },
+  speak:[
+    {situation:'🗂️ 작업 시작 전, 정리정돈 확인을 해요.', prompt:"'확인해요'를 써서 말해봐요.", phrase:'작업 전에 꼭 확인해요.', uz:'Ishdan oldin albatta tekshiring.'},
+    {situation:'📦 통로에 박스가 있어요. 친구에게 부탁해요.', prompt:"'치워주세요'를 써서 말해봐요.", phrase:'통로에 박스가 있어요. 치워주세요!', uz:"Yo'lakda quti bor. Tozalang!"},
+    {situation:'🚫 친구가 출입금지 구역으로 가려고 해요.', prompt:"경고해봐요.", phrase:'거기 출입금지예요! 들어가면 안 돼요!', uz:"U yerga kirish taqiqlangan! Kirish mumkin emas!"},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"통로" 는 무슨 뜻이에요?', qu:'"통로" nima degani?', opts:["yo'lak (pathway)",'mashina (machine)',"yong'in (fire)",'tekshirish (check)'], ans:0},
+    {tag:'문형', q:'"전원을 끄___ 주세요." 빈칸은?', qu:'"전원을 끄___ 주세요." Bo\'shliq?', opts:['지','어','면','도'], ans:1},
+    {tag:'의사소통', q:'바닥에 기름이 있으면 어떻게 해요?', qu:'Yerda moy bo\'lsa nima qilish kerak?', opts:['그냥 지나가요','미끄러우니까 닦아요 (arting)','기름이 예뻐요','모른 척해요'], ans:1},
+    {tag:'어휘', q:'"출입금지" 의미는?', qu:'"출입금지" nima degani?', opts:["kirish ruxsat (allowed to enter)",'kirish taqiqlangan (no entry)',"yo'lak (pathway)",'tekshirish (check)'], ans:1},
+  ]
+},
+
+{
+  day:6, icon:'🦺',
+  titleKo:'어떤 보호구예요?', titleUz:"Qaysi himoya vositasi?",
+  subKo:'오늘의 목표: 보호구 이름 + 이유 설명하기', subUz:"Bugungi maqsad: Himoya vositalari nomlari + sababini tushuntirish",
+  level:'A2',
+  goal:{
+    ko:'"[상황]이라서 [보호구]를 써야 해요" 로 이유를 설명할 수 있어요',
+    uz:'"[holat]bo\'lgani uchun [vosita]ni kiyish kerak" bilan sababini tushuntira olasiz',
+    can:['먼지가 많아서 마스크를 써야 해요.','높아서 안전대를 해야 해요.','떨어질 수 있어서 안전모를 써요.','손을 보호하려고 장갑을 껴요.']
+  },
+  listen:{
+    ctx:'🦺 아침 — 보호구 착용 점검 / Ertalab — himoya vositalari tekshiruvi',
+    bubbles:[
+      {who:'👔',name:'감독자',ko:'오늘 어디에서 일해요?',uz:'Bugun qayerda ishlaysiz?',side:'left'},
+      {who:'👷',name:'근로자',ko:'2층에서 일해요. 높아요.',uz:'2-qavatda ishlayman. Baland.',side:'right'},
+      {who:'👔',name:'감독자',ko:'높으니까 안전모랑 안전대를 해야 해요.',uz:"Baland bo'lgani uchun kaskok va xavfsizlik kamarini kiyish kerak.",side:'left'},
+      {who:'👷',name:'근로자',ko:'안전화도 신어야 해요?',uz:'Xavfsizlik etigikni ham kiyish kerakmi?',side:'right'},
+      {who:'👔',name:'감독자',ko:'물론이에요! 그리고 먼지가 많아서\n방진마스크도 꼭 써야 해요.',uz:"Albatta! Va chang ko'p bo'lgani uchun\nchang niqobini ham kiyish kerak.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'안전모', syl:'안·전·모', rom:'an-jeon-mo', uz:'xavfsizlik kaskogi (safety helmet)', ex:'높아서 안전모를 써야 해요.', e:'⛑️'},
+    {ko:'안전대', syl:'안·전·대', rom:'an-jeon-dae', uz:'xavfsizlik kamari (safety harness)', ex:'안전대를 착용해야 해요.', e:'🔗'},
+    {ko:'방진마스크', syl:'방·진·마·스·크', rom:'bang-jin-ma-seu-keu', uz:'chang niqobi (dust mask)', ex:'먼지가 많아서 방진마스크를 써요.', e:'😷'},
+    {ko:'장갑', syl:'장·갑', rom:'jang-gap', uz:"qo'lqop (gloves)", ex:'손을 보호하려고 장갑을 껴요.', e:'🧤'},
+    {ko:'~이라서/라서', syl:'이·라·서/라·서', rom:'i-ra-seo/ra-seo', uz:'...bo\'lgani uchun (because it is...)', ex:'높아서 안전대를 해야 해요.', e:'🔗'},
+  ],
+  pattern:{
+    labelKo:'문형: [이유]이라서/라서 [보호구]를 써야 해요.',
+    labelUz:"Shakl: [sabab]bo'lgani uchun [vosita]ni kiyish kerak.",
+    template:'[___]이라서 [보호구]를 써야 해요.',
+    desc:'왜 그 보호구가 필요한지 설명할 때 · Nima uchun o\'sha vosita kerakligini tushuntirish uchun',
+    drills:[
+      {blank:'높아서', full:'높아서 안전대를 써야 해요.', uz:"Baland bo'lgani uchun xavfsizlik kamarini kiyish kerak."},
+      {blank:'먼지가 많아서', full:'먼지가 많아서 마스크를 써야 해요.', uz:"Chang ko'p bo'lgani uchun niqob kiyish kerak."},
+      {blank:'위험해서', full:'위험해서 안전모를 써야 해요.', uz:"Xavfli bo'lgani uchun kaskok kiyish kerak."},
+      {blank:'화학물질이 있어서', full:'화학물질이 있어서 장갑을 써야 해요.', uz:"Kimyoviy modda bo'lgani uchun qo'lqop kiyish kerak."},
+    ]
+  },
+  speak:[
+    {situation:'⛑️ 감독자가 왜 안전모를 쓰냐고 물어봐요.', prompt:"'높아서' 를 써서 설명해봐요.", phrase:'높아서 안전모를 써야 해요.', uz:"Baland bo'lgani uchun kaskok kiyish kerak."},
+    {situation:'😷 친구가 왜 마스크를 쓰냐고 해요.', prompt:"'먼지' 를 써서 설명해봐요.", phrase:'여기 먼지가 많아서 마스크를 써야 해요.', uz:"Bu yerda chang ko'p bo'lgani uchun niqob kiyish kerak."},
+    {situation:'🧤 무거운 물건을 들어야 해요. 장갑을 껴요.', prompt:"이유를 말해봐요.", phrase:'위험해서 장갑을 껴야 해요.', uz:"Xavfli bo'lgani uchun qo'lqop kiyish kerak."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"방진마스크" 를 언제 써야 해요?', qu:'"방진마스크"ni qachon kiyish kerak?', opts:["baland joyda (높은 곳)",'chang ko\'p joyda (먼지 많은 곳)',"suv ichida",'mashina tekshirishda'], ans:1},
+    {tag:'문형', q:'"높___ 안전대를 써야 해요." 빈칸은?', qu:'"높___ 안전대를 써야 해요." Bo\'shliq?', opts:['으니','아서','지만','도'], ans:1},
+    {tag:'의사소통', q:'손을 보호하기 위해 필요한 보호구는?', qu:"Qo'lni himoya qilish uchun qaysi vosita kerak?", opts:['안전모 (kaskok)','안전대 (kamer)','장갑 (qo\'lqop)','마스크 (niqob)'], ans:2},
+    {tag:'어휘', q:'"안전대" 는 언제 써야 해요?', qu:'"안전대"ni qachon kiyish kerak?', opts:['chang joyda','baland joyda ishlashda (높은 곳)','mashina tekshirishda','ovqat yeyishda'], ans:1},
+  ]
+},
+
+{
+  day:7, icon:'🏆',
+  titleKo:'나는 이렇게 말할 수 있어요', titleUz:"Men shunday dey olaman",
+  subKo:'오늘의 목표: 1주일 의사소통 목표 달성 확인', subUz:"Bugungi maqsad: 1 haftalik muloqot maqsadini tekshirish",
+  level:'A2',
+  goal:{
+    ko:'6가지 상황에서 한국어로 말할 수 있어요!',
+    uz:'6 ta vaziyatda koreycha gapirishim mumkin!',
+    can:['저는 근로자예요. 도와주세요.','교육을 받아야 해요.','지게차 조심해요!','사고가 났어요! 119!','통로를 치워주세요.','먼지가 많아서 마스크를 써요.']
+  },
+  listen:{
+    ctx:'🎓 1주일 복습 — 현장에서 실제로 해봐요 / 1 hafta takrorlash',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'(Day1) 모르겠어요. 도와주세요.',uz:'(1-kun) Bilmayman. Menga yordam bering.',side:'left'},
+      {who:'👷',name:'근로자',ko:'(Day2) 안전 교육을 받아야 해요!',uz:"(2-kun) Xavfsizlik ta'limini olish kerak!",side:'right'},
+      {who:'👷',name:'근로자',ko:'(Day3) 지게차 조심해요! 만지지 마세요!',uz:"(3-kun) Forkliftdan ehtiyot! Tegmang!",side:'left'},
+      {who:'👷',name:'근로자',ko:'(Day4) 사고가 났어요! 119에 전화하세요!',uz:"(4-kun) Baxtsiz hodisa bo'ldi! 119 ga qo'ng'iroq!",side:'right'},
+      {who:'👷',name:'근로자',ko:'(Day5) 통로를 치워주세요. 확인해요.',uz:"(5-kun) Yo'lakni tozalang. Tekshiring.",side:'left'},
+      {who:'👷',name:'근로자',ko:'(Day6) 높아서 안전대를 써야 해요!',uz:"(6-kun) Baland bo'lgani uchun kamer kiyish kerak!",side:'right'},
+    ]
+  },
+  words:[
+    {ko:'할 수 있어요', syl:'할·수·있·어·요', rom:'hal su i-sseo-yo', uz:'qila olaman (I can do it)', ex:'한국어로 말할 수 있어요!', e:'💪'},
+    {ko:'배웠어요', syl:'배·웠·어·요', rom:'bae-wo-sseo-yo', uz:"o'rgandim (I learned)", ex:'많이 배웠어요!', e:'📚'},
+    {ko:'열심히', syl:'열·심·히', rom:'yeol-sim-hi', uz:'qattiq / tirishib (hard/diligently)', ex:'열심히 공부했어요!', e:'🔥'},
+    {ko:'다음에', syl:'다·음·에', rom:'da-eum-e', uz:'keyinchalik / kelajakda (next time)', ex:'다음에 또 공부해요.', e:'📅'},
+    {ko:'안전하게', syl:'안·전·하·게', rom:'an-jeon-ha-ge', uz:'xavfsiz tarzda (safely)', ex:'안전하게 일할 수 있어요.', e:'✅'},
+  ],
+  pattern:{
+    labelKo:'문형 복습: 이번 주에 배운 문형 4가지',
+    labelUz:"Grammatika takrorlash: Bu haftada o'rgangan 4 ta shakl",
+    template:'이번 주 배운 문형들',
+    desc:'1주일 동안 배운 핵심 표현 · Bu haftada o\'rganilgan asosiy iboralar',
+    drills:[
+      {blank:'~이에요/예요', full:'저는 근로자예요.', uz:'Men ishchiman.'},
+      {blank:'~해야 해요', full:'보호구를 착용해야 해요.', uz:'Himoya vositasini kiyish kerak.'},
+      {blank:'~지 마세요', full:'기계를 만지지 마세요.', uz:'Mashinaga tegmang.'},
+      {blank:'~았/었어요', full:'사고가 났어요!', uz:"Baxtsiz hodisa bo'ldi!"},
+    ]
+  },
+  speak:[
+    {situation:'🏭 새로 온 외국인 친구에게 안전을 알려줘요!', prompt:"오늘 배운 표현으로 말해봐요.", phrase:'안전이 먼저예요! 조심해요!', uz:'Avvalo xavfsizlik! Ehtiyot bo\'ling!'},
+    {situation:'📞 119 연습 — 사고 신고를 해봐요.', prompt:'실제로 신고하는 것처럼 말해봐요.', phrase:'사고가 났어요! ○○ 공장이에요. 빨리 와주세요!', uz:"Baxtsiz hodisa bo'ldi! ○○ zavodi. Tez keling!"},
+    {situation:'✅ 오늘 스스로를 응원해요!', prompt:'한국어로 말해봐요.', phrase:'열심히 배웠어요! 안전하게 일할 수 있어요!', uz:"Qattiq o'rgandim! Xavfsiz ishlashim mumkin!"},
+  ],
+  quiz:[
+    {tag:'종합', q:'"사고가 났어요"에서 쓰인 문형은?', qu:'"사고가 났어요"da qaysi grammatika shakli?', opts:['~이에요','~해야 해요','~았/었어요','~지 마세요'], ans:2},
+    {tag:'종합', q:'긴급 상황에서 119에 가장 먼저 말해야 할 것은?', qu:"Favqulodda holatda 119 ga birinchi nima deyish kerak?", opts:['날씨 얘기','오늘 기분','어디인지 + 무슨 일인지 (qayerda + nima)','좋아하는 음식'], ans:2},
+    {tag:'종합', q:'"먼지가 많___ 마스크를 써요." 빈칸은?', qu:'"먼지가 많___ 마스크를 써요." Bo\'shliq?', opts:['지만','아서','고','도'], ans:1},
+    {tag:'종합', q:'친구에게 기계를 만지지 말라고 할 때?', qu:"Do'stingizga mashinaga tegmasligini aytish uchun?", opts:['기계를 만져요!','기계를 만지지 마세요!','기계 좋아요!','기계 있어요.'], ans:1},
+    {tag:'종합', q:'높은 곳 작업 시 필요한 보호구 2가지는?', qu:'Baland joyda ishlash uchun 2 ta himoya vositasi?', opts:['마스크 + 장갑','안전모 + 안전대 (kaskok + kamer)','장갑 + 마스크','안전화만 (faqat etigik)'], ans:1},
+    {tag:'종합', q:'작업 전에 반드시 해야 하는 것은?', qu:"Ishdan oldin albatta nima qilish kerak?", opts:['잠자기','먹기','확인하기 (tekshirish)','노래 듣기'], ans:2},
+  ]
+}
+
+// ══════════════ WEEK 2 ══════════════
+
+,{
+  day:8, icon:'🔥',
+  titleKo:'불이 났어요! 대피해요!', titleUz:"Yong'in! Evakuatsiya!",
+  subKo:'오늘의 목표: 화재 대피 지시 + 방향 표현', subUz:"Bugungi maqsad: Yong'in evakuatsiya ko'rsatmalari + yo'nalish ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"불이 났어요!" "계단으로 내려가세요!" 로 대피를 지시할 수 있어요',
+    uz:'"Yong\'in!" "Zinapoyadan tuhing!" bilan evakuatsiyani yo\'naltira olasiz',
+    can:['불이 났어요!','소화기를 가져오세요!','계단으로 내려가세요.','엘리베이터를 타면 안 돼요.','비상구는 저쪽이에요.']
+  },
+  listen:{
+    ctx:"🔥 공장 화재 발생 / Zavod yong'ini",
+    bubbles:[
+      {who:'🚨',name:'경보음',ko:'삐—! 삐—! 화재경보입니다!',uz:"Pip! Pip! Yong'in signali!",side:'left'},
+      {who:'👔',name:'관리자',ko:'불이 났어요! 모두 대피하세요!',uz:"Yong'in! Hammasi evakuatsiya qiling!",side:'left'},
+      {who:'👷',name:'근로자A',ko:'어디로 가요? 어떻게 해요?',uz:"Qayerga boramiz? Nima qilamiz?",side:'right'},
+      {who:'👔',name:'관리자',ko:'계단으로 내려가세요!\n엘리베이터 타면 절대 안 돼요!',uz:"Zinapoyadan tuhing!\nLiftga chiqish hech qachon mumkin emas!",side:'left'},
+      {who:'👷',name:'근로자B',ko:'소화기가 있어요! 써요?',uz:"O't o'chirish moslamasi bor! Ishlatamizmi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'작은 불만 꺼요. 크면 도망가세요!\n비상구는 저쪽이에요!',uz:"Kichik olovni o'chiring. Katta bo'lsa qoching!\nFavqulodda chiqish u tomonda!",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'비상구', syl:'비·상·구', rom:'bi-sang-gu', uz:"favqulodda chiqish (emergency exit)", ex:'비상구는 저쪽이에요.', e:'🚪'},
+    {ko:'소화기', syl:'소·화·기', rom:'so-hwa-gi', uz:"o't o'chirish moslamasi (fire extinguisher)", ex:'소화기를 가져오세요!', e:'🧯'},
+    {ko:'대피', syl:'대·피', rom:'dae-pi', uz:'evakuatsiya (evacuation)', ex:'모두 대피하세요!', e:'🏃'},
+    {ko:'계단', syl:'계·단', rom:'gye-dan', uz:'zinapoya (stairs)', ex:'계단으로 내려가세요.', e:'🪜'},
+    {ko:'절대', syl:'절·대', rom:'jeol-dae', uz:'hech qachon / mutlaqo (never/absolutely)', ex:'엘리베이터를 절대 타면 안 돼요.', e:'⛔'},
+  ],
+  pattern:{
+    labelKo:'문형: [장소]으로/로 [동사]세요. (방향 지시)',
+    labelUz:"Shakl: [joy]ga [fe'l]ing. (yo'nalish ko'rsatmasi)",
+    template:'[___](으)로 [___]세요.',
+    desc:'방향을 알려주며 지시할 때 · Yo\'nalish ko\'rsatib buyruq berishda',
+    drills:[
+      {blank:'계단으로 내려가', full:'계단으로 내려가세요.', uz:'Zinapoyadan tuhing.'},
+      {blank:'비상구로 나가', full:'비상구로 나가세요.', uz:'Favqulodda chiqishdan chiqing.'},
+      {blank:'밖으로 나가', full:'밖으로 나가세요.', uz:'Tashqariga chiqing.'},
+      {blank:'저쪽으로 가', full:'저쪽으로 가세요.', uz:'U tomonga boring.'},
+    ]
+  },
+  speak:[
+    {situation:"🔥 지금 공장에 불이 났어요! 크게 외쳐요!", prompt:"'불이 났어요'로 말해봐요.", phrase:'불이 났어요! 모두 대피하세요!', uz:"Yong'in! Hammasi evakuatsiya qiling!"},
+    {situation:"🚪 동료가 엘리베이터로 가려고 해요. 막아요!", prompt:"'절대'를 써서 말해봐요.", phrase:'엘리베이터 절대 타면 안 돼요! 계단으로 가세요!', uz:"Liftga mutlaqo chiqmang! Zinapoyaga boring!"},
+    {situation:"🧯 작은 불이 있어요. 친구에게 소화기를 가져오라 해요.", prompt:"부탁해봐요.", phrase:'소화기 가져오세요! 빨리요!', uz:"O't o'chirish moslamasini olib keling! Tez!"},
+  ],
+  quiz:[
+    {tag:'의사소통', q:'화재 시 절대 하면 안 되는 것은?', qu:"Yong'inda mutlaqo qilmaslik kerak bo'lgan narsa?", opts:['계단 이용','비상구 이용','엘리베이터 이용 (lift ishlatish)','대피'], ans:2},
+    {tag:'어휘', q:'"비상구" 는 무엇이에요?', qu:'"비상구" nima?', opts:['소화기 (o\'t o\'chiruvchi)','favqulodda chiqish eshigi (emergency exit)','zinapoya (stairs)','lift (elevator)'], ans:1},
+    {tag:'문형', q:'"계단___ 내려가세요." 빈칸은?', qu:'"계단___ tuhing." Bo\'shliq?', opts:['에서','으로','이','를'], ans:1},
+    {tag:'법령', q:'화재 시 신고 전화번호는?', qu:"Yong'in sodir bo'lganda qaysi raqamga qo'ng'iroq?", opts:['119','112','120','911'], ans:0},
+  ]
+},
+
+{
+  day:9, icon:'☠️',
+  titleKo:'화학물질 조심해요', titleUz:"Kimyoviy moddalar — ehtiyot bo'ling",
+  subKo:'오늘의 목표: 화학물질 경고 + MSDS 표현', subUz:"Bugungi maqsad: Kimyoviy moddalar haqida ogohlantirish + MSDS ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"이 물질은 위험해요" "MSDS를 확인해요" 라고 말할 수 있어요',
+    uz:'"Bu modda xavfli" "MSDS ni tekshiring" deya olasiz',
+    can:['이 화학물질은 위험해요.','MSDS를 확인하세요.','이것을 만지지 마세요.','보호장갑을 반드시 끼세요.','환기가 필요해요.']
+  },
+  listen:{
+    ctx:'🧪 화학물질 보관 구역 / Kimyoviy moddalar saqlash joyi',
+    bubbles:[
+      {who:'👔',name:'관리자',ko:'저 노란 통 보여요? 화학물질이에요.',uz:"O'sha sariq idishni ko'ryapsizmi? Kimyoviy modda.",side:'left'},
+      {who:'👷',name:'근로자',ko:'위험해요? 만져도 돼요?',uz:'Xavflimi? Tegsa bo\'ladimi?',side:'right'},
+      {who:'👔',name:'관리자',ko:'절대 맨손으로 만지면 안 돼요!\n반드시 보호장갑을 끼세요.',uz:"Yalang'och qo'lda mutlaqo tegmang!\nAlbatta himoya qo'lqopini kiyib oling.",side:'left'},
+      {who:'👷',name:'근로자',ko:'MSDS가 뭐예요?',uz:'MSDS nima?',side:'right'},
+      {who:'👔',name:'관리자',ko:'물질 안전 자료예요. 사용 전에 꼭 읽어야 해요.\n여기 붙여 놨어요.',uz:"Xavfsizlik ma'lumot varaqasi. Ishlatishdan oldin albatta o'qish kerak.\nBu yerga yopishtirilgan.",side:'left'},
+      {who:'👷',name:'근로자',ko:'환기도 해야 해요?',uz:'Shamollatish kerakmi?',side:'right'},
+      {who:'👔',name:'관리자',ko:'맞아요. 창문 열고 작업하세요.',uz:'To\'g\'ri. Oynani ochib ishlang.',side:'left'},
+    ]
+  },
+  words:[
+    {ko:'화학물질', syl:'화·학·물·질', rom:'hwa-hak-mul-jil', uz:'kimyoviy modda (chemical substance)', ex:'화학물질은 위험해요.', e:'🧪'},
+    {ko:'MSDS', syl:'MSDS', rom:'em-es-di-es', uz:"xavfsizlik ma'lumot varaqasi (material safety data sheet)", ex:'MSDS를 확인하세요.', e:'📋'},
+    {ko:'환기', syl:'환·기', rom:'hwan-gi', uz:'shamollatish (ventilation)', ex:'환기가 필요해요.', e:'💨'},
+    {ko:'보호장갑', syl:'보·호·장·갑', rom:'bo-ho-jang-gap', uz:"himoya qo'lqopi (protective gloves)", ex:'보호장갑을 끼세요.', e:'🧤'},
+    {ko:'맨손', syl:'맨·손', rom:'maen-son', uz:"yalang'och qo'l (bare hands)", ex:'맨손으로 만지면 안 돼요.', e:'✋'},
+  ],
+  pattern:{
+    labelKo:'문형: [동사] + 기 전에 [동사]아야/어야 해요. (순서 표현)',
+    labelUz:"Shakl: [fe'l]dan oldin [fe'l]ish kerak. (tartib ifodalash)",
+    template:'[___]기 전에 [___]아야/어야 해요.',
+    desc:'작업 순서를 말할 때 · Ish tartibini aytishda',
+    drills:[
+      {blank:'사용하', full:'사용하기 전에 MSDS를 읽어야 해요.', uz:"Ishlatishdan oldin MSDS ni o'qish kerak."},
+      {blank:'만지', full:'만지기 전에 장갑을 끼어야 해요.', uz:'Tegishdan oldin qo\'lqop kiyish kerak.'},
+      {blank:'작업하', full:'작업하기 전에 환기해야 해요.', uz:'Ishlashdan oldin shamollatish kerak.'},
+      {blank:'시작하', full:'시작하기 전에 확인해야 해요.', uz:'Boshlashdan oldin tekshirish kerak.'},
+    ]
+  },
+  speak:[
+    {situation:'🧪 친구가 장갑 없이 화학물질을 만지려 해요. 막아요!', prompt:"경고해봐요.", phrase:'맨손으로 만지면 안 돼요! 장갑 먼저 끼세요!', uz:"Yalang'och qo'lda tegmang! Avval qo'lqop kiyib oling!"},
+    {situation:'📋 화학물질 사용 전, 무엇을 해야 해요?', prompt:"'전에'를 써서 말해봐요.", phrase:'사용하기 전에 MSDS를 확인해야 해요.', uz:"Ishlatishdan oldin MSDS ni tekshirish kerak."},
+    {situation:'💨 좁은 공간에서 화학물질을 써요. 뭐라고 해요?', prompt:"환기에 대해 말해봐요.", phrase:'여기는 환기가 필요해요. 창문 열어주세요.', uz:"Bu yerda shamollatish kerak. Oynani oching."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"MSDS" 는 무엇이에요?', qu:'"MSDS" nima?', opts:["mashina tezligi","xavfsizlik ma'lumot varaqasi (safety data sheet)",'xisoblagich','xavf belgisi'], ans:1},
+    {tag:'문형', q:'"만지___ 전에 장갑을 끼세요." 빈칸은?', qu:'"Tegish___ oldin qo\'lqop kiyib oling." Bo\'shliq?', opts:['지','기','고','서'], ans:1},
+    {tag:'의사소통', q:'화학물질을 만질 때 반드시 해야 하는 것은?', qu:"Kimyoviy moddaga tegishda albatta nima qilish kerak?", opts:['맨손으로 만지기',"qo'lqop kiyib olish (보호장갑 착용)",'빨리 만지기','눈을 감기'], ans:1},
+    {tag:'어휘', q:'"환기" 가 필요한 상황은?', qu:'"Shamollatish" qachon kerak?', opts:['잠잘 때','화학물질 사용 시 (kimyoviy modda ishlatishda)','밥 먹을 때','운동할 때'], ans:1},
+  ]
+},
+
+{
+  day:10, icon:'🤕',
+  titleKo:'다쳤어요 — 응급처치', titleUz:"Jarohat oldi — birinchi yordam",
+  subKo:'오늘의 목표: 부상 부위 말하기 + 응급처치 지시', subUz:"Bugungi maqsad: Jarohat joyini aytish + birinchi yordam ko'rsatmasi",
+  level:'A2',
+  goal:{
+    ko:'"[부위]를 다쳤어요" 와 응급처치 지시 표현을 말할 수 있어요',
+    uz:'"[a\'zo]ni yaraladim" va birinchi yordam ko\'rsatmalarini ayta olasiz',
+    can:['손을 다쳤어요.','피가 나요.','눌러주세요!','움직이지 마세요.','구급상자 가져오세요.']
+  },
+  listen:{
+    ctx:'🤕 작업 중 부상 / Ish paytida jarohat',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'아! 손을 다쳤어요! 피가 나요!',uz:'Voy! Qo\'limni yaraladim! Qon kelyapti!',side:'left'},
+      {who:'🧑‍🏭',name:'선배',ko:'어디 봐요! 깊어요?',uz:'Ko\'ray! Chuqurmi?',side:'right'},
+      {who:'👷',name:'근로자',ko:'모르겠어요. 많이 아파요.',uz:"Bilmayman. Juda og'riyapti.",side:'left'},
+      {who:'🧑‍🏭',name:'선배',ko:'구급상자 가져올게요!\n그동안 눌러주세요, 꽉요!',uz:"Doriyo qutisini olib kelaman!\nShu vaqt bosib turing, mahkam!",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'(돌아와서) 움직이지 마세요.\n소독하고 붕대 감아요.',uz:"(qaytib) Qimirlamang.\nZaharlaymiz va bog'laymiz.",side:'right'},
+      {who:'👷',name:'근로자',ko:'119 불러야 해요?',uz:'119 chaqirish kerakmi?',side:'left'},
+      {who:'🧑‍🏭',name:'선배',ko:'좀 봐요... 깊어요. 119 부릅시다!',uz:"Ko'raman... Chuqur. 119 chaqiramiz!",side:'right'},
+    ]
+  },
+  words:[
+    {ko:'구급상자', syl:'구·급·상·자', rom:'gu-geup-sang-ja', uz:"doriyo qutisi (first aid kit)", ex:'구급상자 가져오세요.', e:'🧰'},
+    {ko:'피가 나요', syl:'피·가·나·요', rom:'pi-ga-na-yo', uz:'qon kelyapti (bleeding)', ex:'손에서 피가 나요.', e:'🩸'},
+    {ko:'눌러주세요', syl:'눌·러·주·세·요', rom:'nul-leo-ju-se-yo', uz:'bosib turing (press it)', ex:'상처를 눌러주세요.', e:'👇'},
+    {ko:'붕대', syl:'붕·대', rom:'bung-dae', uz:"bog'lam / bint (bandage)", ex:'붕대를 감아주세요.', e:'🩹'},
+    {ko:'소독', syl:'소·독', rom:'so-dok', uz:"dezinfeksiya qilish (disinfect)", ex:'소독하고 붕대 감아요.', e:'💊'},
+  ],
+  pattern:{
+    labelKo:'문형: [신체부위]를/을 다쳤어요. / [신체부위]가 아파요.',
+    labelUz:"Shakl: [tana a'zo]ni yaraladim. / [tana a'zo] og'riyapti.",
+    template:'[___]를/을 다쳤어요. / [___]가/이 아파요.',
+    desc:'부상을 설명할 때 · Jarohatni tushuntirishda',
+    drills:[
+      {blank:'손', full:'손을 다쳤어요.', uz:"Qo'limni yaraladim."},
+      {blank:'발', full:'발을 다쳤어요.', uz:'Oyog\'imni yaraladim.'},
+      {blank:'머리', full:'머리가 아파요.', uz:"Boshim og'riyapti."},
+      {blank:'등', full:'등이 아파요.', uz:"Belim og'riyapti."},
+    ]
+  },
+  speak:[
+    {situation:'🩸 지금 손에서 피가 나요. 선배에게 말해요.', prompt:"부상을 설명해봐요.", phrase:'손을 다쳤어요. 피가 나요. 도와주세요!', uz:"Qo'limni yaraladim. Qon kelyapti. Yordam bering!"},
+    {situation:'🧰 구급상자가 필요해요. 친구에게 부탁해요.', prompt:"'가져오세요'를 써봐요.", phrase:'구급상자 가져오세요! 빨리요!', uz:"Doriyo qutisini olib keling! Tez!"},
+    {situation:'💊 상처에 응급처치를 해요. 다음 순서를 말해요.', prompt:'소독과 붕대에 대해 말해봐요.', phrase:'먼저 소독하고, 붕대를 감아요.', uz:"Avval dezinfeksiya qilamiz, keyin bog'laymiz."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"구급상자" 는 무엇이에요?', qu:'"구급상자" nima?', opts:["yong'in o'chiruvchi",'doriyo qutisi (first aid kit)','MSDS varaqasi','himoya dubulg\'asi'], ans:1},
+    {tag:'문형', q:'"발을 ___ 어요." 부상을 표현해요.', qu:'"Oyog\'imni ___ dim." Bo\'shliqni to\'ldiring.', opts:['좋았','먹었','다쳤','갔'], ans:2},
+    {tag:'의사소통', q:'상처에서 피가 날 때 먼저 해야 하는 것은?', qu:'Yaradan qon kelganda birinchi nima qilish kerak?', opts:['달리기','상처를 눌러요 (bosib turish)','음식 먹기','자기'], ans:1},
+    {tag:'어휘', q:'"소독" 이란 무엇이에요?', qu:'"Dezinfeksiya" nima?', opts:["yuvish (씻기)",'dezinfeksiya qilish (소독하기)',"o'chirish (끄기)",'kiyish (입기)'], ans:1},
+  ]
+},
+
+{
+  day:11, icon:'📋',
+  titleKo:'작업 허가 받았어요?', titleUz:"Ish ruxsatnomasi oldingizmi?",
+  subKo:'오늘의 목표: 작업 전 허가/승인 표현', subUz:"Bugungi maqsad: Ishdan oldin ruxsat/tasdiqlash ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"허가를 받았어요?" "아직 못 받았어요" 로 작업 허가를 확인할 수 있어요',
+    uz:'"Ruxsat oldingizmi?" "Hali olmaganman" bilan ish ruxsatini tekshira olasiz',
+    can:['작업 허가를 받았어요?','아직 못 받았어요.','관리자에게 확인해야 해요.','혼자 하면 안 돼요.','2인 1조로 작업해요.']
+  },
+  listen:{
+    ctx:'📋 위험 작업 시작 전 / Xavfli ish boshlashdan oldin',
+    bubbles:[
+      {who:'🧑‍🏭',name:'선배',ko:'잠깐요! 작업 허가 받았어요?',uz:'Bir daqiqa! Ish ruxsatnomasi oldingizmi?',side:'left'},
+      {who:'👷',name:'근로자',ko:'아, 허가요? 아직 못 받았어요.',uz:"Ruxsat? Hali olmaganman.",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'그러면 지금 바로 하면 안 돼요!\n관리자에게 먼저 확인하세요.',uz:"Unday bo'lsa hozir darhol qilish mumkin emas!\nBoshqaruvchiga avval tasdiqlating.",side:'left'},
+      {who:'👷',name:'근로자',ko:'혼자 하면 안 돼요?',uz:"Yolg'iz qilish mumkin emasmi?",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'이 작업은 위험해서 2인 1조예요.\n혼자 하면 절대 안 돼요.',uz:"Bu ish xavfli, shuning uchun 2 kishi birga.\nYolg'iz qilish mutlaqo mumkin emas.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'작업 허가', syl:'작·업·허·가', rom:'ja-geop-heo-ga', uz:'ish ruxsatnomasi (work permit)', ex:'작업 허가를 받아야 해요.', e:'📋'},
+    {ko:'아직', syl:'아·직', rom:'a-jik', uz:'hali / hozircha (still/yet)', ex:'아직 못 받았어요.', e:'⏳'},
+    {ko:'2인 1조', syl:'이·인·일·조', rom:'i-in-il-jo', uz:"2 kishi bir guruh (2-person team)", ex:'2인 1조로 작업해요.', e:'👥'},
+    {ko:'승인', syl:'승·인', rom:'seung-in', uz:'tasdiqlash / ruxsat (approval)', ex:'관리자 승인이 필요해요.', e:'✅'},
+    {ko:'바로', syl:'바·로', rom:'ba-ro', uz:'darhol / bevosita (immediately/directly)', ex:'지금 바로 하면 안 돼요.', e:'⚡'},
+  ],
+  pattern:{
+    labelKo:'문형: 아직 [동사] + 못 했어요/받았어요. (미완료 표현)',
+    labelUz:"Shakl: Hali [fe'l] + qilmadim/olmaganman. (tugallanmagan holat)",
+    template:'아직 [___] 못 했어요.',
+    desc:'아직 하지 못한 것을 말할 때 · Hali qilmagan narsani aytishda',
+    drills:[
+      {blank:'허가를 받', full:'아직 허가를 못 받았어요.', uz:'Hali ruxsat olmaganman.'},
+      {blank:'교육을 받', full:'아직 교육을 못 받았어요.', uz:"Hali ta'lim olmaganman."},
+      {blank:'확인하', full:'아직 확인 못 했어요.', uz:'Hali tekshirmaganman.'},
+      {blank:'신고하', full:'아직 신고 못 했어요.', uz:'Hali xabar bermaganman.'},
+    ]
+  },
+  speak:[
+    {situation:'📋 선배가 작업 허가를 받았냐고 물어봐요.', prompt:"'아직 못'을 써서 대답해봐요.", phrase:'아직 허가를 못 받았어요. 지금 받으러 갈게요.', uz:"Hali ruxsat olmaganman. Hozir olishga boraman."},
+    {situation:'👥 위험한 작업을 혼자 하려는 친구를 막아요.', prompt:"'2인 1조'를 써서 말해봐요.", phrase:'이 작업은 혼자 하면 안 돼요. 2인 1조예요!', uz:"Bu ish yolg'iz qilinmaydi. 2 kishi birga!"},
+    {situation:'✅ 관리자에게 승인을 요청해요.', prompt:"'허가'를 써서 말해봐요.", phrase:'이 작업 허가를 받고 싶어요. 승인해 주세요.', uz:'Bu ish uchun ruxsat olmoqchiman. Tasdiqlang.'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"작업 허가" 가 무엇이에요?', qu:'"Ish ruxsatnomasi" nima?', opts:["ta'lim (교육)",'ish ruxsatnomasi (work permit)',"evakuatsiya (대피)",'soat (시간)'], ans:1},
+    {tag:'문형', q:'"아직 허가를 ___ 받았어요." 빈칸은?', qu:'"Hali ruxsat ___ olganman." Bo\'shliq?', opts:['잘','못','꼭','다'], ans:1},
+    {tag:'의사소통', q:'위험 작업 시 2인 1조란 무슨 뜻이에요?', qu:'"2인 1조" nima degani?', opts:["yolg'iz ishlash",'2 kishi birga ishlash (2명이 함께)',"2 ta mashina",'2 soat ishlash'], ans:1},
+    {tag:'법령', q:'고소 작업(높은 곳 작업) 전에 반드시 해야 하는 것은?', qu:'Baland joyda ishlashdan oldin nima qilish kerak?', opts:['바로 올라가기','작업 허가 받기 (ruxsat olish)','혼자 하기','빨리 하기'], ans:1},
+  ]
+},
+
+{
+  day:12, icon:'🏋️',
+  titleKo:'무거운 것을 들어요', titleUz:"Og'ir narsalarni ko'tarish",
+  subKo:'오늘의 목표: 중량물 취급 + 몸 자세 표현', subUz:"Bugungi maqsad: Og'ir yuk ko'tarish + tana holati ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"무릎을 굽히고 들어요" "허리를 다칠 수 있어요" 로 안전한 자세를 설명할 수 있어요',
+    uz:'"Tizzangizni buking va ko\'taring" "Belni shikastlashi mumkin" bilan xavfsiz holatni tushuntira olasiz',
+    can:['무릎을 굽히고 들어요.','허리를 다칠 수 있어요.','혼자 들면 안 돼요.','천천히 내려놓으세요.','보조 장비를 써요.']
+  },
+  listen:{
+    ctx:'📦 창고 — 무거운 물건 이동 중 / Ombor — og\'ir narsalarni ko\'chirish',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'이 박스 혼자 들 수 있어요.',uz:"Bu qutini yolg'iz ko'tara olaman.",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'잠깐요! 몇 킬로예요?',uz:'Bir daqiqa! Necha kilo?',side:'left'},
+      {who:'👷',name:'근로자',ko:'한 30킬로요.',uz:'Taxminan 30 kilo.',side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'혼자 들면 안 돼요! 허리를 다칠 수 있어요!\n같이 들어요.',uz:"Yolg'iz ko'tarmang! Belni shikastlashi mumkin!\nBirga ko'tamiz.",side:'left'},
+      {who:'👷',name:'근로자',ko:'어떻게 들어요?',uz:"Qanday ko'taraman?",side:'right'},
+      {who:'🧑‍🏭',name:'선배',ko:'무릎을 굽히고, 허리는 곧게 펴고 드세요.\n천천히 들어요!',uz:"Tizzangizni buging, belni to'g'ri ushlab ko'taring.\nSekin ko'taring!",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'무릎을 굽히다', syl:'무·릎·을·굽·히·다', rom:'mu-reup-eul gup-hi-da', uz:"tizzani bukmoq (to bend knees)", ex:'무릎을 굽히고 드세요.', e:'🦵'},
+    {ko:'허리', syl:'허·리', rom:'heo-ri', uz:"bel / o'rta qism (waist/lower back)", ex:'허리를 다칠 수 있어요.', e:'🔙'},
+    {ko:'중량물', syl:'중·량·물', rom:'jung-nyang-mul', uz:"og'ir yuk (heavy load)", ex:'중량물은 혼자 들면 안 돼요.', e:'📦'},
+    {ko:'곧게', syl:'곧·게', rom:'got-ge', uz:"to'g'ri / barobar (straight)", ex:'허리를 곧게 펴세요.', e:'📏'},
+    {ko:'천천히', syl:'천·천·히', rom:'cheon-cheon-hi', uz:'sekin / asta (slowly)', ex:'천천히 내려놓으세요.', e:'🐢'},
+  ],
+  pattern:{
+    labelKo:'문형: [동사]고, [동사]세요. (연속 동작)',
+    labelUz:"Shakl: [fe'l]ib, [fe'l]ing. (ketma-ket harakat)",
+    template:'[___]고, [___]세요.',
+    desc:'두 동작을 순서대로 말할 때 · Ikki harakatni ketma-ket aytishda',
+    drills:[
+      {blank:'무릎을 굽히', full:'무릎을 굽히고, 들어요.', uz:"Tizzani bukib, ko'taring."},
+      {blank:'장갑을 끼', full:'장갑을 끼고, 작업하세요.', uz:'Qo\'lqop kiyib, ishlang.'},
+      {blank:'확인하', full:'확인하고, 시작하세요.', uz:'Tekshirib, boshlang.'},
+      {blank:'전원을 끄', full:'전원을 끄고, 점검하세요.', uz:"Quvvatni o'chirib, tekshiring."},
+    ]
+  },
+  speak:[
+    {situation:"📦 친구가 무거운 박스를 혼자 들려고 해요. 도와줘요!", prompt:"'같이 들어요'를 써봐요.", phrase:'혼자 들면 안 돼요! 같이 들어요!', uz:"Yolg'iz ko'tarmang! Birga ko'tamiz!"},
+    {situation:"🦵 올바른 들기 자세를 친구에게 알려줘요.", prompt:"'굽히고'를 써서 설명해봐요.", phrase:'무릎을 굽히고, 허리는 곧게 펴고 드세요.', uz:"Tizzangizni buging, belni to'g'ri ushlab ko'taring."},
+    {situation:"🐢 무거운 물건을 내려놓을 때 주의해요.", prompt:"어떻게 해야 해요?", phrase:'천천히 내려놓으세요. 서두르지 마세요.', uz:'Sekin qo\'ying. Shoshilmang.'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"허리를 다칠 수 있어요" 에서 "허리" 는?', qu:'"Bel shikastlanishi mumkin" da "bel" nima?', opts:["bosh (머리)",'bel/o\'rta qism (허리)',"qo'l (손)",'oyoq (발)'], ans:1},
+    {tag:'문형', q:'"무릎을 ___ 고, 들어요." 빈칸은?', qu:'"Tizzani ___ ib, ko\'taring." Bo\'shliq?', opts:['펴','굽히','들','앉'], ans:1},
+    {tag:'의사소통', q:'25kg 이상 물건을 들 때 가장 좋은 방법은?', qu:"25kg dan ortiq narsani ko'tarishda eng yaxshi usul?", opts:["tez ko'tarish",'2명이 함께 들기 (같이 들기)',"yolg'iz ko'tarish",'arqon bilan'], ans:1},
+    {tag:'법령', q:'1회 들기 권장 최대 무게는?', qu:"Bir marta ko'tarish uchun tavsiya etilgan maksimal vazn?", opts:['5kg','10kg','25kg 이하','50kg'], ans:2},
+  ]
+},
+
+{
+  day:13, icon:'🔌',
+  titleKo:'전기 위험 — 꼭 알아야 해요', titleUz:"Elektr xavfi — albatta bilish kerak",
+  subKo:'오늘의 목표: 전기 안전 경고 + 추측 표현', subUz:"Bugungi maqsad: Elektr xavfsizligi ogohlantirishlari + taxmin ifodalari",
+  level:'A2',
+  goal:{
+    ko:'"감전될 수 있어요" "합선이 날 수 있어요" 로 전기 위험을 경고할 수 있어요',
+    uz:'"Tok urishi mumkin" "Qisqa tutashuv bo\'lishi mumkin" bilan elektr xavfini ogohlantira olasiz',
+    can:['젖은 손으로 만지면 안 돼요.','감전될 수 있어요!','합선이 날 수 있어요.','먼저 전원을 끄세요.','절연장갑을 착용하세요.']
+  },
+  listen:{
+    ctx:'🔌 전기 관련 작업 중 / Elektr ishlari davomida',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'여기 전선이 끊어졌어요.',uz:"Bu yerda elektr sim uzilgan.",side:'right'},
+      {who:'👔',name:'관리자',ko:'만지면 안 돼요! 감전될 수 있어요!',uz:"Tegmang! Tok urishi mumkin!",side:'left'},
+      {who:'👷',name:'근로자',ko:'전원은 켜져 있어요?',uz:"Quvvat yoqilganmi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'모르면 절대 만지면 안 돼요!\n반드시 전원 먼저 끄고 확인해요.',uz:"Bilmasangiz mutlaqo tegmang!\nAlbatta avval quvvatni o'chirib tekshiring.",side:'left'},
+      {who:'👷',name:'근로자',ko:'젖은 손으로도 안 돼요?',uz:"Namxush qo'l bilan ham bo'lmaydi?",side:'right'},
+      {who:'👔',name:'관리자',ko:'당연하죠! 물과 전기는 절대 같이 있으면 안 돼요.\n절연장갑 착용하세요.',uz:"Albatta! Suv va elektr mutlaqo birga bo'lishi mumkin emas.\nIzolyatsiya qo'lqopini kiyib oling.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'감전', syl:'감·전', rom:'gam-jeon', uz:'tok urishi (electric shock)', ex:'감전될 수 있어요.', e:'⚡'},
+    {ko:'합선', syl:'합·선', rom:'hap-seon', uz:'qisqa tutashuv (short circuit)', ex:'합선이 날 수 있어요.', e:'🔥'},
+    {ko:'절연장갑', syl:'절·연·장·갑', rom:'jeo-ryeon-jang-gap', uz:"izolyatsiya qo'lqopi (insulated gloves)", ex:'절연장갑을 착용하세요.', e:'🧤'},
+    {ko:'전선', syl:'전·선', rom:'jeon-seon', uz:'elektr sim (wire/cable)', ex:'전선을 만지면 안 돼요.', e:'🔌'},
+    {ko:'~될 수 있어요', syl:'될·수·있·어·요', rom:'doel su i-sseo-yo', uz:'bo\'lishi mumkin (it can become)', ex:'감전될 수 있어요.', e:'⚠️'},
+  ],
+  pattern:{
+    labelKo:'문형: [동사/형용사] + (으)ㄹ 수 있어요. (가능성/추측)',
+    labelUz:"Shakl: [fe'l/sifat] + ish mumkin. (ehtimollik/taxmin)",
+    template:'[___](으)ㄹ 수 있어요.',
+    desc:'위험한 가능성을 경고할 때 · Xavfli ehtimolni ogohlantirish uchun',
+    drills:[
+      {blank:'감전될', full:'감전될 수 있어요!', uz:'Tok urishi mumkin!'},
+      {blank:'다칠', full:'다칠 수 있어요!', uz:'Jarohat olishi mumkin!'},
+      {blank:'화재가 날', full:'화재가 날 수 있어요!', uz:"Yong'in chiqishi mumkin!"},
+      {blank:'합선이 날', full:'합선이 날 수 있어요!', uz:'Qisqa tutashuv bo\'lishi mumkin!'},
+    ]
+  },
+  speak:[
+    {situation:'⚡ 친구가 끊어진 전선 가까이 가요. 경고해요!', prompt:"'감전'을 써서 경고해봐요.", phrase:'거기 가면 안 돼요! 감전될 수 있어요!', uz:"U yerga borish mumkin emas! Tok urishi mumkin!"},
+    {situation:'💧 친구가 젖은 손으로 전기를 만지려 해요.', prompt:"경고해봐요.", phrase:'젖은 손으로 만지면 안 돼요! 위험해요!', uz:"Namxush qo'l bilan tegmang! Xavfli!"},
+    {situation:'🔌 전기 작업 전에 무엇을 해야 해요?', prompt:"순서를 말해봐요.", phrase:'먼저 전원을 끄고, 절연장갑을 착용하세요.', uz:"Avval quvvatni o'chirib, izolyatsiya qo'lqopini kiyib oling."},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"감전" 은 무엇이에요?', qu:'"Tok urishi" nima?', opts:["yong'in",'tok urishi (electric shock)',"kimyoviy modda",'mashina'], ans:1},
+    {tag:'문형', q:'"다___ 수 있어요." 빈칸은?', qu:'"Jarohat o\'l___ mumkin." Bo\'shliq?', opts:['먹을','칠','졌','하면'], ans:1},
+    {tag:'의사소통', q:'전기 작업 전에 가장 먼저 해야 하는 것은?', qu:'Elektr ishi boshlanishidan oldin birinchi nima qilish kerak?', opts:['바로 만지기','전원 끄기 (quvvatni o\'chirish)','빨리 하기','혼자 하기'], ans:1},
+    {tag:'어휘', q:'전기 작업 시 꼭 써야 하는 보호구는?', qu:"Elektr ishi paytida albatta kiyiladigan himoya vositasi?", opts:['방진마스크','안전대','절연장갑 (izolyatsiya qo\'lqopi)','안전모'], ans:2},
+  ]
+},
+
+{
+  day:14, icon:'🏆',
+  titleKo:'2주일 완성! 나는 안전해요', titleUz:"2 hafta tugadi! Men xavfsizman",
+  subKo:'오늘의 목표: 2주일 종합 복습 + 현장 대화 완성', subUz:"Bugungi maqsad: 2 haftalik to'liq takrorlash + ish joyi suhbati",
+  level:'A2',
+  goal:{
+    ko:'2주일 동안 배운 핵심 표현으로 현장에서 말할 수 있어요!',
+    uz:'2 haftada o\'rganilgan asosiy iboralar bilan ish joyida gapira olasiz!',
+    can:['불이 났어요! 비상구로 나가세요!','화학물질 전에 MSDS를 확인해요.','감전될 수 있어요! 전원 꺼요!','허가받고, 2인 1조로 해요.','구급상자 가져오세요! 피가 나요!','무릎 굽히고 천천히 드세요.']
+  },
+  listen:{
+    ctx:'🎓 2주일 종합 — 현장 총복습 / 2 haftalik yakuniy takrorlash',
+    bubbles:[
+      {who:'👷',name:'근로자',ko:'(8일) 불이 났어요! 계단으로 나가세요!',uz:"(8-kun) Yong'in! Zinapoyadan chiqing!",side:'left'},
+      {who:'👷',name:'근로자',ko:'(9일) 사용 전에 MSDS 확인해요. 장갑 끼고!',uz:"(9-kun) Ishlatishdan oldin MSDS ni tekshiring. Qo'lqop kiyib!",side:'right'},
+      {who:'👷',name:'근로자',ko:'(10일) 손 다쳤어요! 구급상자 가져오세요!',uz:"(10-kun) Qo'l yaralandi! Doriyo qutisini olib keling!",side:'left'},
+      {who:'👷',name:'근로자',ko:'(11일) 허가 받았어요? 2인 1조예요!',uz:"(11-kun) Ruxsat oldingizmi? 2 kishi birga!",side:'right'},
+      {who:'👷',name:'근로자',ko:'(12일) 무릎 굽히고, 천천히 들어요!',uz:"(12-kun) Tizzani bukib, sekin ko'taring!",side:'left'},
+      {who:'👷',name:'근로자',ko:'(13일) 감전될 수 있어요! 절연장갑 착용!',uz:"(13-kun) Tok urishi mumkin! Izolyatsiya qo'lqopi!",side:'right'},
+    ]
+  },
+  words:[
+    {ko:'완성', syl:'완·성', rom:'wan-seong', uz:"tugallash / bajarish (completion)", ex:'2주일 완성이에요!', e:'🏆'},
+    {ko:'숙달', syl:'숙·달', rom:'suk-dal', uz:'o\'zlashtirish / puxtalash (mastery)', ex:'한국어를 숙달해요.', e:'💪'},
+    {ko:'현장', syl:'현·장', rom:'hyeon-jang', uz:'ish joyi / maydon (workplace/site)', ex:'현장에서 써봐요.', e:'🏭'},
+    {ko:'복습', syl:'복·습', rom:'bok-seup', uz:'takrorlash (review)', ex:'오늘은 복습이에요.', e:'📖'},
+    {ko:'자신 있어요', syl:'자·신·있·어·요', rom:'ja-sin i-sseo-yo', uz:'ishonch bor (I am confident)', ex:'이제 자신 있어요!', e:'😊'},
+  ],
+  pattern:{
+    labelKo:'문형 총복습: 2주일 핵심 5가지',
+    labelUz:"Grammatika to'liq takrorlash: 2 haftaning 5 ta asosiy shakli",
+    template:'2주일 핵심 문형들',
+    desc:'지금 모두 말할 수 있어요 · Endi barchasini ayta olasiz',
+    drills:[
+      {blank:'~(으)로 가세요', full:'계단으로 나가세요.', uz:'Zinapoyadan chiqing.'},
+      {blank:'~기 전에 ~해야 해요', full:'사용하기 전에 확인해야 해요.', uz:'Ishlatishdan oldin tekshirish kerak.'},
+      {blank:'아직 ~못 했어요', full:'아직 허가를 못 받았어요.', uz:'Hali ruxsat olmaganman.'},
+      {blank:'~고, ~세요', full:'무릎을 굽히고, 들어요.', uz:"Tizzani bukib, ko'taring."},
+      {blank:'~(으)ㄹ 수 있어요', full:'감전될 수 있어요!', uz:'Tok urishi mumkin!'},
+    ]
+  },
+  speak:[
+    {situation:"🔥 화재가 났어요. 동료를 대피시켜요!", prompt:"배운 표현으로 말해봐요.", phrase:'불이 났어요! 빨리 계단으로 나가세요! 엘리베이터 타면 안 돼요!', uz:"Yong'in! Tez zinapoyadan chiqing! Liftga chiqish mumkin emas!"},
+    {situation:"🤕 동료가 다쳤어요. 응급처치를 해요.", prompt:"순서대로 말해봐요.", phrase:'움직이지 마세요. 구급상자 가져오세요. 119에 전화해요!', uz:"Qimirlamang. Doriyo qutisini olib keling. 119 ga qo'ng'iroq!"},
+    {situation:"😊 2주일 마무리! 스스로 응원해요.", prompt:"자신감 있게 말해봐요.", phrase:'2주일 동안 열심히 했어요! 이제 자신 있어요!', uz:"2 hafta davomida qattiq ishladim! Endi ishonchim bor!"},
+  ],
+  quiz:[
+    {tag:'종합', q:'화재 시 절대 타면 안 되는 것은?', qu:"Yong'inda mutlaqo chiqmaslik kerak bo'lgan narsa?", opts:['비상구','계단','엘리베이터 (lift)','화재 신고'], ans:2},
+    {tag:'종합', q:'화학물질 사용 전에 읽어야 하는 것은?', qu:"Kimyoviy modda ishlatishdan oldin o'qish kerak bo'lgan narsa?", opts:['신문','MSDS 자료 (xavfsizlik varaqasi)','메뉴판','사진'], ans:1},
+    {tag:'종합', q:'"감전될 ___ 있어요!" 빈칸은?', qu:'"Tok urishi ___ mumkin!" Bo\'shliq?', opts:['수','을','가','를'], ans:0},
+    {tag:'종합', q:'무거운 물건을 들 때 올바른 자세는?', qu:"Og'ir narsani ko'tarishda to'g'ri holat?", opts:['허리를 굽히고','무릎을 굽히고 허리는 곧게 (tizzani bukib, belni to\'g\'ri)','빨리 들기','한 손으로 들기'], ans:1},
+    {tag:'종합', q:'전기 작업 시 착용해야 하는 보호구는?', qu:'Elektr ishi paytida kiyilishi kerak bo\'lgan himoya vositasi?', opts:['방진마스크','안전대','절연장갑 (izolyatsiya qo\'lqopi)','귀마개'], ans:2},
+    {tag:'종합', q:'부상 시 상처에서 피가 날 때 먼저 하는 것은?', qu:"Jarohatdan qon kelganda birinchi nima qilish kerak?", opts:['달리기','상처 누르기 (bosib turish)','잠자기','음식 먹기'], ans:1},
+  ]
+}
+];
+
+// ════════════════════════
+// STATE
+// ════════════════════════
+const STEPS = ['목표','듣기','뜯어봐요','패턴드릴','말해봐요','확인','완료'];
+const STEP_HINTS_KO = ['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'];
+const STEP_HINTS_UZ = ['Bugungi maqsad',"Suhbatni eshiting","So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting","Test",'Tugadi!'];
+
+let ST = {
+  lang:'ko', dayIdx:null, step:0,
+  wordIdx:0, drillIdx:0, speakIdx:0,
+  quizIdx:0, quizScore:0,
+  done: []
+};
+
+// ════════════════════════
+// LANG
+// ════════════════════════
+function toggleLang(){
+  ST.lang = ST.lang==='ko' ? 'uz' : 'ko';
+  document.getElementById('langBtn').textContent = ST.lang==='ko' ? '🇺🇿 UZ' : '🇰🇷 KO';
+  ST.dayIdx!==null ? renderLesson() : renderHome();
+}
+
+// ════════════════════════
+// SPEECH
+// ════════════════════════
+function say(text, cb){
+  if(!window.speechSynthesis){cb&&cb();return}
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='ko-KR'; u.rate=0.82; u.pitch=1;
+  if(cb) u.onend=cb;
+  setTimeout(()=>window.speechSynthesis.speak(u), 60);
+}
+
+// ════════════════════════
+// HOME
+// ════════════════════════
+function renderHome(){
+  const g = document.getElementById('dayGrid');
+  g.innerHTML='';
+  CUR.forEach((d,i)=>{
+    const done = ST.done.includes(d.day);
+    const locked = i>0 && !ST.done.includes(CUR[i-1].day) && !done;
+    const el = document.createElement('div');
+    el.className = `dc${done?' done':''}${locked?' locked':''}${!done&&!locked?' open':''}`;
+    el.innerHTML = `
+      <div class="dnum">Day ${d.day} · ${d.level}</div>
+      <div class="dice">${d.icon}</div>
+      <div class="dtitle">${ST.lang==='ko'?d.titleKo:d.titleUz}</div>
+      <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ','🎯 '):d.subUz.replace('Bugungi maqsad: ','🎯 ')}</div>
+      <div class="dstat">${done?'✅':locked?'🔒':'▶️'}</div>
+    `;
+    if(!locked) el.onclick=()=>startLesson(i);
+    g.appendChild(el);
+  });
+  const pct = Math.round(ST.done.length/CUR.length*100);
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pt').textContent=`${ST.done.length} / ${CUR.length} 완료 (${pct}%)`;
+}
+
+// ════════════════════════
+// LESSON
+// ════════════════════════
+function startLesson(i){
+  ST.dayIdx=i; ST.step=0;
+  ST.wordIdx=0; ST.drillIdx=0; ST.speakIdx=0;
+  ST.quizIdx=0; ST.quizScore=0;
+  sessionStart(CUR[i].day);
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  document.getElementById('homeScr').classList.remove('on');
+  document.getElementById('lessonScr').classList.add('on');
+  renderLesson();
+}
+function goHome(){
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  ST.dayIdx=null;
+  document.getElementById('lessonScr').classList.remove('on');
+  document.getElementById('profileScr').classList.remove('on');
+  document.getElementById('homeScr').classList.add('on');
+  renderHome();
+}
+function next(){ST.step++;renderLesson();}
+
+function renderLesson(){
+  const d = CUR[ST.dayIdx], s = ST.step;
+  const uz = ST.lang==='uz';
+  document.getElementById('lTitle').textContent=`Day ${d.day}: ${uz?d.titleUz:d.titleKo}`;
+  document.getElementById('lSub').textContent=uz?d.subUz:d.subKo;
+  // step bar
+  document.getElementById('sbar').innerHTML=STEPS.map((_,i)=>
+    `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
+  document.getElementById('stepName').textContent=(uz?['목표','듣기','뜯어봐요','패턴','말하기','확인','완료']:STEPS)[s]||STEPS[s];
+  document.getElementById('stepHint').textContent=uz?STEP_HINTS_UZ[s]:STEP_HINTS_KO[s];
+
+  const el=document.getElementById('lcontent'); el.innerHTML='';
+  if(s===0) rGoal(d,el,uz);
+  else if(s===1) rListen(d,el,uz);
+  else if(s===2) rWords(d,el,uz);
+  else if(s===3) rDrill(d,el,uz);
+  else if(s===4) rSpeak(d,el,uz);
+  else if(s===5) rQuiz(d,el,uz);
+  else if(s===6) rResult(d,el,uz);
+}
+
+// ── Step 0: 목표 (Goal) ──
+function rGoal(d,el,uz){
+  const g=d.goal;
+  el.innerHTML=`
+    <div class="goal-box">
+      <div class="g-label">🎯 오늘 이 말을 할 수 있어요! / Bugun buni ayta olasiz!</div>
+      <div class="g-ko">"${uz?g.uz:g.ko}"</div>
+      <div class="g-uz">${uz?g.ko:g.uz}</div>
+      <div class="g-level">🏷 ${d.level} 수준</div>
+    </div>
+    <div class="info" style="margin-bottom:12px">
+      📌 오늘 배우면 말할 수 있는 표현들 / Bugun o'rganib, ayta oladigan gaplar:
+      ${g.can.map(c=>`<br>▸ <strong>${c}</strong>`).join('')}
+    </div>
+    <button class="btn red" onclick="next()">📢 대화 듣기 → / Suhbatni eshiting</button>
+  `;
+}
+
+// ── Step 1: 듣기 (Listen) ──
+function rListen(d,el,uz){
+  const l=d.listen;
+  const allText = l.bubbles.map(b=>b.ko).join(' ');
+  el.innerHTML=`
+    <div class="listen-box">
+      <div class="scene">${l.ctx.split(' ')[0]}</div>
+      <div class="ctx-tag">${l.ctx}</div>
+      ${l.bubbles.map(b=>`
+        <div class="bubble-row ${b.side}">
+          <div class="bubble-avatar">${b.who}</div>
+          <div class="bubble-body">
+            <div class="bubble-name">${b.name}</div>
+            <div class="bubble-text">${b.ko}</div>
+            <div class="bubble-uz">${b.uz}</div>
+          </div>
+        </div>
+      `).join('')}
+      <div class="listen-hint">🔊 아래 버튼으로 전체를 들어봐요 / Pastdagi tugma bilan eshiting</div>
+    </div>
+    <button class="btn red" style="margin-bottom:8px" onclick="sayDialog(${JSON.stringify(allText)})">🔊 전체 듣기 / Hammasini eshitish</button>
+    <button class="btn gray" onclick="next()">다음 → 단어 / Davom: So'zlar</button>
+  `;
+}
+function sayDialog(text){say(text);}
+
+// ── Step 2: 뜯어봐요 (Word breakdown) ──
+function rWords(d,el,uz){
+  el.innerHTML=`
+    <div class="info">🔍 단어를 눌러서 발음을 들어봐요 / So'zni bosib talaffuzni eshiting</div>
+    <div class="word-cards">
+      ${d.words.map((w,i)=>`
+        <div class="word-card" id="wc${i}" onclick="playW(${i},${JSON.stringify(w.ko)})">
+          <div class="wc-left">
+            <div class="wc-ko">${w.e} ${w.ko}</div>
+            <div class="wc-syl">${w.syl}</div>
+          </div>
+          <div class="wc-right">
+            <div class="wc-rom">[${w.rom}]</div>
+            <div class="wc-uz">${w.uz}</div>
+            <div class="wc-ex">▸ ${w.ex}</div>
+          </div>
+          <div class="wc-play">▶</div>
+        </div>
+      `).join('')}
+    </div>
+    <button class="btn red" onclick="next()">다음 → 패턴 연습 / Davom: Namuna</button>
+  `;
+}
+function playW(i,text){
+  document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
+  const el=document.getElementById('wc'+i); if(el) el.classList.add('playing');
+  say(text,()=>{const e=document.getElementById('wc'+i);if(e)e.classList.remove('playing')});
+}
+
+// ── Step 3: 패턴 드릴 ──
+function rDrill(d,el,uz){
+  const p=d.pattern;
+  const di=ST.drillIdx;
+  if(di>=p.drills.length){
+    el.innerHTML=`
+      <div class="pattern-box" style="text-align:center;padding:24px">
+        <div style="font-size:48px;margin-bottom:10px">🎉</div>
+        <div style="font-size:18px;font-weight:800;color:var(--blue)">패턴 완료! / Namuna tugadi!</div>
+      </div>
+      <button class="btn red" onclick="ST.speakIdx=0;next()">다음 → 말해봐요 / Davom: Gapirish</button>
+    `;
+    return;
+  }
+  const dr=p.drills[di];
+  el.innerHTML=`
+    <div class="pattern-box">
+      <div class="pat-label">📐 ${uz?p.labelUz:p.labelKo}</div>
+      <div class="pat-template" style="color:var(--muted);font-size:15px;margin-bottom:8px">
+        ${p.template} <span style="font-size:12px">(${p.desc.split('·')[uz?1:0].trim()})</span>
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px">
+        패턴 ${di+1} / ${p.drills.length} — 누르면 소리가 나요 / Bosing, ovoz chiqadi
+      </div>
+      <div class="drill-items">
+        ${p.drills.map((dr2,i)=>`
+          <div class="drill-item ${i===di?'playing':''}" id="di${i}" onclick="playDrill(${i},${JSON.stringify(dr2.full)})">
+            <div>
+              <div class="di-full">${dr2.full}</div>
+              <div class="di-uz">${dr2.uz}</div>
+            </div>
+            <div class="di-play">${i===di?'▶️':i<di?'✅':'○'}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <button class="btn red" onclick="ST.drillIdx++;renderLesson()">
+      ${di<p.drills.length-1 ? '다음 패턴 → / Keyingi namuna' : '다음 단계 → / Keyingi bosqich'}
+    </button>
+    ${di>0?`<button class="btn gray" onclick="ST.drillIdx--;renderLesson()">← 이전 / Oldingi</button>`:''}
+  `;
+}
+function playDrill(i,text){
+  document.querySelectorAll('.drill-item').forEach(x=>x.classList.remove('playing'));
+  const el=document.getElementById('di'+i); if(el)el.classList.add('playing');
+  say(text,()=>{const e=document.getElementById('di'+i);if(e)e.classList.remove('playing')});
+}
+
+// ── Step 4: 말해봐요 (Speak) ──
+function rSpeak(d,el,uz){
+  const si=ST.speakIdx;
+  if(si>=d.speak.length){
+    el.innerHTML=`
+      <div class="speak-card" style="padding:28px">
+        <div style="font-size:52px;margin-bottom:12px">🗣️✅</div>
+        <div class="speak-phrase">말하기 완료!</div>
+        <div class="speak-prompt">Gapirish tugadi! Ajoyib!</div>
+      </div>
+      <button class="btn red" onclick="ST.quizIdx=0;ST.quizScore=0;next()">✏️ 확인 테스트 → / Test</button>
+    `;
+    return;
+  }
+  const sp=d.speak[si];
+  el.innerHTML=`
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">상황 ${si+1} / ${d.speak.length} · Vaziyat ${si+1} / ${d.speak.length}</div>
+    <div class="speak-card">
+      <div class="speak-situation">${sp.situation}</div>
+      <div class="speak-prompt">${uz?'Nima deysiz? / ':''}${sp.prompt}</div>
+      <div class="speak-phrase">${sp.phrase}</div>
+      <div class="wave" id="wav" style="display:none">
+        <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
+        <div class="wbar"></div><div class="wbar"></div>
+      </div>
+      <button class="btn-hear" onclick="hearSpeak(${JSON.stringify(sp.phrase)})">
+        🔊 한국어 듣기 / Koreycha eshiting
+      </button>
+      <div class="speak-tip">
+        1️⃣ 듣기 → 2️⃣ 따라 말하기 → 3️⃣ 다음으로<br>
+        <small>1. Eshiting → 2. Takrorlang → 3. Davom eting</small>
+      </div>
+    </div>
+    <button class="btn red" onclick="ST.speakIdx++;renderLesson()">
+      ${si<d.speak.length-1?'다음 상황 → / Keyingi vaziyat':'테스트로 → / Testga o\'tish'}
+    </button>
+    ${si>0?`<button class="btn gray" onclick="ST.speakIdx--;renderLesson()">← 이전 / Oldingi</button>`:''}
+  `;
+}
+function hearSpeak(text){
+  const w=document.getElementById('wav'); if(w)w.style.display='flex';
+  say(text,()=>{const ww=document.getElementById('wav');if(ww)ww.style.display='none'});
+}
+
+// ── Step 5: 퀴즈 ──
+function rQuiz(d,el,uz){
+  const qi=ST.quizIdx;
+  if(qi>=d.quiz.length){ST.step=6;renderLesson();return;}
+  const q=d.quiz[qi];
+  el.innerHTML=`
+    <div class="qhdr">
+      <span class="qprog">문제 ${qi+1} / ${d.quiz.length}</span>
+      <span class="qscore">✅ ${ST.quizScore}점</span>
+    </div>
+    <div class="qcard">
+      <div class="qtag">${q.tag}</div>
+      <div class="qq">${uz?q.qu:q.q}</div>
+      <div class="qsub">${uz?q.q:q.qu}</div>
+      <div class="qopts">
+        ${q.opts.map((o,i)=>`
+          <button class="qopt" id="qo${i}" onclick="ansQ(${i},${q.ans})">
+            ${String.fromCharCode(65+i)}. ${o}
+          </button>
+        `).join('')}
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  `;
+}
+function ansQ(chosen,correct){
+  const opts=document.querySelectorAll('.qopt');
+  const fb=document.getElementById('qfb');
+  opts.forEach(o=>{o.classList.add('off');o.onclick=null;});
+  const ok=chosen===correct;
+  if(ok){ST.quizScore++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent='✅ 맞아요! To\'g\'ri!';}
+  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`❌ 정답: ${String.fromCharCode(65+correct)}. Noto\'g\'ri.`;}
+  fb.style.display='block';
+  setTimeout(()=>{ST.quizIdx++;renderLesson();},1600);
+}
+
+// ── Step 6: 결과 ──
+function rResult(d,el,uz){
+  const t=d.quiz.length, pct=Math.round(ST.quizScore/t*100), pass=pct>=60;
+  const cls=pct>=80?'g':pct>=60?'m':'b';
+  const e=pct>=80?'🏆':pct>=60?'⭐':'📖';
+  sessionEnd(d.day, ST.quizScore, t);
+  if(pass&&!ST.done.includes(d.day)){ST.done.push(d.day);saveDone();}
+  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
+  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! 🎉':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
+
+  // What can I say now?
+  const can = d.goal.can;
+
+  el.innerHTML=`
+    <div class="rcard">
+      <div style="font-size:52px">${e}</div>
+      <div class="rscore ${cls}">${pct}%</div>
+      <div class="rmsg">${uz?msgUz:msgKo}</div>
+      <div class="rsub">${ST.quizScore} / ${t} 정답 · ${pass?(uz?"O'tdi ✅":'합격 ✅'):(uz?'Qayta urinib ko\'ring':'다시 도전해봐요')}</div>
+      ${pass?`
+      <div class="rpass">
+        <strong>🗣️ 이제 이렇게 말할 수 있어요 / Endi shunday dey olasiz:</strong><br>
+        ${can.map(c=>`▸ ${c}`).join('<br>')}
+      </div>
+      `:''}
+      ${pass
+        ?`<button class="btn red" onclick="goHome()">🏠 홈으로 / Bosh sahifa</button>`
+        :`<button class="btn red" onclick="ST.step=5;ST.quizIdx=0;ST.quizScore=0;renderLesson()">🔄 다시 / Qayta</button>
+          <button class="btn gray" onclick="goHome()">🏠 홈으로</button>`
+      }
+    </div>
+    <div style="padding:12px 0;font-size:10px;color:var(--muted);text-align:center;line-height:1.7">
+      고용노동부 · 안전보건공단(KOSHA) · EPS-TOPIK 기반 언어교육 커리큘럼
+    </div>
+  `;
+}
+
+// ════════════════════════════════════
+// AUTH & MULTI-USER SYSTEM
+// ════════════════════════════════════
+const U_KEY = 'sk_user';       // 현재 로그인 유저
+const USERS_KEY = 'sk_users';  // 전체 유저 목록 (아이디/비번 포함)
+const SEEDED_KEY = 'sk_seeded_v1';
+
+let _authLang = 'ko', _authLang2 = 'ko';
+
+// ── 유저별 localStorage 키
+function doneKey(uid){ return 'sk_done_' + uid; }
+function sessKey(uid){ return 'sk_sess_' + uid; }
+function strkKey(uid){ return 'sk_strk_' + uid; }
+
+function getUser(){ try{ return JSON.parse(localStorage.getItem(U_KEY)); }catch(e){return null;} }
+function getAllUsers(){ try{ return JSON.parse(localStorage.getItem(USERS_KEY))||[]; }catch(e){return[];} }
+function getSessions(){
+  const u = getUser(); if(!u) return [];
+  try{ return JSON.parse(localStorage.getItem(sessKey(u.id)))||[]; }catch(e){return[];}
+}
+
+// ── 테스트 유저 5명 정의
+const TEST_USERS = [
+  { id:'u_kim001',   username:'kim001',   password:'safe1234',
+    name:'김현우',           phone:'010-1234-5678', lang:'ko',
+    type:'individual', companyCode:null,   employeeNum:null,    notifTime:'20:00',
+    registeredAt:'2026-04-01T09:00:00.000Z' },
+  { id:'u_abdulla',  username:'abdulla',  password:'safe1234',
+    name:'Abdulla Karimov', phone:'010-2345-6789', lang:'uz',
+    type:'individual', companyCode:null,   employeeNum:null,    notifTime:'21:00',
+    registeredAt:'2026-04-02T09:00:00.000Z' },
+  { id:'u_rustam',   username:'rustam01', password:'abc1234',
+    name:'Rustam Nazarov',  phone:'010-3456-7890', lang:'uz',
+    type:'company',    companyCode:'SAFE01', employeeNum:'EMP-001', notifTime:'19:30',
+    registeredAt:'2026-04-01T08:00:00.000Z' },
+  { id:'u_bobur',    username:'bobur02',  password:'abc1234',
+    name:'Bobur Toshmatov', phone:'010-4567-8901', lang:'uz',
+    type:'company',    companyCode:'SAFE01', employeeNum:'EMP-002', notifTime:'20:00',
+    registeredAt:'2026-04-03T08:00:00.000Z' },
+  { id:'u_lee',      username:'lee_sm',   password:'safe5678',
+    name:'이성민',           phone:'010-5678-9012', lang:'ko',
+    type:'company',    companyCode:'SAFE01', employeeNum:'EMP-003', notifTime:'18:00',
+    registeredAt:'2026-04-01T07:30:00.000Z' },
+];
+
+// ── 테스트 유저별 가상 학습 데이터
+const TEST_SEEDS = {
+  u_kim001:  { done:[1,2,3,4,5,6,7],    scores:[85,90,80,95,75,90,85] },
+  u_abdulla: { done:[1,2,3,4,5],         scores:[70,80,75,65,85] },
+  u_rustam:  { done:[1,2,3,4,5,6,7,8,9,10], scores:[80,85,90,75,80,95,85,70,80,90] },
+  u_bobur:   { done:[1,2,3],             scores:[60,65,70] },
+  u_lee:     { done:[1,2,3,4,5,6,7,8,9,10,11,12,13,14], scores:[90,95,85,100,90,95,88,92,85,90,95,88,92,95] },
+};
+
+function seedTestUsers(){
+  if(localStorage.getItem(SEEDED_KEY)) return;
+  // 유저 목록 저장
+  const existing = getAllUsers();
+  const existingIds = existing.map(u=>u.id);
+  const toAdd = TEST_USERS.filter(u=>!existingIds.includes(u.id));
+  localStorage.setItem(USERS_KEY, JSON.stringify([...existing, ...toAdd]));
+
+  // 유저별 학습 데이터 시드
+  const baseDate = new Date('2026-04-05');
+  TEST_USERS.forEach(u => {
+    const seed = TEST_SEEDS[u.id];
+    if(!seed) return;
+    // done 배열
+    localStorage.setItem(doneKey(u.id), JSON.stringify(seed.done));
+    // 세션 기록
+    const sessions = seed.done.map((day,i)=>({
+      id: u.id+'_s'+i,
+      day,
+      date: new Date(baseDate.getTime()+i*86400000).toISOString().slice(0,10),
+      datetime: new Date(baseDate.getTime()+i*86400000).toISOString(),
+      score: Math.round(seed.scores[i]/100 * CUR.find(c=>c.day===day)?.quiz.length),
+      total: CUR.find(c=>c.day===day)?.quiz.length||4,
+      pct: seed.scores[i],
+      passed: seed.scores[i]>=60,
+      duration: 200+Math.floor(Math.random()*200),
+      userId: u.id, companyCode: u.companyCode
+    }));
+    localStorage.setItem(sessKey(u.id), JSON.stringify(sessions));
+    // 스트릭
+    const today = new Date().toISOString().slice(0,10);
+    localStorage.setItem(strkKey(u.id), JSON.stringify({
+      lastStudy: today, count: seed.done.length
+    }));
+  });
+  localStorage.setItem(SEEDED_KEY, '1');
+}
+
+// ── 로그인
+function doLogin(){
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value;
+  const err = document.getElementById('login-err');
+  if(!id||!pw){ showLoginErr('아이디와 비밀번호를 입력해주세요'); return; }
+  const users = getAllUsers();
+  const found = users.find(u=>u.username===id && u.password===pw);
+  if(!found){ showLoginErr('아이디 또는 비밀번호가 틀렸어요 / Noto\'g\'ri login yoki parol'); return; }
+  err.style.display='none';
+  localStorage.setItem(U_KEY, JSON.stringify(found));
+  loadUserProgress(found);
+  enterApp(found);
+}
+function showLoginErr(msg){
+  const e=document.getElementById('login-err');
+  e.textContent=msg; e.style.display='block';
+}
+
+// ── 회원가입
+function doSignup(){
+  const isInd = document.getElementById('tab-ind').classList.contains('on');
+  let user;
+  if(isInd){
+    const name = document.getElementById('ind-name').value.trim();
+    const phone = document.getElementById('ind-phone').value.trim();
+    const notifTime = document.getElementById('notif-time').value;
+    if(!name){ alert('이름을 입력해주세요 / Ismingizni kiriting'); return; }
+    if(!phone){ alert('핸드폰 번호를 입력해주세요 / Telefon raqamini kiriting'); return; }
+    user = { id:genId(), username:'user_'+Date.now().toString(36), password:null,
+      name, phone, lang:_authLang, type:'individual',
+      companyCode:null, companyName:null, employeeNum:null,
+      notifTime, registeredAt:new Date().toISOString() };
+  } else {
+    const code = document.getElementById('co-code').value.trim().toUpperCase();
+    const name = document.getElementById('co-name').value.trim();
+    const phone = document.getElementById('co-phone').value.trim();
+    const num = document.getElementById('co-num').value.trim();
+    const notifTime = document.getElementById('notif-time2').value;
+    if(!code){ alert('업체 코드를 입력해주세요'); return; }
+    if(!name){ alert('이름을 입력해주세요'); return; }
+    if(!phone){ alert('핸드폰 번호를 입력해주세요'); return; }
+    user = { id:genId(), username:'emp_'+Date.now().toString(36), password:null,
+      name, phone, lang:_authLang2, type:'company',
+      companyCode:code, companyName:null, employeeNum:num||null,
+      notifTime, registeredAt:new Date().toISOString() };
+  }
+  const users = getAllUsers();
+  users.push(user);
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  localStorage.setItem(U_KEY, JSON.stringify(user));
+  loadUserProgress(user);
+  enterApp(user);
+}
+
+// ── 유저별 진행도 로드
+function loadUserProgress(user){
+  const rawDone = localStorage.getItem(doneKey(user.id));
+  ST.done = rawDone ? JSON.parse(rawDone) : [];
+}
+
+function saveDone(){
+  const u=getUser(); if(!u) return;
+  localStorage.setItem(doneKey(u.id), JSON.stringify(ST.done));
+}
+
+function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+function switchAuthTab(t){
+  ['login','ind','co'].forEach(k=>{
+    const tab=document.getElementById('tab-'+k);
+    const form=document.getElementById('form-'+k);
+    if(tab) tab.classList.toggle('on',k===t);
+    if(form) form.style.display=k===t?'':'none';
+  });
+}
+function pickLang(l){ _authLang=l;
+  document.getElementById('lp-ko').classList.toggle('on',l==='ko');
+  document.getElementById('lp-uz').classList.toggle('on',l==='uz');
+}
+function pickLang2(l){ _authLang2=l;
+  document.getElementById('lp-ko2').classList.toggle('on',l==='ko');
+  document.getElementById('lp-uz2').classList.toggle('on',l==='uz');
+}
+function fmtPhone(inp){
+  let v=inp.value.replace(/\D/g,'');
+  if(v.length<=3) inp.value=v;
+  else if(v.length<=7) inp.value=v.slice(0,3)+'-'+v.slice(3);
+  else inp.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);
+}
+
+function enterApp(user){
+  ST.lang=user.lang;
+  document.getElementById('langBtn').textContent=user.lang==='ko'?'🇺🇿 UZ':'🇰🇷 KO';
+  document.getElementById('authScr').classList.remove('on');
+  document.getElementById('mainHdr').style.display='';
+  document.getElementById('homeScr').classList.add('on');
+  renderHome();
+}
+
+function checkAuth(){
+  seedTestUsers(); // 최초 1회만 실행
+  const user=getUser();
+  if(user){ loadUserProgress(user); enterApp(user); }
+}
+
+// ════════════════════════════════════
+// SESSION TRACKING (관리자 기록용)
+// ════════════════════════════════════
+let _sessionStart = null;
+
+function sessionStart(dayNum){
+  _sessionStart = { day: dayNum, startAt: Date.now() };
+}
+
+function sessionEnd(dayNum, score, total){
+  const u = getUser(); if(!u) return;
+  const sessions = getSessions();
+  const duration = _sessionStart ? Math.round((Date.now()-_sessionStart.startAt)/1000) : 0;
+  sessions.unshift({
+    id: genId(), day: dayNum,
+    date: new Date().toISOString().slice(0,10),
+    datetime: new Date().toISOString(),
+    score, total, pct: Math.round(score/total*100),
+    passed: score/total>=0.6, duration,
+    userId: u.id, companyCode: u.companyCode||null
+  });
+  if(sessions.length>200) sessions.splice(200);
+  localStorage.setItem(sessKey(u.id), JSON.stringify(sessions));
+  updateStreak();
+}
+
+function updateStreak(){
+  const u=getUser(); if(!u) return;
+  const today=new Date().toISOString().slice(0,10);
+  let s={}; try{s=JSON.parse(localStorage.getItem(strkKey(u.id)))||{};}catch(e){}
+  if(s.lastStudy===today) return;
+  const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  s.count=(s.lastStudy===yesterday)?(s.count||0)+1:1;
+  s.lastStudy=today;
+  localStorage.setItem(strkKey(u.id), JSON.stringify(s));
+}
+
+function getStreak(){
+  const u=getUser(); if(!u) return 0;
+  try{
+    const s=JSON.parse(localStorage.getItem(strkKey(u.id)))||{};
+    const today=new Date().toISOString().slice(0,10);
+    const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    if(s.lastStudy===today||s.lastStudy===yesterday) return s.count||0;
+    return 0;
+  }catch(e){return 0;}
+}
+
+// ════════════════════════════════════
+// PROFILE SCREEN
+// ════════════════════════════════════
+function goProfile(){
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  ST.dayIdx=null;
+  ['homeScr','lessonScr'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('profileScr').classList.add('on');
+  renderProfile();
+}
+
+function renderProfile(){
+  const user = getUser();
+  const sessions = getSessions();
+  const streak = getStreak();
+  const done = ST.done;
+  const total = CUR.length;
+
+  // 평균 점수
+  const avgPct = sessions.length
+    ? Math.round(sessions.reduce((a,s)=>a+s.pct,0)/sessions.length)
+    : 0;
+
+  // 주차별 완료 수
+  const w1done = done.filter(d=>d<=7).length;
+  const w2done = done.filter(d=>d>7&&d<=14).length;
+
+  // 프로필 서브타이틀
+  const sub = user?.type==='company'
+    ? `${user.companyCode} · ${user.employeeNum||'직원'}`
+    : user?.phone||'';
+  document.getElementById('profSubtitle').textContent = sub;
+
+  // 알람 시간 표시
+  const notifStr = user?.notifTime
+    ? `📲 매일 ${user.notifTime} 카카오/문자 알림 예정`
+    : '';
+
+  // 최근 세션 5개
+  const recentHTML = sessions.slice(0,8).map(s=>{
+    const cls = s.pct>=80?'good':s.pct>=60?'mid':'low';
+    const d = CUR.find(c=>c.day===s.day);
+    return `<div class="sess-item">
+      <div>
+        <div class="sess-day">${d?d.icon:''} Day ${s.day}: ${d?d.titleKo:''}</div>
+        <div class="sess-date">${s.date} · ${s.duration}초</div>
+      </div>
+      <div class="sess-score ${cls}">${s.pct}%</div>
+    </div>`;
+  }).join('') || '<div style="font-size:12px;color:var(--muted);padding:8px 0">아직 완료한 수업이 없어요</div>';
+
+  // 성취 뱃지
+  const badges = [];
+  if(done.length>=1) badges.push({e:'🌱',label:'첫 수업 완료'});
+  if(done.length>=7) badges.push({e:'🏅',label:'1주일 완성'});
+  if(done.length>=14) badges.push({e:'🥇',label:'2주일 완성'});
+  if(streak>=3) badges.push({e:'🔥',label:`${streak}일 연속`});
+  if(streak>=7) badges.push({e:'⚡',label:'7일 연속!'});
+  if(avgPct>=90) badges.push({e:'🌟',label:'평균 90% 이상'});
+  const badgeHTML = badges.length
+    ? badges.map(b=>`<span style="display:inline-flex;align-items:center;gap:4px;
+        background:var(--bg);border:1px solid var(--border);border-radius:20px;
+        padding:5px 12px;font-size:12px;font-weight:700;margin:3px">
+        ${b.e} ${b.label}</span>`).join('')
+    : '<span style="font-size:12px;color:var(--muted)">수업을 완료하면 뱃지를 받아요!</span>';
+
+  document.getElementById('profContent').innerHTML = `
+    <div class="prof-hero">
+      <div class="prof-name">👤 ${user?.name||'학습자'}</div>
+      <div class="prof-meta">${user?.type==='company'?'🏭 업체 직원':'👤 개인'} · ${user?.phone||''}</div>
+      <div class="streak-row">
+        <div class="streak-badge">
+          <div class="streak-num">🔥 ${streak}</div>
+          <div class="streak-lbl">연속 학습일</div>
+        </div>
+        <div class="streak-msg">
+          ${streak===0?'오늘 첫 수업을 들어봐요!':streak<3?'잘 하고 있어요! 계속해요 💪':`대단해요! ${streak}일 연속 공부 중! 🎉`}<br>
+          <small style="opacity:.7">${notifStr}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-val">${done.length}<span style="font-size:16px;color:var(--muted)">/${total}</span></div>
+        <div class="stat-lbl">완료한 수업</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:${avgPct>=80?'var(--green)':avgPct>=60?'var(--orange)':'var(--red)'}">${avgPct}%</div>
+        <div class="stat-lbl">평균 퀴즈 점수</div>
+      </div>
+    </div>
+
+    <div class="week-prog">
+      <h3>📊 주차별 진행률</h3>
+      <div class="wk-row">
+        <div class="wk-label"><span>Week 1 — 기초 안전 한국어</span><span>${w1done}/7</span></div>
+        <div class="wk-bar"><div class="wk-fill w1" style="width:${Math.round(w1done/7*100)}%"></div></div>
+      </div>
+      <div class="wk-row" style="margin-top:10px">
+        <div class="wk-label"><span>Week 2 — 화재·화학·응급처치</span><span>${w2done}/7</span></div>
+        <div class="wk-bar"><div class="wk-fill w2" style="width:${Math.round(w2done/7*100)}%"></div></div>
+      </div>
+    </div>
+
+    <div class="week-prog" style="margin-bottom:14px">
+      <h3>🏆 성취 뱃지</h3>
+      <div style="margin-top:2px">${badgeHTML}</div>
+    </div>
+
+    <div class="session-list">
+      <h3>📅 최근 학습 기록</h3>
+      ${recentHTML}
+    </div>
+
+    <div style="padding:4px 0 8px">
+      <button class="btn gray" onclick="confirmLogout()" style="font-size:13px">
+        🚪 로그아웃 / Chiqish
+      </button>
+    </div>
+    <div style="font-size:10px;color:var(--muted);text-align:center;padding:8px 0 16px;line-height:1.7">
+      학습 기록은 관리자 대시보드에서 확인 가능합니다<br>
+      O'quv yozuvlarini administrator panelida ko'rish mumkin
+    </div>
+  `;
+}
+
+function confirmLogout(){
+  if(confirm('로그아웃 할까요? 학습 기록은 유지됩니다.\nChiqasizmi? O\'quv yozuvlari saqlanadi.')){ doLogout(); }
+}
+function doLogout(){
+  localStorage.removeItem(U_KEY);
+  document.getElementById('profileScr').classList.remove('on');
+  document.getElementById('mainHdr').style.display='none';
+  document.getElementById('authScr').classList.add('on');
+}
+
+// ════════════════════════════════════
+// SERVICE WORKER (PWA)
+// ════════════════════════════════════
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+// ════════════
+// INIT
+// ════════════
+checkAuth();
+</script>
+</body>
+</html>

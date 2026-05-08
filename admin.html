@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 대시보드 — 안전 한국어</title>
+<style>
+:root{
+  --red:#E63946; --red-d:#c1121f;
+  --blue:#1D3557; --blue-m:#457B9D; --blue-l:#A8DADC;
+  --green:#2DC653; --orange:#F4A261; --yellow:#FFD43B;
+  --bg:#F1F3F5; --card:#fff; --text:#1D3557; --muted:#6C757D;
+  --border:#DEE2E6; --sidebar:220px; --r:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue-m) 100%)}
+.login-box{background:#fff;border-radius:20px;padding:36px 32px;width:360px;
+  box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo .icon{font-size:44px;margin-bottom:8px}
+.login-logo h1{font-size:20px;font-weight:900;margin-bottom:4px}
+.login-logo p{font-size:12px;color:var(--muted)}
+.login-box label{display:block;font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;margin-top:14px}
+.login-box label:first-of-type{margin-top:0}
+.login-box input{width:100%;padding:11px 13px;border:2px solid var(--border);
+  border-radius:9px;font-size:14px;font-family:inherit;transition:border-color .2s}
+.login-box input:focus{outline:none;border-color:var(--blue-m)}
+.login-err{display:none;margin-top:10px;padding:8px 12px;background:#fff0f0;
+  border-radius:8px;font-size:12px;color:var(--red-d)}
+.btn-login{width:100%;margin-top:18px;padding:13px;background:var(--red);color:#fff;
+  border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer}
+.btn-login:hover{background:var(--red-d)}
+.login-hint{margin-top:14px;padding:10px 12px;background:var(--bg);border-radius:9px;
+  font-size:11px;color:var(--muted);line-height:1.8;text-align:center}
+
+/* ── APP SHELL ── */
+.app{display:none;min-height:100vh;flex-direction:column}
+.app.on{display:flex}
+.topbar{background:var(--blue);color:#fff;padding:0 20px;height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;flex-shrink:0}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-logo{font-size:16px;font-weight:900;letter-spacing:-.3px}
+.topbar-sub{font-size:11px;opacity:.6}
+.topbar-right{display:flex;align-items:center;gap:12px;font-size:12px;opacity:.8}
+.topbar-right button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  color:#fff;padding:6px 13px;border-radius:20px;cursor:pointer;font-size:12px}
+.menu-btn{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer}
+
+.body{display:flex;flex:1}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar);background:var(--blue);padding:14px 0;flex-shrink:0;
+  position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;
+  color:rgba(255,255,255,.65);cursor:pointer;transition:all .2s;font-size:13px;font-weight:600}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.on{background:rgba(255,255,255,.15);color:#fff;border-right:3px solid var(--red)}
+.nav-icon{font-size:17px;flex-shrink:0}
+.nav-label{}
+
+/* ── MAIN ── */
+.main{flex:1;padding:20px;overflow:auto;min-width:0}
+.panel{display:none}.panel.on{display:block}
+.page-title{font-size:20px;font-weight:900;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+
+/* ── CARDS ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-c{background:var(--card);border-radius:var(--r);padding:16px 18px;
+  border:1px solid var(--border);position:relative;overflow:hidden}
+.stat-c::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--border)}
+.stat-c.red::before{background:var(--red)}
+.stat-c.blue::before{background:var(--blue-m)}
+.stat-c.green::before{background:var(--green)}
+.stat-c.orange::before{background:var(--orange)}
+.stat-lbl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;
+  letter-spacing:.4px;margin-bottom:6px}
+.stat-val{font-size:30px;font-weight:900;color:var(--blue);line-height:1;margin-bottom:4px}
+.stat-desc{font-size:11px;color:var(--muted)}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;margin-bottom:20px}
+.tbl-head{padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tbl-head h3{font-size:14px;font-weight:800}
+.tbl-search{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tbl-search input,.tbl-search select{
+  padding:7px 11px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:12px;font-family:inherit;background:#fff}
+.tbl-search input:focus,.tbl-search select:focus{outline:none;border-color:var(--blue-m)}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--bg)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;cursor:pointer}
+th:hover{color:var(--text)}
+th .sort-arrow{font-size:10px;opacity:.4;margin-left:3px}
+th.sorted .sort-arrow{opacity:1;color:var(--blue-m)}
+td{padding:11px 14px;border-top:1px solid var(--border);font-size:13px;white-space:nowrap}
+tr:hover td{background:#fafbfc}
+.td-name{font-weight:700}
+.td-name small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
+  border-radius:20px;font-size:11px;font-weight:700}
+.badge.green{background:#f0fff4;color:#1a7a3a}
+.badge.yellow{background:#fffbea;color:#b45309}
+.badge.red{background:#fff0f0;color:var(--red-d)}
+.badge.blue{background:#e8f4fd;color:var(--blue)}
+.badge.gray{background:var(--bg);color:var(--muted)}
+.prog-bar-sm{background:var(--border);border-radius:4px;height:6px;width:80px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:5px}
+.prog-fill-sm{height:100%;border-radius:4px;background:var(--green)}
+.btn-detail{background:none;border:1.5px solid var(--border);border-radius:7px;
+  padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-m);
+  transition:all .2s}
+.btn-detail:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tbl-empty{padding:32px;text-align:center;color:var(--muted);font-size:13px}
+
+/* ── COMPLIANCE ── */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.comp-card{background:var(--card);border-radius:var(--r);padding:18px;
+  border:2px solid var(--border);text-align:center}
+.comp-card.pass{border-color:var(--green)}
+.comp-card.mid{border-color:var(--orange)}
+.comp-card.fail{border-color:var(--red)}
+.comp-num{font-size:40px;font-weight:900;margin-bottom:6px}
+.comp-num.pass{color:var(--green)}
+.comp-num.mid{color:var(--orange)}
+.comp-num.fail{color:var(--red)}
+.comp-lbl{font-size:13px;font-weight:700;margin-bottom:4px}
+.comp-sub{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── LESSON ANALYSIS ── */
+.lesson-row{display:flex;align-items:center;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--border)}
+.lesson-row:last-child{border-bottom:none}
+.lesson-day{font-size:12px;font-weight:700;color:var(--muted);width:48px;flex-shrink:0}
+.lesson-title{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.lesson-bar{background:var(--border);border-radius:4px;height:8px;flex:1;max-width:200px;overflow:hidden}
+.lesson-fill{height:100%;border-radius:4px;background:var(--blue-m)}
+.lesson-pct{font-size:12px;font-weight:700;color:var(--blue-m);width:38px;text-align:right;flex-shrink:0}
+
+/* ── ALERT PANEL ── */
+.alert-row{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.alert-row:last-child{border-bottom:none}
+.alert-info{flex:1;min-width:0}
+.alert-name{font-size:13px;font-weight:700;margin-bottom:2px}
+.alert-meta{font-size:11px;color:var(--muted)}
+.alert-days{font-size:22px;font-weight:900;color:var(--red);text-align:center;min-width:48px}
+.alert-days small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.btn-send{background:var(--orange);color:#fff;border:none;border-radius:8px;
+  padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-send:hover{background:#e08a40}
+.btn-send.sent{background:var(--green)}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;
+  align-items:center;justify-content:center;padding:20px}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;
+  overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-hdr{padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-hdr h3{font-size:16px;font-weight:800}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1}
+.modal-body{padding:20px}
+
+/* ── SECTION LABEL ── */
+.slabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── INFO BOX ── */
+.info-box{background:#E8F4FD;border-left:4px solid var(--blue-m);border-radius:0 8px 8px 0;
+  padding:10px 14px;font-size:12px;line-height:1.7;margin-bottom:16px;color:var(--text)}
+.law-box{background:#FFF8E1;border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;
+  padding:10px 14px;font-size:12px;line-height:1.7;margin-bottom:16px}
+
+/* ── EXPORT BTN ── */
+.btn-export{background:var(--blue);color:#fff;border:none;border-radius:8px;
+  padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-export:hover{background:#16304d}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{display:none;position:fixed;top:54px;left:0;bottom:0;z-index:150;
+    overflow-y:auto;box-shadow:4px 0 20px rgba(0,0,0,.3)}
+  .sidebar.open{display:block}
+  .menu-btn{display:block}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .comp-grid{grid-template-columns:1fr}
+  table{font-size:12px}
+  td,th{padding:8px 10px}
+  .main{padding:14px}
+}
+@media(max-width:480px){
+  .stat-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="loginWrap" class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🦺</div>
+      <h1>관리자 대시보드</h1>
+      <p>안전 한국어 Safety Korean — Admin</p>
+    </div>
+    <label>관리자 아이디</label>
+    <input type="text" id="adm-id" placeholder="admin" autocomplete="username"
+      onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <label>비밀번호</label>
+    <input type="password" id="adm-pw" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <div id="adm-err" class="login-err"></div>
+    <button class="btn-login" onclick="doAdminLogin()">🔐 로그인</button>
+    <div class="login-hint">
+      기본 계정: admin / admin2024<br>
+      <small style="opacity:.7">테스트용 — 실제 배포 시 변경 필요</small>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app" class="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="topbar-logo">🦺 안전 한국어 관리자</div>
+        <div class="topbar-sub">산업안전 한국어 교육 플랫폼</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="adminNameTag"></span>
+      <button onclick="doAdminLogout()">로그아웃</button>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="nav-item on" data-panel="overview" onclick="nav('overview')">
+        <span class="nav-icon">📊</span><span class="nav-label">개요</span>
+      </div>
+      <div class="nav-item" data-panel="workers" onclick="nav('workers')">
+        <span class="nav-icon">👥</span><span class="nav-label">근로자 관리</span>
+      </div>
+      <div class="nav-item" data-panel="compliance" onclick="nav('compliance')">
+        <span class="nav-icon">📋</span><span class="nav-label">이수 현황</span>
+      </div>
+      <div class="nav-item" data-panel="alerts" onclick="nav('alerts')">
+        <span class="nav-icon">🔔</span><span class="nav-label">알람 관리</span>
+        <span id="alertBadge" style="margin-left:auto;background:var(--red);color:#fff;
+          border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;display:none"></span>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- ── 개요 ── -->
+      <div id="panel-overview" class="panel on">
+        <div class="page-title">📊 전체 현황</div>
+        <div class="page-sub" id="overviewDate"></div>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="slabel">🏭 업체별 현황</div>
+        <div class="tbl-wrap" id="companyTbl"></div>
+
+        <div class="slabel">📅 최근 학습 활동 (최신 10건)</div>
+        <div class="tbl-wrap" id="recentTbl"></div>
+      </div>
+
+      <!-- ── 근로자 관리 ── -->
+      <div id="panel-workers" class="panel">
+        <div class="page-title">👥 근로자 관리</div>
+        <div class="page-sub">전체 등록 근로자 목록 · 이름/업체로 검색 가능</div>
+        <div class="tbl-wrap">
+          <div class="tbl-head">
+            <h3>근로자 목록</h3>
+            <div class="tbl-search">
+              <input type="text" id="wSearch" placeholder="🔍 이름 검색" oninput="renderWorkers()">
+              <select id="wFilter" onchange="renderWorkers()">
+                <option value="">전체 업체</option>
+              </select>
+              <select id="wStatus" onchange="renderWorkers()">
+                <option value="">전체 상태</option>
+                <option value="pass">이수 완료</option>
+                <option value="mid">이수 중</option>
+                <option value="fail">미이수</option>
+              </select>
+              <button class="btn-export" onclick="exportCSV()">⬇️ CSV 내보내기</button>
+            </div>
+          </div>
+          <div id="workerTableBody"></div>
+        </div>
+      </div>
+
+      <!-- ── 이수 현황 ── -->
+      <div id="panel-compliance" class="panel">
+        <div class="page-title">📋 이수 현황</div>
+        <div class="page-sub">산업안전보건법 기준 교육 이수 현황 추적</div>
+
+        <div class="law-box">
+          ⚖️ <strong>법적 근거</strong> — 산업안전보건법 시행규칙 별표5 (고용노동부 고시)<br>
+          · 채용 시 교육: 제조업 근로자 <strong>8시간 이상</strong><br>
+          · 정기 교육: 매 6개월 <strong>12시간 이상</strong><br>
+          <small style="color:var(--muted)">※ 본 플랫폼은 법정 교육을 보완하는 디지털 언어교육 도구입니다. 법정 교육 이수는 별도 확인 필요.</small>
+        </div>
+
+        <div class="comp-grid" id="compGrid"></div>
+
+        <div class="slabel">📚 수업별 이수율</div>
+        <div class="tbl-wrap" style="padding:14px 18px" id="lessonAnalysis"></div>
+
+        <div style="text-align:right;margin-top:12px">
+          <button class="btn-export" onclick="exportCompliance()">⬇️ 이수 현황 PDF 출력</button>
+        </div>
+      </div>
+
+      <!-- ── 알람 관리 ── -->
+      <div id="panel-alerts" class="panel">
+        <div class="page-title">🔔 알람 관리</div>
+        <div class="page-sub">최근 3일 이상 미학습 근로자에게 카카오톡/문자 알람 발송</div>
+
+        <div class="info-box">
+          📲 실제 카카오톡·문자 발송은 백엔드 연동 후 활성화됩니다 (Supabase + Solapi API).<br>
+          지금은 발송 대상 목록 확인 및 <strong>시뮬레이션</strong> 모드로 동작합니다.
+        </div>
+
+        <div class="tbl-wrap">
+          <div class="tbl-head">
+            <h3 id="alertTitle">미학습 근로자</h3>
+            <div class="tbl-search">
+              <select id="alertDays" onchange="renderAlerts()">
+                <option value="3">3일 이상 미학습</option>
+                <option value="7">7일 이상 미학습</option>
+                <option value="14">14일 이상 미학습</option>
+              </select>
+              <button class="btn-export" style="background:var(--orange)" onclick="sendAllAlerts()">
+                📢 전체 발송 (시뮬레이션)
+              </button>
+            </div>
+          </div>
+          <div style="padding:0 18px 14px" id="alertList"></div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /body -->
+</div><!-- /app -->
+
+<!-- ══ 근로자 상세 모달 ══ -->
+<div class="modal-bg" id="workerModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="modalTitle">근로자 상세</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════
+// ADMIN AUTH
+// ══════════════════════
+const ADMIN_ID = 'admin', ADMIN_PW = 'admin2024';
+const ADMIN_KEY = 'sk_admin_session';
+
+function doAdminLogin(){
+  const id = document.getElementById('adm-id').value.trim();
+  const pw = document.getElementById('adm-pw').value;
+  const err = document.getElementById('adm-err');
+  if(id===ADMIN_ID && pw===ADMIN_PW){
+    localStorage.setItem(ADMIN_KEY, '1');
+    document.getElementById('loginWrap').style.display='none';
+    document.getElementById('app').classList.add('on');
+    document.getElementById('adminNameTag').textContent='👤 관리자';
+    initDashboard();
+  } else {
+    err.textContent='아이디 또는 비밀번호가 틀렸습니다.';
+    err.style.display='block';
+  }
+}
+function doAdminLogout(){
+  localStorage.removeItem(ADMIN_KEY);
+  location.reload();
+}
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ══════════════════════
+// DATA HELPERS
+// ══════════════════════
+function getAllUsers(){ try{return JSON.parse(localStorage.getItem('sk_users'))||[];}catch(e){return[];} }
+function getUserDone(id){ try{return JSON.parse(localStorage.getItem('sk_done_'+id))||[];}catch(e){return[];} }
+function getUserSessions(id){ try{return JSON.parse(localStorage.getItem('sk_sess_'+id))||[];}catch(e){return[];} }
+function getUserStreak(id){
+  try{
+    const s=JSON.parse(localStorage.getItem('sk_strk_'+id))||{};
+    const today=new Date().toISOString().slice(0,10);
+    const yesterday=new Date(Date.now()-864e5).toISOString().slice(0,10);
+    return (s.lastStudy===today||s.lastStudy===yesterday)?s.count||0:0;
+  }catch(e){return 0;}
+}
+
+const TOTAL_DAYS = 14;
+const PASS_THRESHOLD = 10; // 10/14 이상 = 이수 완료
+const MID_THRESHOLD  = 5;  // 5/14 이상 = 이수 중
+
+function getStatus(done){
+  const n = done.length;
+  if(n>=PASS_THRESHOLD) return 'pass';
+  if(n>=MID_THRESHOLD)  return 'mid';
+  return 'fail';
+}
+function statusBadge(done){
+  const s = getStatus(done);
+  if(s==='pass') return '<span class="badge green">✅ 이수 완료</span>';
+  if(s==='mid')  return '<span class="badge yellow">📖 이수 중</span>';
+  return '<span class="badge red">❌ 미이수</span>';
+}
+function daysSinceStudy(sessions){
+  if(!sessions.length) return 999;
+  const last = sessions[0].date;
+  const diff = Math.floor((Date.now()-new Date(last).getTime())/864e5);
+  return diff;
+}
+function avgScore(sessions){
+  if(!sessions.length) return '-';
+  const avg = sessions.reduce((a,s)=>a+s.pct,0)/sessions.length;
+  return Math.round(avg)+'%';
+}
+
+// ══════════════════════
+// NAVIGATION
+// ══════════════════════
+function nav(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  document.querySelector(`[data-panel="${id}"]`).classList.add('on');
+  document.getElementById('sidebar').classList.remove('open');
+  if(id==='overview') renderOverview();
+  else if(id==='workers') renderWorkers();
+  else if(id==='compliance') renderCompliance();
+  else if(id==='alerts') renderAlerts();
+}
+
+// ══════════════════════
+// INIT
+// ══════════════════════
+function initDashboard(){
+  document.getElementById('overviewDate').textContent =
+    `기준일: ${new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'})}`;
+  renderOverview();
+  populateCompanyFilter();
+}
+
+// ══════════════════════
+// OVERVIEW
+// ══════════════════════
+function renderOverview(){
+  const users = getAllUsers();
+  const today = new Date().toISOString().slice(0,10);
+
+  let todayCount=0, passCount=0, totalSessions=0;
+  const companyMap = {};
+  const allSessions = [];
+
+  users.forEach(u=>{
+    const done = getUserDone(u.id);
+    const sess = getUserSessions(u.id);
+    totalSessions += sess.length;
+    if(sess.length && sess[0].date===today) todayCount++;
+    if(getStatus(done)==='pass') passCount++;
+
+    const co = u.companyCode||'개인';
+    if(!companyMap[co]) companyMap[co]={name:co, count:0, pass:0, totalDone:0};
+    companyMap[co].count++;
+    companyMap[co].totalDone += done.length;
+    if(getStatus(done)==='pass') companyMap[co].pass++;
+
+    sess.forEach(s=>allSessions.push({...s, userName:u.name, companyCode:u.companyCode||'개인'}));
+  });
+
+  const pct = users.length ? Math.round(passCount/users.length*100) : 0;
+
+  // Stats
+  document.getElementById('statRow').innerHTML = `
+    <div class="stat-c red">
+      <div class="stat-lbl">전체 등록 인원</div>
+      <div class="stat-val">${users.length}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">개인 ${users.filter(u=>u.type==='individual').length}명 · 업체 ${users.filter(u=>u.type==='company').length}명</div>
+    </div>
+    <div class="stat-c blue">
+      <div class="stat-lbl">오늘 학습 인원</div>
+      <div class="stat-val">${todayCount}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">${users.length?Math.round(todayCount/users.length*100):0}% 참여율</div>
+    </div>
+    <div class="stat-c green">
+      <div class="stat-lbl">이수 완료</div>
+      <div class="stat-val">${passCount}<span style="font-size:14px;color:var(--muted)">명</span></div>
+      <div class="stat-desc">전체의 ${pct}%</div>
+    </div>
+    <div class="stat-c orange">
+      <div class="stat-lbl">총 학습 세션</div>
+      <div class="stat-val">${totalSessions}<span style="font-size:14px;color:var(--muted)">회</span></div>
+      <div class="stat-desc">평균 ${users.length?Math.round(totalSessions/users.length):0}회/인</div>
+    </div>
+  `;
+
+  // 업체별
+  const coRows = Object.values(companyMap).map(c=>{
+    const avg = c.count ? Math.round(c.totalDone/c.count/TOTAL_DAYS*100) : 0;
+    return `<tr>
+      <td class="td-name">${c.name==='개인'?'👤 개인 회원':'🏭 '+c.name}</td>
+      <td>${c.count}명</td>
+      <td>${c.pass}명 <span style="color:var(--muted);font-size:11px">(${c.count?Math.round(c.pass/c.count*100):0}%)</span></td>
+      <td><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:${avg}%"></div></div>${avg}%</td>
+      <td>${c.count-c.pass>0?`<span class="badge red">${c.count-c.pass}명 미이수</span>`:'<span class="badge green">전원 완료</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('companyTbl').innerHTML = `
+    <div class="tbl-head"><h3>업체별 현황</h3></div>
+    <table><thead><tr>
+      <th>업체</th><th>인원</th><th>이수 완료</th><th>평균 진행률</th><th>상태</th>
+    </tr></thead><tbody>${coRows||'<tr><td colspan="5" class="tbl-empty">등록된 근로자가 없어요</td></tr>'}</tbody></table>`;
+
+  // 최근 학습
+  allSessions.sort((a,b)=>new Date(b.datetime)-new Date(a.datetime));
+  const recRows = allSessions.slice(0,10).map(s=>{
+    const d = s.day;
+    const cls = s.pct>=80?'green':s.pct>=60?'yellow':'red';
+    return `<tr>
+      <td>${s.date}</td>
+      <td class="td-name">${s.userName}</td>
+      <td>${s.companyCode}</td>
+      <td>Day ${d}</td>
+      <td><span class="badge ${cls}">${s.pct}%</span></td>
+      <td style="font-size:11px;color:var(--muted)">${s.duration||'-'}초</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('recentTbl').innerHTML = `
+    <div class="tbl-head"><h3>최근 학습 활동</h3></div>
+    <table><thead><tr>
+      <th>날짜</th><th>이름</th><th>업체</th><th>수업</th><th>점수</th><th>소요시간</th>
+    </tr></thead><tbody>${recRows||'<tr><td colspan="6" class="tbl-empty">학습 기록이 없어요</td></tr>'}</tbody></table>`;
+
+  // 알람 뱃지 업데이트
+  const missing = users.filter(u=>daysSinceStudy(getUserSessions(u.id))>=3).length;
+  const badge = document.getElementById('alertBadge');
+  if(missing>0){ badge.textContent=missing; badge.style.display=''; }
+  else badge.style.display='none';
+}
+
+// ══════════════════════
+// WORKERS TABLE
+// ══════════════════════
+let _sortCol='done', _sortAsc=false;
+
+function populateCompanyFilter(){
+  const users = getAllUsers();
+  const codes = [...new Set(users.filter(u=>u.companyCode).map(u=>u.companyCode))];
+  const sel = document.getElementById('wFilter');
+  codes.forEach(c=>{
+    const o=document.createElement('option'); o.value=c; o.textContent='🏭 '+c; sel.appendChild(o);
+  });
+}
+
+function renderWorkers(){
+  const search = document.getElementById('wSearch').value.toLowerCase();
+  const filterCo = document.getElementById('wFilter').value;
+  const filterSt = document.getElementById('wStatus').value;
+  let users = getAllUsers();
+
+  if(search) users = users.filter(u=>u.name.toLowerCase().includes(search));
+  if(filterCo) users = users.filter(u=>u.companyCode===filterCo);
+  if(filterSt) users = users.filter(u=>getStatus(getUserDone(u.id))===filterSt);
+
+  // Sort
+  users.sort((a,b)=>{
+    const da=getUserDone(a.id), db=getUserDone(b.id);
+    const sa=getUserSessions(a.id), sb=getUserSessions(b.id);
+    let va,vb;
+    if(_sortCol==='done'){ va=da.length; vb=db.length; }
+    else if(_sortCol==='name'){ va=a.name; vb=b.name; }
+    else if(_sortCol==='score'){ va=parseFloat(avgScore(sa))||0; vb=parseFloat(avgScore(sb))||0; }
+    else if(_sortCol==='days'){ va=daysSinceStudy(sa); vb=daysSinceStudy(sb); }
+    else { va=da.length; vb=db.length; }
+    if(va<vb) return _sortAsc?-1:1;
+    if(va>vb) return _sortAsc?1:-1;
+    return 0;
+  });
+
+  const rows = users.map(u=>{
+    const done=getUserDone(u.id), sess=getUserSessions(u.id);
+    const pct=Math.round(done.length/TOTAL_DAYS*100);
+    const daysAgo=daysSinceStudy(sess);
+    const daysStr=daysAgo===999?'미학습':daysAgo===0?'오늘':daysAgo+'일 전';
+    return `<tr>
+      <td class="td-name">${u.name}<small>${u.type==='company'?'🏭 '+u.companyCode+' · '+(u.employeeNum||''):'👤 개인'}</small></td>
+      <td><span class="badge ${u.lang==='ko'?'blue':'gray'}">${u.lang==='ko'?'🇰🇷 KO':'🇺🇿 UZ'}</span></td>
+      <td>${statusBadge(done)}</td>
+      <td>
+        <div class="prog-bar-sm" style="width:100px"><div class="prog-fill-sm" style="width:${pct}%"></div></div>
+        ${done.length}/${TOTAL_DAYS}
+      </td>
+      <td>${avgScore(sess)}</td>
+      <td style="color:${daysAgo>=7?'var(--red)':daysAgo>=3?'var(--orange)':'var(--green)'}">${daysStr}</td>
+      <td>${u.notifTime||'-'}</td>
+      <td><button class="btn-detail" onclick="openWorkerDetail('${u.id}')">상세 →</button></td>
+    </tr>`;
+  }).join('');
+
+  const thSort = (col,label) => {
+    const active=_sortCol===col?'sorted':'';
+    const arrow=_sortCol===col?(_sortAsc?'▲':'▼'):'↕';
+    return `<th class="${active}" onclick="sortWorkers('${col}')">${label} <span class="sort-arrow">${arrow}</span></th>`;
+  };
+
+  document.getElementById('workerTableBody').innerHTML = `
+    <table><thead><tr>
+      ${thSort('name','이름/업체')}
+      <th>언어</th>
+      <th>이수 상태</th>
+      ${thSort('done','진도')}
+      ${thSort('score','평균 점수')}
+      ${thSort('days','최근 학습')}
+      <th>알람 시간</th>
+      <th></th>
+    </tr></thead><tbody>
+      ${rows||'<tr><td colspan="8" class="tbl-empty">검색 결과가 없어요</td></tr>'}
+    </tbody></table>`;
+}
+
+function sortWorkers(col){
+  if(_sortCol===col) _sortAsc=!_sortAsc;
+  else { _sortCol=col; _sortAsc=false; }
+  renderWorkers();
+}
+
+// ══════════════════════
+// WORKER DETAIL MODAL
+// ══════════════════════
+function openWorkerDetail(uid){
+  const users=getAllUsers();
+  const u=users.find(x=>x.id===uid); if(!u) return;
+  const done=getUserDone(uid);
+  const sess=getUserSessions(uid);
+  const streak=getUserStreak(uid);
+
+  document.getElementById('modalTitle').textContent=`👤 ${u.name} 상세`;
+
+  // Done days grid
+  const daysGrid = Array.from({length:TOTAL_DAYS},(_,i)=>{
+    const day=i+1;
+    const isDone=done.includes(day);
+    const s=sess.find(x=>x.day===day);
+    return `<div style="text-align:center;padding:6px;border-radius:8px;
+      background:${isDone?'#f0fff4':'var(--bg)'};border:1.5px solid ${isDone?'var(--green)':'var(--border)'}">
+      <div style="font-size:10px;color:var(--muted)">Day ${day}</div>
+      <div style="font-size:16px">${isDone?'✅':'○'}</div>
+      ${s?`<div style="font-size:10px;font-weight:700;color:${s.pct>=80?'var(--green)':s.pct>=60?'var(--orange)':'var(--red)'}">${s.pct}%</div>`:''}
+    </div>`;
+  }).join('');
+
+  // Session history
+  const sessRows=sess.slice(0,10).map(s=>{
+    const cls=s.pct>=80?'green':s.pct>=60?'yellow':'red';
+    return `<tr>
+      <td>${s.date}</td>
+      <td>Day ${s.day}</td>
+      <td><span class="badge ${cls}">${s.pct}%</span></td>
+      <td style="font-size:11px;color:var(--muted)">${s.duration||'-'}초</td>
+      <td>${s.passed?'✅':'❌'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">업체/타입</div>
+        <div style="font-weight:700">${u.type==='company'?'🏭 '+u.companyCode:'👤 개인'}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">핸드폰</div>
+        <div style="font-weight:700">${u.phone||'-'}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">이수 상태</div>
+        ${statusBadge(done)}
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">🔥 연속 학습</div>
+        <div style="font-weight:900;font-size:18px;color:var(--orange)">${streak}일</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.5px;margin-bottom:8px">수업 완료 현황 (${done.length}/${TOTAL_DAYS})</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px">
+      ${daysGrid}
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.5px;margin-bottom:8px">학습 기록</div>
+    ${sess.length?`<table><thead><tr>
+      <th>날짜</th><th>수업</th><th>점수</th><th>소요시간</th><th>합격</th>
+    </tr></thead><tbody>${sessRows}</tbody></table>`
+    :'<div style="padding:16px 0;text-align:center;color:var(--muted);font-size:13px">학습 기록이 없어요</div>'}
+
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn-export" style="background:var(--orange);flex:1"
+        onclick="simSendAlert('${u.id}','${u.name}','${u.phone||''}')">
+        📲 카카오/문자 알람 발송 (시뮬레이션)
+      </button>
+      <button class="btn-export" onclick="closeModal()" style="background:var(--muted)">닫기</button>
+    </div>
+  `;
+  document.getElementById('workerModal').classList.add('on');
+}
+
+function closeModal(){ document.getElementById('workerModal').classList.remove('on'); }
+document.getElementById('workerModal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) closeModal();
+});
+
+// ══════════════════════
+// COMPLIANCE
+// ══════════════════════
+function renderCompliance(){
+  const users=getAllUsers();
+  let pass=0,mid=0,fail=0;
+  users.forEach(u=>{
+    const s=getStatus(getUserDone(u.id));
+    if(s==='pass') pass++;
+    else if(s==='mid') mid++;
+    else fail++;
+  });
+
+  document.getElementById('compGrid').innerHTML=`
+    <div class="comp-card pass">
+      <div class="comp-num pass">${pass}명</div>
+      <div class="comp-lbl">✅ 이수 완료</div>
+      <div class="comp-sub">${PASS_THRESHOLD}일 이상 수료<br>(전체의 ${users.length?Math.round(pass/users.length*100):0}%)</div>
+    </div>
+    <div class="comp-card mid">
+      <div class="comp-num mid">${mid}명</div>
+      <div class="comp-lbl">📖 이수 중</div>
+      <div class="comp-sub">${MID_THRESHOLD}~${PASS_THRESHOLD-1}일 완료<br>(전체의 ${users.length?Math.round(mid/users.length*100):0}%)</div>
+    </div>
+    <div class="comp-card fail">
+      <div class="comp-num fail">${fail}명</div>
+      <div class="comp-lbl">❌ 미이수</div>
+      <div class="comp-sub">${MID_THRESHOLD-1}일 이하<br>(전체의 ${users.length?Math.round(fail/users.length*100):0}%)</div>
+    </div>
+  `;
+
+  // 수업별 이수율
+  const CUR_DAYS = Array.from({length:TOTAL_DAYS},(_,i)=>i+1);
+  const DAY_TITLES = [
+    '안전이 먼저예요','해야 해요/안 돼요','지게차 조심해요','사고 났어요! 119!',
+    '치워주세요! 확인해요','어떤 보호구예요?','1주일 종합 복습',
+    '불이 났어요! 대피해요','화학물질 조심해요','다쳤어요 — 응급처치',
+    '작업 허가 받았어요?','무거운 것을 들어요','전기 위험','2주일 완성!'
+  ];
+
+  const lessonRows = CUR_DAYS.map((day,i)=>{
+    const count=users.filter(u=>getUserDone(u.id).includes(day)).length;
+    const pct=users.length?Math.round(count/users.length*100):0;
+    const wk=day<=7?'W1':'W2';
+    return `<div class="lesson-row">
+      <div class="lesson-day"><span class="badge ${wk==='W1'?'blue':'gray'}" style="font-size:10px">${wk}</span> D${day}</div>
+      <div class="lesson-title">${DAY_TITLES[i]}</div>
+      <div class="lesson-bar"><div class="lesson-fill" style="width:${pct}%"></div></div>
+      <div class="lesson-pct">${pct}%</div>
+      <div style="font-size:11px;color:var(--muted);width:48px;text-align:right">${count}/${users.length}명</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('lessonAnalysis').innerHTML = lessonRows ||
+    '<div class="tbl-empty">등록된 근로자가 없어요</div>';
+}
+
+// ══════════════════════
+// ALERTS
+// ══════════════════════
+function renderAlerts(){
+  const days=parseInt(document.getElementById('alertDays').value)||3;
+  const users=getAllUsers();
+  const targets=users.filter(u=>daysSinceStudy(getUserSessions(u.id))>=days)
+    .sort((a,b)=>daysSinceStudy(getUserSessions(b.id))-daysSinceStudy(getUserSessions(a.id)));
+
+  document.getElementById('alertTitle').textContent=`${days}일 이상 미학습 근로자 (${targets.length}명)`;
+
+  const rows=targets.map(u=>{
+    const sess=getUserSessions(u.id);
+    const d=daysSinceStudy(sess);
+    const done=getUserDone(u.id);
+    return `<div class="alert-row">
+      <div class="alert-info">
+        <div class="alert-name">${u.name}</div>
+        <div class="alert-meta">${u.type==='company'?'🏭 '+u.companyCode:' 👤 개인'} · ${u.phone||'번호 미등록'} · ${done.length}/${TOTAL_DAYS}일 완료</div>
+      </div>
+      <div class="alert-days">${d===999?'미학습':d}<small>${d===999?'':d+'일 경과'}</small></div>
+      <button class="btn-send" id="btn-${u.id}" onclick="simSendAlert('${u.id}','${u.name}','${u.phone||''}')">
+        📲 발송
+      </button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('alertList').innerHTML=rows||
+    '<div style="padding:20px;text-align:center;color:var(--muted)">✅ 모든 근로자가 최근 학습했어요!</div>';
+}
+
+function simSendAlert(uid, name, phone){
+  const btn=document.getElementById('btn-'+uid);
+  if(btn){ btn.textContent='✅ 발송 완료'; btn.classList.add('sent'); btn.disabled=true; }
+  // 실제 발송 시: POST /api/send-kakao { userId, phone, name }
+  alert(`📲 [시뮬레이션]\n${name} (${phone||'번호없음'})에게\n카카오톡 알림을 발송했어요.\n\n실제 발송은 Supabase + Solapi 연동 후 활성화됩니다.`);
+}
+
+function sendAllAlerts(){
+  const days=parseInt(document.getElementById('alertDays').value)||3;
+  const users=getAllUsers();
+  const targets=users.filter(u=>daysSinceStudy(getUserSessions(u.id))>=days);
+  if(!targets.length){ alert('발송 대상이 없어요.'); return; }
+  targets.forEach(u=>simSendAlert(u.id,u.name,u.phone||''));
+}
+
+// ══════════════════════
+// EXPORT
+// ══════════════════════
+function exportCSV(){
+  const users=getAllUsers();
+  const rows=[['이름','타입','업체코드','직원번호','언어','핸드폰','완료일수','이수상태','평균점수','가입일']];
+  users.forEach(u=>{
+    const done=getUserDone(u.id), sess=getUserSessions(u.id);
+    rows.push([
+      u.name, u.type==='company'?'업체직원':'개인',
+      u.companyCode||'', u.employeeNum||'',
+      u.lang, u.phone||'',
+      done.length,
+      getStatus(done)==='pass'?'이수완료':getStatus(done)==='mid'?'이수중':'미이수',
+      avgScore(sess),
+      u.registeredAt?.slice(0,10)||''
+    ]);
+  });
+  const csv='﻿'+rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`안전한국어_이수현황_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function exportCompliance(){
+  window.print();
+}
+
+// ══════════════════════
+// INIT CHECK
+// ══════════════════════
+if(localStorage.getItem(ADMIN_KEY)){
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('app').classList.add('on');
+  document.getElementById('adminNameTag').textContent='👤 관리자';
+  initDashboard();
+}
+</script>
+</body>
+</html>
