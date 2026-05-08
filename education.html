@@ -359,6 +359,34 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   border:none;border-radius:8px;padding:6px 12px;
   font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 
+/* ═══ LANGUAGE SELECTOR ═══ */
+.lang-chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.lang-chips::-webkit-scrollbar{display:none}
+.lang-chip{flex-shrink:0;padding:7px 13px;border-radius:20px;border:2px solid var(--border);
+  font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
+  transition:all .2s;white-space:nowrap}
+.lang-chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.lang-chip:hover:not(.on){border-color:var(--blue-m);color:var(--blue-m)}
+
+.lang-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:500;align-items:flex-end;justify-content:center}
+.lang-modal-bg.on{display:flex}
+.lang-modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;
+  max-width:540px;box-shadow:0 -8px 30px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
+.lang-modal h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.lang-modal p{font-size:11px;color:var(--muted);margin-bottom:16px}
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lang-opt{display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-radius:12px;border:2px solid var(--border);cursor:pointer;
+  transition:all .2s;background:#fff}
+.lang-opt:hover{border-color:var(--blue-m);background:#f0f7ff}
+.lang-opt.on{border-color:var(--blue);background:#EDF2FF}
+.lang-opt-flag{font-size:22px;flex-shrink:0}
+.lang-opt-info{}
+.lang-opt-native{font-size:13px;font-weight:800;color:var(--text)}
+.lang-opt-name{font-size:10px;color:var(--muted);margin-top:1px}
+
 /* install banner */
 .install-banner{
   background:linear-gradient(90deg,var(--blue),var(--blue-m));
@@ -383,7 +411,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="hdr-title">🦺 안전 한국어 Safety Korean</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <button class="lang-btn" id="langBtn" onclick="toggleLang()">🇺🇿 UZ</button>
+    <button class="lang-btn" id="langBtn" onclick="openLangModal()">🌐</button>
     <button class="lang-btn" id="profBtn" onclick="goProfile()" style="font-size:17px;padding:6px 9px">👤</button>
   </div>
 </div>
@@ -398,25 +426,30 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <small>Xorijiy zavod ishchilari uchun koreys tili xavfsizlik ta'limi</small></p>
     </div>
     <div class="auth-card">
+      <!-- 언어 선택 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🌐 언어 / Language</div>
+        <div class="lang-chips" id="authLangChips"></div>
+      </div>
       <div class="auth-tabs" style="grid-template-columns:1fr 1fr 1fr;display:grid;gap:5px">
-        <button class="auth-tab on" id="tab-login" onclick="switchAuthTab('login')">🔐 로그인</button>
-        <button class="auth-tab" id="tab-ind" onclick="switchAuthTab('ind')">👤 개인 가입</button>
-        <button class="auth-tab" id="tab-co" onclick="switchAuthTab('co')">🏭 업체 직원</button>
+        <button class="auth-tab on" id="tab-login" data-i18n="tab_login" onclick="switchAuthTab('login')">🔐 로그인</button>
+        <button class="auth-tab" id="tab-ind" data-i18n="tab_ind" onclick="switchAuthTab('ind')">👤 개인 가입</button>
+        <button class="auth-tab" id="tab-co" data-i18n="tab_co" onclick="switchAuthTab('co')">🏭 업체 직원</button>
       </div>
 
       <!-- 로그인 -->
       <div id="form-login" class="auth-form">
-        <label>아이디 / Login</label>
+        <label data-i18n="lbl_id">아이디</label>
         <input type="text" id="login-id" placeholder="sardor01" maxlength="30"
           autocomplete="username" style="letter-spacing:.5px">
-        <label>비밀번호 / Parol</label>
+        <label data-i18n="lbl_pw">비밀번호</label>
         <input type="password" id="login-pw" placeholder="••••••••" maxlength="30"
           autocomplete="current-password"
           onkeydown="if(event.key==='Enter')doLogin()">
         <div id="login-err" style="display:none;margin-top:8px;padding:8px 12px;
           background:#fff0f0;border-radius:8px;font-size:12px;color:var(--red-d)"></div>
         <div style="margin-top:18px">
-          <button class="btn red" onclick="doLogin()">🔐 로그인 / Kirish</button>
+          <button class="btn red" id="btn-login" data-i18n="btn_login" onclick="doLogin()">🔐 로그인</button>
         </div>
         <div style="background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:14px;font-size:11px;line-height:1.9;color:var(--muted)">
           <strong style="color:var(--text)">🧪 테스트 계정</strong><br>
@@ -430,15 +463,15 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
       <!-- 개인 가입 -->
       <div id="form-ind" class="auth-form">
-        <label>이름 / Ism</label>
-        <input type="text" id="ind-name" placeholder="홍길동 / Abdulla" maxlength="30">
-        <label>핸드폰 번호 / Telefon raqami</label>
+        <label data-i18n="lbl_name">이름</label>
+        <input type="text" id="ind-name" placeholder="Abdulla" maxlength="30">
+        <label data-i18n="lbl_phone">핸드폰 번호</label>
         <input type="tel" id="ind-phone" placeholder="010-0000-0000"
           maxlength="13" oninput="fmtPhone(this)">
-        <div class="field-hint">📲 카카오톡 또는 문자로 공부 알림을 보내드려요<br>Kakaotalk yoki SMS orqali eslatma yuboramiz</div>
-        <label>알람 시간 / Eslatma vaqti</label>
+        <div class="field-hint" data-i18n="hint_phone">📲 카카오톡 또는 문자로 공부 알림을 보내드려요</div>
+        <label data-i18n="lbl_notif">알람 시간</label>
         <input type="time" id="notif-time" value="20:00">
-        <label>언어 선택 / Til tanlash</label>
+        <label data-i18n="lbl_lang">언어 선택</label>
         <div class="lang-pick">
           <button id="lp-ko" class="on" onclick="pickLang('ko')">🇰🇷 한국어</button>
           <button id="lp-uz" onclick="pickLang('uz')">🇺🇿 O'zbek</button>
@@ -447,21 +480,21 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
       <!-- 업체 직원 가입 -->
       <div id="form-co" class="auth-form" style="display:none">
-        <label>업체 코드 / Korxona kodi</label>
+        <label data-i18n="lbl_co_code">업체 코드</label>
         <input type="text" id="co-code" placeholder="예: ABC123" maxlength="10"
           style="text-transform:uppercase;letter-spacing:2px;font-weight:700">
-        <div class="field-hint">💼 업체 담당자에게 코드를 받으세요 · Korxona mas'ulidan kodni oling</div>
-        <label>이름 / Ism</label>
-        <input type="text" id="co-name" placeholder="홍길동 / Abdulla" maxlength="30">
-        <label>핸드폰 번호 / Telefon raqami</label>
+        <div class="field-hint" data-i18n="hint_co">💼 업체 담당자에게 코드를 받으세요</div>
+        <label data-i18n="lbl_name">이름</label>
+        <input type="text" id="co-name" placeholder="Abdulla" maxlength="30">
+        <label data-i18n="lbl_phone">핸드폰 번호</label>
         <input type="tel" id="co-phone" placeholder="010-0000-0000"
           maxlength="13" oninput="fmtPhone(this)">
-        <div class="field-hint">📲 카카오톡 또는 문자로 공부 알림을 보내드려요<br>Kakaotalk yoki SMS orqali eslatma yuboramiz</div>
-        <label>알람 시간 / Eslatma vaqti</label>
+        <div class="field-hint" data-i18n="hint_phone">📲 카카오톡 또는 문자로 공부 알림을 보내드려요</div>
+        <label data-i18n="lbl_notif">알람 시간</label>
         <input type="time" id="notif-time2" value="20:00">
-        <label>직원 번호 (선택) / Xodim raqami (ixtiyoriy)</label>
+        <label data-i18n="lbl_emp">직원 번호 (선택)</label>
         <input type="text" id="co-num" placeholder="예: EMP-001" maxlength="20">
-        <label>언어 선택 / Til tanlash</label>
+        <label data-i18n="lbl_lang">언어 선택</label>
         <div class="lang-pick">
           <button id="lp-ko2" class="on" onclick="pickLang2('ko')">🇰🇷 한국어</button>
           <button id="lp-uz2" onclick="pickLang2('uz')">🇺🇿 O'zbek</button>
@@ -469,11 +502,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       </div>
 
       <div style="margin-top:18px">
-        <button class="btn red" onclick="doSignup()">🚀 시작하기 / Boshlash</button>
+        <button class="btn red" id="btn-start" data-i18n="btn_start" onclick="doSignup()">🚀 시작하기</button>
       </div>
-      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted)">
-        이미 가입했어요? / Allaqachon ro'yxatdan o'tganmisiz?<br>
-        <span style="color:var(--blue-m);cursor:pointer;font-weight:700" onclick="doSignup()">바로 시작 →</span>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted)" data-i18n="already_member">
+        이미 가입했어요? → 로그인 탭을 눌러주세요
       </div>
     </div>
   </div>
@@ -484,16 +516,15 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   <div class="home">
     <div class="hero">
       <div class="e">🗣️</div>
-      <h2 id="heroT">한국어로 안전하게 일해요</h2>
-      <p id="heroP">매일 5분 · 오늘 배운 말을 내일 현장에서 써요<br>
-      <small>Har kuni 5 daqiqa · O'rgangan gapni ertaga ishlating</small></p>
+      <h2 id="heroT" data-i18n="hero_title">한국어로 안전하게 일해요</h2>
+      <p id="heroP" data-i18n="hero_sub">매일 5분 · 오늘 배운 말을 내일 현장에서 써요</p>
     </div>
 
-    <div class="slabel">📅 2주일 커리큘럼 (Day 1–14)</div>
+    <div class="slabel" data-i18n="lbl_curriculum">📅 2주일 커리큘럼 (Day 1–14)</div>
     <div class="day-grid" id="dayGrid"></div>
 
     <div class="prog-card">
-      <h3>📊 나의 진행률 / Progressim</h3>
+      <h3 data-i18n="lbl_progress">📊 나의 진행률</h3>
       <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
       <div class="ptxt" id="pt">0 / 7</div>
     </div>
@@ -527,6 +558,18 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <span class="step-hint" id="stepHint"></span>
   </div>
   <div class="lbody" id="lcontent"></div>
+</div>
+
+<!-- 언어 선택 모달 -->
+<div class="lang-modal-bg" id="langModalBg" onclick="closeLangModal(event)">
+  <div class="lang-modal">
+    <h3>🌐 언어 선택 / Select Language</h3>
+    <p>화면 언어를 선택하세요 · Choose your display language</p>
+    <div class="lang-grid" id="langGrid"></div>
+    <button onclick="closeLangModal()" style="margin-top:14px;width:100%;padding:12px;
+      background:var(--bg);border:none;border-radius:10px;font-size:13px;font-weight:700;
+      cursor:pointer;color:var(--muted)">✕ 닫기 / Close</button>
+  </div>
 </div>
 
 <script>
@@ -1315,11 +1358,237 @@ let ST = {
 };
 
 // ════════════════════════
-// LANG
+// LANG META & STRINGS
 // ════════════════════════
+const LANG_META = {
+  ko:  {flag:'🇰🇷', native:'한국어',    label:'Korean'},
+  uz:  {flag:'🇺🇿', native:"O'zbek",   label:'Uzbek'},
+  vi:  {flag:'🇻🇳', native:'Tiếng Việt',label:'Vietnamese'},
+  ne:  {flag:'🇳🇵', native:'नेपाली',   label:'Nepali'},
+  kk:  {flag:'🇰🇿', native:'Қазақша',  label:'Kazakh'},
+  tet: {flag:'🇹🇱', native:'Tetum',    label:'Timor-Leste'},
+  ru:  {flag:'🇷🇺', native:'Русский',  label:'Russian'},
+  en:  {flag:'🇺🇸', native:'English',  label:'English'},
+};
+
+const STRINGS = {
+  ko:{
+    tab_login:'🔐 로그인', tab_ind:'👤 개인 가입', tab_co:'🏭 업체 직원',
+    lbl_id:'아이디', lbl_pw:'비밀번호', btn_login:'🔐 로그인', btn_start:'🚀 시작하기',
+    lbl_name:'이름', lbl_phone:'핸드폰 번호', lbl_notif:'알람 시간',
+    lbl_lang:'언어 선택', lbl_co_code:'업체 코드', lbl_emp:'직원 번호 (선택)',
+    hint_phone:'📲 카카오톡 또는 문자로 공부 알림을 보내드려요',
+    hint_co:'💼 업체 담당자에게 코드를 받으세요',
+    already_member:'이미 가입했어요? → 로그인 탭을 눌러주세요',
+    err_required:'아이디와 비밀번호를 입력해주세요',
+    err_login:'아이디 또는 비밀번호가 틀렸어요',
+    err_name:'이름을 입력해주세요', err_phone:'핸드폰 번호를 입력해주세요', err_code:'업체 코드를 입력해주세요',
+    hero_title:'한국어로 안전하게 일해요',
+    hero_sub:'매일 5분 · 오늘 배운 말을 내일 현장에서 써요',
+    lbl_curriculum:'📅 2주일 커리큘럼 (Day 1–14)',
+    lbl_progress:'📊 나의 진행률',
+    lbl_profile:'나의 학습 현황',
+    steps:['목표','듣기','뜯어봐요','패턴드릴','말해봐요','퀴즈','완료'],
+    step_hints:['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'],
+  },
+  uz:{
+    tab_login:'🔐 Kirish', tab_ind:'👤 Shaxsiy', tab_co:'🏭 Korxona',
+    lbl_id:'Login', lbl_pw:'Parol', btn_login:'🔐 Kirish', btn_start:'🚀 Boshlash',
+    lbl_name:'Ism', lbl_phone:'Telefon raqami', lbl_notif:'Eslatma vaqti',
+    lbl_lang:"Tilni tanlang", lbl_co_code:'Korxona kodi', lbl_emp:"Xodim raqami (ixtiyoriy)",
+    hint_phone:"📲 Kakaotalk yoki SMS orqali o'quv eslatmasi yuboriladi",
+    hint_co:"💼 Korxona mas'ulidan kodni oling",
+    already_member:"Allaqachon ro'yxatdan o'tganmisiz? → Kirish tabini bosing",
+    err_required:"Login va parolni kiriting",
+    err_login:"Login yoki parol noto'g'ri",
+    err_name:"Ismingizni kiriting", err_phone:"Telefon raqamini kiriting", err_code:"Korxona kodini kiriting",
+    hero_title:"Koreys tilida xavfsiz ishlang",
+    hero_sub:"Har kuni 5 daqiqa · O'rgangan gapni ertaga ish joyida ishlating",
+    lbl_curriculum:"📅 2 haftalik o'quv dasturi (1–14-kun)",
+    lbl_progress:'📊 Mening progressim',
+    lbl_profile:"Mening o'quv holatim",
+    steps:['Maqsad','Tinglang','Tahlil','Mashq','Gapiring','Test','Tugadi'],
+    step_hints:['Bugungi maqsad','Suhbatni eshiting',"So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting",'Test','Tugadi!'],
+  },
+  vi:{
+    tab_login:'🔐 Đăng nhập', tab_ind:'👤 Cá nhân', tab_co:'🏭 Công ty',
+    lbl_id:'Tên đăng nhập', lbl_pw:'Mật khẩu', btn_login:'🔐 Đăng nhập', btn_start:'🚀 Bắt đầu',
+    lbl_name:'Họ và tên', lbl_phone:'Số điện thoại', lbl_notif:'Giờ nhắc nhở',
+    lbl_lang:'Chọn ngôn ngữ', lbl_co_code:'Mã công ty', lbl_emp:'Mã nhân viên (tùy chọn)',
+    hint_phone:'📲 Nhắc nhở học tập sẽ được gửi qua Kakao hoặc SMS',
+    hint_co:'💼 Nhận mã từ người phụ trách công ty',
+    already_member:'Đã đăng ký? → Nhấn tab Đăng nhập',
+    err_required:'Vui lòng nhập tên đăng nhập và mật khẩu',
+    err_login:'Tên đăng nhập hoặc mật khẩu không đúng',
+    err_name:'Vui lòng nhập họ tên', err_phone:'Vui lòng nhập số điện thoại', err_code:'Vui lòng nhập mã công ty',
+    hero_title:'Làm việc an toàn bằng tiếng Hàn',
+    hero_sub:'Mỗi ngày 5 phút · Dùng từ đã học ngay tại nơi làm việc ngày mai',
+    lbl_curriculum:'📅 Chương trình 2 tuần (Ngày 1–14)',
+    lbl_progress:'📊 Tiến độ của tôi',
+    lbl_profile:'Tình trạng học tập của tôi',
+    steps:['Mục tiêu','Nghe','Phân tích','Luyện tập','Nói','Kiểm tra','Xong'],
+    step_hints:['Mục tiêu hôm nay','Nghe hội thoại','Phân tích từ vựng','Luyện mẫu câu','Tự nói','Kiểm tra','Xong!'],
+  },
+  ne:{
+    tab_login:'🔐 लगइन', tab_ind:'👤 व्यक्तिगत', tab_co:'🏭 कम्पनी',
+    lbl_id:'प्रयोगकर्ता नाम', lbl_pw:'पासवर्ड', btn_login:'🔐 लगइन', btn_start:'🚀 सुरु गर्नुस्',
+    lbl_name:'नाम', lbl_phone:'फोन नम्बर', lbl_notif:'सूचना समय',
+    lbl_lang:'भाषा छान्नुस्', lbl_co_code:'कम्पनी कोड', lbl_emp:'कर्मचारी नम्बर (ऐच्छिक)',
+    hint_phone:'📲 काकाओ वा SMS मार्फत अध्ययन सम्झना पठाइन्छ',
+    hint_co:'💼 कम्पनीको जिम्मेवारबाट कोड लिनुस्',
+    already_member:'पहिले नै दर्ता गर्नुभयो? → लगइन ट्याब थिच्नुस्',
+    err_required:'प्रयोगकर्ता नाम र पासवर्ड राख्नुस्',
+    err_login:'प्रयोगकर्ता नाम वा पासवर्ड गलत छ',
+    err_name:'नाम राख्नुस्', err_phone:'फोन नम्बर राख्नुस्', err_code:'कम्पनी कोड राख्नुस्',
+    hero_title:'कोरियन भाषामा सुरक्षित काम गर्नुस्',
+    hero_sub:'प्रतिदिन ५ मिनेट · आज सिकेको कुरा भोलि कामको ठाउँमा प्रयोग गर्नुस्',
+    lbl_curriculum:'📅 २ हप्ताको पाठ्यक्रम (दिन १–१४)',
+    lbl_progress:'📊 मेरो प्रगति',
+    lbl_profile:'मेरो अध्ययन अवस्था',
+    steps:['लक्ष्य','सुन्नुस्','विश्लेषण','अभ्यास','बोल्नुस्','परीक्षा','सकियो'],
+    step_hints:['आजको लक्ष्य','कुराकानी सुन्नुस्','शब्द विश्लेषण','ढाँचा अभ्यास','आफैं बोल्नुस्','परीक्षा','सकियो!'],
+  },
+  kk:{
+    tab_login:'🔐 Кіру', tab_ind:'👤 Жеке', tab_co:'🏭 Кәсіпорын',
+    lbl_id:'Пайдаланушы аты', lbl_pw:'Құпия сөз', btn_login:'🔐 Кіру', btn_start:'🚀 Бастау',
+    lbl_name:'Аты-жөні', lbl_phone:'Телефон нөмірі', lbl_notif:'Хабарлама уақыты',
+    lbl_lang:'Тілді таңдаңыз', lbl_co_code:'Кәсіпорын коды', lbl_emp:'Қызметкер нөмірі (міндетті емес)',
+    hint_phone:'📲 Kakao немесе SMS арқылы оқу еске салуы жіберіледі',
+    hint_co:'💼 Кәсіпорын жауаптысынан кодты алыңыз',
+    already_member:'Тіркелдіңіз бе? → Кіру қойындысын басыңыз',
+    err_required:'Пайдаланушы аты мен құпия сөзді енгізіңіз',
+    err_login:'Пайдаланушы аты немесе құпия сөз қате',
+    err_name:'Атыңызды енгізіңіз', err_phone:'Телефон нөмірін енгізіңіз', err_code:'Кәсіпорын кодын енгізіңіз',
+    hero_title:'Корей тілінде қауіпсіз жұмыс жасаңыз',
+    hero_sub:'Күн сайын 5 минут · Бүгін үйренгенді ертең жұмыста қолданыңыз',
+    lbl_curriculum:'📅 2 аптаның оқу бағдарламасы (1–14-күн)',
+    lbl_progress:'📊 Менің үлгерімім',
+    lbl_profile:'Оқу жағдайым',
+    steps:['Мақсат','Тыңдаңыз','Талдау','Жаттығу','Сөйлеңіз','Тест','Аяқталды'],
+    step_hints:['Бүгінгі мақсат','Сұхбатты тыңдаңыз','Сөздерді талдаңыз','Үлгіні жаттықтырыңыз','Өзіңіз айтыңыз','Тест','Аяқталды!'],
+  },
+  tet:{
+    tab_login:'🔐 Tama', tab_ind:'👤 Individuál', tab_co:'🏭 Kompañia',
+    lbl_id:'Naran utilizadór', lbl_pw:'Liafuan-passe', btn_login:'🔐 Tama', btn_start:'🚀 Hahú',
+    lbl_name:'Naran', lbl_phone:'Númeru telefone', lbl_notif:'Tempu notifikasaun',
+    lbl_lang:'Hili lian', lbl_co_code:'Kódigu kompañia', lbl_emp:'Númeru empregadu (opsioanl)',
+    hint_phone:'📲 Lembransa estudu sei haruka liu Kakao ka SMS',
+    hint_co:'💼 Simu kódigu husi responsável kompañia',
+    already_member:'Rejistu ona? → Klik tab Tama',
+    err_required:'Favor hatama naran utilizadór no liafuan-passe',
+    err_login:'Naran utilizadór ka liafuan-passe sala',
+    err_name:'Favor hatama ita-nia naran', err_phone:'Favor hatama númeru telefone', err_code:'Favor hatama kódigu kompañia',
+    hero_title:"Servisu ho seguransa iha lian Korea",
+    hero_sub:"Minutu 5 loroloron · Uza liafuan ne'ebé aprende ohin iha fatin servisu aban",
+    lbl_curriculum:'📅 Kuríkulu semana 2 (Loron 1–14)',
+    lbl_progress:"📊 Ha'u-nia progresu",
+    lbl_profile:"Ha'u-nia situasaun aprendizajen",
+    steps:['Meta','Rona','Analiza','Prátika',"Ko'alia",'Teste','Remata'],
+    step_hints:['Meta ohin nian','Rona diálogu','Analiza liafuan','Prátika padrãun',"Ko'alia rasik",'Teste','Remata!'],
+  },
+  ru:{
+    tab_login:'🔐 Войти', tab_ind:'👤 Личный', tab_co:'🏭 Предприятие',
+    lbl_id:'Имя пользователя', lbl_pw:'Пароль', btn_login:'🔐 Войти', btn_start:'🚀 Начать',
+    lbl_name:'Имя', lbl_phone:'Номер телефона', lbl_notif:'Время уведомления',
+    lbl_lang:'Выберите язык', lbl_co_code:'Код предприятия', lbl_emp:'Номер сотрудника (необязательно)',
+    hint_phone:'📲 Напоминания об учёбе придут через Kakao или SMS',
+    hint_co:'💼 Получите код у ответственного сотрудника предприятия',
+    already_member:'Уже зарегистрированы? → Нажмите вкладку «Войти»',
+    err_required:'Введите имя пользователя и пароль',
+    err_login:'Неверное имя пользователя или пароль',
+    err_name:'Введите ваше имя', err_phone:'Введите номер телефона', err_code:'Введите код предприятия',
+    hero_title:'Работайте безопасно на корейском языке',
+    hero_sub:'Каждый день 5 минут · Используйте выученные слова завтра на работе',
+    lbl_curriculum:'📅 Учебная программа 2 недели (День 1–14)',
+    lbl_progress:'📊 Мой прогресс',
+    lbl_profile:'Мой статус обучения',
+    steps:['Цель','Слушать','Разбор','Практика','Говорить','Тест','Готово'],
+    step_hints:['Цель сегодня','Слушайте диалог','Разбор слов','Практикуйте шаблон','Говорите сами','Тест','Готово!'],
+  },
+  en:{
+    tab_login:'🔐 Login', tab_ind:'👤 Individual', tab_co:'🏭 Company',
+    lbl_id:'Username', lbl_pw:'Password', btn_login:'🔐 Login', btn_start:'🚀 Start',
+    lbl_name:'Full name', lbl_phone:'Phone number', lbl_notif:'Notification time',
+    lbl_lang:'Select language', lbl_co_code:'Company code', lbl_emp:'Employee number (optional)',
+    hint_phone:'📲 Study reminders will be sent via Kakao or SMS',
+    hint_co:'💼 Get the code from your company manager',
+    already_member:'Already registered? → Click the Login tab',
+    err_required:'Please enter username and password',
+    err_login:'Incorrect username or password',
+    err_name:'Please enter your name', err_phone:'Please enter your phone number', err_code:'Please enter company code',
+    hero_title:'Work safely in Korean',
+    hero_sub:'Every day 5 minutes · Use today\'s words at work tomorrow',
+    lbl_curriculum:'📅 2-week curriculum (Day 1–14)',
+    lbl_progress:'📊 My progress',
+    lbl_profile:'My learning status',
+    steps:['Goal','Listen','Break down','Pattern drill','Speak','Quiz','Done'],
+    step_hints:["Today's goal",'Listen to dialogue','Break down words','Practice pattern','Speak yourself','Quiz','Done!'],
+  },
+};
+
+const UILANG_KEY = 'sk_uilang';
+function getUILang(){ return localStorage.getItem(UILANG_KEY)||'ko'; }
+function t(key){ return (STRINGS[getUILang()]||STRINGS.ko)[key]||STRINGS.ko[key]||key; }
+
+function setUILang(code){
+  localStorage.setItem(UILANG_KEY, code);
+  applyLang();
+  renderLangChips();
+  renderLangGrid();
+  const m = LANG_META[code];
+  if(m) document.getElementById('langBtn').textContent = m.flag+' '+code.toUpperCase();
+}
+
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if(val) el.textContent = val;
+  });
+  // 스텝 이름/힌트도 갱신
+  if(ST.dayIdx!==null) renderLesson();
+  else renderHome();
+}
+
+function renderLangChips(){
+  const cur = getUILang();
+  const chips = document.getElementById('authLangChips');
+  if(!chips) return;
+  chips.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+    `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')">
+      ${m.flag} ${m.native}
+    </button>`
+  ).join('');
+}
+
+function renderLangGrid(){
+  const cur = getUILang();
+  const grid = document.getElementById('langGrid');
+  if(!grid) return;
+  grid.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+    `<div class="lang-opt${code===cur?' on':''}" onclick="setUILang('${code}');closeLangModal()">
+      <div class="lang-opt-flag">${m.flag}</div>
+      <div class="lang-opt-info">
+        <div class="lang-opt-native">${m.native}</div>
+        <div class="lang-opt-name">${m.label}</div>
+      </div>
+      ${code===cur?'<span style="margin-left:auto;color:var(--blue-m);font-size:16px">✓</span>':''}
+    </div>`
+  ).join('');
+}
+
+function openLangModal(){
+  renderLangGrid();
+  document.getElementById('langModalBg').classList.add('on');
+}
+function closeLangModal(e){
+  if(!e||e.target===document.getElementById('langModalBg'))
+    document.getElementById('langModalBg').classList.remove('on');
+}
+
 function toggleLang(){
+  // 레슨 내용 KO/UZ 토글 — UI 언어와 별개
   ST.lang = ST.lang==='ko' ? 'uz' : 'ko';
-  document.getElementById('langBtn').textContent = ST.lang==='ko' ? '🇺🇿 UZ' : '🇰🇷 KO';
   ST.dayIdx!==null ? renderLesson() : renderHome();
 }
 
@@ -1744,10 +2013,10 @@ function doLogin(){
   const id = document.getElementById('login-id').value.trim();
   const pw = document.getElementById('login-pw').value;
   const err = document.getElementById('login-err');
-  if(!id||!pw){ showLoginErr('아이디와 비밀번호를 입력해주세요'); return; }
+  if(!id||!pw){ showLoginErr(t('err_required')); return; }
   const users = getAllUsers();
   const found = users.find(u=>u.username===id && u.password===pw);
-  if(!found){ showLoginErr('아이디 또는 비밀번호가 틀렸어요 / Noto\'g\'ri login yoki parol'); return; }
+  if(!found){ showLoginErr(t('err_login')); return; }
   err.style.display='none';
   localStorage.setItem(U_KEY, JSON.stringify(found));
   loadUserProgress(found);
@@ -1766,8 +2035,8 @@ function doSignup(){
     const name = document.getElementById('ind-name').value.trim();
     const phone = document.getElementById('ind-phone').value.trim();
     const notifTime = document.getElementById('notif-time').value;
-    if(!name){ alert('이름을 입력해주세요 / Ismingizni kiriting'); return; }
-    if(!phone){ alert('핸드폰 번호를 입력해주세요 / Telefon raqamini kiriting'); return; }
+    if(!name){ alert(t('err_name')); return; }
+    if(!phone){ alert(t('err_phone')); return; }
     user = { id:genId(), username:'user_'+Date.now().toString(36), password:null,
       name, phone, lang:_authLang, type:'individual',
       companyCode:null, companyName:null, employeeNum:null,
@@ -1778,9 +2047,9 @@ function doSignup(){
     const phone = document.getElementById('co-phone').value.trim();
     const num = document.getElementById('co-num').value.trim();
     const notifTime = document.getElementById('notif-time2').value;
-    if(!code){ alert('업체 코드를 입력해주세요'); return; }
-    if(!name){ alert('이름을 입력해주세요'); return; }
-    if(!phone){ alert('핸드폰 번호를 입력해주세요'); return; }
+    if(!code){ alert(t('err_code')); return; }
+    if(!name){ alert(t('err_name')); return; }
+    if(!phone){ alert(t('err_phone')); return; }
     user = { id:genId(), username:'emp_'+Date.now().toString(36), password:null,
       name, phone, lang:_authLang2, type:'company',
       companyCode:code, companyName:null, employeeNum:num||null,
@@ -1831,16 +2100,24 @@ function fmtPhone(inp){
 }
 
 function enterApp(user){
-  ST.lang=user.lang;
-  document.getElementById('langBtn').textContent=user.lang==='ko'?'🇺🇿 UZ':'🇰🇷 KO';
+  ST.lang = user.lang==='ko' ? 'ko' : 'uz';
   document.getElementById('authScr').classList.remove('on');
   document.getElementById('mainHdr').style.display='';
   document.getElementById('homeScr').classList.add('on');
+  const cur = getUILang();
+  const m = LANG_META[cur]||LANG_META.ko;
+  document.getElementById('langBtn').textContent = m.flag+' '+cur.toUpperCase();
+  applyLang();
   renderHome();
 }
 
 function checkAuth(){
-  seedTestUsers(); // 최초 1회만 실행
+  seedTestUsers();
+  renderLangChips();
+  applyLang();
+  const cur = getUILang();
+  const m = LANG_META[cur]||LANG_META.ko;
+  document.getElementById('langBtn').textContent = m.flag+' '+cur.toUpperCase();
   const user=getUser();
   if(user){ loadUserProgress(user); enterApp(user); }
 }
