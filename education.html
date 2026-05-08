@@ -407,7 +407,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <!-- 로그인 -->
       <div id="form-login" class="auth-form">
         <label>아이디 / Login</label>
-        <input type="text" id="login-id" placeholder="kim001" maxlength="30"
+        <input type="text" id="login-id" placeholder="sardor01" maxlength="30"
           autocomplete="username" style="letter-spacing:.5px">
         <label>비밀번호 / Parol</label>
         <input type="password" id="login-pw" placeholder="••••••••" maxlength="30"
@@ -420,11 +420,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         </div>
         <div style="background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:14px;font-size:11px;line-height:1.9;color:var(--muted)">
           <strong style="color:var(--text)">🧪 테스트 계정</strong><br>
-          kim001 / safe1234 — 김현우 (개인, KO)<br>
+          sardor01 / safe1234 — Sardor (개인, UZ)<br>
           abdulla / safe1234 — Abdulla (개인, UZ)<br>
           rustam01 / abc1234 — Rustam (SAFE01, UZ)<br>
           bobur02 / abc1234 — Bobur (SAFE01, UZ)<br>
-          lee_sm / safe5678 — 이성민 (SAFE01, KO)
+          dilnoza / safe5678 — Dilnoza (SAFE01, UZ)
         </div>
       </div>
 
@@ -1652,7 +1652,7 @@ function rResult(d,el,uz){
 // ════════════════════════════════════
 const U_KEY = 'sk_user';       // 현재 로그인 유저
 const USERS_KEY = 'sk_users';  // 전체 유저 목록 (아이디/비번 포함)
-const SEEDED_KEY = 'sk_seeded_v2';
+const SEEDED_KEY = 'sk_seeded_v3';
 
 let _authLang = 'ko', _authLang2 = 'ko';
 
@@ -1670,8 +1670,8 @@ function getSessions(){
 
 // ── 테스트 유저 5명 정의
 const TEST_USERS = [
-  { id:'u_kim001',   username:'kim001',   password:'safe1234',
-    name:'김현우',           phone:'010-1234-5678', lang:'ko',
+  { id:'u_kim001',   username:'sardor01', password:'safe1234',
+    name:'Sardor Yusupov',  phone:'010-1234-5678', lang:'uz',
     type:'individual', companyCode:null,   employeeNum:null,    notifTime:'20:00',
     registeredAt:'2026-04-01T09:00:00.000Z' },
   { id:'u_abdulla',  username:'abdulla',  password:'safe1234',
@@ -1686,8 +1686,8 @@ const TEST_USERS = [
     name:'Bobur Toshmatov', phone:'010-4567-8901', lang:'uz',
     type:'company',    companyCode:'SAFE01', employeeNum:'EMP-002', notifTime:'20:00',
     registeredAt:'2026-04-03T08:00:00.000Z' },
-  { id:'u_lee',      username:'lee_sm',   password:'safe5678',
-    name:'이성민',           phone:'010-5678-9012', lang:'ko',
+  { id:'u_lee',      username:'dilnoza',  password:'safe5678',
+    name:'Dilnoza Mirzayeva', phone:'010-5678-9012', lang:'uz',
     type:'company',    companyCode:'SAFE01', employeeNum:'EMP-003', notifTime:'18:00',
     registeredAt:'2026-04-01T07:30:00.000Z' },
 ];
