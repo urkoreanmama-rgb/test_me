@@ -4,123 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>유학생 아르바이트 가능 여부 체커</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
   <style>
     :root {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --card: #273549;
-      --accent: #6366f1;
-      --accent2: #818cf8;
-      --success: #10b981;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: #334155;
-      --radius: 14px;
+      --bg: #0f172a; --surface: #1e293b; --card: #273549;
+      --accent: #6366f1; --accent2: #818cf8;
+      --success: #10b981; --warn: #f59e0b; --danger: #ef4444;
+      --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --radius: 14px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, sans-serif;
-      min-height: 100vh;
-      padding: 2rem 1rem 4rem;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', -apple-system, sans-serif; min-height: 100vh; padding: 2rem 1rem 4rem; }
     .wrapper { max-width: 760px; margin: 0 auto; }
 
-    /* Header */
     header { text-align: center; margin-bottom: 2.5rem; }
-    header .badge {
-      display: inline-block;
-      background: rgba(99,102,241,0.18);
-      color: var(--accent2);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 4px 14px;
-      border-radius: 99px;
-      border: 1px solid rgba(99,102,241,0.35);
-      margin-bottom: 1rem;
-    }
+    header .badge { display: inline-block; background: rgba(99,102,241,0.18); color: var(--accent2); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; padding: 4px 14px; border-radius: 99px; border: 1px solid rgba(99,102,241,0.35); margin-bottom: 1rem; }
     header h1 { font-size: 1.9rem; font-weight: 800; line-height: 1.25; }
     header h1 span { color: var(--accent2); }
     header p { color: var(--muted); margin-top: 0.6rem; font-size: 0.93rem; line-height: 1.6; }
-    .sources {
-      font-size: 0.75rem; color: var(--muted); margin-top: 0.8rem;
-    }
+    .sources { font-size: 0.75rem; color: var(--muted); margin-top: 0.8rem; }
     .sources a { color: var(--accent2); text-decoration: none; }
-    .sources a:hover { text-decoration: underline; }
 
-    /* Progress */
     .progress-wrap { margin-bottom: 2rem; }
     .progress-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }
     .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s ease; }
 
-    /* Question Card */
     .step { display: none; }
     .step.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 1.2rem;
-    }
-    .q-number {
-      font-size: 0.75rem; font-weight: 700; color: var(--accent2);
-      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;
-    }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.2rem; }
+    .q-number { font-size: 0.75rem; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
     .q-text { font-size: 1.08rem; font-weight: 700; line-height: 1.5; margin-bottom: 0.35rem; }
     .q-sub { font-size: 0.83rem; color: var(--muted); line-height: 1.55; margin-bottom: 1.4rem; }
 
-    /* Options */
     .options { display: flex; flex-direction: column; gap: 0.65rem; }
-    .option {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      font-size: 0.92rem;
-      transition: all 0.18s;
-      display: flex; align-items: center; gap: 0.7rem;
-    }
+    .option { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; cursor: pointer; font-size: 0.92rem; transition: all 0.18s; display: flex; align-items: center; gap: 0.7rem; }
     .option:hover { border-color: var(--accent); background: rgba(99,102,241,0.1); }
     .option.selected { border-color: var(--accent); background: rgba(99,102,241,0.15); color: var(--accent2); font-weight: 600; }
     .option .opt-icon { font-size: 1.3rem; }
 
-    /* Nav Buttons */
     .nav { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
-    .btn {
-      flex: 1; padding: 0.85rem 1.2rem; border-radius: 10px; border: none;
-      font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.18s;
-    }
+    .btn { flex: 1; padding: 0.85rem 1.2rem; border-radius: 10px; border: none; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.18s; }
     .btn-back { background: var(--surface); color: var(--muted); border: 1.5px solid var(--border); }
     .btn-back:hover { color: var(--text); border-color: var(--muted); }
     .btn-next { background: var(--accent); color: #fff; }
     .btn-next:hover { background: var(--accent2); }
     .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    /* Result */
     #result { display: none; }
     #result.active { display: block; animation: fadeIn 0.4s ease; }
-    .result-header {
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 1.4rem;
-      text-align: center;
-    }
-    .result-header.ok { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); border: 1px solid rgba(16,185,129,0.35); }
-    .result-header.warn { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05)); border: 1px solid rgba(245,158,11,0.35); }
-    .result-header.no { background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05)); border: 1px solid rgba(239,68,68,0.35); }
+    .result-header { border-radius: var(--radius); padding: 2rem; margin-bottom: 1.4rem; text-align: center; }
+    .result-header.ok  { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); border: 1px solid rgba(16,185,129,0.35); }
+    .result-header.warn{ background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05)); border: 1px solid rgba(245,158,11,0.35); }
+    .result-header.no  { background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05)); border: 1px solid rgba(239,68,68,0.35); }
     .result-icon { font-size: 3rem; margin-bottom: 0.6rem; }
     .result-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
-    .result-header.ok .result-title { color: #34d399; }
+    .result-header.ok  .result-title { color: #34d399; }
     .result-header.warn .result-title { color: #fbbf24; }
-    .result-header.no .result-title { color: #f87171; }
+    .result-header.no  .result-title { color: #f87171; }
     .result-sub { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
@@ -128,73 +70,43 @@
     .info-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
     .info-card .ic-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
     .info-card .ic-value { font-size: 1.05rem; font-weight: 700; }
-    .ic-ok { color: #34d399; }
-    .ic-warn { color: #fbbf24; }
-    .ic-no { color: #f87171; }
+    .ic-ok { color: #34d399; } .ic-warn { color: #fbbf24; } .ic-no { color: #f87171; }
 
     .section-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin: 1.5rem 0 0.8rem; }
-
     .steps-list { display: flex; flex-direction: column; gap: 0.7rem; }
-    .step-item {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem 1.2rem;
-      display: flex; gap: 1rem; align-items: flex-start;
-    }
-    .step-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--accent); color: #fff;
-      font-size: 0.82rem; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
+    .step-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.82rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
     .step-content .step-main { font-size: 0.92rem; font-weight: 600; }
     .step-content .step-detail { font-size: 0.82rem; color: var(--muted); margin-top: 2px; line-height: 1.5; }
 
     .docs-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
     @media (max-width: 500px) { .docs-list { grid-template-columns: 1fr; } }
-    .doc-item {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 8px; padding: 0.6rem 0.9rem;
-      font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;
-    }
+    .doc-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.9rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
     .doc-item.required { border-left: 3px solid var(--accent); }
     .doc-item.conditional { border-left: 3px solid var(--warn); }
 
-    .notice-box {
-      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
-      border-radius: 10px; padding: 1rem 1.2rem;
-      font-size: 0.85rem; line-height: 1.6; color: #fcd34d;
-      margin-top: 1rem;
-    }
+    .notice-box { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 1rem 1.2rem; font-size: 0.85rem; line-height: 1.6; color: #fcd34d; margin-top: 1rem; }
     .notice-box strong { display: block; margin-bottom: 4px; }
 
-    .link-box {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem 1.2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      text-decoration: none; transition: border-color 0.18s;
-      margin-top: 0.5rem;
-    }
+    .link-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none; transition: border-color 0.18s; margin-top: 0.5rem; }
     .link-box:hover { border-color: var(--accent); }
     .link-box .lb-left .lb-title { font-size: 0.9rem; font-weight: 700; color: var(--text); }
     .link-box .lb-left .lb-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
     .link-box .lb-arrow { color: var(--accent2); font-size: 1.1rem; }
 
-    .restart-btn {
-      display: block; width: 100%; margin-top: 1.5rem;
-      background: var(--surface); border: 1.5px solid var(--border);
-      color: var(--muted); border-radius: 10px; padding: 0.85rem;
-      font-size: 0.9rem; font-weight: 700; cursor: pointer; text-align: center;
-      transition: all 0.18s;
-    }
+    .restart-btn { display: block; width: 100%; margin-top: 1.5rem; background: var(--surface); border: 1.5px solid var(--border); color: var(--muted); border-radius: 10px; padding: 0.85rem; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.18s; }
     .restart-btn:hover { color: var(--text); border-color: var(--muted); }
 
-    .law-source {
-      margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
-      font-size: 0.75rem; color: var(--muted); line-height: 1.7;
-    }
+    .law-source { margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); line-height: 1.7; }
     .law-source a { color: var(--accent2); text-decoration: none; }
-    .law-source a:hover { text-decoration: underline; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; border: 1px solid var(--accent); color: var(--accent2); padding: 0.7rem 1.4rem; border-radius: 99px; font-size: 0.85rem; font-weight: 700; transition: transform 0.35s ease; z-index: 999; white-space: nowrap; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Save indicator */
+    .save-status { text-align: center; font-size: 0.78rem; color: var(--muted); margin-top: 0.8rem; }
+    .save-status.saved { color: #34d399; }
   </style>
 </head>
 <body>
@@ -204,10 +116,9 @@
     <div class="badge">🇰🇷 공공기관 정보 기반</div>
     <h1>유학생 <span>아르바이트 가능 여부</span> 체커</h1>
     <p>비자·재학 상태·한국어 수준을 입력하면<br>합법적 근무 자격과 다음 행동을 알려드립니다.</p>
-    <p class="sources">출처: <a href="https://www.immigration.go.kr/" target="_blank">법무부 출입국·외국인정책본부</a> · <a href="https://www.hikorea.go.kr/" target="_blank">HiKorea</a> · <a href="https://www.easylaw.go.kr/" target="_blank">찾기쉬운 생활법령정보</a></p>
+    <p class="sources">출처: <a href="https://www.immigration.go.kr/" target="_blank">법무부 출입국</a> · <a href="https://www.hikorea.go.kr/" target="_blank">HiKorea</a> · <a href="https://www.easylaw.go.kr/" target="_blank">찾기쉬운 생활법령</a></p>
   </header>
 
-  <!-- Progress -->
   <div class="progress-wrap">
     <div class="progress-label">
       <span id="prog-step">질문 1 / 7</span>
@@ -216,35 +127,33 @@
     <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:14%"></div></div>
   </div>
 
-  <!-- ===== STEP 1: 비자 종류 ===== -->
+  <!-- STEP 1 -->
   <div class="step active" id="step-1">
     <div class="card">
       <div class="q-number">질문 1</div>
       <div class="q-text">현재 보유 중인 비자(체류자격)는 무엇인가요?</div>
       <div class="q-sub">D-2는 대학/대학원 유학 비자, D-4는 어학연수(한국어 학당) 비자입니다.</div>
-      <div class="options" id="opts-1">
+      <div class="options">
         <div class="option" data-q="1" data-v="D2-UG" onclick="pick(this)"><span class="opt-icon">🎓</span> D-2 — 학사과정 (전문학사 포함)</div>
         <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-icon">🔬</span> D-2 — 석·박사과정</div>
         <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-icon">🌐</span> D-2-8 — 방문학생 (교환학생)</div>
-        <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-icon">📖</span> D-4 — 어학연수생 (한국어 학당)</div>
+        <div class="option" data-q="1" data-v="D4"    onclick="pick(this)"><span class="opt-icon">📖</span> D-4 — 어학연수생 (한국어 학당)</div>
         <div class="option" data-q="1" data-v="OTHER" onclick="pick(this)"><span class="opt-icon">❓</span> 그 외 비자 또는 모름</div>
       </div>
     </div>
-    <div class="nav">
-      <button class="btn btn-next" id="next-1" onclick="nextStep(1)" disabled>다음 →</button>
-    </div>
+    <div class="nav"><button class="btn btn-next" id="next-1" onclick="nextStep(1)" disabled>다음 →</button></div>
   </div>
 
-  <!-- ===== STEP 2: 체류 기간 ===== -->
+  <!-- STEP 2 -->
   <div class="step" id="step-2">
     <div class="card">
       <div class="q-number">질문 2</div>
       <div class="q-text">현재 비자로 입국(또는 체류자격 변경)한 지 얼마나 됐나요?</div>
       <div class="q-sub">D-4 및 D-2-8(방문학생)은 6개월 이상 경과해야 시간제 취업 신청이 가능합니다.</div>
-      <div class="options" id="opts-2">
-        <div class="option" data-q="2" data-v="LT3" onclick="pick(this)"><span class="opt-icon">🗓️</span> 3개월 미만</div>
+      <div class="options">
+        <div class="option" data-q="2" data-v="LT3"  onclick="pick(this)"><span class="opt-icon">🗓️</span> 3개월 미만</div>
         <div class="option" data-q="2" data-v="3TO6" onclick="pick(this)"><span class="opt-icon">🗓️</span> 3개월 이상 ~ 6개월 미만</div>
-        <div class="option" data-q="2" data-v="GT6" onclick="pick(this)"><span class="opt-icon">✅</span> 6개월 이상</div>
+        <div class="option" data-q="2" data-v="GT6"  onclick="pick(this)"><span class="opt-icon">✅</span> 6개월 이상</div>
       </div>
     </div>
     <div class="nav">
@@ -253,16 +162,16 @@
     </div>
   </div>
 
-  <!-- ===== STEP 3: 재학 상태 ===== -->
+  <!-- STEP 3 -->
   <div class="step" id="step-3">
     <div class="card">
       <div class="q-number">질문 3</div>
       <div class="q-text">현재 재학 상태는 어떤가요?</div>
       <div class="q-sub">시간제 취업은 정상적으로 재학 중인 학생만 신청할 수 있습니다.</div>
-      <div class="options" id="opts-3">
+      <div class="options">
         <div class="option" data-q="3" data-v="ENROLLED" onclick="pick(this)"><span class="opt-icon">✅</span> 정규 재학 중 (학기 중 또는 방학)</div>
-        <div class="option" data-q="3" data-v="LEAVE" onclick="pick(this)"><span class="opt-icon">⚠️</span> 휴학 중</div>
-        <div class="option" data-q="3" data-v="GRAD" onclick="pick(this)"><span class="opt-icon">🎉</span> 졸업 예정 / 수료</div>
+        <div class="option" data-q="3" data-v="LEAVE"    onclick="pick(this)"><span class="opt-icon">⚠️</span> 휴학 중</div>
+        <div class="option" data-q="3" data-v="GRAD"     onclick="pick(this)"><span class="opt-icon">🎉</span> 졸업 예정 / 수료</div>
       </div>
     </div>
     <div class="nav">
@@ -271,16 +180,16 @@
     </div>
   </div>
 
-  <!-- ===== STEP 4: 성적·출석 ===== -->
+  <!-- STEP 4 -->
   <div class="step" id="step-4">
     <div class="card">
       <div class="q-number">질문 4</div>
       <div class="q-text">직전 학기 성적(GPA) 및 출석률은 어느 정도인가요?</div>
       <div class="q-sub">D-2: GPA 2.0 이상 + 출석률 70% 이상 / D-4: 출석률 90% 이상 필요</div>
-      <div class="options" id="opts-4">
-        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-icon">✅</span> GPA 2.0 이상 + 출석률 기준 충족</div>
+      <div class="options">
+        <div class="option" data-q="4" data-v="GOOD"    onclick="pick(this)"><span class="opt-icon">✅</span> GPA 2.0 이상 + 출석률 기준 충족</div>
         <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-icon">⚠️</span> GPA 2.0 미만이거나 출석률 부족</div>
-        <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-icon">🆕</span> 첫 학기라 성적 없음</div>
+        <div class="option" data-q="4" data-v="FIRST"   onclick="pick(this)"><span class="opt-icon">🆕</span> 첫 학기라 성적 없음</div>
       </div>
     </div>
     <div class="nav">
@@ -289,17 +198,17 @@
     </div>
   </div>
 
-  <!-- ===== STEP 5: 한국어 수준 ===== -->
+  <!-- STEP 5 -->
   <div class="step" id="step-5">
     <div class="card">
       <div class="q-number">질문 5</div>
       <div class="q-text">한국어 능력(TOPIK) 수준은 어느 정도인가요?</div>
-      <div class="q-sub">TOPIK 등급에 따라 주당 최대 근무 가능 시간이 달라집니다.<br>영어 전용 트랙(수업 전부 영어) 수강 시 TOPIK 4급과 동일하게 인정됩니다.</div>
-      <div class="options" id="opts-5">
+      <div class="q-sub">TOPIK 등급에 따라 주당 최대 근무 가능 시간이 달라집니다.<br>영어 전용 트랙 수강 시 TOPIK 4급과 동일하게 인정됩니다.</div>
+      <div class="options">
         <div class="option" data-q="5" data-v="TOPIK5" onclick="pick(this)"><span class="opt-icon">🏆</span> TOPIK 5급 이상 (또는 사회통합프로그램 5단계 이수)</div>
         <div class="option" data-q="5" data-v="TOPIK4" onclick="pick(this)"><span class="opt-icon">📗</span> TOPIK 4급 (또는 영어 전용 수업 트랙)</div>
         <div class="option" data-q="5" data-v="TOPIK3" onclick="pick(this)"><span class="opt-icon">📘</span> TOPIK 1~3급</div>
-        <div class="option" data-q="5" data-v="NONE" onclick="pick(this)"><span class="opt-icon">❌</span> TOPIK 없음 / 만료됨</div>
+        <div class="option" data-q="5" data-v="NONE"   onclick="pick(this)"><span class="opt-icon">❌</span> TOPIK 없음 / 만료됨</div>
       </div>
     </div>
     <div class="nav">
@@ -308,13 +217,13 @@
     </div>
   </div>
 
-  <!-- ===== STEP 6: 학기 여부 ===== -->
+  <!-- STEP 6 -->
   <div class="step" id="step-6">
     <div class="card">
       <div class="q-number">질문 6</div>
       <div class="q-text">현재 학기 중인가요, 아니면 방학 중인가요?</div>
       <div class="q-sub">방학 및 공휴일(토요일 포함)에는 TOPIK 4급 이상 보유 시 시간 제한 없이 근무할 수 있습니다.</div>
-      <div class="options" id="opts-6">
+      <div class="options">
         <div class="option" data-q="6" data-v="SEMESTER" onclick="pick(this)"><span class="opt-icon">📚</span> 학기 중</div>
         <div class="option" data-q="6" data-v="VACATION" onclick="pick(this)"><span class="opt-icon">☀️</span> 방학 중</div>
       </div>
@@ -325,18 +234,18 @@
     </div>
   </div>
 
-  <!-- ===== STEP 7: 희망 근무시간 ===== -->
+  <!-- STEP 7 -->
   <div class="step" id="step-7">
     <div class="card">
       <div class="q-number">질문 7</div>
       <div class="q-text">희망하는 주당 근무 시간은 얼마나 되나요?</div>
       <div class="q-sub">실제로 근무하고 싶은 시간을 선택하세요. 허용 시간 초과 여부를 확인해 드립니다.</div>
-      <div class="options" id="opts-7">
-        <div class="option" data-q="7" data-v="H10" onclick="pick(this)"><span class="opt-icon">🕐</span> 주 10시간 이하</div>
-        <div class="option" data-q="7" data-v="H20" onclick="pick(this)"><span class="opt-icon">🕐</span> 주 11~20시간</div>
-        <div class="option" data-q="7" data-v="H25" onclick="pick(this)"><span class="opt-icon">🕐</span> 주 21~25시간</div>
-        <div class="option" data-q="7" data-v="H30" onclick="pick(this)"><span class="opt-icon">🕐</span> 주 26~30시간</div>
-        <div class="option" data-q="7" data-v="H35" onclick="pick(this)"><span class="opt-icon">🕐</span> 주 31~35시간</div>
+      <div class="options">
+        <div class="option" data-q="7" data-v="H10"  onclick="pick(this)"><span class="opt-icon">🕐</span> 주 10시간 이하</div>
+        <div class="option" data-q="7" data-v="H20"  onclick="pick(this)"><span class="opt-icon">🕐</span> 주 11~20시간</div>
+        <div class="option" data-q="7" data-v="H25"  onclick="pick(this)"><span class="opt-icon">🕐</span> 주 21~25시간</div>
+        <div class="option" data-q="7" data-v="H30"  onclick="pick(this)"><span class="opt-icon">🕐</span> 주 26~30시간</div>
+        <div class="option" data-q="7" data-v="H35"  onclick="pick(this)"><span class="opt-icon">🕐</span> 주 31~35시간</div>
         <div class="option" data-q="7" data-v="HMAX" onclick="pick(this)"><span class="opt-icon">🕐</span> 제한 없이 최대한</div>
       </div>
     </div>
@@ -346,14 +255,21 @@
     </div>
   </div>
 
-  <!-- ===== RESULT ===== -->
-  <div id="result">
-    <!-- filled by JS -->
-  </div>
-
+  <div id="result"></div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
+// Supabase 초기화
+let sb = null;
+try {
+  if (typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch(e) {}
+
 const answers = {};
 const TOTAL = 7;
 
@@ -375,149 +291,124 @@ function updateProgress(step) {
 
 function nextStep(current) {
   document.getElementById(`step-${current}`).classList.remove('active');
-  const next = current + 1;
-  document.getElementById(`step-${next}`).classList.add('active');
-  updateProgress(next);
+  document.getElementById(`step-${current + 1}`).classList.add('active');
+  updateProgress(current + 1);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevStep(current) {
   document.getElementById(`step-${current}`).classList.remove('active');
-  const prev = current - 1;
-  document.getElementById(`step-${prev}`).classList.add('active');
-  updateProgress(prev);
+  document.getElementById(`step-${current - 1}`).classList.add('active');
+  updateProgress(current - 1);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function computeResult() {
-  const visa = answers['1'];
-  const stay = answers['2'];
-  const enroll = answers['3'];
-  const grade = answers['4'];
-  const topik = answers['5'];
-  const semester = answers['6'];
+  const visa = answers['1'], stay = answers['2'], enroll = answers['3'];
+  const grade = answers['4'], topik = answers['5'], semester = answers['6'];
   const hours = answers['7'];
 
-  // --- 기본 자격 체크 ---
-  const isOtherVisa = visa === 'OTHER';
-  const isD4 = visa === 'D4';
-  const isD2VS = visa === 'D2-VS';
-  const isD2UG = visa === 'D2-UG';
-  const isD2GR = visa === 'D2-GR';
+  const isD4   = visa === 'D4', isD2VS = visa === 'D2-VS';
+  const isD2UG = visa === 'D2-UG', isD2GR = visa === 'D2-GR';
+  const isOther = visa === 'OTHER';
 
-  // 6개월 조건
-  const needsSixMonth = isD4 || isD2VS;
-  const hasEnoughStay = stay === 'GT6';
-  const stayOk = !needsSixMonth || hasEnoughStay;
-
-  // 재학 상태
+  const stayOk   = !(isD4 || isD2VS) || stay === 'GT6';
   const enrollOk = enroll === 'ENROLLED';
+  const gradeOk  = grade === 'GOOD' || grade === 'FIRST';
 
-  // 성적
-  const gradeOk = grade === 'GOOD' || grade === 'FIRST';
-
-  // TOPIK 기반 최대 시간 계산
   function getMaxHours() {
-    if (isOtherVisa) return 0;
+    if (isOther) return 0;
     if (semester === 'VACATION') {
-      if (topik === 'TOPIK5') return 999;
-      if (topik === 'TOPIK4' || topik === 'TOPIK3') return 999; // 방학 중 TOPIK4↑ 무제한
-      return 15; // TOPIK 없거나 만료
+      return (topik === 'TOPIK4' || topik === 'TOPIK5') ? 999 : 15;
     }
-    // 학기 중
-    if (isD4) {
-      if (topik === 'TOPIK5') return 25;
-      if (topik === 'TOPIK4') return 20;
-      return 15;
-    }
-    if (isD2UG || isD2VS) {
-      if (topik === 'TOPIK5') return 30;
-      if (topik === 'TOPIK4') return 25;
-      return 15;
-    }
-    if (isD2GR) {
-      if (topik === 'TOPIK5') return 35;
-      if (topik === 'TOPIK4') return 30;
-      return 15;
-    }
+    if (isD4)   return topik === 'TOPIK5' ? 25 : topik === 'TOPIK4' ? 20 : 15;
+    if (isD2UG || isD2VS) return topik === 'TOPIK5' ? 30 : topik === 'TOPIK4' ? 25 : 15;
+    if (isD2GR) return topik === 'TOPIK5' ? 35 : topik === 'TOPIK4' ? 30 : 15;
     return 0;
   }
 
-  function hoursNum(v) {
-    const m = { H10: 10, H20: 20, H25: 25, H30: 30, H35: 35, HMAX: 99 };
-    return m[v] || 0;
-  }
-
   const maxHours = getMaxHours();
-  const wantHours = hoursNum(hours);
-  const hoursOk = wantHours <= maxHours;
+  const wantNum  = { H10:10, H20:20, H25:25, H30:30, H35:35, HMAX:99 }[hours] || 0;
+  const hoursOk  = wantNum <= maxHours;
 
-  // 전체 판정
-  let status; // 'ok' | 'warn' | 'no'
-  let reason = [];
-
-  if (isOtherVisa) {
-    status = 'no';
-    reason.push('D-2 또는 D-4 비자 소지자만 시간제 취업 허가를 신청할 수 있습니다.');
+  let status = 'ok', reason = [];
+  if (isOther) {
+    status = 'no'; reason.push('D-2 또는 D-4 비자 소지자만 시간제 취업 허가를 신청할 수 있습니다.');
   } else if (!stayOk) {
-    status = 'no';
-    reason.push(`${isD4 ? 'D-4' : 'D-2-8 방문학생'}은 입국(자격변경)일로부터 6개월이 경과해야 신청 가능합니다. 아직 ${stay === 'LT3' ? '3개월' : '6개월'}이 되지 않았습니다.`);
+    status = 'no'; reason.push(`${isD4?'D-4':'D-2-8 방문학생'}은 입국(자격변경)일로부터 6개월이 경과해야 신청 가능합니다.`);
   } else if (!enrollOk) {
-    status = 'no';
-    reason.push(enroll === 'LEAVE' ? '휴학 중에는 시간제 취업 허가를 받을 수 없습니다.' : '수료·졸업 예정자는 별도의 구직 비자(D-10)를 고려하세요.');
+    status = 'no'; reason.push(enroll === 'LEAVE' ? '휴학 중에는 시간제 취업 허가를 받을 수 없습니다.' : '졸업·수료 예정자는 구직 비자(D-10)를 고려하세요.');
   } else if (!gradeOk) {
-    status = 'warn';
-    reason.push('성적(GPA 2.0 미만) 또는 출석률 기준을 충족하지 못하면 허가가 거부될 수 있습니다. 학교 국제처에 먼저 문의하세요.');
+    status = 'warn'; reason.push('성적(GPA 2.0 미만) 또는 출석률 기준 미충족 시 허가가 거부될 수 있습니다.');
   } else if (!hoursOk) {
     status = 'warn';
-    const label = maxHours === 999 ? '무제한' : `주 ${maxHours}시간`;
-    reason.push(`희망 시간이 허용 시간(${label})을 초과합니다. 초과 근무 시 불법취업으로 적발될 수 있습니다.`);
-  } else {
-    status = 'ok';
+    const lbl = maxHours === 999 ? '무제한' : `주 ${maxHours}시간`;
+    reason.push(`희망 시간이 허용 시간(${lbl})을 초과합니다. 초과 근무는 불법취업에 해당합니다.`);
   }
 
-  return { status, reason, maxHours, wantHours, visa, topik, semester, stayOk, enrollOk, gradeOk };
+  return { status, reason, maxHours, wantHours: wantNum, visa, topik, semester };
+}
+
+async function saveToSupabase(answers, result) {
+  if (!sb) return;
+  try {
+    const { error } = await sb.from('submissions').insert({
+      visa_type:         answers['1'],
+      stay_duration:     answers['2'],
+      enrollment:        answers['3'],
+      grade_status:      answers['4'],
+      topik_level:       answers['5'],
+      semester:          answers['6'],
+      desired_hours:     answers['7'],
+      result_status:     result.status,
+      max_hours_allowed: result.maxHours === 999 ? -1 : result.maxHours,
+      blocker:           result.reason.join(' | ') || null
+    });
+    if (!error) showToast('✓ 응답이 저장되었습니다');
+  } catch(e) {}
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function showResult() {
-  // 마지막 step 숨기기
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById('prog-fill').style.width = '100%';
   document.getElementById('prog-pct').textContent = '100%';
   document.getElementById('prog-step').textContent = '결과';
 
   const r = computeResult();
-  const el = document.getElementById('result');
+  saveToSupabase(answers, r);
 
-  const icons = { ok: '✅', warn: '⚠️', no: '🚫' };
-  const titles = { ok: '아르바이트 가능!', warn: '조건부 가능 / 확인 필요', no: '현재 불가' };
-  const subs = {
-    ok: '허가 신청 조건을 모두 충족합니다. 아래 절차에 따라 시간제 취업허가를 신청하세요.',
+  const icons  = { ok:'✅', warn:'⚠️', no:'🚫' };
+  const titles = { ok:'아르바이트 가능!', warn:'조건부 가능 / 확인 필요', no:'현재 불가' };
+  const subs   = {
+    ok:   '허가 신청 조건을 모두 충족합니다. 아래 절차에 따라 시간제 취업허가를 신청하세요.',
     warn: '일부 조건에서 주의가 필요합니다. 허가 전 반드시 학교 국제처 또는 출입국관리소에 확인하세요.',
-    no: '현재 시간제 취업 허가를 신청할 수 없습니다. 아래 사유와 대안을 확인하세요.'
+    no:   '현재 시간제 취업 허가를 신청할 수 없습니다. 아래 사유와 대안을 확인하세요.'
   };
 
-  const maxLabel = r.maxHours === 999 ? '무제한 (방학·공휴일)' : r.maxHours === 0 ? '해당 없음' : `주 최대 ${r.maxHours}시간`;
-  const visaLabels = { 'D2-UG': 'D-2 학사과정', 'D2-GR': 'D-2 석·박사', 'D2-VS': 'D-2-8 방문학생', 'D4': 'D-4 어학연수', 'OTHER': '기타' };
-  const topikLabels = { TOPIK5: 'TOPIK 5급↑', TOPIK4: 'TOPIK 4급', TOPIK3: 'TOPIK 1~3급', NONE: '없음/만료' };
-
-  // 서류 목록 — D4냐 D2냐에 따라 약간 다름
+  const visaLbls  = { 'D2-UG':'D-2 학사과정', 'D2-GR':'D-2 석·박사', 'D2-VS':'D-2-8 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
+  const topikLbls = { TOPIK5:'TOPIK 5급↑', TOPIK4:'TOPIK 4급', TOPIK3:'TOPIK 1~3급', NONE:'없음/만료' };
+  const maxLabel  = r.maxHours === 999 ? '무제한 (방학·공휴일)' : r.maxHours === 0 ? '해당 없음' : `주 최대 ${r.maxHours}시간`;
   const isD4 = r.visa === 'D4';
 
   const reasonHtml = r.reason.length
-    ? `<div class="notice-box"><strong>⚠️ 주의사항</strong>${r.reason.map(x => `• ${x}`).join('<br>')}</div>`
-    : '';
+    ? `<div class="notice-box"><strong>⚠️ 주의사항</strong>${r.reason.map(x=>`• ${x}`).join('<br>')}</div>` : '';
 
-  // 신청 절차
   const procSteps = [
-    { main: '학교 국제처(국제교류팀) 방문', detail: '시간제취업 확인서 양식을 받고, 담당자 서명·직인을 받습니다.' },
-    { main: '고용주와 근로계약서 작성', detail: '시급, 근무장소, 근무시간이 명시된 표준근로계약서가 필요합니다.' },
-    { main: 'HiKorea 온라인 신청 또는 출입국관리소 방문', detail: 'hikorea.go.kr → 전자민원 → 시간제취업 허가 신청 / 또는 관할 출입국관리소 직접 방문' },
-    { main: '허가서 수령 후 근무 시작', detail: '허가 전 근무는 불법취업! 반드시 허가서를 받은 뒤 첫 근무를 시작하세요.' },
-    { main: '근무지 변경 시 15일 이내 재신고', detail: '다른 사업장으로 이동할 경우 반드시 다시 허가를 받아야 합니다.' }
+    { main:'학교 국제처(국제교류팀) 방문', detail:'시간제취업 확인서 양식을 받고, 담당자 서명·직인을 받습니다.' },
+    { main:'고용주와 근로계약서 작성', detail:'시급, 근무장소, 근무시간이 명시된 표준근로계약서가 필요합니다.' },
+    { main:'HiKorea 온라인 신청 또는 출입국관리소 방문', detail:'hikorea.go.kr → 전자민원 → 시간제취업 허가 신청 / 또는 관할 출입국관리소 직접 방문' },
+    { main:'허가서 수령 후 근무 시작', detail:'허가 전 근무는 불법취업! 반드시 허가서를 받은 뒤 첫 근무를 시작하세요.' },
+    { main:'근무지 변경 시 15일 이내 재신고', detail:'다른 사업장으로 이동할 경우 반드시 다시 허가를 받아야 합니다.' }
   ];
 
-  el.innerHTML = `
+  document.getElementById('result').innerHTML = `
     <div class="result-header ${r.status}">
       <div class="result-icon">${icons[r.status]}</div>
       <div class="result-title">${titles[r.status]}</div>
@@ -527,19 +418,19 @@ function showResult() {
     <div class="info-grid">
       <div class="info-card">
         <div class="ic-label">비자 종류</div>
-        <div class="ic-value">${visaLabels[r.visa] || '-'}</div>
+        <div class="ic-value">${visaLbls[r.visa]||'-'}</div>
       </div>
       <div class="info-card">
         <div class="ic-label">주당 최대 허용 시간</div>
-        <div class="ic-value ${r.status === 'ok' ? 'ic-ok' : r.status === 'warn' ? 'ic-warn' : 'ic-no'}">${maxLabel}</div>
+        <div class="ic-value ${r.status==='ok'?'ic-ok':r.status==='warn'?'ic-warn':'ic-no'}">${maxLabel}</div>
       </div>
       <div class="info-card">
         <div class="ic-label">한국어 수준</div>
-        <div class="ic-value">${topikLabels[r.topik] || '-'}</div>
+        <div class="ic-value">${topikLbls[r.topik]||'-'}</div>
       </div>
       <div class="info-card">
         <div class="ic-label">학기 / 방학</div>
-        <div class="ic-value">${r.semester === 'VACATION' ? '방학 중' : '학기 중'}</div>
+        <div class="ic-value">${r.semester==='VACATION'?'방학 중':'학기 중'}</div>
       </div>
     </div>
 
@@ -550,49 +441,35 @@ function showResult() {
       <div class="doc-item required">📘 여권 (원본 + 사본)</div>
       <div class="doc-item required">🪪 외국인등록증</div>
       <div class="doc-item required">📝 통합신청서</div>
-      <div class="doc-item required">🏫 시간제취업 확인서 (학교 국제처 발급)</div>
+      <div class="doc-item required">🏫 시간제취업 확인서 (학교 국제처)</div>
       <div class="doc-item required">📊 성적증명서 (직전 학기)</div>
       <div class="doc-item required">📋 재학증명서</div>
       <div class="doc-item required">📃 표준근로계약서 (고용주 날인)</div>
-      <div class="doc-item required">🏢 사업자등록증 사본 (고용주 제출)</div>
-      ${r.topik !== 'NONE' ? `<div class="doc-item conditional">📜 TOPIK 성적증명서 (${topikLabels[r.topik]})</div>` : ''}
-      ${isD4 ? `<div class="doc-item conditional">📅 체류 6개월 이상 증빙 서류</div>` : ''}
+      <div class="doc-item required">🏢 사업자등록증 사본</div>
+      ${r.topik!=='NONE'?`<div class="doc-item conditional">📜 TOPIK 성적증명서 (${topikLbls[r.topik]})</div>`:''}
+      ${isD4?`<div class="doc-item conditional">📅 6개월 이상 체류 증빙</div>`:''}
     </div>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">* 굵은 선: 필수 / 점선: 해당자만 / 학교·사무소별로 추가 서류 요구 가능</p>
+    <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">굵은 선: 필수 / 점선: 해당자만</p>
 
     <div class="section-title">🪜 신청 절차</div>
     <div class="steps-list">
-      ${procSteps.map((s, i) => `
+      ${procSteps.map((s,i)=>`
         <div class="step-item">
-          <div class="step-num">${i + 1}</div>
+          <div class="step-num">${i+1}</div>
           <div class="step-content">
             <div class="step-main">${s.main}</div>
             <div class="step-detail">${s.detail}</div>
           </div>
-        </div>
-      `).join('')}
+        </div>`).join('')}
     </div>
 
     <div class="section-title">🔗 공식 사이트 바로가기</div>
     <a class="link-box" href="https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=187&PARENT_ID=142" target="_blank">
-      <div class="lb-left">
-        <div class="lb-title">HiKorea — 시간제취업 허가 온라인 신청</div>
-        <div class="lb-sub">법무부 출입국·외국인정책본부 공식 민원 포털</div>
-      </div>
+      <div class="lb-left"><div class="lb-title">HiKorea — 시간제취업 허가 온라인 신청</div><div class="lb-sub">법무부 출입국·외국인정책본부 공식 민원 포털</div></div>
       <span class="lb-arrow">↗</span>
     </a>
     <a class="link-box" href="https://www.easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=7&cnpClsNo=1&menuType=qna" target="_blank">
-      <div class="lb-left">
-        <div class="lb-title">찾기쉬운 생활법령 — 외국인 유학생 아르바이트</div>
-        <div class="lb-sub">법무부 법령 해설 (한국어/영어)</div>
-      </div>
-      <span class="lb-arrow">↗</span>
-    </a>
-    <a class="link-box" href="https://www.studyinkorea.go.kr/ko/work/aboutForeignerEmploymentSystem.do" target="_blank">
-      <div class="lb-left">
-        <div class="lb-title">Study in Korea — 외국인 취업제도 안내</div>
-        <div class="lb-sub">교육부 운영 한국유학종합시스템</div>
-      </div>
+      <div class="lb-left"><div class="lb-title">찾기쉬운 생활법령 — 외국인 유학생 아르바이트</div><div class="lb-sub">법무부 법령 해설</div></div>
       <span class="lb-arrow">↗</span>
     </a>
 
@@ -605,12 +482,11 @@ function showResult() {
       • <a href="https://www.immigration.go.kr/" target="_blank">법무부 출입국·외국인정책본부</a> |
         <a href="https://www.hikorea.go.kr/" target="_blank">HiKorea</a> |
         <a href="https://www.easylaw.go.kr/" target="_blank">찾기쉬운 생활법령정보</a><br>
-      ※ 본 서비스는 공공기관 자료를 기반으로 한 참고용입니다. 최종 판단은 반드시 관할 출입국관리사무소에 확인하세요.
+      ※ 본 서비스는 공공기관 자료를 기반으로 한 참고용입니다. 최종 판단은 관할 출입국관리사무소에 확인하세요.
     </div>
   `;
 
-  el.classList.add('active');
-  el.id = 'result';
+  document.getElementById('result').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

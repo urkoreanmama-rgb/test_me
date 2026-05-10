@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 대시보드 — 유학생 아르바이트 체커</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a; --surface: #1e293b; --card: #1e293b;
+      --accent: #6366f1; --accent2: #818cf8;
+      --ok: #10b981; --warn: #f59e0b; --danger: #ef4444;
+      --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', -apple-system, sans-serif; min-height: 100vh; }
+
+    /* ── Lock Screen ── */
+    #lock {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center; z-index: 999;
+    }
+    .lock-box { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 2.5rem 2rem; width: min(380px, 90vw); text-align: center; }
+    .lock-box .lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .lock-box h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .lock-box p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .lock-input { width: 100%; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); font-size: 1rem; outline: none; text-align: center; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+    .lock-input:focus { border-color: var(--accent); }
+    .lock-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.8rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.18s; }
+    .lock-btn:hover { background: var(--accent2); }
+    .lock-err { font-size: 0.8rem; color: var(--danger); margin-top: 0.5rem; display: none; }
+
+    /* ── Header ── */
+    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .topbar-left { display: flex; align-items: center; gap: 0.8rem; }
+    .topbar-left .logo { font-size: 1.1rem; font-weight: 800; }
+    .topbar-left .badge { background: rgba(99,102,241,0.18); color: var(--accent2); font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 99px; border: 1px solid rgba(99,102,241,0.3); }
+    .topbar-right { display: flex; align-items: center; gap: 0.8rem; }
+    .updated { font-size: 0.75rem; color: var(--muted); }
+    .btn-refresh { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: background 0.18s; }
+    .btn-refresh:hover { background: var(--accent2); }
+    .btn-logout { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.82rem; cursor: pointer; }
+    .btn-logout:hover { color: var(--text); }
+
+    /* ── Layout ── */
+    main { padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
+
+    /* ── Summary Cards ── */
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 700px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+    .s-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
+    .s-card .s-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .s-card .s-val { font-size: 2rem; font-weight: 800; line-height: 1; }
+    .s-card .s-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+    .s-card.ok  { border-left: 3px solid var(--ok); }
+    .s-card.warn{ border-left: 3px solid var(--warn); }
+    .s-card.no  { border-left: 3px solid var(--danger); }
+    .c-ok   { color: #34d399; }
+    .c-warn { color: #fbbf24; }
+    .c-no   { color: #f87171; }
+
+    /* ── Charts ── */
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 700px) { .chart-row { grid-template-columns: 1fr; } }
+    .chart-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 900px) { .chart-row-3 { grid-template-columns: 1fr; } }
+    .chart-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+    .chart-box h3 { font-size: 0.82rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 1rem; text-transform: uppercase; }
+    .chart-wrap { position: relative; height: 220px; }
+
+    /* ── Insights ── */
+    .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
+    @media (max-width: 700px) { .insight-grid { grid-template-columns: 1fr; } }
+    .insight-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; }
+    .insight-card .i-label { font-size: 0.72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+    .insight-card .i-val { font-size: 1.3rem; font-weight: 800; }
+    .insight-card .i-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
+
+    /* ── Section Title ── */
+    .section-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin: 1.5rem 0 0.8rem; }
+
+    /* ── Table ── */
+    .table-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
+    .table-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+    .table-header h3 { font-size: 0.88rem; font-weight: 700; }
+    .table-header span { font-size: 0.75rem; color: var(--muted); }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 800px; }
+    thead tr { background: rgba(255,255,255,0.03); }
+    th { padding: 0.7rem 1rem; text-align: left; color: var(--muted); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.04em; white-space: nowrap; }
+    td { padding: 0.65rem 1rem; border-top: 1px solid var(--border); white-space: nowrap; }
+    tr:hover td { background: rgba(255,255,255,0.025); }
+    .badge-ok   { background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+    .badge-warn { background: rgba(245,158,11,0.15); color: #fbbf24; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+    .badge-no   { background: rgba(239,68,68,0.15);  color: #f87171; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+
+    /* ── Loading / Empty ── */
+    .loading { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+    .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 0.8rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty { text-align: center; padding: 3rem; color: var(--muted); }
+
+    /* ── Blocker Bars ── */
+    .blocker-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .blocker-item { display: flex; flex-direction: column; gap: 4px; }
+    .blocker-row { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .blocker-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .blocker-fill { height: 100%; background: linear-gradient(90deg, var(--danger), #f87171); border-radius: 99px; transition: width 0.5s; }
+
+    /* ── Export ── */
+    .export-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.8rem; cursor: pointer; transition: all 0.18s; }
+    .export-btn:hover { color: var(--text); border-color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- Lock Screen -->
+<div id="lock">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <h2>관리자 대시보드</h2>
+    <p>유학생 아르바이트 체커 응답 분석 페이지입니다.<br>비밀번호를 입력하세요.</p>
+    <input class="lock-input" id="pw-input" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')unlock()" />
+    <button class="lock-btn" onclick="unlock()">입력</button>
+    <div class="lock-err" id="lock-err">비밀번호가 올바르지 않습니다.</div>
+  </div>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo">📊 관리자 대시보드</span>
+    <span class="badge">유학생 아르바이트 체커</span>
+  </div>
+  <div class="topbar-right">
+    <span class="updated" id="updated-at">--</span>
+    <button class="btn-refresh" onclick="loadData()">↻ 새로고침</button>
+    <button class="btn-logout" onclick="logout()">로그아웃</button>
+  </div>
+</div>
+
+<main>
+  <div id="loading-area" class="loading">
+    <div><div class="spinner"></div></div>
+    데이터를 불러오는 중입니다...
+  </div>
+
+  <div id="dashboard" style="display:none">
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+      <div class="s-card">
+        <div class="s-label">전체 응답</div>
+        <div class="s-val" id="s-total">0</div>
+        <div class="s-sub">누적 제출 수</div>
+      </div>
+      <div class="s-card ok">
+        <div class="s-label">아르바이트 가능</div>
+        <div class="s-val c-ok" id="s-ok">0</div>
+        <div class="s-sub" id="s-ok-pct">-</div>
+      </div>
+      <div class="s-card warn">
+        <div class="s-label">조건부 가능</div>
+        <div class="s-val c-warn" id="s-warn">0</div>
+        <div class="s-sub" id="s-warn-pct">-</div>
+      </div>
+      <div class="s-card no">
+        <div class="s-label">현재 불가</div>
+        <div class="s-val c-no" id="s-no">0</div>
+        <div class="s-sub" id="s-no-pct">-</div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <h3>결과 분포</h3>
+        <div class="chart-wrap"><canvas id="chart-result"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>비자 유형 분포</h3>
+        <div class="chart-wrap"><canvas id="chart-visa"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="chart-row-3">
+      <div class="chart-box">
+        <h3>TOPIK 수준 분포</h3>
+        <div class="chart-wrap"><canvas id="chart-topik"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>희망 근무시간 분포</h3>
+        <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>재학 상태 분포</h3>
+        <div class="chart-wrap"><canvas id="chart-enroll"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="section-title">📌 서비스 니즈 분석</div>
+    <div class="insight-grid" id="insight-grid"></div>
+
+    <!-- Blockers -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <h3>불가 사유 TOP 분석</h3>
+        <div id="blocker-list" class="blocker-list" style="padding-top:0.5rem"></div>
+      </div>
+      <div class="chart-box">
+        <h3>일별 응답 추이 (최근 14일)</h3>
+        <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="section-title">🗃️ 최근 응답 내역</div>
+    <div class="table-box">
+      <div class="table-header">
+        <h3>응답 목록</h3>
+        <div style="display:flex;gap:0.6rem;align-items:center">
+          <span id="table-count">0건</span>
+          <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>날짜/시간</th><th>비자</th><th>체류기간</th>
+              <th>재학상태</th><th>성적</th><th>TOPIK</th><th>학기/방학</th>
+              <th>희망시간</th><th>결과</th><th>최대허용</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /dashboard -->
+
+  <div id="no-config" style="display:none" class="empty">
+    <div style="font-size:2.5rem;margin-bottom:1rem">⚙️</div>
+    <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem">Supabase 설정이 필요합니다</div>
+    <div style="font-size:0.85rem;color:var(--muted);line-height:1.6">
+      <code>config.js</code>의 <code>SUPABASE_URL</code>과 <code>SUPABASE_ANON_KEY</code>를<br>
+      실제 Supabase 프로젝트 값으로 교체한 뒤 다시 배포하세요.
+    </div>
+  </div>
+</main>
+
+<script>
+// ── Labels ──
+const VISA  = { 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
+const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'1~3급', NONE:'없음/만료' };
+const STAY  = { LT3:'3개월↓', '3TO6':'3~6개월', GT6:'6개월↑' };
+const ENROL = { ENROLLED:'재학중', LEAVE:'휴학', GRAD:'졸업예정' };
+const GRADE = { GOOD:'기준충족', GPA_LOW:'미충족', FIRST:'첫학기' };
+const SEM   = { SEMESTER:'학기중', VACATION:'방학' };
+const HOURS = { H10:'~10h', H20:'~20h', H25:'~25h', H30:'~30h', H35:'~35h', HMAX:'무제한' };
+const BLOCKERS = {
+  'D-2 또는 D-4 비자': '비자 유형 부적합',
+  '6개월이 경과': '6개월 체류 미충족',
+  '휴학 중': '휴학 중 신청 불가',
+  '졸업·수료': '졸업예정·수료',
+  'GPA 2.0': '성적/출석 미충족',
+  '허용 시간': '근무시간 초과'
+};
+
+let allData = [];
+let charts  = {};
+
+// ── Auth ──
+function unlock() {
+  const val = document.getElementById('pw-input').value;
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('lock').style.display = 'none';
+    init();
+  } else {
+    document.getElementById('lock-err').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+function logout() {
+  document.getElementById('lock').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('lock-err').style.display = 'none';
+}
+
+// ── Init ──
+async function init() {
+  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('YOUR-PROJECT')) {
+    document.getElementById('loading-area').style.display = 'none';
+    document.getElementById('no-config').style.display = 'block';
+    return;
+  }
+  await loadData();
+}
+
+async function loadData() {
+  document.getElementById('loading-area').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+
+  try {
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data, error } = await sb
+      .from('submissions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    if (error) throw error;
+    allData = data || [];
+    renderAll();
+    document.getElementById('updated-at').textContent = '업데이트: ' + new Date().toLocaleTimeString('ko-KR');
+  } catch(e) {
+    alert('데이터 로드 실패: ' + e.message);
+  }
+
+  document.getElementById('loading-area').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+}
+
+// ── Render ──
+function renderAll() {
+  renderSummary();
+  renderCharts();
+  renderInsights();
+  renderBlockers();
+  renderTrend();
+  renderTable();
+}
+
+function count(field, val) { return allData.filter(d => d[field] === val).length; }
+function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
+
+function renderSummary() {
+  const total = allData.length;
+  const ok    = count('result_status', 'ok');
+  const warn  = count('result_status', 'warn');
+  const no    = count('result_status', 'no');
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-ok').textContent    = ok;
+  document.getElementById('s-warn').textContent  = warn;
+  document.getElementById('s-no').textContent    = no;
+  document.getElementById('s-ok-pct').textContent   = `전체의 ${pct(ok, total)}%`;
+  document.getElementById('s-warn-pct').textContent = `전체의 ${pct(warn, total)}%`;
+  document.getElementById('s-no-pct').textContent   = `전체의 ${pct(no, total)}%`;
+}
+
+const CHART_DEFAULTS = {
+  plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } }
+};
+
+function mkChart(id, type, labels, data, colors, opts = {}) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type,
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: colors.map(c => c + 'dd'), borderWidth: type === 'doughnut' ? 2 : 0, borderRadius: type === 'bar' ? 4 : 0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { ...CHART_DEFAULTS.plugins, ...opts.plugins },
+      scales: opts.scales,
+      cutout: opts.cutout
+    }
+  });
+}
+
+function renderCharts() {
+  const total = allData.length || 1;
+
+  // Result doughnut
+  mkChart('chart-result', 'doughnut',
+    ['가능', '조건부', '불가'],
+    [count('result_status','ok'), count('result_status','warn'), count('result_status','no')],
+    ['#10b981','#f59e0b','#ef4444'],
+    { cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 16 } } } }
+  );
+
+  // Visa doughnut
+  const visaKeys = Object.keys(VISA);
+  mkChart('chart-visa', 'doughnut',
+    visaKeys.map(k => VISA[k]),
+    visaKeys.map(k => count('visa_type', k)),
+    ['#6366f1','#8b5cf6','#06b6d4','#10b981','#6b7280'],
+    { cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 12 } } } }
+  );
+
+  // TOPIK bar
+  const topikKeys = ['TOPIK5','TOPIK4','TOPIK3','NONE'];
+  mkChart('chart-topik', 'bar',
+    topikKeys.map(k => TOPIK[k]),
+    topikKeys.map(k => count('topik_level', k)),
+    ['#6366f1','#8b5cf6','#a78bfa','#6b7280'],
+    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
+  );
+
+  // Hours bar
+  const hKeys = ['H10','H20','H25','H30','H35','HMAX'];
+  mkChart('chart-hours', 'bar',
+    hKeys.map(k => HOURS[k]),
+    hKeys.map(k => count('desired_hours', k)),
+    ['#06b6d4','#0ea5e9','#3b82f6','#6366f1','#8b5cf6','#a78bfa'],
+    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
+  );
+
+  // Enrollment bar
+  const eKeys = ['ENROLLED','LEAVE','GRAD'];
+  mkChart('chart-enroll', 'bar',
+    eKeys.map(k => ENROL[k]),
+    eKeys.map(k => count('enrollment', k)),
+    ['#10b981','#f59e0b','#6366f1'],
+    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
+  );
+}
+
+function renderInsights() {
+  const total = allData.length || 1;
+  const noData = allData.filter(d => d.result_status === 'no');
+  const warnData = allData.filter(d => d.result_status === 'warn');
+
+  // TOPIK 없는 학생
+  const noTopik = count('topik_level', 'NONE') + count('topik_level', 'TOPIK3');
+  // 방학 중 학생
+  const vacation = count('semester', 'VACATION');
+  // 성적 미충족
+  const gradeIssue = count('grade_status', 'GPA_LOW');
+  // 휴학/졸업
+  const cantEnroll = count('enrollment', 'LEAVE') + count('enrollment', 'GRAD');
+  // 6개월 미충족
+  const stayShort = count('stay_duration', 'LT3') + count('stay_duration', '3TO6');
+  // 희망시간 25h↑
+  const longHours = allData.filter(d => ['H25','H30','H35','HMAX'].includes(d.desired_hours)).length;
+
+  const insights = [
+    { label: 'TOPIK 4급 이하', val: `${pct(noTopik, total)}%`, desc: `${noTopik}명이 한국어 능력 향상 시 근무시간 확대 가능`, color: '#f59e0b' },
+    { label: '방학 중 조회', val: `${pct(vacation, total)}%`, desc: `${vacation}명이 방학 중 → 무제한 근무 가능 대상`, color: '#10b981' },
+    { label: '장시간 희망 (주 25h↑)', val: `${pct(longHours, total)}%`, desc: `${longHours}명이 고강도 근무를 원하며 비자 확인 필요`, color: '#6366f1' },
+    { label: '성적/출석 미충족', val: `${pct(gradeIssue, total)}%`, desc: `${gradeIssue}명이 학업 상담 서비스 필요`, color: '#ef4444' },
+    { label: '체류 6개월 미충족', val: `${pct(stayShort, total)}%`, desc: `${stayShort}명이 체류 기간 경과 후 재신청 안내 필요`, color: '#f59e0b' },
+    { label: '재학 불가 상태', val: `${pct(cantEnroll, total)}%`, desc: `${cantEnroll}명이 휴학/졸업 → D-10 비자 전환 안내 필요`, color: '#ef4444' }
+  ];
+
+  document.getElementById('insight-grid').innerHTML = insights.map(i => `
+    <div class="insight-card">
+      <div class="i-label">${i.label}</div>
+      <div class="i-val" style="color:${i.color}">${i.val}</div>
+      <div class="i-desc">${i.desc}</div>
+    </div>`).join('');
+}
+
+function renderBlockers() {
+  const noWarn = allData.filter(d => d.result_status !== 'ok' && d.blocker);
+  const counts = {};
+  for (const key in BLOCKERS) {
+    const label = BLOCKERS[key];
+    counts[label] = noWarn.filter(d => d.blocker && d.blocker.includes(key)).length;
+  }
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).filter(([,v]) => v > 0);
+  const maxVal = sorted[0]?.[1] || 1;
+
+  document.getElementById('blocker-list').innerHTML = sorted.length
+    ? sorted.map(([label, n]) => `
+        <div class="blocker-item">
+          <div class="blocker-row">
+            <span>${label}</span>
+            <span style="color:var(--muted)">${n}건</span>
+          </div>
+          <div class="blocker-bar"><div class="blocker-fill" style="width:${pct(n,maxVal)}%"></div></div>
+        </div>`).join('')
+    : '<div style="color:var(--muted);font-size:0.85rem">데이터가 없습니다.</div>';
+}
+
+function renderTrend() {
+  const today = new Date();
+  const days = Array.from({length: 14}, (_, i) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - (13 - i));
+    return d.toISOString().slice(0,10);
+  });
+
+  const counts = days.map(day =>
+    allData.filter(d => d.created_at && d.created_at.slice(0,10) === day).length
+  );
+
+  if (charts['chart-trend']) charts['chart-trend'].destroy();
+  const ctx = document.getElementById('chart-trend').getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, 200);
+  grad.addColorStop(0, 'rgba(99,102,241,0.35)');
+  grad.addColorStop(1, 'rgba(99,102,241,0)');
+
+  charts['chart-trend'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days.map(d => d.slice(5)),
+      datasets: [{
+        data: counts, borderColor: '#6366f1', backgroundColor: grad,
+        tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#6366f1'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', maxRotation: 45 }, grid: { color: '#334155' } },
+        y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } }
+      }
+    }
+  });
+}
+
+function renderTable() {
+  const rows = allData.slice(0, 100);
+  document.getElementById('table-count').textContent = `${allData.length}건 (최신 100건 표시)`;
+
+  const badge = s => s === 'ok'
+    ? `<span class="badge-ok">가능</span>`
+    : s === 'warn'
+    ? `<span class="badge-warn">조건부</span>`
+    : `<span class="badge-no">불가</span>`;
+
+  const fmtDate = s => {
+    if (!s) return '-';
+    const d = new Date(s);
+    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+
+  const fmtMax = n => n == null ? '-' : n === -1 ? '무제한' : `${n}h`;
+
+  document.getElementById('table-body').innerHTML = rows.length
+    ? rows.map((d, i) => `
+        <tr>
+          <td style="color:var(--muted)">${allData.length - i}</td>
+          <td>${fmtDate(d.created_at)}</td>
+          <td>${VISA[d.visa_type]||d.visa_type||'-'}</td>
+          <td>${STAY[d.stay_duration]||d.stay_duration||'-'}</td>
+          <td>${ENROL[d.enrollment]||d.enrollment||'-'}</td>
+          <td>${GRADE[d.grade_status]||d.grade_status||'-'}</td>
+          <td>${TOPIK[d.topik_level]||d.topik_level||'-'}</td>
+          <td>${SEM[d.semester]||d.semester||'-'}</td>
+          <td>${HOURS[d.desired_hours]||d.desired_hours||'-'}</td>
+          <td>${badge(d.result_status)}</td>
+          <td>${fmtMax(d.max_hours_allowed)}</td>
+        </tr>`).join('')
+    : '<tr><td colspan="11" class="empty">아직 응답이 없습니다.</td></tr>';
+}
+
+// ── CSV Export ──
+function exportCSV() {
+  const headers = ['ID','날짜','비자','체류기간','재학상태','성적','TOPIK','학기','희망시간','결과','최대허용','불가사유'];
+  const rows = allData.map(d => [
+    d.id,
+    d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
+    VISA[d.visa_type] || d.visa_type || '',
+    STAY[d.stay_duration] || d.stay_duration || '',
+    ENROL[d.enrollment] || d.enrollment || '',
+    GRADE[d.grade_status] || d.grade_status || '',
+    TOPIK[d.topik_level] || d.topik_level || '',
+    SEM[d.semester] || d.semester || '',
+    HOURS[d.desired_hours] || d.desired_hours || '',
+    d.result_status === 'ok' ? '가능' : d.result_status === 'warn' ? '조건부' : '불가',
+    d.max_hours_allowed === -1 ? '무제한' : d.max_hours_allowed ?? '',
+    `"${(d.blocker||'').replace(/"/g,'""')}"`
+  ]);
+
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `유학생응답_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
