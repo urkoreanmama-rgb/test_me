@@ -22,6 +22,7 @@ create table submissions (
   topik_level   text,
   semester      text,
   desired_hours text,
+  industry      text,
   result_status text,
   max_hours_allowed int,
   blocker       text

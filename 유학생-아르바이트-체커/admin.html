@@ -233,7 +233,7 @@
             <tr>
               <th>#</th><th>날짜/시간</th><th>비자</th><th>체류기간</th>
               <th>재학상태</th><th>성적</th><th>TOPIK</th><th>학기/방학</th>
-              <th>희망시간</th><th>결과</th><th>최대허용</th>
+              <th>희망시간</th><th>업종</th><th>결과</th><th>최대허용</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -256,6 +256,7 @@
 <script>
 // ── Labels ──
 const VISA  = { 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
+const IND   = { FOOD:'식당·카페', RETAIL:'판매보조', OFFICE:'사무·번역', EVENT:'행사·관광', MAJOR:'전공관련', DELIVERY:'배달·택배🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
 const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'1~3급', NONE:'없음/만료' };
 const STAY  = { LT3:'3개월↓', '3TO6':'3~6개월', GT6:'6개월↑' };
 const ENROL = { ENROLLED:'재학중', LEAVE:'휴학', GRAD:'졸업예정' };
@@ -545,6 +546,7 @@ function renderTable() {
           <td>${TOPIK[d.topik_level]||d.topik_level||'-'}</td>
           <td>${SEM[d.semester]||d.semester||'-'}</td>
           <td>${HOURS[d.desired_hours]||d.desired_hours||'-'}</td>
+          <td style="${['DELIVERY','CONSTRUCTION'].includes(d.industry)?'color:#f87171;font-weight:700':''}">${IND[d.industry]||d.industry||'-'}</td>
           <td>${badge(d.result_status)}</td>
           <td>${fmtMax(d.max_hours_allowed)}</td>
         </tr>`).join('')
@@ -553,7 +555,7 @@ function renderTable() {
 
 // ── CSV Export ──
 function exportCSV() {
-  const headers = ['ID','날짜','비자','체류기간','재학상태','성적','TOPIK','학기','희망시간','결과','최대허용','불가사유'];
+  const headers = ['ID','날짜','비자','체류기간','재학상태','성적','TOPIK','학기','희망시간','업종','결과','최대허용','불가사유'];
   const rows = allData.map(d => [
     d.id,
     d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
@@ -564,6 +566,7 @@ function exportCSV() {
     TOPIK[d.topik_level] || d.topik_level || '',
     SEM[d.semester] || d.semester || '',
     HOURS[d.desired_hours] || d.desired_hours || '',
+    IND[d.industry] || d.industry || '',
     d.result_status === 'ok' ? '가능' : d.result_status === 'warn' ? '조건부' : '불가',
     d.max_hours_allowed === -1 ? '무제한' : d.max_hours_allowed ?? '',
     `"${(d.blocker||'').replace(/"/g,'""')}"`
