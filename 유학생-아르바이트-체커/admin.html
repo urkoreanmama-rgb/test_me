@@ -149,6 +149,11 @@
 
   <div id="dashboard" style="display:none">
 
+    <!-- Supabase 미연결 배너 -->
+    <div id="no-config-banner" style="display:none; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:0.8rem 1.2rem; margin-bottom:1.5rem; font-size:0.85rem; color:#fcd34d; align-items:center; gap:0.8rem;">
+      ⚠️ <span><strong>Supabase 미연결</strong> — config.js에 실제 URL과 키를 입력하면 실시간 데이터가 표시됩니다.</span>
+    </div>
+
     <!-- Summary Cards -->
     <div class="summary-grid">
       <div class="s-card">
@@ -297,7 +302,11 @@ function logout() {
 async function init() {
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('YOUR-PROJECT')) {
     document.getElementById('loading-area').style.display = 'none';
-    document.getElementById('no-config').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('no-config-banner').style.display = 'flex';
+    allData = [];
+    renderAll();
+    document.getElementById('updated-at').textContent = 'Supabase 미연결';
     return;
   }
   await loadData();
