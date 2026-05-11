@@ -59,7 +59,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 .step-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
 .q-number{font-size:0.78rem;color:var(--accent2);font-weight:600;margin-bottom:6px}
 .q-text{font-size:1.15rem;font-weight:700;margin-bottom:6px;line-height:1.4}
-.q-sub{font-size:0.83rem;color:var(--muted)}
+.q-sub{font-size:0.83rem;color:var(--sub)}
 .options{display:flex;flex-direction:column;gap:10px;margin-top:18px}
 .option{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.18s}
 .option:hover{border-color:var(--accent2);background:rgba(99,102,241,0.08)}
@@ -207,7 +207,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
     <div class="step-card">
       <div class="q-number" data-i18n="q4num">질문 4</div>
       <div class="q-text" data-i18n="q4text">성적·출석률 기준을 충족하고 있나요?</div>
-      <div class="q-sub" data-i18n="q4sub">보통 학점 2.0 이상, 출석 70% 이상 (학교마다 다를 수 있음)</div>
+      <div class="q-sub" data-i18n="q4sub">학점 2.0 이상, 출석 70% 이상이 기준 (학교마다 다를 수 있음)</div>
       <div class="options">
         <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-icon">✅</span><span class="opt-label" data-i18n="GOOD">충족 (학점·출석 기준 이상)</span></div>
         <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-icon">⚠️</span><span class="opt-label" data-i18n="GPA_LOW">미충족 (학점 또는 출석 부족)</span></div>
@@ -356,7 +356,7 @@ ko: {
   q1num:'질문 1', q1text:'현재 비자 종류는 무엇인가요?', q1sub:'여권 또는 외국인등록증의 체류자격을 확인하세요',
   q2num:'질문 2', q2text:'한국에 입국한 지 얼마나 됐나요?', q2sub:'D-4 / 교환학생은 6개월 이상이어야 합니다',
   q3num:'질문 3', q3text:'현재 학적 상태는 무엇인가요?', q3sub:'휴학·졸업예정자는 취업활동 허가 대상에서 제외됩니다',
-  q4num:'질문 4', q4text:'성적·출석률 기준을 충족하고 있나요?', q4sub:'보통 학점 2.0 이상, 출석 70% 이상 (학교마다 다를 수 있음)',
+  q4num:'질문 4', q4text:'성적·출석률 기준을 충족하고 있나요?', q4sub:'학점 2.0 이상, 출석 70% 이상이 기준 (학교마다 다를 수 있음)',
   q5num:'질문 5', q5text:'한국어능력시험(TOPIK) 등급은?', q5sub:'등급이 높을수록 더 많은 시간 근무 가능',
   q6num:'질문 6', q6text:'지금은 학기 중인가요, 방학 중인가요?', q6sub:'방학 중에는 근무 시간 제한이 완화됩니다',
   q7num:'질문 7', q7text:'희망하는 주당 근무시간은?', q7sub:'비자·TOPIK 등급에 따라 허용 시간이 달라집니다',
