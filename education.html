@@ -1064,6 +1064,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       </div>
     </div>
     <button class="dsb-lang-btn" onclick="openLangModal()">언어 변경 / Language</button>
+    <button class="dsb-lang-btn" style="margin-top:6px" onclick="openTTSModal()">🎤 음성 품질 설정</button>
   </div>
 </div>
 
@@ -1075,6 +1076,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   <div style="display:flex;gap:8px;align-items:center">
     <button class="lang-btn" id="langBtn" onclick="openLangModal()" style="font-size:11px">언어</button>
     <button class="lang-btn" id="profBtn" onclick="goProfile()" style="font-size:11px">MY</button>
+    <button class="lang-btn" onclick="openTTSModal()" style="font-size:11px">🎤</button>
   </div>
 </div>
 
@@ -2714,9 +2716,9 @@ const PRACTICAL_CUR = [
 // ════════════════════════
 // STATE
 // ════════════════════════
-const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','소리→단어','소리→문장','번역→소리','퀴즈','완료'];
-const STEP_HINTS_KO = ['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','들은 문장 찾기','번역 보고 소리 찾기','이해도 확인','완료!'];
-const STEP_HINTS_UZ = ["3 ta gap",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"So'z topish","Gap topish","Tarjima→ovoz",'Test','Tugadi!'];
+const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','소리→단어','소리→문장','번역→소리','문장순서','퀴즈','완료'];
+const STEP_HINTS_KO = ['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','들은 문장 찾기','번역 보고 소리 찾기','순서 맞추기','이해도 확인','완료!'];
+const STEP_HINTS_UZ = ["3 ta gap",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"So'z topish","Gap topish","Tarjima→ovoz","Gapni tuzish",'Test','Tugadi!'];
 
 let ST = {
   lang:'ko', dayIdx:null, step:0,
@@ -3017,6 +3019,134 @@ if(window.speechSynthesis){
   getVoice('manager'); getVoice('worker');
 }
 
+
+// ══════════════════════════════════════════════════════
+// ── ElevenLabs 고품질 TTS + IndexedDB 캐시 ─────────
+// ══════════════════════════════════════════════════════
+
+// IndexedDB 음성 캐시 (Blob → ArrayBuffer로 저장)
+const _audioDB = (()=>{
+  let _db=null;
+  function _open(){
+    return new Promise((res,rej)=>{
+      if(_db) return res(_db);
+      const req=indexedDB.open('sk_audio_v1',1);
+      req.onupgradeneeded=e=>e.target.result.createObjectStore('cache');
+      req.onsuccess=e=>{_db=e.target.result;res(_db);};
+      req.onerror=()=>rej(req.error);
+    });
+  }
+  return {
+    async get(k){
+      try{
+        const db=await _open();
+        return new Promise((res,rej)=>{
+          const tx=db.transaction('cache','readonly');
+          const r=tx.objectStore('cache').get(k);
+          r.onsuccess=()=>res(r.result);
+          r.onerror=()=>rej(r.error);
+        });
+      }catch(e){return null;}
+    },
+    async put(k,v){
+      try{
+        const db=await _open();
+        return new Promise((res,rej)=>{
+          const tx=db.transaction('cache','readwrite');
+          tx.objectStore('cache').put(v,k);
+          tx.oncomplete=res;
+          tx.onerror=()=>rej(tx.error);
+        });
+      }catch(e){}
+    }
+  };
+})();
+
+const _EL_DEF_VOICE='21m00Tcm4TlvDq8ikWAM'; // Rachel
+
+async function sayHQ(text, cb, speed=1.0){
+  if(!text){cb&&cb();return;}
+  const apiKey=localStorage.getItem('sk_el_key');
+  if(!apiKey){
+    // 브라우저 TTS 폴백 (speed 적용)
+    const ss=window.speechSynthesis;
+    if(!ss){cb&&cb();return;}
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR'; u.rate=speed*0.82; u.pitch=1.0;
+    const v=getVoice('default'); if(v) u.voice=v;
+    u.onend=()=>{cb&&cb();};
+    u.onerror=()=>{cb&&cb();};
+    if(ss.speaking||ss.pending){ss.cancel();setTimeout(()=>ss.speak(u),120);}
+    else ss.speak(u);
+    return;
+  }
+  const voiceId=localStorage.getItem('sk_el_voice')||_EL_DEF_VOICE;
+  const cKey='el_'+voiceId+'_'+text;
+  try{
+    let ab=await _audioDB.get(cKey);
+    if(!ab){
+      const r=await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
+        method:'POST',
+        headers:{'xi-api-key':apiKey,'Content-Type':'application/json','Accept':'audio/mpeg'},
+        body:JSON.stringify({
+          text,
+          model_id:'eleven_multilingual_v2',
+          voice_settings:{stability:0.40,similarity_boost:0.80,style:0.30,use_speaker_boost:true}
+        })
+      });
+      if(!r.ok) throw new Error('EL '+r.status);
+      ab=await r.arrayBuffer();
+      await _audioDB.put(cKey,ab);
+    }
+    const blob=new Blob([ab],{type:'audio/mpeg'});
+    const url=URL.createObjectURL(blob);
+    const aud=new Audio(url);
+    aud.playbackRate=speed;
+    aud.onended=()=>{URL.revokeObjectURL(url);cb&&cb();};
+    aud.onerror=()=>{URL.revokeObjectURL(url);cb&&cb();};
+    await aud.play();
+  }catch(e){
+    console.warn('EL TTS fallback:',e.message);
+    say(text,cb,'speak','default');
+  }
+}
+
+// TTS 설정 모달
+function openTTSModal(){
+  document.getElementById('tts-modal').style.display='flex';
+  const k=localStorage.getItem('sk_el_key')||'';
+  document.getElementById('el-key-inp').value=k;
+  const vs=document.getElementById('el-voice-sel');
+  if(vs) vs.value=localStorage.getItem('sk_el_voice')||_EL_DEF_VOICE;
+  document.getElementById('tts-st').textContent='';
+}
+function closeTTSModal(){
+  document.getElementById('tts-modal').style.display='none';
+}
+function saveTTSSettings(){
+  const k=document.getElementById('el-key-inp').value.trim();
+  const v=document.getElementById('el-voice-sel').value;
+  if(k) localStorage.setItem('sk_el_key',k);
+  else localStorage.removeItem('sk_el_key');
+  localStorage.setItem('sk_el_voice',v);
+  document.getElementById('tts-st').textContent='✅ 저장되었습니다!';
+  setTimeout(closeTTSModal,900);
+}
+async function testTTSSettings(){
+  const k=document.getElementById('el-key-inp').value.trim();
+  if(!k){document.getElementById('tts-st').textContent='❗ API 키를 먼저 입력하세요';return;}
+  localStorage.setItem('sk_el_key',k);
+  localStorage.setItem('sk_el_voice',document.getElementById('el-voice-sel').value);
+  document.getElementById('tts-st').textContent='⏳ 음성 생성 중…';
+  // 캐시 무효화해서 항상 새로 받기
+  const voiceId=localStorage.getItem('sk_el_voice')||_EL_DEF_VOICE;
+  const cKey='el_'+voiceId+'_안전을 최우선으로 생각하세요';
+  await _audioDB.put(cKey,null);
+  await sayHQ('안전을 최우선으로 생각하세요',()=>{
+    document.getElementById('tts-st').textContent='✅ 음성 테스트 완료! 저장 버튼을 눌러주세요.';
+  });
+}
+
 // role: 'manager' | 'worker' | 'default'
 function say(text, cb, ctx='default', role='default'){
   const ss = window.speechSynthesis;
@@ -3040,9 +3170,12 @@ function say(text, cb, ctx='default', role='default'){
 function sayBtn(btnId, text, ctx='dialogue', role='default'){
   const btn=document.getElementById(btnId);
   if(btn){ btn.innerHTML='⏸'; btn.disabled=true; }
-  say(text, ()=>{
-    if(btn){ btn.innerHTML='🔊'; btn.disabled=false; }
-  }, ctx, role);
+  sayHQ(text, ()=>{ if(btn){ btn.innerHTML='▶'; btn.disabled=false; } });
+}
+function sayBtnSlow(btnId, text){
+  const btn=document.getElementById(btnId);
+  if(btn){ btn.innerHTML='⏸'; btn.disabled=true; }
+  sayHQ(text, ()=>{ if(btn){ btn.innerHTML='🐢'; btn.disabled=false; } }, 0.70);
 }
 
 // 배열 순차 재생 (bubbles: [{ko, delay}])
@@ -3286,8 +3419,9 @@ function renderLesson(){
   else if(s===4) rWordListen(d,el,uz);
   else if(s===5) rSentListen(d,el,uz);
   else if(s===6) rTransListen(d,el,uz);
-  else if(s===7) rQuiz(d,el,uz);
-  else if(s===8) rResult(d,el,uz);
+  else if(s===7) rScramble(d,el,uz);
+  else if(s===8) rQuiz(d,el,uz);
+  else if(s===9) rResult(d,el,uz);
 }
 
 // ── Step 0: 오늘의 문장 (3 sentences overview) ──
@@ -3352,9 +3486,16 @@ function rSentStudy(d,el,uz,sentIdx){
       <div class="ssb-badge">문장 ${sentIdx+1} / 3</div>
       <div class="ssb-ko">${phraseKo}</div>
       ${phraseTr?`<div class="ssb-tr">${phraseTr}</div>`:''}
-      <button class="ssb-play-btn" id="ssb-play-${sentIdx}" onclick="sayBtn('ssb-play-${sentIdx}',${jq(phraseKo)},'speak')">
-        ▶ 발음 듣기
-      </button>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="ssb-play-btn" id="ssb-play-${sentIdx}" onclick="sayBtn('ssb-play-${sentIdx}',${jq(phraseKo)})">
+          ▶ 발음 듣기
+        </button>
+        <button class="ssb-play-btn" id="ssb-slow-${sentIdx}"
+          style="background:rgba(255,255,255,.08);font-size:13px;padding:10px 14px"
+          onclick="sayBtnSlow('ssb-slow-${sentIdx}',${jq(phraseKo)})">
+          🐢 느리게
+        </button>
+      </div>
     </div>
     ${myWords.length>0?`
       <div class="vocab-label">이 문장의 핵심 단어</div>
@@ -3378,11 +3519,13 @@ function rSentStudy(d,el,uz,sentIdx){
     <button class="btn red" style="margin-top:4px" onclick="ST.speakIdx=0;next()">${nextLabel}</button>
     <button class="btn gray" style="margin-top:6px" onclick="ST.step--;renderLesson()">← 이전</button>
   `;
+  // 자동 재생 (문장 학습 진입 시)
+  setTimeout(()=>sayHQ(phraseKo,null),550);
 }
 function playW2(id,text){
   document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
   const el=document.getElementById('wc'+id); if(el) el.classList.add('playing');
-  say(text,()=>{const e=document.getElementById('wc'+id);if(e)e.classList.remove('playing')},'word');
+  sayHQ(text,()=>{const e=document.getElementById('wc'+id);if(e)e.classList.remove('playing')});
 }
 // Keep playW alias for compatibility
 function playW(i,text){ playW2(i,text); }
@@ -3490,7 +3633,7 @@ function rTransListen(d,el,uz){
         <div class="act-complete-msg">번역→소리 찾기 완료!</div>
         <div class="act-complete-sub">맞힌 개수: ${act.score} / ${act.items.length}</div>
       </div>
-      <button class="btn red" onclick="ST._act=null;ST.quizIdx=0;ST.quizScore=0;next()">퀴즈 →</button>`;
+      <button class="btn red" onclick="ST._act=null;ST._scr=null;next()">문장 순서 맞추기 →</button>`;
     return;
   }
   const target=act.items[act.idx];
@@ -3557,15 +3700,93 @@ function answerActTrans(btn, chosen, correct, idx){
     btn.classList.add('no');
     fb.textContent='오답! 다시 들어보세요'; fb.className='act-fb no';
     // Play correct answer
-    setTimeout(()=>say(correct,null,'speak'),400);
+    setTimeout(()=>sayHQ(correct,null),400);
   }
   if(next) next.style.display='';
 }
 
-// ── Step 7: 퀴즈 ──
+
+// ── Step 7: 문장 순서 맞추기 (Sentence Scramble) ─────────────────────────────
+function rScramble(d,el,uz){
+  if(!ST._scr||ST._scr._day!==d.day){
+    const speaks=(d.speak||[]).slice(0,3);
+    const idx=(d.day-1)%speaks.length;
+    const sp=speaks[idx];
+    const phrase=sp?sp.phrase:'';
+    const trText=sp?(sp.uz||sp.phrase):phrase;
+    const rawWords=phrase.split(/\s+/).filter(Boolean);
+    ST._scr={_day:d.day,phrase,trText,words:rawWords,shuffled:shuffle([...rawWords]),assembled:[],done:false,wrong:0};
+  }
+  const sc=ST._scr;
+
+  function countInArr(arr,w){return arr.filter(x=>x===w).length;}
+
+  function renderScr(){
+    // Build pool (track usage per word)
+    const usageMap={};
+    sc.assembled.forEach(w=>{usageMap[w]=(usageMap[w]||0)+1;});
+    const poolHTML=sc.shuffled.map((w,i)=>{
+      const totalOcc=countInArr(sc.words,w);
+      const usedOcc=usageMap[w]||0;
+      const exhausted=usedOcc>=totalOcc;
+      return `<button class="scr-tile${exhausted?' used':''}" onclick="${exhausted?'':'scrAdd('+JSON.stringify(w)+')'}">${w}</button>`;
+    }).join('');
+    const asmHTML=sc.assembled.length===0
+      ?'<span class="scr-placeholder">단어를 눌러서 여기에 모아요</span>'
+      :sc.assembled.map((w,i)=>`<button class="scr-tile asm" onclick="scrRemove(${i})">${w}</button>`).join('');
+    el.innerHTML=`
+      <div class="act-header">
+        <div class="act-badge">문장 순서 맞추기</div>
+        <div style="font-size:11px;color:var(--muted)">${uz?sc.trText:''}</div>
+      </div>
+      <div class="scr-hint">${uz?"Gapni toʻgʻri tartibda tuz":'단어를 올바른 순서로 배열하세요'}</div>
+      <div class="scr-target-tr">${uz?'':'뜻: '+sc.trText}</div>
+      <div class="scr-asm" id="scr-asm">${asmHTML}</div>
+      <div class="scr-pool" id="scr-pool">${poolHTML}</div>
+      <div id="scr-fb" class="scr-fb" style="display:none"></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn gray" onclick="ST._scr.assembled=[];renderLesson()">초기화</button>
+        ${sc.assembled.length>0&&!sc.done?`<button class="btn red" onclick="scrCheck()">✓ 확인</button>`:''}
+        ${sc.done?`<button class="btn red" onclick="ST._scr=null;ST.quizIdx=0;ST.quizScore=0;next()">퀴즈 →</button>`:''}
+      </div>
+    `;
+  }
+
+  window.scrAdd=function(w){
+    const totalOcc=countInArr(sc.words,w);
+    const usedOcc=sc.assembled.filter(x=>x===w).length;
+    if(usedOcc>=totalOcc) return;
+    sc.assembled.push(w);
+    renderScr();
+  };
+  window.scrRemove=function(i){
+    sc.assembled.splice(i,1);
+    renderScr();
+  };
+  window.scrCheck=function(){
+    const attempt=sc.assembled.join(' ');
+    const fb=document.getElementById('scr-fb');
+    if(attempt===sc.phrase){
+      fb.innerHTML='🎉 정답! 정말 잘했어요!';
+      fb.className='scr-fb ok';fb.style.display='';
+      sc.done=true;
+      sayHQ(sc.phrase,null);
+      setTimeout(renderScr,200);
+    } else {
+      sc.wrong++;
+      fb.innerHTML='❌ 다시 해보세요! (힌트: '+sc.words.length+'개 단어)';
+      fb.className='scr-fb no';fb.style.display='';
+      setTimeout(()=>{if(fb)fb.style.display='none';},2000);
+    }
+  };
+
+  renderScr();
+}
+
+// ── Step 8: 퀴즈 ──
 function rQuiz(d,el,uz){
   const qi=ST.quizIdx;
-  if(qi>=d.quiz.length){ST.step=8;renderLesson();return;}
+  if(qi>=d.quiz.length){ST.step=9;renderLesson();return;}
   const q=d.quiz[qi];
   el.innerHTML=`
     <div class="qhdr">
@@ -4545,5 +4766,46 @@ function showSidebar(show){
 checkAuth();
 </script>
 </div><!-- /appMain -->
+
+<!-- TTS 설정 모달 -->
+<div id="tts-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;width:min(420px,92vw);max-height:90vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <h3 style="margin:0;font-size:18px;font-weight:800">🎤 고품질 음성 설정</h3>
+      <button onclick="closeTTSModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)">✕</button>
+    </div>
+    <div style="background:var(--blue-l);border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;line-height:1.6;color:var(--ink)">
+      <strong>ElevenLabs</strong> API 키를 입력하면 전문 성우 수준의 자연스러운 한국어 발음을 사용할 수 있어요.<br>
+      <a href="https://elevenlabs.io/sign-up" target="_blank" style="color:var(--blue-m);font-weight:700">→ elevenlabs.io 무료 가입 (월 10,000자 무료)</a><br>
+      <small style="opacity:.75">가입 후 Profile → API Keys 에서 키 복사</small>
+    </div>
+    <div style="margin-bottom:14px">
+      <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">API Key</label>
+      <input id="el-key-inp" type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx"
+        style="width:100%;box-sizing:border-box;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--ink);font-size:14px;font-family:monospace">
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">음성 선택</label>
+      <select id="el-voice-sel" style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--ink);font-size:14px">
+        <option value="21m00Tcm4TlvDq8ikWAM">Rachel — 여성, 차분하고 명료</option>
+        <option value="EXAVITQu4vr4xnSDxMaL">Bella — 여성, 따뜻하고 자연스러운</option>
+        <option value="jsCqWAovK2LkecY7zXl4">Freya — 여성, 활기차고 젊은</option>
+        <option value="pNInz6obpgDQGcFmaJgB">Adam — 남성, 깊고 안정적</option>
+        <option value="TxGEqnHWrfWFTfGW9XjX">Josh — 남성, 젊고 활기찬</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <button onclick="testTTSSettings()" style="flex:1;min-width:100px;padding:12px;background:var(--blue-l);color:var(--blue-m);border:2px solid var(--blue-m);border-radius:10px;font-weight:800;font-size:14px;cursor:pointer">🔊 테스트 듣기</button>
+      <button onclick="saveTTSSettings()" style="flex:1;min-width:100px;padding:12px;background:var(--blue-m);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer">✅ 저장</button>
+    </div>
+    <div id="tts-st" style="text-align:center;font-size:14px;font-weight:600;min-height:22px;color:var(--blue-m)"></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <div style="font-size:12px;color:var(--muted);line-height:1.7">
+      <strong>키 없이도 사용 가능</strong> — 브라우저 기본 TTS로 자동 폴백<br>
+      음성 데이터는 기기에 캐시되어 같은 문장은 즉시 재생됩니다
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
