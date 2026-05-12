@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#E63946">
+<meta name="theme-color" content="#0F172A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="안전 한국어">
@@ -12,305 +12,368 @@
 <title>안전 한국어 Safety Korean</title>
 <style>
 :root{
-  --red:#E63946; --red-d:#c1121f;
-  --blue:#1D3557; --blue-m:#457B9D; --blue-l:#A8DADC;
-  --green:#2DC653; --orange:#F4A261; --yellow:#FFD43B;
-  --bg:#F1F3F5; --card:#fff; --text:#1D3557; --muted:#6C757D; --border:#DEE2E6;
-  --r:14px;
+  /* ── Core Palette ── */
+  --ink:    #0F172A;   /* slate-900  — headings / primary text */
+  --ink-m:  #334155;   /* slate-700  — body text */
+  --muted:  #64748B;   /* slate-500  — captions / hints */
+  --border: #E2E8F0;   /* slate-200  — dividers */
+  --bg:     #F1F5F9;   /* slate-100  — page background */
+  --card:   #FFFFFF;   /* cards */
+
+  /* ── Brand Blue (primary interactive) ── */
+  --blue:   #1E3A5F;   /* deep navy — headers, heavy text */
+  --blue-m: #2563EB;   /* blue-600  — buttons, links, active */
+  --blue-d: #1D4ED8;   /* blue-700  — hover */
+  --blue-l: #DBEAFE;   /* blue-100  — light bg accent */
+
+  /* ── Status / Semantic ── */
+  --green:  #059669;   /* emerald-600 — success / pass */
+  --green-l:#D1FAE5;   /* emerald-100 */
+  --orange: #D97706;   /* amber-600   — caution */
+  --orange-l:#FEF3C7;
+  --red:    #DC2626;   /* red-600     — danger / alert */
+  --red-d:  #B91C1C;
+  --red-l:  #FEE2E2;
+  --yellow: #F59E0B;   /* amber-500   — stars / points */
+
+  /* ── Alias kept for compatibility ── */
+  --text:   var(--ink);
+
+  --r: 14px;
 }
+
+/* ─── Reset ─── */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif;
-  background:var(--bg);color:var(--text);min-height:100vh;max-width:540px;margin:0 auto}
+  background:var(--bg);color:var(--ink);min-height:100vh;max-width:540px;margin:0 auto}
 
-/* Header */
-.hdr{background:var(--red);color:#fff;padding:13px 16px;
+/* ─── Header (dark, sleek) ─── */
+.hdr{background:var(--ink);color:#fff;padding:13px 16px;
   display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.hdr-title{font-size:16px;font-weight:800;letter-spacing:-.3px}
-.hdr-sub{font-size:10px;opacity:.75;margin-top:1px}
-.lang-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);
-  color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 1px 0 rgba(255,255,255,.07),0 4px 20px rgba(0,0,0,.4)}
+.hdr-title{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:2px;letter-spacing:.3px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;
+  transition:background .2s}
+.lang-btn:hover{background:rgba(255,255,255,.18)}
 
 /* Screens */
 .scr{display:none}.scr.on{display:block}
 
 /* ═══ HOME ═══ */
 .home{padding:16px}
-.hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
-  border-radius:var(--r);padding:22px 18px;color:#fff;text-align:center;margin-bottom:14px}
-.hero .e{font-size:48px;margin-bottom:8px}
-.hero h2{font-size:19px;font-weight:800;margin-bottom:5px}
-.hero p{font-size:13px;opacity:.85;line-height:1.6}
+.hero{
+  background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#1e4d8c 100%);
+  border-radius:var(--r);padding:24px 20px;color:#fff;text-align:center;margin-bottom:14px;
+  box-shadow:0 4px 24px rgba(15,23,42,.3);position:relative;overflow:hidden
+}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 0%,rgba(37,99,235,.35),transparent 65%);
+  pointer-events:none}
+.hero .e{font-size:44px;margin-bottom:8px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.hero h2{font-size:19px;font-weight:800;margin-bottom:5px;letter-spacing:-.3px}
+.hero p{font-size:13px;opacity:.8;line-height:1.6}
 
 /* Goal badge */
 .goal-chip{
   display:inline-flex;align-items:center;gap:6px;
-  background:#fff3cd;border:1px solid var(--yellow);
-  border-radius:20px;padding:5px 12px;font-size:12px;color:#664d03;font-weight:600;
-  margin-bottom:14px
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:20px;padding:5px 13px;font-size:12px;color:var(--muted);font-weight:600;
+  margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)
 }
 
-.slabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
-  letter-spacing:.5px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.slabel{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.8px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
 
 .day-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .dc{background:var(--card);border-radius:var(--r);padding:14px 12px;
-  cursor:pointer;border:2px solid var(--border);transition:all .2s;position:relative;overflow:hidden}
+  cursor:pointer;border:1.5px solid var(--border);
+  transition:all .2s;position:relative;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .dc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;
   background:var(--border);border-radius:var(--r) 0 0 var(--r)}
 .dc.done::before{background:var(--green)}
-.dc.open::before{background:var(--red)}
-.dc:hover:not(.locked){transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.1);border-color:var(--blue-m)}
-.dc.locked{opacity:.5;cursor:not-allowed}
-.dc .dnum{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:2px}
-.dc .dice{font-size:20px;margin-bottom:4px}
-.dc .dtitle{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:2px}
+.dc.open::before{background:var(--blue-m)}
+.dc:hover:not(.locked){transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(37,99,235,.12);border-color:var(--blue-m)}
+.dc.locked{opacity:.45;cursor:not-allowed}
+.dc .dnum{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:2px}
+.dc .dice{font-size:18px;margin-bottom:4px}
+.dc .dtitle{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:2px;color:var(--ink)}
 .dc .dgoal{font-size:11px;color:var(--blue-m);font-style:italic}
-.dc .dstat{position:absolute;top:9px;right:9px;font-size:13px}
+.dc .dstat{position:absolute;top:9px;right:10px;font-size:11px;font-weight:800;color:var(--muted)}
+.dc.done .dstat{color:var(--green)}.dc.locked .dstat{color:var(--border)}
 
-.prog-card{background:var(--card);border-radius:var(--r);padding:13px 15px;border:1px solid var(--border)}
-.prog-card h3{font-size:12px;color:var(--muted);margin-bottom:8px}
-.pbar{background:var(--border);border-radius:10px;height:9px;overflow:hidden;margin-bottom:5px}
-.pfill{height:100%;background:linear-gradient(90deg,var(--green),#52d68a);border-radius:10px;transition:width .5s}
+.prog-card{background:var(--card);border-radius:var(--r);padding:13px 15px;
+  border:1.5px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.prog-card h3{font-size:11px;color:var(--muted);margin-bottom:8px;
+  text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.pbar{background:var(--border);border-radius:10px;height:8px;overflow:hidden;margin-bottom:5px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--green),#34d399);
+  border-radius:10px;transition:width .5s}
 .ptxt{font-size:11px;color:var(--muted);text-align:right}
 
 /* ═══ LESSON ═══ */
 .lhdr{background:var(--card);border-bottom:1px solid var(--border);
   padding:11px 14px;display:flex;align-items:center;gap:10px}
-.back{width:34px;height:34px;background:var(--bg);border:1px solid var(--border);
-  border-radius:9px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.lhdr-info h2{font-size:15px;font-weight:800}
+.back{width:34px;height:34px;background:var(--bg);border:1.5px solid var(--border);
+  border-radius:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;transition:all .15s}
+.back:hover{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue-m)}
+.lhdr-info h2{font-size:15px;font-weight:800;color:var(--ink)}
 .lhdr-info p{font-size:11px;color:var(--muted)}
 
 /* Step progress */
 .sbar{display:flex;gap:4px;padding:9px 14px;background:var(--card);border-bottom:1px solid var(--border)}
-.sdot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
-.sdot.done{background:var(--green)}.sdot.cur{background:var(--red)}
+.sdot{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+.sdot.done{background:var(--green)}.sdot.cur{background:var(--blue-m)}
 
 /* Step label */
-.step-lbl{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px 0;
-}
+.step-lbl{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 0}
 .step-name{
   display:inline-flex;align-items:center;gap:5px;
-  background:var(--red);color:#fff;
-  border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700
+  background:var(--blue-m);color:#fff;
+  border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.2px
 }
 .step-hint{font-size:11px;color:var(--muted);font-style:italic}
-
 .lbody{padding:14px 16px}
 
-/* ── 목표 (Goal) ── */
+/* ── Goal ── */
 .goal-box{
-  background:linear-gradient(135deg,#fff9e6,#fffbf0);
-  border:2px solid var(--yellow);border-radius:var(--r);
-  padding:18px;text-align:center;margin-bottom:12px
+  background:linear-gradient(135deg,#F8FAFF,#EFF6FF);
+  border:1.5px solid #BFDBFE;border-radius:var(--r);
+  padding:20px;text-align:center;margin-bottom:12px;
+  box-shadow:0 2px 12px rgba(37,99,235,.08)
 }
-.goal-box .g-label{font-size:11px;font-weight:700;color:#8B6914;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.goal-box .g-ko{font-size:20px;font-weight:800;color:var(--blue);margin-bottom:6px;line-height:1.3}
-.goal-box .g-uz{font-size:13px;color:#664d03;line-height:1.5}
+.goal-box .g-label{font-size:10px;font-weight:700;color:var(--blue-m);
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.goal-box .g-ko{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.3}
+.goal-box .g-uz{font-size:13px;color:var(--muted);line-height:1.5}
 .goal-box .g-level{
   display:inline-block;margin-top:10px;
-  background:var(--blue);color:#fff;
-  border-radius:12px;padding:3px 10px;font-size:11px;font-weight:700
+  background:var(--blue-m);color:#fff;
+  border-radius:12px;padding:3px 11px;font-size:11px;font-weight:700
 }
 
-/* ── 들어봐요 (Listen) ── */
+/* ── Listen ── */
 .listen-box{
-  background:linear-gradient(135deg,var(--blue),var(--blue-m));
-  color:#fff;border-radius:var(--r);padding:18px;margin-bottom:12px
+  background:linear-gradient(145deg,#0F172A 0%,#1e3a5f 100%);
+  color:#fff;border-radius:var(--r);padding:18px;margin-bottom:12px;
+  box-shadow:0 4px 20px rgba(15,23,42,.25)
 }
-.listen-box .scene{font-size:44px;text-align:center;margin-bottom:10px}
-.listen-box .ctx-tag{font-size:10px;opacity:.65;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.listen-box .scene{font-size:42px;text-align:center;margin-bottom:10px}
+.listen-box .ctx-tag{font-size:10px;color:rgba(255,255,255,.45);
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .listen-box .dial{
-  background:rgba(255,255,255,.12);border-radius:10px;
-  padding:11px;font-size:14px;line-height:1.85;white-space:pre-line;
-  margin-bottom:8px
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:11px;font-size:14px;line-height:1.85;white-space:pre-line;margin-bottom:8px
 }
-.listen-box .dial-uz{font-size:12px;opacity:.8;line-height:1.6;white-space:pre-line;font-style:italic}
-.listen-box .listen-hint{font-size:11px;opacity:.6;text-align:center;margin-top:10px}
+.listen-box .dial-uz{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;white-space:pre-line;font-style:italic}
+.listen-box .listen-hint{font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-top:10px}
 
-/* Speaker bubble for dialogue */
-.bubble-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+/* Dialogue bubbles */
+.bubble-row{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
 .bubble-row.right{flex-direction:row-reverse}
 .bubble-avatar{font-size:22px;flex-shrink:0;margin-top:2px}
 .bubble-body{}
-.bubble-name{font-size:10px;opacity:.65;margin-bottom:3px}
+.bubble-name{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:3px}
 .bubble-text{
-  background:rgba(255,255,255,.15);
-  border-radius:12px;padding:8px 12px;font-size:13px;line-height:1.5;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;padding:9px 13px;font-size:13px;line-height:1.55;
 }
-.bubble-row.right .bubble-text{background:rgba(255,200,0,.25)}
-.bubble-uz{font-size:11px;opacity:.7;margin-top:3px;font-style:italic}
+.bubble-row.right .bubble-text{
+  background:rgba(37,99,235,.3);border-color:rgba(37,99,235,.4)
+}
+.bubble-uz{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;font-style:italic;padding-left:2px}
 
-/* ── 뜯어봐요 (Break-down) ── */
+/* ── Words ── */
 .word-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .word-card{
   background:var(--card);border-radius:var(--r);
-  border:2px solid var(--border);
+  border:1.5px solid var(--border);
   display:flex;align-items:stretch;overflow:hidden;
-  cursor:pointer;transition:border-color .2s
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.05)
 }
-.word-card:hover{border-color:var(--blue-m)}
-.word-card.playing{border-color:var(--red);background:#fff5f5}
+.word-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(37,99,235,.12)}
+.word-card.playing{border-color:var(--blue-m);background:var(--blue-l)}
 .wc-left{
-  background:var(--blue);color:#fff;
+  background:linear-gradient(160deg,#1E3A5F,#1e4d8c);color:#fff;
   padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-width:80px;
 }
 .wc-ko{font-size:20px;font-weight:800;margin-bottom:3px}
-.wc-syl{font-size:10px;opacity:.7;letter-spacing:1px}
+.wc-syl{font-size:10px;opacity:.6;letter-spacing:1px}
 .wc-right{padding:10px 12px;flex:1}
 .wc-rom{font-size:11px;color:var(--muted);margin-bottom:3px}
-.wc-uz{font-size:13px;font-weight:600;margin-bottom:4px}
+.wc-uz{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--ink-m)}
 .wc-ex{font-size:12px;color:var(--blue-m);font-style:italic}
 .wc-play{
-  background:var(--red);color:#fff;width:36px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:14px
+  background:var(--blue-m);color:#fff;width:38px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:15px
 }
 
-/* ── 패턴 드릴 (Pattern Drill) ── */
+/* ── Pattern Drill ── */
 .pattern-box{
-  background:#F0F7FF;border:2px solid var(--blue-m);border-radius:var(--r);
+  background:#F8FAFF;border:1.5px solid #BFDBFE;border-radius:var(--r);
   padding:14px;margin-bottom:12px
 }
-.pat-label{font-size:11px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.pat-template{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:12px;line-height:1.4}
+.pat-label{font-size:10px;font-weight:700;color:var(--blue-m);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.pat-template{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.4}
 .pat-blank{
-  display:inline-block;border-bottom:3px solid var(--red);
-  min-width:80px;color:var(--red);font-weight:800;
+  display:inline-block;border-bottom:3px solid var(--blue-m);
+  min-width:80px;color:var(--blue-m);font-weight:800;
   padding:0 4px;text-align:center
 }
 .drill-items{display:flex;flex-direction:column;gap:7px}
 .drill-item{
-  background:var(--card);border-radius:10px;border:2px solid var(--border);
+  background:var(--card);border-radius:10px;border:1.5px solid var(--border);
   padding:11px 14px;cursor:pointer;display:flex;align-items:center;
-  justify-content:space-between;transition:all .2s;font-size:14px
+  justify-content:space-between;transition:all .2s;font-size:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,.04)
 }
-.drill-item:hover{border-color:var(--blue-m);background:#f0f7ff}
-.drill-item.playing{border-color:var(--red);background:#fff5f5}
-.drill-item .di-full{font-weight:700;color:var(--blue)}
+.drill-item:hover{border-color:var(--blue-m);background:var(--blue-l);box-shadow:0 3px 12px rgba(37,99,235,.1)}
+.drill-item.playing{border-color:var(--blue-m);background:var(--blue-l)}
+.drill-item .di-full{font-weight:700;color:var(--ink)}
 .drill-item .di-uz{font-size:12px;color:var(--muted)}
 .drill-item .di-play{font-size:16px}
 
-/* ── 말해봐요 (Speaking Practice) ── */
+/* ── Speaking Practice ── */
 .speak-card{
   background:var(--card);border-radius:var(--r);
-  border:2px dashed var(--border);
-  padding:20px;text-align:center;margin-bottom:12px
+  border:1.5px solid var(--border);
+  padding:20px;text-align:center;margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06)
 }
 .speak-situation{
-  background:var(--blue);color:#fff;
+  background:linear-gradient(135deg,#0F172A,#1e3a5f);color:#fff;
   border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;
   margin-bottom:14px;text-align:left
 }
 .speak-prompt{font-size:12px;color:var(--muted);margin-bottom:6px}
-.speak-phrase{font-size:24px;font-weight:800;color:var(--blue);margin-bottom:14px;line-height:1.3}
+.speak-phrase{font-size:24px;font-weight:800;color:var(--ink);margin-bottom:14px;line-height:1.3;letter-spacing:-.3px}
 .wave{display:flex;justify-content:center;gap:4px;height:28px;align-items:flex-end;margin-bottom:12px}
-.wbar{width:5px;border-radius:3px;background:var(--red);animation:wv .8s ease infinite alternate}
+.wbar{width:5px;border-radius:3px;background:var(--blue-m);animation:wv .8s ease infinite alternate}
 .wbar:nth-child(2){animation-delay:.1s}.wbar:nth-child(3){animation-delay:.2s}
 .wbar:nth-child(4){animation-delay:.3s}.wbar:nth-child(5){animation-delay:.4s}
 @keyframes wv{from{height:5px}to{height:24px}}
 .btn-hear{
   display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:13px;background:var(--red);color:#fff;
+  width:100%;padding:13px;background:var(--blue-m);color:#fff;
   border:none;border-radius:11px;font-size:14px;font-weight:700;
-  cursor:pointer;margin-bottom:8px;transition:background .2s
+  cursor:pointer;margin-bottom:8px;transition:all .2s;
+  box-shadow:0 4px 14px rgba(37,99,235,.3)
 }
-.btn-hear:hover{background:var(--red-d)}
+.btn-hear:hover{background:var(--blue-d);transform:translateY(-1px)}
 .speak-tip{font-size:11px;color:var(--muted);line-height:1.6}
 .btn-mic{display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:13px;background:var(--blue);color:#fff;
+  width:100%;padding:13px;background:var(--ink);color:#fff;
   border:none;border-radius:11px;font-size:14px;font-weight:700;
   cursor:pointer;margin-bottom:8px;transition:all .2s}
-.btn-mic:hover{background:#16304d}
+.btn-mic:hover{background:#1e293b}
 .btn-mic.recording{background:var(--red);animation:pulse .8s ease infinite alternate}
 @keyframes pulse{from{opacity:1}to{opacity:.65}}
-.mic-result{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;border:2px solid}
-.mic-result.pass{background:#f0fff4;border-color:var(--green)}
-.mic-result.warn{background:#fff8e1;border-color:var(--orange)}
-.mic-result.fail{background:#fff0f0;border-color:var(--red)}
+.mic-result{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;border:1.5px solid}
+.mic-result.pass{background:var(--green-l);border-color:var(--green)}
+.mic-result.warn{background:var(--orange-l);border-color:var(--orange)}
+.mic-result.fail{background:var(--red-l);border-color:var(--red)}
 .mic-pct{font-size:40px;font-weight:900;line-height:1;margin-bottom:4px}
 .mic-msg{font-size:13px;font-weight:700;margin-bottom:6px}
 .mic-heard{font-size:11px;color:var(--muted)}
 .visa-banner{border-radius:12px;padding:11px 14px;
   display:flex;align-items:center;gap:10px;margin:0 16px 12px;font-size:12px}
-.visa-banner.red{background:#fff0f0;border:1px solid var(--red);color:var(--red-d)}
-.visa-banner.orange{background:#fff8e1;border:1px solid var(--orange);color:#92400e}
-.visa-banner.blue{background:#E8F4FD;border:1px solid var(--blue-m);color:var(--blue)}
+.visa-banner.red{background:var(--red-l);border:1.5px solid #FCA5A5;color:var(--red-d)}
+.visa-banner.orange{background:var(--orange-l);border:1.5px solid #FCD34D;color:#92400e}
+.visa-banner.blue{background:var(--blue-l);border:1.5px solid #93C5FD;color:var(--blue-d)}
 
 /* ── Quiz ── */
 .qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
 .qprog{font-size:12px;color:var(--muted);font-weight:600}
 .qscore{font-size:12px;color:var(--green);font-weight:700}
-.qcard{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.qcard{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:12px;
+  border:1.5px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .qtag{font-size:10px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.qq{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.4}
+.qq{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.4;color:var(--ink)}
 .qsub{font-size:11px;color:var(--muted);margin-bottom:15px}
 .qopts{display:flex;flex-direction:column;gap:7px}
 .qopt{
-  padding:12px 13px;border-radius:9px;border:2px solid var(--border);
+  padding:12px 13px;border-radius:9px;border:1.5px solid var(--border);
   cursor:pointer;font-size:13px;transition:all .2s;text-align:left;background:var(--card)
 }
-.qopt:hover{border-color:var(--blue-m);background:#f0f7ff}
-.qopt.ok{border-color:var(--green);background:#f0fff4;color:#1a7a3a;font-weight:700}
-.qopt.no{border-color:var(--red);background:#fff0f0;color:var(--red-d)}
+.qopt:hover{border-color:var(--blue-m);background:var(--blue-l)}
+.qopt.ok{border-color:var(--green);background:var(--green-l);color:#065F46;font-weight:700}
+.qopt.no{border-color:var(--red);background:var(--red-l);color:var(--red-d)}
 .qopt.off{cursor:not-allowed}
 .qfb{margin-top:10px;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:600;display:none}
-.qfb.ok{background:#f0fff4;color:#1a7a3a;border:1px solid var(--green)}
-.qfb.no{background:#fff0f0;color:var(--red-d);border:1px solid var(--red)}
+.qfb.ok{background:var(--green-l);color:#065F46;border:1.5px solid var(--green)}
+.qfb.no{background:var(--red-l);color:var(--red-d);border:1.5px solid var(--red)}
 
 /* ── Result ── */
-.rcard{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center}
-.rscore{font-size:56px;font-weight:900;line-height:1;margin:10px 0 6px}
+.rcard{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;
+  border:1.5px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.rscore{font-size:56px;font-weight:900;line-height:1;margin:10px 0 6px;letter-spacing:-2px}
 .rscore.g{color:var(--green)}.rscore.m{color:var(--orange)}.rscore.b{color:var(--red)}
-.rmsg{font-size:17px;font-weight:700;margin-bottom:5px}
+.rmsg{font-size:17px;font-weight:700;margin-bottom:5px;color:var(--ink)}
 .rsub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.rpass{background:#f0fff4;border:1px solid var(--green);border-radius:10px;padding:11px;font-size:12px;color:#1a7a3a;margin-bottom:16px}
+.rpass{background:var(--green-l);border:1.5px solid #6EE7B7;border-radius:10px;
+  padding:11px;font-size:12px;color:#065F46;margin-bottom:16px}
 
 /* Buttons */
-.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:2px}
-.btn.red{background:var(--red);color:#fff}.btn.red:hover{background:var(--red-d);transform:translateY(-1px)}
-.btn.gray{background:var(--border);color:var(--text)}.btn.gray:hover{background:#c8d0d9}
+.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;
+  cursor:pointer;transition:all .2s;margin-top:2px}
+.btn.red{background:var(--blue-m);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.btn.red:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.35)}
+.btn.gray{background:var(--bg);color:var(--ink-m);border:1.5px solid var(--border)}
+.btn.gray:hover{background:var(--border)}
 
-.info{background:#E8F4FD;border-left:4px solid var(--blue-m);border-radius:0 8px 8px 0;
-  padding:9px 13px;font-size:12px;line-height:1.6;margin-bottom:12px;color:var(--text)}
+.info{background:var(--blue-l);border-left:3px solid var(--blue-m);border-radius:0 8px 8px 0;
+  padding:9px 13px;font-size:12px;line-height:1.6;margin-bottom:12px;color:var(--ink-m)}
 
 /* ═══ AUTH SCREEN ═══ */
 .auth-wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
-  padding:24px 20px;background:linear-gradient(160deg,var(--blue) 0%,var(--blue-m) 100%)}
+  padding:24px 20px;
+  background:linear-gradient(160deg,#0F172A 0%,#1E293B 55%,#0c2461 100%)}
 .auth-logo{text-align:center;margin-bottom:28px}
-.auth-logo .al-icon{font-size:56px;margin-bottom:8px}
-.auth-logo h1{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px}
-.auth-logo p{color:rgba(255,255,255,.75);font-size:12px;line-height:1.6}
-.auth-card{background:#fff;border-radius:20px;padding:22px 20px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-.auth-tabs{display:flex;gap:6px;margin-bottom:20px}
-.auth-tab{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);
-  font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);text-align:center;transition:all .2s}
-.auth-tab.on{background:var(--red);color:#fff;border-color:var(--red)}
-.auth-form label{display:block;font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;margin-top:14px}
+.auth-logo .al-icon{font-size:52px;margin-bottom:10px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+.auth-logo h1{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px;letter-spacing:-.4px}
+.auth-logo p{color:rgba(255,255,255,.55);font-size:12px;line-height:1.6}
+.auth-card{
+  background:#fff;border-radius:20px;padding:22px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.07)
+}
+.auth-tabs{display:flex;gap:5px;margin-bottom:20px}
+.auth-tab{flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid var(--border);
+  font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
+  text-align:center;transition:all .2s;white-space:pre-wrap;line-height:1.3}
+.auth-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.auth-form label{display:block;font-size:10px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:14px}
 .auth-form label:first-child{margin-top:0}
 .auth-form input,.auth-form select{
-  width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;
-  font-size:14px;font-family:inherit;color:var(--text);background:#fff;
+  width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:14px;font-family:inherit;color:var(--ink);background:#fff;
   transition:border-color .2s;-webkit-appearance:none}
-.auth-form input:focus,.auth-form select:focus{outline:none;border-color:var(--blue-m)}
+.auth-form input:focus,.auth-form select:focus{outline:none;border-color:var(--blue-m);
+  box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 .auth-form .field-hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
 .auth-form .lang-pick{display:flex;gap:8px;margin-top:0}
-.auth-form .lang-pick button{flex:1;padding:11px;border:2px solid var(--border);border-radius:10px;
-  font-size:14px;cursor:pointer;background:#fff;transition:all .2s;font-weight:600}
-.auth-form .lang-pick button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.auth-form .lang-pick button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:14px;cursor:pointer;background:#fff;transition:all .2s;font-weight:600;color:var(--ink)}
+.auth-form .lang-pick button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .notif-row{display:flex;align-items:center;justify-content:space-between;
   margin-top:14px;padding:10px 12px;background:var(--bg);border-radius:10px}
-.notif-row label{font-size:13px;font-weight:600;color:var(--text);margin:0}
+.notif-row label{font-size:13px;font-weight:600;color:var(--ink);margin:0}
 .toggle{position:relative;width:42px;height:24px;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:12px;cursor:pointer;transition:.3s}
+.toggle-slider{position:absolute;inset:0;background:#CBD5E1;border-radius:12px;cursor:pointer;transition:.3s}
 .toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;
-  background:#fff;border-radius:50%;transition:.3s}
+  background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .toggle input:checked + .toggle-slider{background:var(--green)}
 .toggle input:checked + .toggle-slider:before{transform:translateX(18px)}
 .auth-divider{text-align:center;font-size:11px;color:var(--muted);margin:14px 0 10px;
@@ -321,60 +384,62 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
 /* ═══ PROFILE SCREEN ═══ */
 .prof{padding:14px 16px}
-.prof-hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
-  border-radius:var(--r);padding:18px;color:#fff;margin-bottom:14px}
-.prof-name{font-size:18px;font-weight:800;margin-bottom:3px}
-.prof-meta{font-size:12px;opacity:.75;margin-bottom:12px}
+.prof-hero{
+  background:linear-gradient(135deg,#0F172A 0%,#1e3a5f 100%);
+  border-radius:var(--r);padding:20px;color:#fff;margin-bottom:14px;
+  box-shadow:0 4px 20px rgba(15,23,42,.25)
+}
+.prof-name{font-size:18px;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
+.prof-meta{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:12px}
 .streak-row{display:flex;align-items:center;gap:10px}
-.streak-badge{background:rgba(255,255,255,.15);border-radius:12px;
-  padding:8px 14px;text-align:center}
+.streak-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;padding:8px 14px;text-align:center}
 .streak-num{font-size:28px;font-weight:900;line-height:1}
-.streak-lbl{font-size:10px;opacity:.8;margin-top:2px}
-.streak-msg{font-size:12px;opacity:.85;line-height:1.5}
+.streak-lbl{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px}
+.streak-msg{font-size:12px;color:rgba(255,255,255,.75);line-height:1.5}
 
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .stat-card{background:var(--card);border-radius:var(--r);padding:14px;
-  border:1px solid var(--border);text-align:center}
-.stat-val{font-size:26px;font-weight:900;color:var(--blue);margin-bottom:3px}
+  border:1.5px solid var(--border);text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-val{font-size:26px;font-weight:900;color:var(--blue-m);margin-bottom:3px}
 .stat-lbl{font-size:11px;color:var(--muted)}
 
 .week-prog{background:var(--card);border-radius:var(--r);padding:14px;
-  border:1px solid var(--border);margin-bottom:14px}
-.week-prog h3{font-size:12px;font-weight:700;color:var(--muted);
+  border:1.5px solid var(--border);margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.week-prog h3{font-size:11px;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .wk-row{margin-bottom:8px}
 .wk-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
-.wk-label span:first-child{font-weight:700}
+.wk-label span:first-child{font-weight:700;color:var(--ink)}
 .wk-label span:last-child{color:var(--muted)}
-.wk-bar{background:var(--border);border-radius:6px;height:8px;overflow:hidden}
+.wk-bar{background:var(--border);border-radius:6px;height:7px;overflow:hidden}
 .wk-fill{height:100%;border-radius:6px;transition:width .5s}
-.wk-fill.w1{background:linear-gradient(90deg,var(--green),#52d68a)}
-.wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),var(--blue-l))}
+.wk-fill.w1{background:linear-gradient(90deg,var(--green),#34d399)}
+.wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),#60A5FA)}
 
 .session-list{background:var(--card);border-radius:var(--r);padding:14px;
-  border:1px solid var(--border);margin-bottom:14px}
-.session-list h3{font-size:12px;font-weight:700;color:var(--muted);
+  border:1.5px solid var(--border);margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.session-list h3{font-size:11px;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .sess-item{display:flex;align-items:center;justify-content:space-between;
   padding:9px 0;border-bottom:1px solid var(--border)}
 .sess-item:last-child{border-bottom:none}
-.sess-day{font-size:13px;font-weight:700}
+.sess-day{font-size:13px;font-weight:700;color:var(--ink)}
 .sess-date{font-size:11px;color:var(--muted);margin-top:1px}
-.sess-score{font-size:13px;font-weight:700;
-  padding:3px 9px;border-radius:10px}
-.sess-score.good{background:#f0fff4;color:#1a7a3a}
-.sess-score.mid{background:#fff8e1;color:#b45309}
-.sess-score.low{background:#fff0f0;color:var(--red-d)}
+.sess-score{font-size:13px;font-weight:700;padding:3px 9px;border-radius:10px}
+.sess-score.good{background:var(--green-l);color:#065F46}
+.sess-score.mid{background:var(--orange-l);color:#92400E}
+.sess-score.low{background:var(--red-l);color:var(--red-d)}
 
 .notif-banner{
-  background:#FFF3CD;border:1px solid var(--yellow);
+  background:var(--blue-l);border:1.5px solid #93C5FD;
   border-radius:10px;padding:11px 14px;
   display:flex;align-items:center;gap:10px;
-  margin-bottom:14px;font-size:12px;cursor:pointer
+  margin-bottom:14px;font-size:12px;cursor:pointer;color:var(--ink-m)
 }
 .notif-banner .nb-icon{font-size:20px;flex-shrink:0}
 .notif-banner .nb-text{flex:1;line-height:1.5}
-.notif-banner .nb-btn{background:var(--red);color:#fff;
+.notif-banner .nb-btn{background:var(--blue-m);color:#fff;
   border:none;border-radius:8px;padding:6px 12px;
   font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 
@@ -382,43 +447,41 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .lang-chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;
   -webkit-overflow-scrolling:touch;scrollbar-width:none}
 .lang-chips::-webkit-scrollbar{display:none}
-.lang-chip{flex-shrink:0;padding:7px 13px;border-radius:20px;border:2px solid var(--border);
+.lang-chip{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);
   font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
   transition:all .2s;white-space:nowrap}
-.lang-chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.lang-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .lang-chip:hover:not(.on){border-color:var(--blue-m);color:var(--blue-m)}
 
-.lang-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);
-  z-index:500;align-items:flex-end;justify-content:center}
+.lang-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:500;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .lang-modal-bg.on{display:flex}
 .lang-modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;
-  max-width:540px;box-shadow:0 -8px 30px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
-.lang-modal h3{font-size:15px;font-weight:800;margin-bottom:4px}
+  max-width:540px;box-shadow:0 -8px 30px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
+.lang-modal h3{font-size:15px;font-weight:800;margin-bottom:4px;color:var(--ink)}
 .lang-modal p{font-size:11px;color:var(--muted);margin-bottom:16px}
 .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .lang-opt{display:flex;align-items:center;gap:10px;padding:12px 14px;
-  border-radius:12px;border:2px solid var(--border);cursor:pointer;
+  border-radius:12px;border:1.5px solid var(--border);cursor:pointer;
   transition:all .2s;background:#fff}
-.lang-opt:hover{border-color:var(--blue-m);background:#f0f7ff}
-.lang-opt.on{border-color:var(--blue);background:#EDF2FF}
+.lang-opt:hover{border-color:var(--blue-m);background:var(--blue-l)}
+.lang-opt.on{border-color:var(--blue-m);background:var(--blue-l)}
 .lang-opt-flag{font-size:22px;flex-shrink:0}
-.lang-opt-info{}
-.lang-opt-native{font-size:13px;font-weight:800;color:var(--text)}
+.lang-opt-native{font-size:13px;font-weight:800;color:var(--ink)}
 .lang-opt-name{font-size:10px;color:var(--muted);margin-top:1px}
 
 /* install banner */
 .install-banner{
-  background:linear-gradient(90deg,var(--blue),var(--blue-m));
-  color:#fff;padding:10px 14px;
+  background:var(--ink);color:#fff;padding:10px 14px;
   display:flex;align-items:center;gap:10px;font-size:12px;
   position:sticky;bottom:0;z-index:100
 }
 .install-banner .ib-icon{font-size:20px;flex-shrink:0}
-.install-banner .ib-text{flex:1;line-height:1.5}
-.install-banner .ib-btn{background:#fff;color:var(--blue);
+.install-banner .ib-text{flex:1;line-height:1.5;color:rgba(255,255,255,.8)}
+.install-banner .ib-btn{background:var(--blue-m);color:#fff;
   border:none;border-radius:8px;padding:7px 13px;
   font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
-.install-banner .ib-close{background:none;border:none;color:rgba(255,255,255,.7);
+.install-banner .ib-close{background:none;border:none;color:rgba(255,255,255,.4);
   font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
 
 /* ═══ POINTS / GAMIFICATION ═══ */
@@ -436,110 +499,441 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 }
 .star-burst{position:fixed;top:50%;left:50%;font-size:42px;font-weight:900;
   color:var(--yellow);z-index:9999;pointer-events:none;
-  text-shadow:0 2px 8px rgba(0,0,0,.3);
+  text-shadow:0 2px 8px rgba(0,0,0,.25);
   animation:starPop 1.4s cubic-bezier(.25,.46,.45,.94) forwards}
 .pts-chip{display:inline-flex;align-items:center;gap:5px;
-  background:linear-gradient(135deg,var(--yellow),#ffb347);
-  border-radius:20px;padding:4px 11px;font-size:12px;font-weight:800;color:#664d03;
-  box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  background:var(--ink);border-radius:20px;padding:4px 11px;
+  font-size:12px;font-weight:800;color:#fff;
+  box-shadow:0 2px 8px rgba(15,23,42,.25)}
 .rank-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
   border-radius:10px;margin-bottom:5px;font-size:13px;
-  border:1px solid var(--border);background:var(--bg)}
-.rank-row.me{background:#EDF2FF;border-color:var(--blue-m);font-weight:800}
+  border:1.5px solid var(--border);background:var(--bg)}
+.rank-row.me{background:var(--blue-l);border-color:var(--blue-m);font-weight:800}
 .rank-medal{font-size:20px;flex-shrink:0}
-.rank-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rank-pts{color:var(--orange);font-weight:800;flex-shrink:0}
+.rank-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.rank-pts{color:var(--blue-m);font-weight:800;flex-shrink:0}
 .rank-days{color:var(--muted);font-size:11px;flex-shrink:0;margin-left:4px}
 .stamp-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.stamp{font-size:28px;border-radius:50%;width:44px;height:44px;
+.stamp{font-size:26px;border-radius:50%;width:44px;height:44px;
   display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--border);background:var(--bg)}
-.stamp.earned{border-color:var(--yellow);background:#fff9e6;
-  box-shadow:0 2px 8px rgba(255,180,0,.3)}
+  border:1.5px solid var(--border);background:var(--bg)}
+.stamp.earned{border-color:var(--blue-m);background:var(--blue-l);
+  box-shadow:0 2px 8px rgba(37,99,235,.2)}
 
 /* ═══ GAME SCREEN ═══ */
-.game-hero{background:linear-gradient(135deg,var(--blue),var(--blue-m));
-  border-radius:var(--r);padding:18px;color:#fff;text-align:center;margin:16px 16px 4px}
+.game-hero{
+  background:linear-gradient(135deg,#0F172A 0%,#1e3a5f 100%);
+  border-radius:var(--r);padding:18px;color:#fff;text-align:center;margin:16px 16px 4px;
+  box-shadow:0 4px 20px rgba(15,23,42,.25)
+}
 .game-hero .gh-e{font-size:40px;margin-bottom:6px}
-.game-hero h3{font-size:17px;font-weight:800;margin-bottom:4px}
-.game-hero p{font-size:11px;opacity:.8;line-height:1.5}
+.game-hero h3{font-size:17px;font-weight:800;margin-bottom:4px;letter-spacing:-.3px}
+.game-hero p{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5}
 
 .game-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px 16px}
-.gmode-card{background:var(--card);border-radius:var(--r);border:2px solid var(--border);
+.gmode-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--border);
   padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;
-  display:flex;flex-direction:column;align-items:center;gap:6px}
-.gmode-card:hover{border-color:var(--blue-m);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
-.gmode-card .gmc-icon{font-size:32px}
-.gmode-card .gmc-name{font-size:12px;font-weight:800;color:var(--blue);line-height:1.3}
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.gmode-card:hover{border-color:var(--blue-m);transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(37,99,235,.12)}
+.gmode-card .gmc-icon{font-size:30px}
+.gmode-card .gmc-name{font-size:12px;font-weight:800;color:var(--ink);line-height:1.3}
 .gmode-card .gmc-desc{font-size:10px;color:var(--muted);line-height:1.4}
-.gmode-card.m1{border-top:4px solid var(--blue-m)}
-.gmode-card.m2{border-top:4px solid var(--green)}
-.gmode-card.m3{border-top:4px solid var(--orange)}
-.gmode-card.m4{border-top:4px solid var(--red)}
+.gmode-card.m1{border-top:3px solid var(--blue-m)}
+.gmode-card.m2{border-top:3px solid var(--green)}
+.gmode-card.m3{border-top:3px solid var(--orange)}
+.gmode-card.m4{border-top:3px solid var(--red)}
 
 .gq-wrap{padding:14px 16px}
 .gpbar-wrap{margin-bottom:14px}
 .gpbar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px}
-.gpbar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-.gpbar-fill{height:100%;background:linear-gradient(90deg,var(--blue-m),var(--blue));border-radius:3px;transition:width .4s}
+.gpbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.gpbar-fill{height:100%;background:linear-gradient(90deg,var(--blue-m),#60A5FA);border-radius:3px;transition:width .4s}
 
 .gq-card{border-radius:var(--r);padding:22px 16px;
   text-align:center;margin-bottom:14px;min-height:150px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  background:linear-gradient(135deg,var(--blue),var(--blue-m));color:#fff}
-.gq-mode-badge{font-size:10px;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
+  background:linear-gradient(145deg,#0F172A 0%,#1e3a5f 100%);color:#fff;
+  box-shadow:0 4px 20px rgba(15,23,42,.25)}
+.gq-mode-badge{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);
+  text-transform:uppercase;letter-spacing:.5px}
 .gq-emoji{font-size:80px;line-height:1}
 .gq-text{font-size:18px;font-weight:800;line-height:1.4}
-.gq-sub{font-size:12px;opacity:.75;line-height:1.4}
-.gq-play-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);
+.gq-sub{font-size:12px;color:rgba(255,255,255,.65);line-height:1.4}
+.gq-play-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
   color:#fff;border-radius:30px;padding:8px 22px;font-size:13px;font-weight:700;
-  cursor:pointer;transition:background .2s}
-.gq-play-btn:hover{background:rgba(255,255,255,.35)}
+  cursor:pointer;transition:all .2s}
+.gq-play-btn:hover{background:rgba(255,255,255,.25)}
 
 .gq-opts{display:grid;gap:8px;margin-bottom:12px}
 .gq-opts.grid2{grid-template-columns:1fr 1fr}
-.gopt{padding:14px 10px;border-radius:var(--r);border:2px solid var(--border);
+.gopt{padding:14px 10px;border-radius:var(--r);border:1.5px solid var(--border);
   cursor:pointer;font-size:14px;font-weight:700;transition:all .15s;
   text-align:center;background:var(--card);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:70px;gap:4px;line-height:1.3}
-.gopt:hover:not(.off){border-color:var(--blue-m);background:#f0f7ff;transform:scale(1.02)}
-.gopt.ok{border-color:var(--green)!important;background:#f0fff4!important;color:#1a7a3a}
-.gopt.no{border-color:var(--red)!important;background:#fff0f0!important;color:var(--red-d)}
+  min-height:70px;gap:4px;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.gopt:hover:not(.off){border-color:var(--blue-m);background:var(--blue-l);transform:scale(1.02)}
+.gopt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#065F46}
+.gopt.no{border-color:var(--red)!important;background:var(--red-l)!important;color:var(--red-d)}
 .gopt.off{cursor:not-allowed}
 .gopt .go-e{font-size:40px;display:block}
-.gopt .go-ko{font-size:13px}
+.gopt .go-ko{font-size:13px;color:var(--ink)}
 .gopt .go-native{font-size:10px;color:var(--muted);font-weight:400}
 
 .gq-fb{display:none;border-radius:10px;padding:11px 14px;text-align:center;
-  font-size:13px;font-weight:700;margin-bottom:8px;border:2px solid}
-.gq-fb.ok{background:#f0fff4;color:#1a7a3a;border-color:var(--green)}
-.gq-fb.no{background:#fff0f0;color:var(--red-d);border-color:var(--red)}
+  font-size:13px;font-weight:700;margin-bottom:8px;border:1.5px solid}
+.gq-fb.ok{background:var(--green-l);color:#065F46;border-color:var(--green)}
+.gq-fb.no{background:var(--red-l);color:var(--red-d);border-color:var(--red)}
 
-.gr-card{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;margin:16px}
+.gr-card{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;
+  margin:16px;border:1.5px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.07)}
 .gr-emoji{font-size:64px;margin-bottom:8px}
-.gr-score{font-size:56px;font-weight:900;line-height:1;margin-bottom:6px}
-.gr-msg{font-size:18px;font-weight:800;margin-bottom:4px}
+.gr-score{font-size:56px;font-weight:900;line-height:1;margin-bottom:6px;letter-spacing:-2px}
+.gr-msg{font-size:18px;font-weight:800;margin-bottom:4px;color:var(--ink)}
 .gr-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
 .gr-mode-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
 .gr-chip{display:inline-flex;align-items:center;gap:5px;
-  background:var(--bg);border:1px solid var(--border);
+  background:var(--bg);border:1.5px solid var(--border);
   border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--muted)}
-.gr-chip.active{background:#E8F4FD;border-color:var(--blue-m);color:var(--blue)}
+.gr-chip.active{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue-m)}
 
 .game-btn-row{display:flex;flex-direction:column;gap:8px;padding:0 16px 20px}
+
+/* ═══════════════════════════════════════
+   AI-ERA DESIGN OVERRIDES
+═══════════════════════════════════════ */
+:root{
+  --blue-m:#6366F1; --blue-d:#4F46E5; --blue-l:#EEF2FF;
+  --blue:#1E1B4B; --cyan:#22D3EE;
+}
+
+/* Gradient mesh hero */
+.hero{
+  background:linear-gradient(145deg,#080C18 0%,#0F1525 60%,#141d3a 100%)!important;
+  box-shadow:0 8px 48px rgba(8,12,24,.5);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(ellipse at 12% 60%,rgba(99,102,241,.28),transparent 55%),
+             radial-gradient(ellipse at 85% 15%,rgba(34,211,238,.18),transparent 50%);
+}
+.hero .e,.hero h2,.hero p{position:relative;z-index:1}
+
+/* Gradient text for hero heading */
+.hero h2{
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.85) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* Auth gradient */
+.auth-wrap{
+  background:linear-gradient(155deg,#060911 0%,#0D1220 45%,#0a1030 100%)!important;
+}
+
+/* Listen box */
+.listen-box{
+  background:linear-gradient(145deg,#080C18 0%,#0F1525 100%)!important;
+  position:relative;overflow:hidden;
+}
+.listen-box::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 80% 20%,rgba(99,102,241,.2),transparent 60%),
+             radial-gradient(ellipse at 20% 80%,rgba(34,211,238,.12),transparent 55%);
+}
+.listen-box>*{position:relative;z-index:1}
+
+/* Gradient buttons */
+.btn.red{
+  background:linear-gradient(135deg,#6366F1 0%,#4F46E5 100%)!important;
+  box-shadow:0 4px 22px rgba(99,102,241,.38)!important;
+}
+.btn.red:hover{
+  background:linear-gradient(135deg,#4F46E5 0%,#3730A3 100%)!important;
+  box-shadow:0 6px 30px rgba(99,102,241,.48)!important;transform:translateY(-1px);
+}
+.btn-hear{
+  background:linear-gradient(135deg,#6366F1,#4F46E5)!important;
+  box-shadow:0 4px 20px rgba(99,102,241,.32)!important;
+}
+.btn-hear:hover{background:linear-gradient(135deg,#4F46E5,#3730A3)!important;}
+.wc-play{background:linear-gradient(160deg,#6366F1,#4F46E5)!important;}
+.wc-left{background:linear-gradient(160deg,#080C18,#1E1B4B)!important;}
+
+/* Step indicators */
+.sdot.cur{background:#6366F1!important;}
+.step-name{background:linear-gradient(135deg,#6366F1,#4F46E5)!important;}
+
+/* Auth tabs active */
+.auth-tab.on{
+  background:linear-gradient(135deg,#6366F1,#4F46E5)!important;
+  border-color:#6366F1!important;color:#fff!important;
+}
+
+/* Lang chips */
+.lang-chip.on{background:#0F172A!important;border-color:#0F172A!important;}
+.lang-opt.on{border-color:#6366F1!important;background:#EEF2FF!important;}
+.lang-opt:hover{border-color:#6366F1!important;background:#EEF2FF!important;}
+
+/* Stat */
+.stat-val{color:#6366F1!important;}
+.rank-row.me{background:#EEF2FF!important;border-color:#6366F1!important;}
+.rank-pts{color:#6366F1!important;}
+.pts-chip{background:linear-gradient(135deg,#6366F1,#4F46E5)!important;color:#fff!important;}
+.stamp.earned{border-color:#6366F1!important;background:#EEF2FF!important;}
+
+/* Progress bars */
+.pfill{background:linear-gradient(90deg,#10B981,#34D399)!important;}
+.gpbar-fill{background:linear-gradient(90deg,#6366F1,#22D3EE)!important;}
+.wk-fill.w2{background:linear-gradient(90deg,#6366F1,#818CF8)!important;}
+
+/* drill/quiz hover */
+.drill-item:hover,.drill-item.playing{border-color:#6366F1!important;background:#EEF2FF!important;}
+.qopt:hover{border-color:#6366F1!important;background:#EEF2FF!important;}
+.gopt:hover:not(.off){border-color:#6366F1!important;background:#EEF2FF!important;}
+.word-card:hover{border-color:#6366F1!important;box-shadow:0 4px 18px rgba(99,102,241,.14)!important;}
+.word-card.playing{border-color:#6366F1!important;background:#EEF2FF!important;}
+.dc.open::before{background:linear-gradient(180deg,#6366F1,#4F46E5)!important;}
+
+/* profile/game hero */
+.prof-hero,.game-hero,.gq-card,.speak-situation{
+  background:linear-gradient(145deg,#080C18,#0F1525)!important;
+  position:relative;overflow:hidden;
+}
+.prof-hero::before,.game-hero::before,.gq-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 80% 20%,rgba(99,102,241,.25),transparent 60%),
+             radial-gradient(ellipse at 20% 80%,rgba(34,211,238,.15),transparent 55%);
+}
+.prof-hero>*,.game-hero>*,.gq-card>*{position:relative;z-index:1}
+
+/* goal box */
+.goal-box{
+  background:linear-gradient(135deg,#F8F9FF,#EEF2FF)!important;
+  border-color:#C7D2FE!important;
+}
+.goal-box .g-label{color:#6366F1!important;}
+.goal-box .g-level{background:#6366F1!important;}
+
+/* pattern box */
+.pattern-box{background:#F8F9FF!important;border-color:#C7D2FE!important;}
+.pat-label{color:#6366F1!important;}
+.pat-blank{border-bottom-color:#6366F1!important;color:#6366F1!important;}
+
+/* info box */
+.info{background:#EEF2FF!important;border-left-color:#6366F1!important;}
+
+/* input focus */
+.auth-form input:focus,.auth-form select:focus{
+  border-color:#6366F1!important;
+  box-shadow:0 0 0 3px rgba(99,102,241,.15)!important;
+}
+.auth-form .lang-pick button.on{background:#0F172A!important;border-color:#0F172A!important;}
+
+/* toggle */
+.toggle input:checked+.toggle-slider{background:#6366F1!important;}
+
+/* install banner */
+.install-banner{background:#080C18!important;}
+.install-banner .ib-btn{background:linear-gradient(135deg,#6366F1,#4F46E5)!important;}
+
+/* wave bars */
+.wbar{background:#6366F1!important;}
+
+/* gmode top border */
+.gmode-card.m1{border-top-color:#6366F1!important;}
+
+/* ── 이모티콘 제거 ── */
+.e{display:none!important}          /* 히어로 이모티콘 */
+.dice{display:none!important}       /* 데이카드 아이콘 */
+.al-icon{display:none!important}    /* 로그인 로고 이모티콘 */
+.dsb-logo-icon{display:none!important} /* 사이드바 로고 이모티콘 */
+.dsb-item-icon{display:none!important} /* 사이드바 메뉴 아이콘 */
+.dsb-avatar{display:none!important} /* 사이드바 유저 아이콘 */
+.gmc-icon{display:none!important}   /* 게임모드 아이콘 */
+.bubble-avatar{display:none!important} /* 대화 아바타 */
+.stamp{font-size:0!important}       /* 스탬프 이모티콘 숨김 */
+.stamp.earned::after{content:'✓';font-size:18px;color:#6366F1;font-weight:800}
+.rank-medal{display:none!important}
+.star-burst{display:none!important}
+
+/* notification btn */
+.notif-banner .nb-btn{background:linear-gradient(135deg,#6366F1,#4F46E5)!important;}
+
+/* back button hover */
+.back:hover{background:#EEF2FF!important;border-color:#6366F1!important;color:#6366F1!important;}
+
+/* dc hover */
+.dc:hover:not(.locked){border-color:#6366F1!important;box-shadow:0 8px 28px rgba(99,102,241,.14)!important;}
+.dc:hover:not(.locked) .dgoal{color:#6366F1!important;}
+
+/* ═══════════════════════════════════════
+   DESKTOP SIDEBAR (hidden on mobile)
+═══════════════════════════════════════ */
+#dsb{display:none}
+
+@media(min-width:768px){
+  body{max-width:100%;background:#060911}
+
+  #dsb{
+    display:flex;flex-direction:column;
+    width:240px;min-height:100vh;
+    background:#080C18;
+    border-right:1px solid rgba(255,255,255,.07);
+    position:fixed;left:0;top:0;bottom:0;z-index:400;
+    overflow-y:auto;
+  }
+  .dsb-logo{
+    padding:24px 20px 22px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .dsb-logo-icon{font-size:26px;margin-bottom:9px}
+  .dsb-logo-title{
+    font-size:15px;font-weight:800;letter-spacing:-.3px;
+    background:linear-gradient(90deg,#818CF8,#22D3EE);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .dsb-logo-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:3px;letter-spacing:.3px}
+
+  .dsb-nav{padding:10px 10px;flex:1}
+  .dsb-section-lbl{
+    font-size:9px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;
+    color:rgba(255,255,255,.2);padding:12px 14px 4px;
+  }
+  .dsb-item{
+    display:flex;align-items:center;gap:11px;
+    padding:10px 14px;border-radius:9px;
+    border:1px solid transparent;background:transparent;
+    color:rgba(255,255,255,.48);font-size:13px;font-weight:600;
+    cursor:pointer;text-align:left;width:100%;
+    transition:all .18s;margin-bottom:2px;
+    font-family:inherit;letter-spacing:-.1px;
+  }
+  .dsb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.88);}
+  .dsb-item.on{
+    background:rgba(99,102,241,.14);
+    border-color:rgba(99,102,241,.28);
+    color:#818CF8;
+  }
+  .dsb-item-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+
+  .dsb-divider{height:1px;background:rgba(255,255,255,.06);margin:8px 10px;}
+
+  .dsb-foot{padding:14px 10px 22px;border-top:1px solid rgba(255,255,255,.07)}
+  .dsb-user-card{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;border-radius:9px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    margin-bottom:9px;
+  }
+  .dsb-avatar{font-size:20px}
+  .dsb-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8)}
+  .dsb-ulang{font-size:10px;color:rgba(255,255,255,.32);margin-top:2px}
+  .dsb-lang-btn{
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    width:100%;padding:9px;border-radius:8px;
+    border:1px solid rgba(255,255,255,.1);
+    background:transparent;color:rgba(255,255,255,.38);
+    font-size:12px;font-weight:600;cursor:pointer;
+    font-family:inherit;transition:all .2s;
+  }
+  .dsb-lang-btn:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);}
+
+  /* Main content area */
+  #appMain{
+    margin-left:240px;
+    flex:1;display:flex;flex-direction:column;align-items:center;
+    background:var(--bg);min-height:100vh;
+  }
+  #appMain>.scr.on{width:100%;max-width:880px;}
+
+  /* Auth: full overlay, no sidebar */
+  #authScr{position:fixed;inset:0;z-index:500;overflow-y:auto;}
+
+  /* Auth split layout */
+  .auth-wrap{flex-direction:row!important;padding:0!important;align-items:stretch!important;min-height:100vh;}
+  .auth-logo{
+    display:flex!important;flex-direction:column!important;
+    justify-content:center!important;align-items:center!important;
+    width:44%!important;min-height:100vh;padding:60px 44px!important;
+    margin-bottom:0!important;text-align:center;position:relative;overflow:hidden;
+  }
+  .auth-logo::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse at 30% 35%,rgba(99,102,241,.35),transparent 58%),
+               radial-gradient(ellipse at 72% 72%,rgba(34,211,238,.22),transparent 55%);
+  }
+  .auth-logo>*{position:relative;z-index:1}
+  .auth-logo .al-icon{font-size:72px!important;margin-bottom:16px!important}
+  .auth-logo h1{font-size:28px!important;}
+  .auth-logo p{font-size:13px!important;max-width:280px;margin:0 auto}
+
+  .auth-card{
+    width:56%!important;border-radius:0!important;
+    min-height:100vh;display:flex!important;flex-direction:column!important;
+    justify-content:center;padding:60px 60px!important;
+    box-shadow:none!important;background:#fff!important;
+    overflow-y:auto;
+  }
+
+  /* Wider grids */
+  .day-grid{grid-template-columns:repeat(3,1fr)}
+  .game-mode-grid{grid-template-columns:repeat(4,1fr);padding:14px 28px 20px}
+  .stat-grid{grid-template-columns:repeat(4,1fr)}
+
+  /* More padding on desktop */
+  .home{padding:24px 32px}
+  .lbody{padding:18px 28px}
+  .lhdr{padding:14px 28px}
+  .sbar{padding:9px 28px}
+  .step-lbl{padding:12px 28px 0}
+  .prof{padding:24px 32px}
+  .gq-wrap{padding:16px 28px}
+  .game-btn-row{padding:0 28px 24px}
+  .visa-banner{margin:0 28px 12px}
+
+  #mainHdr{display:none!important}
+}
+
+@media(min-width:1100px){
+  #dsb{width:260px}
+  #appMain{margin-left:260px}
+}
 </style>
 </head>
 <body>
 
+<!-- ── DESKTOP SIDEBAR ── -->
+<div id="dsb">
+  <div class="dsb-logo">
+    <div class="dsb-logo-title">안전 한국어</div>
+    <div class="dsb-logo-sub">SAFETY KOREAN · INDUSTRIAL</div>
+  </div>
+  <nav class="dsb-nav">
+    <div class="dsb-section-lbl">메뉴 / Navigation</div>
+    <button class="dsb-item on" id="dsb-home" onclick="goHome()">홈 / Home</button>
+    <button class="dsb-item" id="dsb-profile" onclick="goProfile()">내 학습 / Progress</button>
+    <button class="dsb-item" id="dsb-game" onclick="goGame()">게임 / Game</button>
+  </nav>
+  <div class="dsb-foot">
+    <div class="dsb-user-card" id="dsb-user-card" style="display:none">
+      <div>
+        <div class="dsb-uname" id="dsb-uname-text">—</div>
+        <div class="dsb-ulang" id="dsb-ulang-text">—</div>
+      </div>
+    </div>
+    <button class="dsb-lang-btn" onclick="openLangModal()">언어 변경 / Language</button>
+  </div>
+</div>
+
 <div class="hdr" id="mainHdr" style="display:none">
   <div>
     <div class="hdr-sub">언어교육 기반 | Language-based Safety Korean</div>
-    <div class="hdr-title">🦺 안전 한국어 Safety Korean</div>
+    <div class="hdr-title">안전 한국어<br><span style="font-size:.85em;font-weight:700">Safety Korean</span></div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <button class="lang-btn" id="langBtn" onclick="openLangModal()">🌐</button>
-    <button class="lang-btn" id="profBtn" onclick="goProfile()" style="font-size:17px;padding:6px 9px">👤</button>
+    <button class="lang-btn" id="langBtn" onclick="openLangModal()" style="font-size:11px">언어</button>
+    <button class="lang-btn" id="profBtn" onclick="goProfile()" style="font-size:11px">MY</button>
   </div>
 </div>
 
@@ -547,21 +941,20 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <div id="authScr" class="scr on">
   <div class="auth-wrap">
     <div class="auth-logo">
-      <div class="al-icon">🦺</div>
-      <h1>안전 한국어 Safety Korean</h1>
+      <h1>안전 한국어<br><span style="font-size:.8em;font-weight:700;opacity:.9">Safety Korean</span></h1>
       <p>외국인 공장 근로자를 위한 산업안전 한국어<br>
       <small>Xorijiy zavod ishchilari uchun koreys tili xavfsizlik ta'limi</small></p>
     </div>
     <div class="auth-card">
       <!-- 언어 선택 -->
       <div style="margin-bottom:14px">
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🌐 언어 / Language</div>
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">언어 / Language</div>
         <div class="lang-chips" id="authLangChips"></div>
       </div>
       <div class="auth-tabs" style="grid-template-columns:1fr 1fr 1fr;display:grid;gap:5px">
-        <button class="auth-tab on" id="tab-login" data-i18n="tab_login" onclick="switchAuthTab('login')">🔐 로그인</button>
-        <button class="auth-tab" id="tab-ind" data-i18n="tab_ind" onclick="switchAuthTab('ind')">👤 개인 가입</button>
-        <button class="auth-tab" id="tab-co" data-i18n="tab_co" onclick="switchAuthTab('co')">🏭 업체 직원</button>
+        <button class="auth-tab on" id="tab-login" data-i18n="tab_login" onclick="switchAuthTab('login')">로그인</button>
+        <button class="auth-tab" id="tab-ind" data-i18n="tab_ind" onclick="switchAuthTab('ind')">개인&#10;가입</button>
+        <button class="auth-tab" id="tab-co" data-i18n="tab_co" onclick="switchAuthTab('co')">업체&#10;직원</button>
       </div>
 
       <!-- 로그인 -->
@@ -576,7 +969,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         <div id="login-err" style="display:none;margin-top:8px;padding:8px 12px;
           background:#fff0f0;border-radius:8px;font-size:12px;color:var(--red-d)"></div>
         <div style="margin-top:18px">
-          <button class="btn red" id="btn-login" data-i18n="btn_login" onclick="doLogin()">🔐 로그인</button>
+          <button class="btn red" id="btn-login" data-i18n="btn_login" onclick="doLogin()">로그인</button>
         </div>
         <div style="text-align:center;margin-top:10px">
           <button onclick="openRecovery()" style="background:none;border:none;color:var(--blue-m);
@@ -586,11 +979,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         </div>
         <div style="background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:11px;line-height:1.9;color:var(--muted)">
           <strong style="color:var(--text)">🧪 테스트 계정</strong><br>
-          sardor01 / safe1234 — Sardor (개인, UZ)<br>
-          abdulla / safe1234 — Abdulla (개인, UZ)<br>
-          rustam01 / abc1234 — Rustam (SAFE01, UZ)<br>
-          bobur02 / abc1234 — Bobur (SAFE01, UZ)<br>
-          dilnoza / safe5678 — Dilnoza (SAFE01, UZ)
+          sardor01 / safe1234 — Sardor 🇺🇿 우즈베크<br>
+          nguyen01 / safe1234 — Nguyen 🇻🇳 베트남<br>
+          ram01 / safe1234 — Ram 🇳🇵 네팔<br>
+          ivan01 / safe1234 — Ivan 🇷🇺 러시아<br>
+          maria01 / safe1234 — Maria 🇵🇭 영어권
         </div>
       </div>
 
@@ -699,7 +1092,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       </div>
 
       <div style="margin-top:18px">
-        <button class="btn red" id="btn-start" data-i18n="btn_start" onclick="doSignup()">🚀 시작하기</button>
+        <button class="btn red" id="btn-start" data-i18n="btn_start" onclick="doSignup()">시작하기</button>
       </div>
       <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted)" data-i18n="already_member">
         이미 가입했어요? → 로그인 탭을 눌러주세요
@@ -708,6 +1101,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   </div>
 </div>
 
+<div id="appMain">
 <!-- HOME -->
 <div id="homeScr" class="scr">
   <div class="home">
@@ -721,7 +1115,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="day-grid" id="dayGrid"></div>
 
     <div class="prog-card">
-      <h3 data-i18n="lbl_progress">📊 나의 진행률</h3>
+      <h3 data-i18n="lbl_progress">나의 진행률</h3>
       <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
       <div class="ptxt" id="pt">0 / 7</div>
     </div>
@@ -729,7 +1123,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="slabel">🛠️ 실용 한국어 (언제든 학습)</div>
     <div class="day-grid" id="practicalGrid" style="margin-bottom:14px"></div>
 
-    <div class="slabel">🎮 단어 게임</div>
+    <div class="slabel">단어 게임</div>
     <div style="background:linear-gradient(135deg,#1D3557,#457B9D);border-radius:var(--r);
       padding:16px;color:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;
       margin-bottom:14px;transition:opacity .2s" onclick="goGame()" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
@@ -763,7 +1157,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   <div class="lhdr">
     <button class="back" onclick="goHome()">←</button>
     <div class="lhdr-info">
-      <h2 id="gameScrTitle">🎮 단어 게임</h2>
+      <h2 id="gameScrTitle">단어 게임</h2>
       <p id="gameScrSub">단어를 재미있게 연습해봐요</p>
     </div>
   </div>
@@ -804,7 +1198,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div id="rec-result" style="margin-bottom:10px"></div>
     <button onclick="doRecovery()"
       style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px">
-      🔍 계정 찾기
+      계정 찾기
     </button>
     <button onclick="closeRecovery()"
       style="width:100%;padding:12px;background:var(--border);color:var(--text);border:none;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer">
@@ -816,7 +1210,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <!-- 언어 선택 모달 -->
 <div class="lang-modal-bg" id="langModalBg" onclick="closeLangModal(event)">
   <div class="lang-modal">
-    <h3>🌐 언어 선택 / Select Language</h3>
+    <h3>언어 선택 / Select Language</h3>
     <p>화면 언어를 선택하세요 · Choose your display language</p>
     <div class="lang-grid" id="langGrid"></div>
     <button onclick="closeLangModal()" style="margin-top:14px;width:100%;padding:12px;
@@ -828,7 +1222,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <script>
 // ══════════════════════════════════════════════════
 // CURRICULUM — 언어교육 기반 설계
-// 구조: 목표 → 듣기 → 뜯어봐요 → 패턴드릴 → 말해봐요 → 퀴즈
+// 구조: 목표 → 듣기 → 들어보세요 → 패턴드릴 → 말해봐요 → 퀴즈
 // ══════════════════════════════════════════════════
 const CUR = [
 {
@@ -840,7 +1234,12 @@ const CUR = [
   goal:{
     ko:'"안전이 먼저예요." "도와주세요!" 라고 말할 수 있어요',
     uz:'"안전이 먼저예요." "도와주세요!" deya olasiz',
-    can:['저는 근로자예요.', '안전이 먼저예요.', '도와주세요!', '모르겠어요.']
+    can:[
+      {ko:'저는 근로자예요.',  uz:'Men ishchiman.'},
+      {ko:'안전이 먼저예요.', uz:'Avvalo xavfsizlik.'},
+      {ko:'도와주세요!',      uz:'Menga yordam bering!'},
+      {ko:'모르겠어요.',      uz:'Bilmayman.'},
+    ]
   },
   // ── 들어봐요 (Listening — dialogue bubbles)
   listen:{
@@ -853,7 +1252,7 @@ const CUR = [
       {who:'👔', name:'관리자', ko:'네, 괜찮아요. 같이 해요!', uz:'Ha, yaxshi. Birga qilamiz!', side:'left'},
     ]
   },
-  // ── 뜯어봐요 (Word breakdown)
+  // ── 들어보세요 (Word breakdown)
   words:[
     {ko:'안전', syl:'안·전', rom:'an-jeon', uz:'xavfsizlik (safety)', ex:'안전이 먼저예요.', e:'🛡️'},
     {ko:'위험', syl:'위·험', rom:'wi-heom', uz:'xavfli / xavf (danger)', ex:'여기는 위험해요.', e:'⚠️'},
@@ -871,7 +1270,7 @@ const CUR = [
       {blank:'안전', full:'안전이 먼저예요.', uz:'Xavfsizlik birinchi.'},
       {blank:'저', full:'저는 근로자예요.', uz:'Men ishchiman.'},
       {blank:'여기', full:'여기는 공장이에요.', uz:'Bu yerda zavod.'},
-      {blank:'이것', full:'이것은 위험이에요.', uz:'Bu xavf.'},
+      {blank:'위험', full:'위험해요!', uz:'Xavfli!'},
     ]
   },
   // ── 말해봐요 (Speaking role-play)
@@ -1565,7 +1964,7 @@ const CUR = [
     {ko:'숙달', syl:'숙·달', rom:'suk-dal', uz:'o\'zlashtirish / puxtalash (mastery)', ex:'한국어를 숙달해요.', e:'💪'},
     {ko:'현장', syl:'현·장', rom:'hyeon-jang', uz:'ish joyi / maydon (workplace/site)', ex:'현장에서 써봐요.', e:'🏭'},
     {ko:'복습', syl:'복·습', rom:'bok-seup', uz:'takrorlash (review)', ex:'오늘은 복습이에요.', e:'📖'},
-    {ko:'자신 있어요', syl:'자·신·있·어·요', rom:'ja-sin i-sseo-yo', uz:'ishonch bor (I am confident)', ex:'이제 자신 있어요!', e:'😊'},
+    {ko:'자신 있어요', syl:'자·신·있·어·요', rom:'ja-sin i-sseo-yo', uz:'ishonch bor (I am confident)', ex:'이제 자신 있어요!', e:':)'},
   ],
   pattern:{
     labelKo:'문형 총복습: 2주일 핵심 5가지',
@@ -1583,7 +1982,7 @@ const CUR = [
   speak:[
     {situation:"🔥 화재가 났어요. 동료를 대피시켜요!", prompt:"배운 표현으로 말해봐요.", phrase:'불이 났어요! 빨리 계단으로 나가세요! 엘리베이터 타면 안 돼요!', uz:"Yong'in! Tez zinapoyadan chiqing! Liftga chiqish mumkin emas!"},
     {situation:"🤕 동료가 다쳤어요. 응급처치를 해요.", prompt:"순서대로 말해봐요.", phrase:'움직이지 마세요. 구급상자 가져오세요. 119에 전화해요!', uz:"Qimirlamang. Doriyo qutisini olib keling. 119 ga qo'ng'iroq!"},
-    {situation:"😊 2주일 마무리! 스스로 응원해요.", prompt:"자신감 있게 말해봐요.", phrase:'2주일 동안 열심히 했어요! 이제 자신 있어요!', uz:"2 hafta davomida qattiq ishladim! Endi ishonchim bor!"},
+    {situation:":) 2주일 마무리! 스스로 응원해요.", prompt:"자신감 있게 말해봐요.", phrase:'2주일 동안 열심히 했어요! 이제 자신 있어요!', uz:"2 hafta davomida qattiq ishladim! Endi ishonchim bor!"},
   ],
   quiz:[
     {tag:'종합', q:'화재 시 절대 타면 안 되는 것은?', qu:"Yong'inda mutlaqo chiqmaslik kerak bo'lgan narsa?", opts:['비상구','계단','엘리베이터 (lift)','화재 신고'], ans:2},
@@ -2156,7 +2555,7 @@ const PRACTICAL_CUR = [
 // ════════════════════════
 // STATE
 // ════════════════════════
-const STEPS = ['목표','듣기','뜯어봐요','패턴드릴','말해봐요','확인','완료'];
+const STEPS = ['목표','듣기','들어보세요','패턴드릴','말해봐요','확인','완료'];
 const STEP_HINTS_KO = ['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'];
 const STEP_HINTS_UZ = ['Bugungi maqsad',"Suhbatni eshiting","So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting","Test",'Tugadi!'];
 
@@ -2184,8 +2583,8 @@ const LANG_META = {
 
 const STRINGS = {
   ko:{
-    tab_login:'🔐 로그인', tab_ind:'👤 개인 가입', tab_co:'🏭 업체 직원',
-    lbl_id:'아이디', lbl_pw:'비밀번호', btn_login:'🔐 로그인', btn_start:'🚀 시작하기',
+    tab_login:'로그인', tab_ind:'개인\n가입', tab_co:'업체\n직원',
+    lbl_id:'아이디', lbl_pw:'비밀번호', btn_login:'로그인', btn_start:'시작하기',
     lbl_name:'이름', lbl_phone:'핸드폰 번호', lbl_notif:'알람 시간',
     lbl_lang:'언어 선택', lbl_co_code:'업체 코드', lbl_emp:'직원 번호 (선택)',
     hint_phone:'📲 카카오톡 또는 문자로 공부 알림을 보내드려요',
@@ -2197,14 +2596,14 @@ const STRINGS = {
     hero_title:'한국어로 안전하게 일해요',
     hero_sub:'매일 5분 · 오늘 배운 말을 내일 현장에서 써요',
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
-    lbl_progress:'📊 나의 진행률',
+    lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
-    steps:['목표','듣기','뜯어봐요','패턴드릴','말해봐요','퀴즈','완료'],
+    steps:['목표','듣기','들어보세요','패턴드릴','말해봐요','퀴즈','완료'],
     step_hints:['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'],
   },
   uz:{
-    tab_login:'🔐 Kirish', tab_ind:'👤 Shaxsiy', tab_co:'🏭 Korxona',
-    lbl_id:'Login', lbl_pw:'Parol', btn_login:'🔐 Kirish', btn_start:'🚀 Boshlash',
+    tab_login:'Kirish', tab_ind:'Shaxsiy', tab_co:'Korxona',
+    lbl_id:'Login', lbl_pw:'Parol', btn_login:'Kirish', btn_start:'🚀 Boshlash',
     lbl_name:'Ism', lbl_phone:'Telefon raqami', lbl_notif:'Eslatma vaqti',
     lbl_lang:"Tilni tanlang", lbl_co_code:'Korxona kodi', lbl_emp:"Xodim raqami (ixtiyoriy)",
     hint_phone:"📲 Kakaotalk yoki SMS orqali o'quv eslatmasi yuboriladi",
@@ -2216,14 +2615,14 @@ const STRINGS = {
     hero_title:"Koreys tilida xavfsiz ishlang",
     hero_sub:"Har kuni 5 daqiqa · O'rgangan gapni ertaga ish joyida ishlating",
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
-    lbl_progress:'📊 Mening progressim',
+    lbl_progress:'Mening progressim',
     lbl_profile:"Mening o'quv holatim",
     steps:['Maqsad','Tinglang','Tahlil','Mashq','Gapiring','Test','Tugadi'],
     step_hints:['Bugungi maqsad','Suhbatni eshiting',"So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting",'Test','Tugadi!'],
   },
   vi:{
-    tab_login:'🔐 Đăng nhập', tab_ind:'👤 Cá nhân', tab_co:'🏭 Công ty',
-    lbl_id:'Tên đăng nhập', lbl_pw:'Mật khẩu', btn_login:'🔐 Đăng nhập', btn_start:'🚀 Bắt đầu',
+    tab_login:'Đăng nhập', tab_ind:'Cá nhân', tab_co:'Công ty',
+    lbl_id:'Tên đăng nhập', lbl_pw:'Mật khẩu', btn_login:'Đăng nhập', btn_start:'🚀 Bắt đầu',
     lbl_name:'Họ và tên', lbl_phone:'Số điện thoại', lbl_notif:'Giờ nhắc nhở',
     lbl_lang:'Chọn ngôn ngữ', lbl_co_code:'Mã công ty', lbl_emp:'Mã nhân viên (tùy chọn)',
     hint_phone:'📲 Nhắc nhở học tập sẽ được gửi qua Kakao hoặc SMS',
@@ -2235,14 +2634,14 @@ const STRINGS = {
     hero_title:'Làm việc an toàn bằng tiếng Hàn',
     hero_sub:'Mỗi ngày 5 phút · Dùng từ đã học ngay tại nơi làm việc ngày mai',
     lbl_curriculum:'📅 Chương trình MVP 3 tuần (Ngày 1–21)',
-    lbl_progress:'📊 Tiến độ của tôi',
+    lbl_progress:'Tiến độ của tôi',
     lbl_profile:'Tình trạng học tập của tôi',
     steps:['Mục tiêu','Nghe','Phân tích','Luyện tập','Nói','Kiểm tra','Xong'],
     step_hints:['Mục tiêu hôm nay','Nghe hội thoại','Phân tích từ vựng','Luyện mẫu câu','Tự nói','Kiểm tra','Xong!'],
   },
   ne:{
-    tab_login:'🔐 लगइन', tab_ind:'👤 व्यक्तिगत', tab_co:'🏭 कम्पनी',
-    lbl_id:'प्रयोगकर्ता नाम', lbl_pw:'पासवर्ड', btn_login:'🔐 लगइन', btn_start:'🚀 सुरु गर्नुस्',
+    tab_login:'लगइन', tab_ind:'व्यक्तिगत', tab_co:'कम्पनी',
+    lbl_id:'प्रयोगकर्ता नाम', lbl_pw:'पासवर्ड', btn_login:'लगइन', btn_start:'🚀 सुरु गर्नुस्',
     lbl_name:'नाम', lbl_phone:'फोन नम्बर', lbl_notif:'सूचना समय',
     lbl_lang:'भाषा छान्नुस्', lbl_co_code:'कम्पनी कोड', lbl_emp:'कर्मचारी नम्बर (ऐच्छिक)',
     hint_phone:'📲 काकाओ वा SMS मार्फत अध्ययन सम्झना पठाइन्छ',
@@ -2254,14 +2653,14 @@ const STRINGS = {
     hero_title:'कोरियन भाषामा सुरक्षित काम गर्नुस्',
     hero_sub:'प्रतिदिन ५ मिनेट · आज सिकेको कुरा भोलि कामको ठाउँमा प्रयोग गर्नुस्',
     lbl_curriculum:'📅 MVP ३ हप्ताको पाठ्यक्रम (दिन १–२१)',
-    lbl_progress:'📊 मेरो प्रगति',
+    lbl_progress:'मेरो प्रगति',
     lbl_profile:'मेरो अध्ययन अवस्था',
     steps:['लक्ष्य','सुन्नुस्','विश्लेषण','अभ्यास','बोल्नुस्','परीक्षा','सकियो'],
     step_hints:['आजको लक्ष्य','कुराकानी सुन्नुस्','शब्द विश्लेषण','ढाँचा अभ्यास','आफैं बोल्नुस्','परीक्षा','सकियो!'],
   },
   kk:{
-    tab_login:'🔐 Кіру', tab_ind:'👤 Жеке', tab_co:'🏭 Кәсіпорын',
-    lbl_id:'Пайдаланушы аты', lbl_pw:'Құпия сөз', btn_login:'🔐 Кіру', btn_start:'🚀 Бастау',
+    tab_login:'Кіру', tab_ind:'Жеке', tab_co:'Кәсіпорын',
+    lbl_id:'Пайдаланушы аты', lbl_pw:'Құпия сөз', btn_login:'Кіру', btn_start:'🚀 Бастау',
     lbl_name:'Аты-жөні', lbl_phone:'Телефон нөмірі', lbl_notif:'Хабарлама уақыты',
     lbl_lang:'Тілді таңдаңыз', lbl_co_code:'Кәсіпорын коды', lbl_emp:'Қызметкер нөмірі (міндетті емес)',
     hint_phone:'📲 Kakao немесе SMS арқылы оқу еске салуы жіберіледі',
@@ -2273,14 +2672,14 @@ const STRINGS = {
     hero_title:'Корей тілінде қауіпсіз жұмыс жасаңыз',
     hero_sub:'Күн сайын 5 минут · Бүгін үйренгенді ертең жұмыста қолданыңыз',
     lbl_curriculum:'📅 MVP 3 аптаның оқу бағдарламасы (1–21-күн)',
-    lbl_progress:'📊 Менің үлгерімім',
+    lbl_progress:'Менің үлгерімім',
     lbl_profile:'Оқу жағдайым',
     steps:['Мақсат','Тыңдаңыз','Талдау','Жаттығу','Сөйлеңіз','Тест','Аяқталды'],
     step_hints:['Бүгінгі мақсат','Сұхбатты тыңдаңыз','Сөздерді талдаңыз','Үлгіні жаттықтырыңыз','Өзіңіз айтыңыз','Тест','Аяқталды!'],
   },
   tet:{
-    tab_login:'🔐 Tama', tab_ind:'👤 Individuál', tab_co:'🏭 Kompañia',
-    lbl_id:'Naran utilizadór', lbl_pw:'Liafuan-passe', btn_login:'🔐 Tama', btn_start:'🚀 Hahú',
+    tab_login:'Tama', tab_ind:'Individuál', tab_co:'Kompañia',
+    lbl_id:'Naran utilizadór', lbl_pw:'Liafuan-passe', btn_login:'Tama', btn_start:'🚀 Hahú',
     lbl_name:'Naran', lbl_phone:'Númeru telefone', lbl_notif:'Tempu notifikasaun',
     lbl_lang:'Hili lian', lbl_co_code:'Kódigu kompañia', lbl_emp:'Númeru empregadu (opsioanl)',
     hint_phone:'📲 Lembransa estudu sei haruka liu Kakao ka SMS',
@@ -2292,14 +2691,14 @@ const STRINGS = {
     hero_title:"Servisu ho seguransa iha lian Korea",
     hero_sub:"Minutu 5 loroloron · Uza liafuan ne'ebé aprende ohin iha fatin servisu aban",
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
-    lbl_progress:"📊 Ha'u-nia progresu",
+    lbl_progress:"Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
     steps:['Meta','Rona','Analiza','Prátika',"Ko'alia",'Teste','Remata'],
     step_hints:['Meta ohin nian','Rona diálogu','Analiza liafuan','Prátika padrãun',"Ko'alia rasik",'Teste','Remata!'],
   },
   ru:{
-    tab_login:'🔐 Войти', tab_ind:'👤 Личный', tab_co:'🏭 Предприятие',
-    lbl_id:'Имя пользователя', lbl_pw:'Пароль', btn_login:'🔐 Войти', btn_start:'🚀 Начать',
+    tab_login:'Войти', tab_ind:'Личный', tab_co:'Предприятие',
+    lbl_id:'Имя пользователя', lbl_pw:'Пароль', btn_login:'Войти', btn_start:'🚀 Начать',
     lbl_name:'Имя', lbl_phone:'Номер телефона', lbl_notif:'Время уведомления',
     lbl_lang:'Выберите язык', lbl_co_code:'Код предприятия', lbl_emp:'Номер сотрудника (необязательно)',
     hint_phone:'📲 Напоминания об учёбе придут через Kakao или SMS',
@@ -2311,14 +2710,14 @@ const STRINGS = {
     hero_title:'Работайте безопасно на корейском языке',
     hero_sub:'Каждый день 5 минут · Используйте выученные слова завтра на работе',
     lbl_curriculum:'📅 Учебная программа MVP 3 недели (День 1–21)',
-    lbl_progress:'📊 Мой прогресс',
+    lbl_progress:'Мой прогресс',
     lbl_profile:'Мой статус обучения',
     steps:['Цель','Слушать','Разбор','Практика','Говорить','Тест','Готово'],
     step_hints:['Цель сегодня','Слушайте диалог','Разбор слов','Практикуйте шаблон','Говорите сами','Тест','Готово!'],
   },
   en:{
-    tab_login:'🔐 Login', tab_ind:'👤 Individual', tab_co:'🏭 Company',
-    lbl_id:'Username', lbl_pw:'Password', btn_login:'🔐 Login', btn_start:'🚀 Start',
+    tab_login:'Login', tab_ind:'Individual', tab_co:'Company',
+    lbl_id:'Username', lbl_pw:'Password', btn_login:'Login', btn_start:'🚀 Start',
     lbl_name:'Full name', lbl_phone:'Phone number', lbl_notif:'Notification time',
     lbl_lang:'Select language', lbl_co_code:'Company code', lbl_emp:'Employee number (optional)',
     hint_phone:'📲 Study reminders will be sent via Kakao or SMS',
@@ -2330,7 +2729,7 @@ const STRINGS = {
     hero_title:'Work safely in Korean',
     hero_sub:'Every day 5 minutes · Use today\'s words at work tomorrow',
     lbl_curriculum:'📅 MVP 3-week curriculum (Day 1–21)',
-    lbl_progress:'📊 My progress',
+    lbl_progress:'My progress',
     lbl_profile:'My learning status',
     steps:['Goal','Listen','Break down','Pattern drill','Speak','Quiz','Done'],
     step_hints:["Today's goal",'Listen to dialogue','Break down words','Practice pattern','Speak yourself','Quiz','Done!'],
@@ -2354,7 +2753,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
     const val = t(key);
-    if(val) el.textContent = val;
+    if(val){ if(el.classList.contains('auth-tab')) el.innerText=val; else el.textContent=val; }
   });
   // 스텝 이름/힌트도 갱신
   if(ST.dayIdx!==null) renderLesson();
@@ -2404,6 +2803,9 @@ function toggleLang(){
 }
 
 // ════════════════════════
+// onclick 속성 안에 JSON을 넣을 때 " → &quot; 변환 (HTML 속성 깨짐 방지)
+function jq(v){ return JSON.stringify(v).replace(/"/g,'&quot;'); }
+
 // SPEECH — 상황별 TTS
 // ════════════════════════
 const TTS_CTX = {
@@ -2414,14 +2816,99 @@ const TTS_CTX = {
   default:  {rate:0.82, pitch:1.00},
 };
 
-function say(text, cb, ctx='default'){
-  if(!window.speechSynthesis){cb&&cb();return}
-  window.speechSynthesis.cancel();
+// ── TTS 초기화: 첫 클릭 시 브라우저 음성 잠금 해제
+let _ttsReady = false;
+function _initTTS(){
+  if(_ttsReady || !window.speechSynthesis) return;
+  _ttsReady = true;
+  // 빈 발화로 Chrome 잠금 해제
+  const silent = new SpeechSynthesisUtterance(' ');
+  silent.volume = 0;
+  window.speechSynthesis.speak(silent);
+}
+document.addEventListener('click', _initTTS, {once:true});
+
+// ── 보이스 설정 ──────────────────────────────────────
+// 관리자(manager): Reed → Rocko → Grandpa → 남성 ko-KR
+// 근로자(worker):  Eddy → Grandpa → Reed  → 남성 ko-KR
+const VOICE_PREF = {
+  manager: ['Reed','Rocko','Grandpa','Eddy'],
+  worker:  ['Eddy','Grandpa','Rocko','Reed'],
+  default: ['Eddy','Reed','Rocko','Grandpa'],
+};
+const _voiceCache = {};
+
+function getVoice(role='default'){
+  if(_voiceCache[role]) return _voiceCache[role];
+  const voices = window.speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  for(const name of (VOICE_PREF[role]||VOICE_PREF.default)){
+    const v = voices.find(v=>v.name===name || v.name.startsWith(name+' '));
+    if(v){ _voiceCache[role]=v; return v; }
+  }
+  // fallback: 아무 ko-KR
+  const fb = voices.find(v=>v.lang==='ko-KR')||voices.find(v=>v.lang.startsWith('ko'))||null;
+  _voiceCache[role]=fb; return fb;
+}
+if(window.speechSynthesis){
+  window.speechSynthesis.onvoiceschanged = ()=>{
+    Object.keys(_voiceCache).forEach(k=>delete _voiceCache[k]);
+    getVoice('manager'); getVoice('worker');
+  };
+  getVoice('manager'); getVoice('worker');
+}
+
+// role: 'manager' | 'worker' | 'default'
+function say(text, cb, ctx='default', role='default'){
+  const ss = window.speechSynthesis;
+  if(!ss){ cb&&cb(); return; }
   const {rate,pitch} = TTS_CTX[ctx]||TTS_CTX.default;
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang='ko-KR'; u.rate=rate; u.pitch=pitch;
-  if(cb) u.onend=cb;
-  setTimeout(()=>window.speechSynthesis.speak(u), 60);
+  function _go(){
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang  = 'ko-KR';
+    u.rate  = rate;
+    u.pitch = pitch;
+    const v = getVoice(role);
+    if(v) u.voice = v;
+    u.onend   = ()=>{ cb&&cb(); };
+    u.onerror = (e)=>{ console.warn('TTS err:', e.error); cb&&cb(); };
+    ss.speak(u);
+  }
+  if(ss.speaking||ss.pending){ ss.cancel(); setTimeout(_go,120); } else { _go(); }
+}
+
+// 버튼 ID 기준으로 재생 상태 표시 (role 파라미터 추가)
+function sayBtn(btnId, text, ctx='dialogue', role='default'){
+  const btn=document.getElementById(btnId);
+  if(btn){ btn.innerHTML='⏸'; btn.disabled=true; }
+  say(text, ()=>{
+    if(btn){ btn.innerHTML='🔊'; btn.disabled=false; }
+  }, ctx, role);
+}
+
+// 배열 순차 재생 (bubbles: [{ko, delay}])
+// roles: 버블별 role 배열 (없으면 전부 default)
+function saySeq(texts, ctx='dialogue', btnId, roles){
+  if(!texts||!texts.length) return;
+  const btn=document.getElementById(btnId);
+  if(btn){
+    btn.textContent='⏹ 정지';
+    btn.onclick=()=>{ window.speechSynthesis.cancel();
+      if(btn){ btn.textContent='🔊 전체 듣기'; btn.onclick=()=>saySeq(texts,ctx,btnId,roles); }
+    };
+  }
+  let i=0;
+  function next(){
+    if(i>=texts.length){
+      if(btn){ btn.textContent='🔊 전체 듣기'; btn.onclick=()=>saySeq(texts,ctx,btnId,roles); }
+      return;
+    }
+    const t=texts[i];
+    const role=(roles&&roles[i])||'default';
+    i++;
+    say(t, ()=>setTimeout(next,400), ctx, role);
+  }
+  next();
 }
 
 // ════════════════════════
@@ -2489,8 +2976,8 @@ function showMicResult(sim, spoken, phrase, attempt){
   const pct=Math.round(sim*100);
   const pass=pct>=80;
   const cls=pct>=80?'pass':pct>=55?'warn':'fail';
-  const emoji=pct>=80?'🎉':pct>=55?'😊':'🔄';
-  const msg=pct>=80?'완벽해요! 통과! 🎉':pct>=55?'거의 다 왔어요! 다시 해봐요':'다시 한번 천천히 해봐요';
+  const emoji=pct>=80?'우수':pct>=55?'양호':'다시';
+  const msg=pct>=80?'완벽해요! 통과! +1':pct>=55?'거의 다 왔어요! 다시 해봐요':'다시 한번 천천히 해봐요';
   const area=document.getElementById('mic-result-area');
   const skipBtn=document.getElementById('mic-skip-btn');
   const nextBtn=document.getElementById('mic-next-btn');
@@ -2552,8 +3039,8 @@ function renderHome(){
       <div class="dnum">Day ${d.day} · ${d.level}</div>
       <div class="dice">${d.icon}</div>
       <div class="dtitle">${ST.lang==='ko'?d.titleKo:d.titleUz}</div>
-      <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ','🎯 '):d.subUz.replace('Bugungi maqsad: ','🎯 ')}</div>
-      <div class="dstat">${done?'✅':locked?'🔒':'▶️'}</div>
+      <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ',''):d.subUz.replace('Bugungi maqsad: ','')}</div>
+      <div class="dstat">${done?'✓':locked?'—':'›'}</div>
     `;
     if(!locked) el.onclick=()=>startLesson(i);
     g.appendChild(el);
@@ -2574,8 +3061,8 @@ function renderHome(){
         <div class="dnum" style="color:var(--orange)">실용 ${i+1} · ${d.level}</div>
         <div class="dice">${d.icon}</div>
         <div class="dtitle">${ST.lang==='ko'?d.titleKo:d.titleUz}</div>
-        <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ','🎯 '):d.subUz.replace('Bugungi maqsad: ','🎯 ')}</div>
-        <div class="dstat">▶️</div>
+        <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ',''):d.subUz.replace('Bugungi maqsad: ','')}</div>
+        <div class="dstat">›</div>
       `;
       el.onclick=()=>startPracticalLesson(i);
       pg.appendChild(el);
@@ -2615,6 +3102,7 @@ function goHome(){
   document.getElementById('profileScr').classList.remove('on');
   document.getElementById('gameScr').classList.remove('on');
   document.getElementById('homeScr').classList.add('on');
+  setSidebarActive('home');
   renderHome();
 }
 function next(){ST.step++;renderLesson();}
@@ -2628,7 +3116,7 @@ function renderLesson(){
   // step bar
   document.getElementById('sbar').innerHTML=STEPS.map((_,i)=>
     `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
-  document.getElementById('stepName').textContent=(uz?['목표','듣기','뜯어봐요','패턴','말하기','확인','완료']:STEPS)[s]||STEPS[s];
+  document.getElementById('stepName').textContent=(uz?['목표','듣기','들어보세요','패턴','말하기','확인','완료']:STEPS)[s]||STEPS[s];
   document.getElementById('stepHint').textContent=uz?STEP_HINTS_UZ[s]:STEP_HINTS_KO[s];
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
@@ -2646,7 +3134,7 @@ function rGoal(d,el,uz){
   const g=d.goal;
   el.innerHTML=`
     <div class="goal-box">
-      <div class="g-label">🎯 오늘 이 말을 할 수 있어요! / Bugun buni ayta olasiz!</div>
+      <div class="g-label">오늘 이 말을 할 수 있어요 / Bugun buni ayta olasiz</div>
       <div class="g-ko">"${uz?g.uz:g.ko}"</div>
       <div class="g-uz">${uz?g.ko:g.uz}</div>
       <div class="g-level">🏷 ${d.level} 수준</div>
@@ -2656,46 +3144,68 @@ function rGoal(d,el,uz){
         📐 NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
     </div>
     <div class="info" style="margin-bottom:12px">
-      📌 오늘 배우면 말할 수 있는 표현들 / Bugun o'rganib, ayta oladigan gaplar:
-      ${g.can.map(c=>`<br>▸ <strong>${c}</strong>`).join('')}
+      오늘 배우면 말할 수 있는 표현들 / Bugun o'rganib, ayta oladigan gaplar:
+      ${g.can.map((c,ci)=>{
+        const ko = typeof c==='object' ? c.ko : c;
+        const tr = typeof c==='object' ? c.uz : '';   // 자국어 번역은 항상 uz
+        return `<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:6px 8px;
+          background:var(--bg);border-radius:10px">
+          <button id="spk-g${ci}" onclick="sayBtn('spk-g${ci}',${jq(ko)})"
+            style="background:none;border:none;font-size:20px;cursor:pointer;padding:0;
+            flex-shrink:0;line-height:1" title="듣기">🔊</button>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800;font-size:15px;color:var(--text)">${ko}</div>
+            ${tr?`<div style="font-size:12px;color:var(--muted);margin-top:1px;font-style:italic">${tr}</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
     </div>
-    <button class="btn red" onclick="next()">📢 대화 듣기 → / Suhbatni eshiting</button>
+    <button class="btn red" onclick="next()">대화 듣기 → / Suhbatni eshiting</button>
   `;
 }
 
 // ── Step 1: 듣기 (Listen) ──
 function rListen(d,el,uz){
   const l=d.listen;
-  const allText = l.bubbles.map(b=>b.ko).join(' ');
+  const allTexts = l.bubbles.map(b=>b.ko);
   el.innerHTML=`
     <div class="listen-box">
       <div class="scene">${l.ctx.split(' ')[0]}</div>
       <div class="ctx-tag">${l.ctx}</div>
-      ${l.bubbles.map(b=>`
+      ${l.bubbles.map((b,bi)=>{
+        const role = b.side==='left' ? 'manager' : 'worker';
+        return `
         <div class="bubble-row ${b.side}">
           <div class="bubble-avatar">${b.who}</div>
           <div class="bubble-body">
             <div class="bubble-name">${b.name}</div>
-            <div class="bubble-text">${b.ko}</div>
-            <div class="bubble-uz">${b.uz}</div>
+            <div style="display:flex;align-items:flex-start;gap:6px">
+              <button id="spk-b${bi}" onclick="sayBtn('spk-b${bi}',${jq(b.ko)},'dialogue','${role}')"
+                style="background:rgba(255,255,255,.9);border:none;font-size:18px;cursor:pointer;
+                padding:0;flex-shrink:0;line-height:1;margin-top:2px" title="이 문장 듣기">🔊</button>
+              <div>
+                <div class="bubble-text" style="margin-bottom:3px">${b.ko}</div>
+                <div class="bubble-uz">${b.uz}</div>
+              </div>
+            </div>
           </div>
-        </div>
-      `).join('')}
-      <div class="listen-hint">🔊 아래 버튼으로 전체를 들어봐요 / Pastdagi tugma bilan eshiting</div>
+        </div>`;
+      }).join('')}
+      <div class="listen-hint">버튼을 눌러 들어봐요 / Gaplar yonidagi tugmani bosing</div>
     </div>
-    <button class="btn red" style="margin-bottom:8px" onclick="sayDialog(${JSON.stringify(allText)})">🔊 전체 듣기 / Hammasini eshitish</button>
+    <button class="btn red" id="btn-listen-all" style="margin-bottom:8px"
+      onclick="saySeq(${jq(allTexts)},'dialogue','btn-listen-all')">전체 듣기 / Hammasini eshitish</button>
     <button class="btn gray" onclick="next()">다음 → 단어 / Davom: So'zlar</button>
   `;
 }
-function sayDialog(text){say(text,null,'dialogue');}
 
-// ── Step 2: 뜯어봐요 (Word breakdown) ──
+// ── Step 2: 들어보세요 (Word breakdown) ──
 function rWords(d,el,uz){
   el.innerHTML=`
-    <div class="info">🔍 단어를 눌러서 발음을 들어봐요 / So'zni bosib talaffuzni eshiting</div>
+    <div class="info">단어를 눌러서 발음을 들어봐요 / So'zni bosib talaffuzni eshiting</div>
     <div class="word-cards">
       ${d.words.map((w,i)=>`
-        <div class="word-card" id="wc${i}" onclick="playW(${i},${JSON.stringify(w.ko)})">
+        <div class="word-card" id="wc${i}" onclick="playW(${i},${jq(w.ko)})">
           <div class="wc-left">
             <div class="wc-ko">${w.e} ${w.ko}</div>
             <div class="wc-syl">${w.syl}</div>
@@ -2725,7 +3235,7 @@ function rDrill(d,el,uz){
   if(di>=p.drills.length){
     el.innerHTML=`
       <div class="pattern-box" style="text-align:center;padding:24px">
-        <div style="font-size:48px;margin-bottom:10px">🎉</div>
+        <div style="font-size:48px;margin-bottom:10px">+1</div>
         <div style="font-size:18px;font-weight:800;color:var(--blue)">패턴 완료! / Namuna tugadi!</div>
       </div>
       <button class="btn red" onclick="ST.speakIdx=0;next()">다음 → 말해봐요 / Davom: Gapirish</button>
@@ -2744,7 +3254,7 @@ function rDrill(d,el,uz){
       </div>
       <div class="drill-items">
         ${p.drills.map((dr2,i)=>`
-          <div class="drill-item ${i===di?'playing':''}" id="di${i}" onclick="playDrill(${i},${JSON.stringify(dr2.full)})">
+          <div class="drill-item ${i===di?'playing':''}" id="di${i}" onclick="playDrill(${i},${jq(dr2.full)})">
             <div>
               <div class="di-full">${dr2.full}</div>
               <div class="di-uz">${dr2.uz}</div>
@@ -2772,16 +3282,16 @@ function rSpeak(d,el,uz){
   if(si>=d.speak.length){
     el.innerHTML=`
       <div class="speak-card" style="padding:28px">
-        <div style="font-size:52px;margin-bottom:12px">🗣️✅</div>
+        <div style="font-size:52px;margin-bottom:12px"></div>
         <div class="speak-phrase">말하기 완료!</div>
         <div class="speak-prompt" style="font-size:13px;color:var(--muted)">Gapirish tugadi! Ajoyib!</div>
       </div>
-      <button class="btn red" onclick="ST.quizIdx=0;ST.quizScore=0;next()">✏️ 확인 테스트 →</button>
+      <button class="btn red" onclick="ST.quizIdx=0;ST.quizScore=0;next()">확인 테스트 →</button>
     `;
     return;
   }
   const sp=d.speak[si];
-  const phraseJson=JSON.stringify(sp.phrase);
+  const phraseJson=jq(sp.phrase);
   el.innerHTML=`
     <div style="font-size:12px;color:var(--muted);margin-bottom:8px">
       상황 ${si+1} / ${d.speak.length}
@@ -2799,7 +3309,7 @@ function rSpeak(d,el,uz){
 
       <!-- ① 듣기 -->
       <button class="btn-hear" onclick="hearSpeak(${phraseJson})">
-        🔊 원어민 발음 듣기
+        원어민 발음 듣기
       </button>
 
       <!-- ② 발음 인식 -->
@@ -2874,7 +3384,7 @@ function ansQ(chosen,correct){
 function rResult(d,el,uz){
   const t=d.quiz.length, pct=Math.round(ST.quizScore/t*100), pass=pct>=60;
   const cls=pct>=80?'g':pct>=60?'m':'b';
-  const e=pct>=80?'🏆':pct>=60?'⭐':'📖';
+  const e=pct>=80?'우수':pct>=60?'양호':'계속';
   sessionEnd(d.day, ST.quizScore, t);
   // 안전교육만 done 배열에 포함; 실용 한국어는 별도 관리 불필요
   if(pass && !ST.isPractical && !ST.done.includes(d.day)){ST.done.push(d.day);saveDone();}
@@ -2884,8 +3394,8 @@ function rResult(d,el,uz){
     const firstTime = !ST.isPractical && ST.done.includes(d.day) && ST.done.filter(x=>x===d.day).length<=1;
     addPoints(pts, firstTime ? '첫 이수' : '재이수');
   }
-  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
-  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! 🎉':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
+  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! +1':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
+  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! +1':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
 
   // What can I say now?
   const can = d.goal.can;
@@ -2902,14 +3412,14 @@ function rResult(d,el,uz){
       </div>`:''}
       ${pass?`
       <div class="rpass">
-        <strong>🗣️ 이제 이렇게 말할 수 있어요 / Endi shunday dey olasiz:</strong><br>
+        <strong>이제 이렇게 말할 수 있어요 / Endi shunday dey olasiz:</strong><br>
         ${can.map(c=>`▸ ${c}`).join('<br>')}
       </div>
       `:''}
       ${pass
-        ?`<button class="btn red" onclick="goHome()">🏠 홈으로 / Bosh sahifa</button>`
-        :`<button class="btn red" onclick="ST.step=5;ST.quizIdx=0;ST.quizScore=0;renderLesson()">🔄 다시 / Qayta</button>
-          <button class="btn gray" onclick="goHome()">🏠 홈으로</button>`
+        ?`<button class="btn red" onclick="goHome()">홈으로 / Bosh sahifa</button>`
+        :`<button class="btn red" onclick="ST.step=5;ST.quizIdx=0;ST.quizScore=0;renderLesson()">다시 / Qayta</button>
+          <button class="btn gray" onclick="goHome()">홈으로</button>`
       }
     </div>
     <div style="padding:12px 0;font-size:10px;color:var(--muted);text-align:center;line-height:1.7">
@@ -2923,7 +3433,7 @@ function rResult(d,el,uz){
 // ════════════════════════════════════
 const U_KEY = 'sk_user';       // 현재 로그인 유저
 const USERS_KEY = 'sk_users';  // 전체 유저 목록 (아이디/비번 포함)
-const SEEDED_KEY = 'sk_seeded_v4';
+const SEEDED_KEY = 'sk_seeded_v5';
 
 let _authLang = 'ko', _authLang2 = 'ko';
 
@@ -2963,35 +3473,35 @@ function getSessions(){
 
 // ── 테스트 유저 5명 정의
 const TEST_USERS = [
-  { id:'u_kim001',   username:'sardor01', password:'safe1234',
-    name:'Sardor Yusupov',  phone:'010-1234-5678', lang:'uz',
-    type:'individual', companyCode:null,   employeeNum:null,    notifTime:'20:00',
+  { id:'u_sardor',  username:'sardor01', password:'safe1234',
+    name:'Sardor Yusupov',   phone:'010-1234-5678', lang:'uz',
+    type:'individual', companyCode:null,     employeeNum:null,    notifTime:'20:00',
     registeredAt:'2026-04-01T09:00:00.000Z' },
-  { id:'u_abdulla',  username:'abdulla',  password:'safe1234',
-    name:'Abdulla Karimov', phone:'010-2345-6789', lang:'uz',
-    type:'individual', companyCode:null,   employeeNum:null,    notifTime:'21:00',
+  { id:'u_nguyen',  username:'nguyen01', password:'safe1234',
+    name:'Nguyen Van An',    phone:'010-2345-6789', lang:'vi',
+    type:'individual', companyCode:null,     employeeNum:null,    notifTime:'21:00',
     registeredAt:'2026-04-02T09:00:00.000Z' },
-  { id:'u_rustam',   username:'rustam01', password:'abc1234',
-    name:'Rustam Nazarov',  phone:'010-3456-7890', lang:'uz',
+  { id:'u_ram',     username:'ram01',    password:'safe1234',
+    name:'Ram Kumar Thapa',  phone:'010-3456-7890', lang:'ne',
     type:'company',    companyCode:'SAFE01', employeeNum:'EMP-001', notifTime:'19:30',
     registeredAt:'2026-04-01T08:00:00.000Z' },
-  { id:'u_bobur',    username:'bobur02',  password:'abc1234',
-    name:'Bobur Toshmatov', phone:'010-4567-8901', lang:'uz',
+  { id:'u_ivan',    username:'ivan01',   password:'safe1234',
+    name:'Ivan Petrov',      phone:'010-4567-8901', lang:'ru',
     type:'company',    companyCode:'SAFE01', employeeNum:'EMP-002', notifTime:'20:00',
     registeredAt:'2026-04-03T08:00:00.000Z' },
-  { id:'u_lee',      username:'dilnoza',  password:'safe5678',
-    name:'Dilnoza Mirzayeva', phone:'010-5678-9012', lang:'uz',
+  { id:'u_maria',   username:'maria01',  password:'safe1234',
+    name:'Maria Santos',     phone:'010-5678-9012', lang:'en',
     type:'company',    companyCode:'SAFE01', employeeNum:'EMP-003', notifTime:'18:00',
     registeredAt:'2026-04-01T07:30:00.000Z' },
 ];
 
 // ── 테스트 유저별 가상 학습 데이터
 const TEST_SEEDS = {
-  u_kim001:  { done:[1,2,3,4,5,6,7],    scores:[85,90,80,95,75,90,85] },
-  u_abdulla: { done:[1,2,3,4,5],         scores:[70,80,75,65,85] },
-  u_rustam:  { done:[1,2,3,4,5,6,7,8,9,10], scores:[80,85,90,75,80,95,85,70,80,90] },
-  u_bobur:   { done:[1,2,3],             scores:[60,65,70] },
-  u_lee:     { done:[1,2,3,4,5,6,7,8,9,10,11,12,13,14], scores:[90,95,85,100,90,95,88,92,85,90,95,88,92,95] },
+  u_sardor:  { done:[1,2,3,4,5,6,7],         scores:[85,90,80,95,75,90,85] },
+  u_nguyen:  { done:[1,2,3,4,5],              scores:[70,80,75,65,85] },
+  u_ram:     { done:[1,2,3,4,5,6,7,8,9,10],  scores:[80,85,90,75,80,95,85,70,80,90] },
+  u_ivan:    { done:[1,2,3],                  scores:[60,65,70] },
+  u_maria:   { done:[1,2,3,4,5,6,7,8,9,10,11,12,13,14], scores:[90,95,85,100,90,95,88,92,85,90,95,88,92,95] },
 };
 
 function seedTestUsers(){
@@ -3109,7 +3619,7 @@ function doRecovery(){
       <div style="font-size:12px;color:var(--muted);margin-bottom:4px">찾은 계정</div>
       <div style="font-size:16px;font-weight:800;letter-spacing:1px">🔑 ${u.username}</div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px">
-        ${u.type==='company'?`🏭 ${u.companyCode}`:'👤 개인'} ·
+        ${u.type==='company'?u.companyCode:'개인'} ·
         비밀번호: <strong>${u.password||'(설정 안됨 — 재가입 필요)'}</strong>
       </div>
     </div>
@@ -3213,6 +3723,7 @@ function enterApp(user){
   document.getElementById('authScr').classList.remove('on');
   document.getElementById('mainHdr').style.display='';
   document.getElementById('homeScr').classList.add('on');
+  showSidebar(true); setSidebarUser(user); setSidebarActive('home');
   const cur = getUILang();
   const m = LANG_META[cur]||LANG_META.ko;
   document.getElementById('langBtn').textContent = m.flag+' '+cur.toUpperCase();
@@ -3287,6 +3798,7 @@ function goProfile(){
   ST.dayIdx=null;
   ['homeScr','lessonScr','gameScr'].forEach(id=>document.getElementById(id).classList.remove('on'));
   document.getElementById('profileScr').classList.add('on');
+  setSidebarActive('profile');
   renderProfile();
 }
 
@@ -3299,10 +3811,10 @@ function buildLeaderboardHTML(user){
   let peers, groupLabel;
   if(user.type==='company' && user.companyCode){
     peers = allUsers.filter(u=>u.companyCode===user.companyCode);
-    groupLabel = `🏭 ${user.companyCode} 직원 랭킹`;
+    groupLabel = `${user.companyCode} 직원 랭킹`;
   } else {
     peers = allUsers.filter(u=>u.type==='individual');
-    groupLabel = '👤 개인 학습자 랭킹';
+    groupLabel = '개인 학습자 랭킹';
   }
 
   // 각 peer 포인트 계산
@@ -3317,7 +3829,7 @@ function buildLeaderboardHTML(user){
   const top5 = ranked.slice(0,5);
   const myRank = ranked.findIndex(r=>r.isMe)+1;
 
-  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const medals = ['1위','2위','3위','4위','5위'];
   const rowsHTML = top5.map((r,i)=>`
     <div class="rank-row${r.isMe?' me':''}">
       <span style="font-size:18px;width:28px;text-align:center">${medals[i]||i+1}</span>
@@ -3344,7 +3856,7 @@ function buildLeaderboardHTML(user){
     ${myRankBadge}
     <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
       font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px">
-      🌐 <span>동종업계 전국 랭킹 — <strong>Coming Soon</strong></span>
+      <span>동종업계 전국 랭킹 — <strong>Coming Soon</strong></span>
     </div>
   </div>`;
 }
@@ -3420,8 +3932,8 @@ function renderProfile(){
   // 성취 뱃지
   const badges = [];
   if(done.length>=1) badges.push({e:'🌱',label:'첫 수업 완료'});
-  if(done.length>=7) badges.push({e:'🏅',label:'1주일 완성'});
-  if(done.length>=14) badges.push({e:'🥇',label:'2주일 완성'});
+  if(done.length>=7) badges.push({e:'',label:'1주일 완성'});
+  if(done.length>=14) badges.push({e:'',label:'2주일 완성'});
   if(streak>=3) badges.push({e:'🔥',label:`${streak}일 연속`});
   if(streak>=7) badges.push({e:'⚡',label:'7일 연속!'});
   if(avgPct>=90) badges.push({e:'🌟',label:'평균 90% 이상'});
@@ -3434,15 +3946,15 @@ function renderProfile(){
 
   document.getElementById('profContent').innerHTML = `
     <div class="prof-hero">
-      <div class="prof-name">👤 ${user?.name||'학습자'}</div>
-      <div class="prof-meta">${user?.type==='company'?'🏭 업체 직원':'👤 개인'} · ${user?.phone||''}</div>
+      <div class="prof-name">${user?.name||'학습자'}</div>
+      <div class="prof-meta">${user?.type==='company'?'업체 직원':'개인'} · ${user?.phone||''}</div>
       <div class="streak-row">
         <div class="streak-badge">
           <div class="streak-num">🔥 ${streak}</div>
           <div class="streak-lbl">연속 학습일</div>
         </div>
         <div class="streak-msg">
-          ${streak===0?'오늘 첫 수업을 들어봐요!':streak<3?'잘 하고 있어요! 계속해요 💪':`대단해요! ${streak}일 연속 공부 중! 🎉`}<br>
+          ${streak===0?'오늘 첫 수업을 들어봐요!':streak<3?'잘 하고 있어요! 계속해요 💪':`대단해요! ${streak}일 연속 공부 중! +1`}<br>
           <small style="opacity:.7">${notifStr}</small>
         </div>
       </div>
@@ -3460,7 +3972,7 @@ function renderProfile(){
     </div>
 
     <div class="week-prog">
-      <h3>📊 주차별 진행률</h3>
+      <h3>주차별 진행률</h3>
       <div class="wk-row">
         <div class="wk-label"><span>Week 1 — 기초 안전 한국어</span><span>${w1done}/7</span></div>
         <div class="wk-bar"><div class="wk-fill w1" style="width:${Math.round(w1done/7*100)}%"></div></div>
@@ -3476,7 +3988,7 @@ function renderProfile(){
     </div>
 
     <div class="week-prog" style="margin-bottom:14px">
-      <h3>🏆 성취 뱃지</h3>
+      <h3>성취 뱃지</h3>
       <div style="margin-top:2px">${badgeHTML}</div>
     </div>
 
@@ -3509,6 +4021,7 @@ function doLogout(){
   document.getElementById('profileScr').classList.remove('on');
   document.getElementById('mainHdr').style.display='none';
   document.getElementById('authScr').classList.add('on');
+  showSidebar(false);
 }
 
 // ════════════════════════════════════
@@ -3563,11 +4076,12 @@ function goGame(){
   ST.dayIdx=null;
   document.getElementById('homeScr').classList.remove('on');
   document.getElementById('gameScr').classList.add('on');
+  setSidebarActive('game');
   renderGameMenu();
 }
 
 function renderGameMenu(){
-  document.getElementById('gameScrTitle').textContent='🎮 단어 게임';
+  document.getElementById('gameScrTitle').textContent='단어 게임';
   document.getElementById('gameScrSub').textContent='게임 모드를 선택하세요';
   const all = buildGameWords();
   document.getElementById('gameContent').innerHTML=`
@@ -3619,30 +4133,30 @@ function renderGameQ(){
   if(m === 1){
     // Mode 1: audio prompt — show ??? emoji until user plays/answers
     promptHTML = `
-      <div class="gq-mode-badge">🔊 소리를 듣고 그림을 고르세요</div>
+      <div class="gq-mode-badge">소리를 듣고 그림을 고르세요</div>
       <div class="gq-emoji" id="gq-mystery">❓</div>
-      <button class="gq-play-btn" onclick="playGameWord()">🔊 소리 듣기</button>
+      <button class="gq-play-btn" onclick="playGameWord()">소리 듣기</button>
       <div style="font-size:11px;opacity:.65">버튼을 눌러 소리를 들은 후 그림을 선택하세요</div>
     `;
   } else if(m === 2){
     // Mode 2: show emoji → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">🖼️ 그림을 보고 한국어를 고르세요</div>
+      <div class="gq-mode-badge">그림을 보고 한국어를 고르세요</div>
       <div class="gq-emoji">${w.e}</div>
     `;
   } else if(m === 3){
     // Mode 3: show native word → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">🌐 자국어를 보고 한국어를 고르세요</div>
+      <div class="gq-mode-badge">자국어를 보고 한국어를 고르세요</div>
       <div class="gq-text">${w.uz}</div>
       <div class="gq-sub">[${w.rom}]</div>
     `;
   } else {
     // Mode 4: native word + auto-play audio → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">🎯 자국어를 보고 소리를 들어봐요</div>
+      <div class="gq-mode-badge">자국어를 보고 소리를 들어봐요</div>
       <div class="gq-text">${w.uz}</div>
-      <button class="gq-play-btn" id="gq-replay-btn" onclick="playGameWord()">🔊 다시 듣기</button>
+      <button class="gq-play-btn" id="gq-replay-btn" onclick="playGameWord()">다시 듣기</button>
     `;
   }
 
@@ -3745,8 +4259,8 @@ function showGameResult(){
   const total = GS.qs.length;
   const pct = Math.round(GS.score/total*100);
   const cls = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--red)';
-  const e = pct>=80?'🏆':pct>=60?'⭐':'📖';
-  const msg = pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 조금 더 연습해요 👍':'다시 한번 도전해봐요 💪';
+  const e = pct>=80?'우수':pct>=60?'양호':'계속';
+  const msg = pct>=80?'훌륭해요! 현장에서 써봐요! +1':pct>=60?'잘 했어요! 조금 더 연습해요 👍':'다시 한번 도전해봐요 💪';
   const m = GAME_MODES.find(x=>x.id===GS.mode);
 
   document.getElementById('gameScrTitle').textContent='게임 결과';
@@ -3768,11 +4282,43 @@ function showGameResult(){
       </div>
     </div>
     <div class="game-btn-row">
-      <button class="btn red" onclick="startGameMode(${GS.mode})">🔄 같은 모드로 다시</button>
-      <button class="btn gray" onclick="renderGameMenu()">🎮 다른 모드 선택</button>
-      <button class="btn gray" onclick="goHome()">🏠 홈으로</button>
+      <button class="btn red" onclick="startGameMode(${GS.mode})">같은 모드로 다시</button>
+      <button class="btn gray" onclick="renderGameMenu()">다른 모드 선택</button>
+      <button class="btn gray" onclick="goHome()">홈으로</button>
     </div>
   `;
+}
+
+// ════════════════════════════════════
+// DESKTOP SIDEBAR HELPERS
+// ════════════════════════════════════
+function setSidebarActive(name){
+  ['dsb-home','dsb-profile','dsb-game'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('on');
+  });
+  const t=document.getElementById('dsb-'+name);
+  if(t) t.classList.add('on');
+}
+function setSidebarUser(user){
+  const card=document.getElementById('dsb-user-card');
+  const nEl=document.getElementById('dsb-uname-text');
+  const lEl=document.getElementById('dsb-ulang-text');
+  if(!card) return;
+  card.style.display='';
+  if(nEl) nEl.textContent=user.name||user.username||'—';
+  if(lEl){
+    const m=LANG_META[user.lang]||LANG_META.ko;
+    lEl.textContent=(m.flag||'🌐')+' '+(m.native||user.lang);
+  }
+}
+function showSidebar(show){
+  const dsb=document.getElementById('dsb');
+  if(!dsb) return;
+  if(window.innerWidth<768) return; // mobile: sidebar always hidden via CSS
+  dsb.style.display=show?'flex':'none';
+  const main=document.getElementById('appMain');
+  if(main) main.style.marginLeft=show?'':'0';
 }
 
 // ════════════
@@ -3780,5 +4326,6 @@ function showGameResult(){
 // ════════════
 checkAuth();
 </script>
+</div><!-- /appMain -->
 </body>
 </html>
