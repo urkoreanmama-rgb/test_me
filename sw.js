@@ -1,5 +1,5 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v1';
+const CACHE = 'sk-v2';
 const ASSETS = ['./education.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {
