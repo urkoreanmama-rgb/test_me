@@ -1979,6 +1979,177 @@ const PRACTICAL_CUR = [
     {tag:'어휘', q:'"붙이다" 는 무슨 뜻이에요?', qu:'"Yopishtirib qo\'ymoq" nima degani?', opts:["ichmoq (먹다)",'yopishtirib qo\'ymoq (to stick/apply)',"surtmoq (바르다)",'tashlamoq (버리다)'], ans:1},
     {tag:'의사소통', q:'약을 잘못 복용하면 어떻게 될 수 있어요?', qu:"Dorini noto'g'ri qabul qilsa nima bo'lishi mumkin?", opts:['더 빨리 낫다','부작용이 생길 수 있어요','상관없어요','더 좋아요'], ans:1},
   ]
+},
+
+// ── 실용 Day 22: 안전 표지 ──────────────────────────────────────────
+{
+  day:22, icon:'🚧',
+  ncs:'06010201',
+  titleKo:'안전 표지를 읽어요!', titleUz:"Xavfsizlik belgilarini o'qiymiz!",
+  subKo:'오늘의 목표: 금지·경고·지시·안내 표지 4종류 이해하기', subUz:"Bugungi maqsad: Taqiqlovchi·ogohlantiruvchi·majburiy·axborot belgilarini tushunish",
+  level:'A1+',
+  goal:{
+    ko:'"출입금지예요." "안전모 착용해야 해요." 표지를 보고 뜻을 말할 수 있어요.',
+    uz:'"Kirish taqiqlangan." "Xavfsizlik dubulg\'asi kiyish kerak." Belgilarni ko\'rib ma\'nosini ayta olasiz.',
+    can:['이 표지는 출입금지예요.','안전모를 착용해야 해요.','경고 표지예요 — 위험해요!','비상구는 어디예요?','이 표지 무슨 뜻이에요?']
+  },
+  listen:{
+    ctx:'🏭 현장 — 새 직원 첫날, 표지를 배워요 / Ishxona — yangi xodim birinchi kuni, belgilarni o\'rganadi',
+    bubbles:[
+      {who:'👷',name:'Sardor',ko:'저 빨간 표지는 뭐예요?',uz:"O'sha qizil belgi nima?",side:'right'},
+      {who:'🦺',name:'관리자 (Menejer)',ko:'빨간 원 표지는 금지 표지예요. 출입금지, 사용금지 같은 거예요.',uz:"Qizil doira belgisi — taqiqlovchi belgi. Kirish taqiqlangan, foydalanish taqiqlangan kabi.",side:'left'},
+      {who:'👷',name:'Sardor',ko:'노란 삼각형은요?',uz:"Sariq uchburchak-chi?",side:'right'},
+      {who:'🦺',name:'관리자',ko:'경고 표지예요. 위험하다는 뜻이에요. 낙하물경고, 고온경고 같은 거예요.',uz:"Ogohlantiruvchi belgi. Xavfli degani. Tushayotgan predmet, yuqori harorat kabi.",side:'left'},
+      {who:'👷',name:'Sardor',ko:'파란 원은요?',uz:"Ko'k doira-chi?",side:'right'},
+      {who:'🦺',name:'관리자',ko:'지시 표지예요. 꼭 해야 한다는 뜻이에요. 안전모 착용, 안전화 착용 같은 거예요.',uz:"Majburiy belgi. Albatta bajarish kerak degani. Dubulg\'a, xavfsiz poyabzal kiyish kabi.",side:'left'},
+      {who:'👷',name:'Sardor',ko:'초록 표지는요?',uz:"Yashil belgi-chi?",side:'right'},
+      {who:'🦺',name:'관리자',ko:'안내 표지예요. 비상구, 구급함 위치를 알려줘요.',uz:"Axborot belgisi. Favqulodda chiqish, tibbiy yordam qutilarining joylashuvini ko'rsatadi.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'금지 표지', syl:'금·지·표·지', rom:'geum-ji pyo-ji', uz:"taqiqlovchi belgi (prohibition sign)", ex:'빨간 원은 금지 표지예요.', e:'🚫'},
+    {ko:'경고 표지', syl:'경·고·표·지', rom:'gyeong-go pyo-ji', uz:"ogohlantiruvchi belgi (warning sign)", ex:'노란 삼각형은 경고 표지예요.', e:'⚠️'},
+    {ko:'지시 표지', syl:'지·시·표·지', rom:'ji-si pyo-ji', uz:"majburiy belgi (mandatory sign)", ex:'파란 원은 지시 표지예요.', e:'🔵'},
+    {ko:'출입금지', syl:'출·입·금·지', rom:'chu-rip-geum-ji', uz:"kirish taqiqlangan (no entry)", ex:'이 구역은 출입금지예요.', e:'🚷'},
+    {ko:'비상구', syl:'비·상·구', rom:'bi-sang-gu', uz:"favqulodda chiqish (emergency exit)", ex:'비상구는 저쪽에 있어요.', e:'🚪'},
+  ],
+  pattern:{
+    labelKo:'문형: [표지]는 [의미]라는 뜻이에요.',
+    labelUz:"Shakl: [belgi] — [ma'no] degani.",
+    template:'[___] 표지는 [___]라는 뜻이에요.',
+    desc:'표지 뜻 설명하기 · Belgi ma\'nosini tushuntirish',
+    drills:[
+      {blank:'빨간 원 / 금지', full:'빨간 원 표지는 금지라는 뜻이에요.', uz:"Qizil doira belgisi — taqiqlangan degani."},
+      {blank:'노란 삼각형 / 위험 경고', full:'노란 삼각형 표지는 위험 경고라는 뜻이에요.', uz:"Sariq uchburchak belgisi — xavf ogohlantirishida degani."},
+      {blank:'파란 원 / 착용 의무', full:'파란 원 표지는 착용 의무라는 뜻이에요.', uz:"Ko'k doira belgisi — kiyish majburiy degani."},
+      {blank:'초록 / 비상 안내', full:'초록 표지는 비상 안내라는 뜻이에요.', uz:"Yashil belgi — favqulodda yo'nalish degani."},
+    ]
+  },
+  speak:[
+    {situation:'🚫 동료가 위험한 구역에 들어가려 해요. 표지를 보고 알려줘요.', prompt:"'출입금지'를 써봐요.", phrase:'저기 출입금지 표지 있어요! 들어가면 안 돼요!', uz:"U yerda kirish taqiqlangan belgisi bor! Kirmang!"},
+    {situation:'⚠️ 새 동료에게 경고 표지를 설명해줘요.', prompt:"'위험하다'를 포함해서 말해봐요.", phrase:'이 표지는 경고 표지예요. 위험하다는 뜻이에요. 조심하세요!', uz:"Bu ogohlantiruvchi belgi. Xavfli degani. Ehtiyot bo'ling!"},
+    {situation:'🚪 화재가 났어요! 비상구를 찾아요.', prompt:"'비상구'를 써봐요.", phrase:'비상구 어디예요? 빨리 대피해야 해요!', uz:"Favqulodda chiqish qayerda? Tez evakuatsiya qilishimiz kerak!"},
+  ],
+  quiz:[
+    {tag:'표지', q:'빨간 원 표지는 무슨 종류예요?', qu:"Qizil doira belgisi qaysi tur?", opts:['경고 표지','지시 표지','금지 표지','안내 표지'], ans:2},
+    {tag:'표지', q:'안전모 착용을 지시하는 표지 색깔은?', qu:"Dubulg'a kiyishni buyuruvchi belgi rangi?", opts:['빨간색','노란색','파란색','초록색'], ans:2},
+    {tag:'어휘', q:'"비상구" 는 무슨 뜻이에요?', qu:'"Favqulodda chiqish" nima degani?', opts:["위험 구역 (danger zone)",'favqulodda chiqish (emergency exit)',"taqiqlangan joy (forbidden area)",'Tozalash joyi'], ans:1},
+    {tag:'실전', q:'노란 삼각형 표지를 보면 어떻게 해야 해요?', qu:"Sariq uchburchak belgi ko'rsangiz nima qilish kerak?", opts:['무시해도 돼요','위험을 인식하고 조심해야 해요','바로 대피해요','관리자를 불러요'], ans:1},
+  ]
+},
+
+// ── 실용 Day 23: 화학물질 응급처치 ──────────────────────────────────
+{
+  day:23, icon:'🧪',
+  ncs:'06010301',
+  titleKo:'화학물질 — 응급처치 4단계', titleUz:"Kimyoviy moddalar — 4 vaziyatda birinchi yordam",
+  subKo:'오늘의 목표: 흡입·피부·눈·섭취 4가지 상황에서 응급처치 말하기', subUz:"Bugungi maqsad: Inhalayon·teri·ko'z·yutish — 4 holatda birinchi yordamni aytish",
+  level:'A2',
+  goal:{
+    ko:'"눈에 들어갔어요. 물로 15분 씻었어요." 화학물질 사고를 신고하고 처치를 설명할 수 있어요.',
+    uz:'"Ko\'zga kirdi. Suv bilan 15 daqiqa yuvdim." Kimyoviy hodisani xabar qilib, yordam berishni tushuntirasiz.',
+    can:['화학물질이 눈에 들어갔어요.','신선한 공기가 있는 곳으로 이동하세요.','15분 동안 물로 씻으세요.','즉시 119에 신고하세요.','어떤 화학물질인지 알려주세요.']
+  },
+  listen:{
+    ctx:'🏭 화학물질 사고 — 즉각 대응 / Kimyoviy hodisa — darhol munosabat',
+    bubbles:[
+      {who:'😨',name:'Bobur',ko:'도와주세요! 약품이 눈에 들어갔어요!',uz:"Yordam bering! Kimyoviy modda ko'zga kirdi!",side:'right'},
+      {who:'🦺',name:'관리자 (Menejer)',ko:'눈을 비비지 마세요! 세안장치로 빨리 와요!',uz:"Ko'zingizni ishqalamang! Tez ko'z yuvish joyiga keling!",side:'left'},
+      {who:'😨',name:'Bobur',ko:'아파요! 어떻게 해요?',uz:"Og'riyapti! Nima qilaman?",side:'right'},
+      {who:'🦺',name:'관리자',ko:'눈꺼풀을 벌리고 15분 동안 물로 씻으세요.',uz:"Ko'z qoqog'ini oching va 15 daqiqa suv bilan yuving.",side:'left'},
+      {who:'🦺',name:'관리자',ko:'119에 신고했어요. 어떤 약품인지 이름을 알아야 해요.',uz:"119 ga xabar berdim. Qaysi kimyoviy modda ekanini bilish kerak.",side:'left'},
+      {who:'😨',name:'Bobur',ko:'저기 용기에 이름이 있어요.',uz:"U yerda idishda nomi bor.",side:'right'},
+      {who:'🦺',name:'관리자',ko:'알겠어요. 그 용기를 가져오세요. 병원에 보여줘야 해요.',uz:"Tushundim. U idishni oling. Kasalxonaga ko'rsatish kerak.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'흡입하다', syl:'흡·입·하·다', rom:'heu-bi-pa-da', uz:"inhalayon qilmoq (to inhale)", ex:'유해 가스를 흡입했어요.', e:'😮‍💨'},
+    {ko:'세안장치', syl:'세·안·장·치', rom:'se-an-jang-chi', uz:"ko'z yuvish qurilmasi (eye wash station)", ex:'세안장치로 눈을 씻으세요.', e:'👁️'},
+    {ko:'응급처치', syl:'응·급·처·치', rom:'eung-geup-cheo-chi', uz:"birinchi yordam (first aid)", ex:'응급처치를 먼저 하세요.', e:'🩺'},
+    {ko:'신선한 공기', syl:'신·선·한 공·기', rom:'sin-seon-han gong-gi', uz:"toza havo (fresh air)", ex:'신선한 공기가 있는 곳으로 이동하세요.', e:'🌬️'},
+    {ko:'용기', syl:'용·기', rom:'yong-gi', uz:"idish/konteyner (container)", ex:'화학물질 용기에 이름이 있어요.', e:'🧴'},
+  ],
+  pattern:{
+    labelKo:'문형: [부위]에 [화학물질]이 [접촉 방식]. [응급조치]하세요.',
+    labelUz:"Shakl: [joyga] [kimyoviy modda] [ta'sir qildi]. [birinchi yordam] qiling.",
+    template:'[___]에 들어갔어요. [___]분 동안 물로 씻으세요.',
+    desc:'화학물질 사고 신고하기 · Kimyoviy hodisani xabar qilish',
+    drills:[
+      {blank:'눈 / 15', full:'눈에 들어갔어요. 15분 동안 물로 씻으세요.', uz:"Ko'zga kirdi. 15 daqiqa suv bilan yuving."},
+      {blank:'피부에 묻었어요 / 15', full:'피부에 묻었어요. 15분 동안 물로 씻으세요.', uz:"Teriga tegdi. 15 daqiqa suv bilan yuving."},
+      {blank:'가스를 마셨어요 → 신선한 공기', full:'가스를 마셨어요. 신선한 공기가 있는 곳으로 이동하세요.', uz:"Gaz yutdim. Toza havoga chiqing."},
+      {blank:'삼켰어요 → 119', full:'화학물질을 삼켰어요. 즉시 119에 신고하세요.', uz:"Kimyoviy moddani yutdim. Darhol 119 ga xabar bering."},
+    ]
+  },
+  speak:[
+    {situation:'😮‍💨 작업 중 유해 가스 냄새가 나요. 빨리 신고해요.', prompt:"'가스 냄새가 나요'를 포함해서 말해봐요.", phrase:'가스 냄새가 나요! 모두 밖으로 나가요! 119에 신고해요!', uz:"Gaz hidi kelmoqda! Hammasi tashqariga! 119 ga xabar bering!"},
+    {situation:'👁️ 동료 눈에 화학물질이 들어갔어요. 도와줘요.', prompt:"'세안장치'와 '15분'을 써봐요.", phrase:'눈꺼풀을 벌리고 세안장치에서 15분 동안 씻으세요!', uz:"Ko'z qoqog'ini oching va 15 daqiqa ko'z yuvish joyida yuving!"},
+    {situation:'📞 119에 신고해요. 상황을 설명해요.', prompt:"'화학물질', '눈에'를 써봐요.", phrase:'119예요? 화학물질이 눈에 들어갔어요. ○○공장이에요. 빨리 와주세요!', uz:"119mi? Kimyoviy modda ko'zga kirdi. ○○ zavod. Tez keling!"},
+  ],
+  quiz:[
+    {tag:'응급처치', q:'눈에 화학물질이 들어갔을 때 가장 먼저 할 일은?', qu:"Ko'zga kimyoviy modda kirganda birinchi nima qilish kerak?", opts:["눈을 비빈다","다량의 물로 최소 15분 씻는다","눈에 안약을 넣는다","그냥 기다린다"], ans:1},
+    {tag:'응급처치', q:'화학물질 가스를 흡입했을 때 즉시 해야 할 일은?', qu:"Kimyoviy gaz inhalayon qilinsa darhol nima qilish kerak?", opts:["물을 마신다","신선한 공기 있는 곳으로 이동","구토를 유발한다","누워서 쉰다"], ans:1},
+    {tag:'어휘', q:'"세안장치" 는 어디에 쓰여요?', qu:'"Ko\'z yuvish qurilmasi" qayerda ishlatiladi?', opts:["손을 씻을 때","눈에 화학물질이 들어갔을 때","약을 먹을 때","몸 전체를 씻을 때"], ans:1},
+    {tag:'실전', q:'화학물질 사고 시 용기를 왜 가져가야 해요?', qu:"Kimyoviy hodisada idishni nega olib borish kerak?", opts:['비쌔서','의료진에게 화학물질 종류를 알려주려고','다시 쓰려고','버리려고'], ans:1},
+  ]
+},
+
+// ── 실용 Day 24: 직장 내 괴롭힘 & 계절 안전 ─────────────────────────
+{
+  day:24, icon:'🛡️',
+  ncs:null,
+  titleKo:'내 권리를 알아요 — 직장 안전', titleUz:"Huquqlarimni bilaman — ish joyida xavfsizlik",
+  subKo:'오늘의 목표: 직장 내 괴롭힘 신고하기 + 폭염·한파 대비 말하기', subUz:"Bugungi maqsad: Ish joyidagi ta'qibni xabar qilish + issiq/sovuq havoda xavfsizlik",
+  level:'A2',
+  goal:{
+    ko:'"이건 직장 내 괴롭힘이에요. 고용노동부에 신고할 거예요." 내 권리를 말할 수 있어요.',
+    uz:'"Bu ish joyidagi ta\'qib. Mehnat vazirligi ga xabar qilaman." O\'z huquqlarini ayta olasiz.',
+    can:['이건 괴롭힘이에요. 신고할 거예요.','증거를 기록하고 있어요.','폭염 때는 물을 자주 마셔요.','한파에는 방한용품을 착용해요.','1345에 전화하면 도움받을 수 있어요.']
+  },
+  listen:{
+    ctx:'🏭 현장 — 권리 상담 / Ishxona — huquq maslahat',
+    bubbles:[
+      {who:'😟',name:'Dilnoza',ko:'관리자가 저한테 욕설을 해요. 어떻게 해야 해요?',uz:"Menejer menga haqorat qilyapti. Nima qilishim kerak?",side:'right'},
+      {who:'🧑‍💼',name:'상담사 (Maslahatchi)',ko:'그건 직장 내 괴롭힘에 해당해요.',uz:"Bu ish joyidagi ta'qibga kiradi.",side:'left'},
+      {who:'🧑‍💼',name:'상담사',ko:'날짜, 장소, 내용을 기록해두세요. 가능하면 녹음도요.',uz:"Sana, joy, mazmunini yozing. Imkon bo'lsa yozib oling.",side:'left'},
+      {who:'😟',name:'Dilnoza',ko:'그다음에는요?',uz:"Keyin nima?",side:'right'},
+      {who:'🧑‍💼',name:'상담사',ko:'회사 고충처리부서나 고용노동부에 신고하세요.',uz:"Kompaniya shikoyat bo'limi yoki Mehnat vazirligiga murojaat qiling.",side:'left'},
+      {who:'😟',name:'Dilnoza',ko:'신고하면 보복을 당하지 않아요?',uz:"Xabar qilsam qasos olmaymanmi?",side:'right'},
+      {who:'🧑‍💼',name:'상담사',ko:'피해 신고로 인한 보복은 근로기준법으로 금지돼 있어요. 안심하세요.',uz:"Xabar qilish uchun qasos qilish mehnat qonunchiligida taqiqlangan. Xavotir olmang.",side:'left'},
+      {who:'😟',name:'Dilnoza',ko:'도움 받으려면 어디에 전화해요?',uz:"Yordam olish uchun qayerga qo'ng'iroq qilamiz?",side:'right'},
+      {who:'🧑‍💼',name:'상담사',ko:'1345로 전화하세요. 외국어 지원도 돼요.',uz:"1345 ga qo'ng'iroq qiling. Chet tilida yordam ham bor.",side:'left'},
+    ]
+  },
+  words:[
+    {ko:'직장 내 괴롭힘', syl:'직·장 내 괴·롭·힘', rom:'jik-jang nae gwe-ro-pim', uz:"ish joyi ta'qibi (workplace harassment)", ex:'직장 내 괴롭힘은 법으로 금지예요.', e:'🚨'},
+    {ko:'신고하다', syl:'신·고·하·다', rom:'sin-go-ha-da', uz:"xabar qilmoq (to report)", ex:'고용노동부에 신고했어요.', e:'📢'},
+    {ko:'증거', syl:'증·거', rom:'jeung-geo', uz:"dalil (evidence)", ex:'날짜와 내용을 증거로 기록하세요.', e:'📝'},
+    {ko:'폭염', syl:'폭·염', rom:'pok-yeom', uz:"issiqqina (heat wave)", ex:'폭염 때는 물을 자주 마셔요.', e:'🥵'},
+    {ko:'한파', syl:'한·파', rom:'han-pa', uz:"sovuq to'lqin (cold wave)", ex:'한파에는 방한복을 입으세요.', e:'🥶'},
+  ],
+  pattern:{
+    labelKo:'문형: 이건 [행위]예요. [기관]에 신고할 거예요.',
+    labelUz:"Shakl: Bu [harakat]. [muassasa]ga xabar qilaman.",
+    template:'이건 직장 내 괴롭힘이에요. [___]에 신고할 거예요.',
+    desc:'피해 상황 신고하기 · Zararli holatni xabar qilish',
+    drills:[
+      {blank:'고용노동부', full:'이건 직장 내 괴롭힘이에요. 고용노동부에 신고할 거예요.', uz:"Bu ish joyi ta'qibi. Mehnat vazirligiga xabar qilaman."},
+      {blank:'회사 고충처리부서', full:'이건 직장 내 괴롭힘이에요. 회사 고충처리부서에 신고할 거예요.', uz:"Bu ish joyi ta'qibi. Kompaniya shikoyat bo'limiga murojaat qilaman."},
+      {blank:'1345', full:'도움이 필요해요. 1345에 전화할 거예요.', uz:"Yordam kerak. 1345 ga qo'ng'iroq qilaman."},
+      {blank:'폭염 때 물을 자주', full:'폭염 때는 물을 자주 마셔야 해요.', uz:"Issiqda ko'p suv ichish kerak."},
+    ]
+  },
+  speak:[
+    {situation:'😟 관리자가 욕설을 해요. 상담사에게 상황을 설명해요.', prompt:"'욕설'과 '기록'을 써봐요.", phrase:'관리자가 욕설을 해요. 날짜랑 내용을 기록하고 있어요. 어디에 신고해요?', uz:"Menejer haqorat qilyapti. Sana va mazmunini yozib olmoqdaman. Qayerga xabar qilaman?"},
+    {situation:'🥵 오늘 폭염주의보예요. 동료에게 알려줘요.', prompt:"'폭염', '물'을 써봐요.", phrase:'오늘 폭염주의보예요. 물을 자주 마시고 그늘에서 쉬세요!', uz:"Bugun qizib ketish ogohlantirilishi bor. Ko'p suv iching va soyada dam oling!"},
+    {situation:'📞 외국인 근로자 지원 전화로 도움을 요청해요.', prompt:"'1345'를 써봐요.", phrase:'안녕하세요? 1345예요? 저 외국인 근로자예요. 도움이 필요해요.', uz:"Salom? 1345mi? Men chet ellik ishchi. Yordamga muhtojman."},
+  ],
+  quiz:[
+    {tag:'권리', q:'직장 내 괴롭힘을 당했을 때 첫 번째로 해야 할 일은?', qu:"Ish joyida ta'qibga uchraganda birinchi nima qilish kerak?", opts:["그냥 참는다","증거를 기록하고 수집한다","바로 퇴사한다","동료에게 화풀이한다"], ans:1},
+    {tag:'어휘', q:'외국인 근로자 지원 전화번호는?', qu:"Chet ellik ishchilar uchun yordam telefon raqami?", opts:['119','112','1345','911'], ans:2},
+    {tag:'안전', q:'폭염 때 야외 활동을 자제해야 하는 시간은?', qu:"Qizib ketganda tashqaridagi harakatni cheklash kerak bo'lgan vaqt?", opts:['오전 6시~오전 10시','오전 12시~오후 5시','오후 5시~오후 9시','밤새'], ans:1},
+    {tag:'권리', q:'신고로 인한 보복 처우는 어떻게 돼요?', qu:"Xabar qilish uchun qasos qilish qanday?", opts:['허용돼요','회사 방침에 따라 달라요','근로기준법으로 금지돼 있어요','처벌이 없어요'], ans:2},
+  ]
 }
 ];
 
