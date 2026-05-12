@@ -217,6 +217,62 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   display:flex;align-items:center;justify-content:center;font-size:15px
 }
 
+/* ── Sentence Overview (Step 0) ── */
+.sent-overview{margin-bottom:14px}
+.sent-overview-hdr{
+  font-size:11px;font-weight:700;color:var(--blue-m);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:8px
+}
+.sent-overview-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
+.sent-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);transition:all .2s;cursor:pointer;
+}
+.sent-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(99,102,241,.12)}
+.sent-card:active{transform:scale(.99)}
+.sent-num{
+  width:28px;height:28px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue-m),var(--blue-d));
+  color:#fff;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px
+}
+.sent-body{flex:1;min-width:0}
+.sent-ko{font-size:17px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:5px}
+.sent-tr{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5}
+.sent-play{background:none;border:none;font-size:20px;cursor:pointer;
+  padding:0;flex-shrink:0;color:var(--blue-m);margin-top:2px;line-height:1}
+
+/* ── Sentence Study (Steps 1-3) ── */
+.sent-study-box{
+  background:linear-gradient(145deg,#080C18 0%,#0F1525 100%);
+  border-radius:var(--r);padding:20px;margin-bottom:14px;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(8,12,24,.35)
+}
+.sent-study-box::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 75% 20%,rgba(99,102,241,.22),transparent 58%),
+             radial-gradient(ellipse at 15% 80%,rgba(34,211,238,.14),transparent 52%);
+}
+.sent-study-box>*{position:relative;z-index:1}
+.ssb-badge{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.ssb-ko{font-size:22px;font-weight:900;color:#fff;line-height:1.35;margin-bottom:8px;letter-spacing:-.3px}
+.ssb-tr{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;font-style:italic}
+.ssb-play-btn{
+  margin-top:12px;display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.ssb-play-btn:hover{background:rgba(255,255,255,.18)}
+
+.vocab-label{font-size:10px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;margin:4px 0 10px;
+  display:flex;align-items:center;gap:8px}
+.vocab-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
 /* ── Pattern Drill ── */
 .pattern-box{
   background:#F8FAFF;border:1.5px solid #BFDBFE;border-radius:var(--r);
@@ -854,24 +910,40 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   .auth-wrap{flex-direction:row!important;padding:0!important;align-items:stretch!important;min-height:100vh;}
   .auth-logo{
     display:flex!important;flex-direction:column!important;
-    justify-content:center!important;align-items:center!important;
-    width:44%!important;min-height:100vh;padding:60px 44px!important;
-    margin-bottom:0!important;text-align:center;position:relative;overflow:hidden;
+    justify-content:center!important;align-items:flex-start!important;
+    width:42%!important;min-height:100vh;padding:60px 52px!important;
+    margin-bottom:0!important;text-align:left;position:relative;overflow:hidden;
   }
   .auth-logo::before{
     content:'';position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse at 30% 35%,rgba(99,102,241,.35),transparent 58%),
-               radial-gradient(ellipse at 72% 72%,rgba(34,211,238,.22),transparent 55%);
+    background:radial-gradient(ellipse at 20% 30%,rgba(99,102,241,.4),transparent 55%),
+               radial-gradient(ellipse at 80% 75%,rgba(34,211,238,.25),transparent 50%);
   }
   .auth-logo>*{position:relative;z-index:1}
   .auth-logo .al-icon{font-size:72px!important;margin-bottom:16px!important}
-  .auth-logo h1{font-size:28px!important;}
-  .auth-logo p{font-size:13px!important;max-width:280px;margin:0 auto}
+  .auth-logo h1{font-size:32px!important;line-height:1.2!important;text-align:left!important;}
+  .auth-logo p{font-size:13px!important;max-width:320px;margin:0;text-align:left!important}
+  .auth-logo .al-features{
+    margin-top:36px;display:flex;flex-direction:column;gap:14px;
+  }
+  .auth-logo .al-feat{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;padding:12px 16px;
+  }
+  .auth-logo .al-feat-icon{
+    width:36px;height:36px;border-radius:8px;
+    background:rgba(99,102,241,.3);display:flex;align-items:center;
+    justify-content:center;font-size:16px;flex-shrink:0;
+    color:#a5b4fc;font-weight:800;
+  }
+  .auth-logo .al-feat-text{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
+  .auth-logo .al-feat-text strong{color:#fff;display:block;font-size:13px;margin-bottom:1px}
 
   .auth-card{
-    width:56%!important;border-radius:0!important;
+    width:58%!important;border-radius:0!important;
     min-height:100vh;display:flex!important;flex-direction:column!important;
-    justify-content:center;padding:60px 60px!important;
+    justify-content:center;padding:60px 64px!important;
     box-shadow:none!important;background:#fff!important;
     overflow-y:auto;
   }
@@ -941,9 +1013,27 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <div id="authScr" class="scr on">
   <div class="auth-wrap">
     <div class="auth-logo">
-      <h1>안전 한국어<br><span style="font-size:.8em;font-weight:700;opacity:.9">Safety Korean</span></h1>
-      <p>외국인 공장 근로자를 위한 산업안전 한국어<br>
-      <small>Xorijiy zavod ishchilari uchun koreys tili xavfsizlik ta'limi</small></p>
+      <h1>안전 한국어<br><span style="font-size:.75em;font-weight:700;opacity:.85;letter-spacing:.5px">Safety Korean</span></h1>
+      <p style="margin-top:10px">외국인 공장 근로자를 위한 산업안전 한국어<br>
+      <small style="opacity:.7">Industrial safety Korean for foreign workers</small></p>
+      <div class="al-features">
+        <div class="al-feat">
+          <div class="al-feat-icon">3</div>
+          <div class="al-feat-text"><strong>하루 3문장</strong>핵심 표현을 문장 단위로 학습</div>
+        </div>
+        <div class="al-feat">
+          <div class="al-feat-icon">W</div>
+          <div class="al-feat-text"><strong>단어 연계 학습</strong>문장 속 단어를 함께 익혀요</div>
+        </div>
+        <div class="al-feat">
+          <div class="al-feat-icon">8</div>
+          <div class="al-feat-text"><strong>8개 언어 지원</strong>우즈벡 · 베트남 · 네팔 · 몽골 외</div>
+        </div>
+        <div class="al-feat">
+          <div class="al-feat-icon">S</div>
+          <div class="al-feat-text"><strong>이수 확인증 발급</strong>21일 완료 시 수료증 발급</div>
+        </div>
+      </div>
     </div>
     <div class="auth-card">
       <!-- 언어 선택 -->
@@ -1222,7 +1312,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <script>
 // ══════════════════════════════════════════════════
 // CURRICULUM — 언어교육 기반 설계
-// 구조: 목표 → 듣기 → 들어보세요 → 패턴드릴 → 말해봐요 → 퀴즈
+// 구조: 오늘의 문장(3개) → 문장1+단어 → 문장2+단어 → 문장3+단어 → 말해봐요 → 퀴즈
 // ══════════════════════════════════════════════════
 const CUR = [
 {
@@ -2555,9 +2645,9 @@ const PRACTICAL_CUR = [
 // ════════════════════════
 // STATE
 // ════════════════════════
-const STEPS = ['목표','듣기','들어보세요','패턴드릴','말해봐요','확인','완료'];
-const STEP_HINTS_KO = ['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'];
-const STEP_HINTS_UZ = ['Bugungi maqsad',"Suhbatni eshiting","So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting","Test",'Tugadi!'];
+const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','말해봐요','퀴즈','완료'];
+const STEP_HINTS_KO = ['3개 문장을 확인해요','첫 번째 문장 + 단어','두 번째 문장 + 단어','세 번째 문장 + 단어','직접 말해봐요','이해도 확인','완료!'];
+const STEP_HINTS_UZ = ["3 ta gapni ko'ring",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"O'zingiz ayting","Test",'Tugadi!'];
 
 let ST = {
   lang:'ko', dayIdx:null, step:0,
@@ -2594,12 +2684,12 @@ const STRINGS = {
     err_login:'아이디 또는 비밀번호가 틀렸어요',
     err_name:'이름을 입력해주세요', err_phone:'핸드폰 번호를 입력해주세요', err_code:'업체 코드를 입력해주세요',
     hero_title:'한국어로 안전하게 일해요',
-    hero_sub:'매일 5분 · 오늘 배운 말을 내일 현장에서 써요',
+    hero_sub:'하루 3문장 · 단어와 함께 익히고 현장에서 바로 써요',
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
-    steps:['목표','듣기','들어보세요','패턴드릴','말해봐요','퀴즈','완료'],
-    step_hints:['오늘 배울 것','대화를 들어봐요','단어를 분해해요','패턴을 연습해요','직접 말해봐요','퀴즈','완료!'],
+    steps:['오늘의 문장','문장 1','문장 2','문장 3','말해봐요','퀴즈','완료'],
+    step_hints:['3개 문장을 확인해요','첫 번째 문장 + 단어','두 번째 문장 + 단어','세 번째 문장 + 단어','직접 말해봐요','이해도 확인','완료!'],
   },
   uz:{
     tab_login:'Kirish', tab_ind:'Shaxsiy', tab_co:'Korxona',
@@ -2617,8 +2707,8 @@ const STRINGS = {
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
     lbl_progress:'Mening progressim',
     lbl_profile:"Mening o'quv holatim",
-    steps:['Maqsad','Tinglang','Tahlil','Mashq','Gapiring','Test','Tugadi'],
-    step_hints:['Bugungi maqsad','Suhbatni eshiting',"So'zlarni tahlil qiling",'Shaklni mashq qiling',"O'zingiz ayting",'Test','Tugadi!'],
+    steps:["Bugungi gaplar",'1-gap','2-gap','3-gap','Gapiring','Test','Tugadi'],
+    step_hints:["3 ta gapni ko'ring",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"O'zingiz ayting",'Test','Tugadi!'],
   },
   vi:{
     tab_login:'Đăng nhập', tab_ind:'Cá nhân', tab_co:'Công ty',
@@ -2636,8 +2726,8 @@ const STRINGS = {
     lbl_curriculum:'📅 Chương trình MVP 3 tuần (Ngày 1–21)',
     lbl_progress:'Tiến độ của tôi',
     lbl_profile:'Tình trạng học tập của tôi',
-    steps:['Mục tiêu','Nghe','Phân tích','Luyện tập','Nói','Kiểm tra','Xong'],
-    step_hints:['Mục tiêu hôm nay','Nghe hội thoại','Phân tích từ vựng','Luyện mẫu câu','Tự nói','Kiểm tra','Xong!'],
+    steps:['Câu hôm nay','Câu 1','Câu 2','Câu 3','Nói','Kiểm tra','Xong'],
+    step_hints:['Xem 3 câu mục tiêu','Câu 1 + từ vựng','Câu 2 + từ vựng','Câu 3 + từ vựng','Tự nói','Kiểm tra','Xong!'],
   },
   ne:{
     tab_login:'लगइन', tab_ind:'व्यक्तिगत', tab_co:'कम्पनी',
@@ -2655,8 +2745,8 @@ const STRINGS = {
     lbl_curriculum:'📅 MVP ३ हप्ताको पाठ्यक्रम (दिन १–२१)',
     lbl_progress:'मेरो प्रगति',
     lbl_profile:'मेरो अध्ययन अवस्था',
-    steps:['लक्ष्य','सुन्नुस्','विश्लेषण','अभ्यास','बोल्नुस्','परीक्षा','सकियो'],
-    step_hints:['आजको लक्ष्य','कुराकानी सुन्नुस्','शब्द विश्लेषण','ढाँचा अभ्यास','आफैं बोल्नुस्','परीक्षा','सकियो!'],
+    steps:['आजका वाक्य','वाक्य १','वाक्य २','वाक्य ३','बोल्नुस्','परीक्षा','सकियो'],
+    step_hints:['३ वाक्य हेर्नुस्','वाक्य १ + शब्द','वाक्य २ + शब्द','वाक्य ३ + शब्द','आफैं बोल्नुस्','परीक्षा','सकियो!'],
   },
   kk:{
     tab_login:'Кіру', tab_ind:'Жеке', tab_co:'Кәсіпорын',
@@ -2674,8 +2764,8 @@ const STRINGS = {
     lbl_curriculum:'📅 MVP 3 аптаның оқу бағдарламасы (1–21-күн)',
     lbl_progress:'Менің үлгерімім',
     lbl_profile:'Оқу жағдайым',
-    steps:['Мақсат','Тыңдаңыз','Талдау','Жаттығу','Сөйлеңіз','Тест','Аяқталды'],
-    step_hints:['Бүгінгі мақсат','Сұхбатты тыңдаңыз','Сөздерді талдаңыз','Үлгіні жаттықтырыңыз','Өзіңіз айтыңыз','Тест','Аяқталды!'],
+    steps:['Бүгінгі сөйлемдер','Сөйлем 1','Сөйлем 2','Сөйлем 3','Сөйлеңіз','Тест','Аяқталды'],
+    step_hints:['3 сөйлемді қараңыз','1-сөйлем + сөздер','2-сөйлем + сөздер','3-сөйлем + сөздер','Өзіңіз айтыңыз','Тест','Аяқталды!'],
   },
   tet:{
     tab_login:'Tama', tab_ind:'Individuál', tab_co:'Kompañia',
@@ -2693,8 +2783,8 @@ const STRINGS = {
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
     lbl_progress:"Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
-    steps:['Meta','Rona','Analiza','Prátika',"Ko'alia",'Teste','Remata'],
-    step_hints:['Meta ohin nian','Rona diálogu','Analiza liafuan','Prátika padrãun',"Ko'alia rasik",'Teste','Remata!'],
+    steps:['Fraze ohin','Fraze 1','Fraze 2','Fraze 3',"Ko'alia",'Teste','Remata'],
+    step_hints:['Haree fraze 3','Fraze 1 + liafuan','Fraze 2 + liafuan','Fraze 3 + liafuan',"Ko'alia rasik",'Teste','Remata!'],
   },
   ru:{
     tab_login:'Войти', tab_ind:'Личный', tab_co:'Предприятие',
@@ -2712,8 +2802,8 @@ const STRINGS = {
     lbl_curriculum:'📅 Учебная программа MVP 3 недели (День 1–21)',
     lbl_progress:'Мой прогресс',
     lbl_profile:'Мой статус обучения',
-    steps:['Цель','Слушать','Разбор','Практика','Говорить','Тест','Готово'],
-    step_hints:['Цель сегодня','Слушайте диалог','Разбор слов','Практикуйте шаблон','Говорите сами','Тест','Готово!'],
+    steps:['Фразы дня','Фраза 1','Фраза 2','Фраза 3','Говорить','Тест','Готово'],
+    step_hints:['Смотрите 3 фразы','Фраза 1 + слова','Фраза 2 + слова','Фраза 3 + слова','Говорите сами','Тест','Готово!'],
   },
   en:{
     tab_login:'Login', tab_ind:'Individual', tab_co:'Company',
@@ -2731,8 +2821,8 @@ const STRINGS = {
     lbl_curriculum:'📅 MVP 3-week curriculum (Day 1–21)',
     lbl_progress:'My progress',
     lbl_profile:'My learning status',
-    steps:['Goal','Listen','Break down','Pattern drill','Speak','Quiz','Done'],
-    step_hints:["Today's goal",'Listen to dialogue','Break down words','Practice pattern','Speak yourself','Quiz','Done!'],
+    steps:["Today's phrases",'Phrase 1','Phrase 2','Phrase 3','Speak','Quiz','Done'],
+    step_hints:["See today's 3 phrases",'Phrase 1 + words','Phrase 2 + words','Phrase 3 + words','Speak yourself','Quiz','Done!'],
   },
 };
 
@@ -3120,161 +3210,111 @@ function renderLesson(){
   document.getElementById('stepHint').textContent=uz?STEP_HINTS_UZ[s]:STEP_HINTS_KO[s];
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
-  if(s===0) rGoal(d,el,uz);
-  else if(s===1) rListen(d,el,uz);
-  else if(s===2) rWords(d,el,uz);
-  else if(s===3) rDrill(d,el,uz);
+  if(s===0) rSentences(d,el,uz);
+  else if(s===1) rSentStudy(d,el,uz,0);
+  else if(s===2) rSentStudy(d,el,uz,1);
+  else if(s===3) rSentStudy(d,el,uz,2);
   else if(s===4) rSpeak(d,el,uz);
   else if(s===5) rQuiz(d,el,uz);
   else if(s===6) rResult(d,el,uz);
 }
 
-// ── Step 0: 목표 (Goal) ──
-function rGoal(d,el,uz){
-  const g=d.goal;
+// ── Step 0: 오늘의 문장 (3 sentences overview) ──
+function rSentences(d,el,uz){
+  // Use speak[0..2].phrase/uz as the 3 target sentences
+  const speaks = d.speak||[];
+  const sentences = [0,1,2].map(i=>{
+    if(speaks[i]) return {ko:speaks[i].phrase, tr:speaks[i].uz||''};
+    // fallback to goal.can
+    const c=d.goal.can[i]||'';
+    return {ko: typeof c==='object'?c.ko:c, tr: typeof c==='object'?c.uz:''};
+  });
   el.innerHTML=`
-    <div class="goal-box">
-      <div class="g-label">오늘 이 말을 할 수 있어요 / Bugun buni ayta olasiz</div>
-      <div class="g-ko">"${uz?g.uz:g.ko}"</div>
-      <div class="g-uz">${uz?g.ko:g.uz}</div>
-      <div class="g-level">🏷 ${d.level} 수준</div>
-      ${d.ncs?`<div style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;
-        background:#E8F4FD;border:1px solid var(--blue-m);border-radius:12px;
-        padding:4px 12px;font-size:10px;font-weight:700;color:var(--blue-m)">
-        📐 NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
-    </div>
-    <div class="info" style="margin-bottom:12px">
-      오늘 배우면 말할 수 있는 표현들 / Bugun o'rganib, ayta oladigan gaplar:
-      ${g.can.map((c,ci)=>{
-        const ko = typeof c==='object' ? c.ko : c;
-        const tr = typeof c==='object' ? c.uz : '';   // 자국어 번역은 항상 uz
-        return `<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:6px 8px;
-          background:var(--bg);border-radius:10px">
-          <button id="spk-g${ci}" onclick="sayBtn('spk-g${ci}',${jq(ko)})"
-            style="background:none;border:none;font-size:20px;cursor:pointer;padding:0;
-            flex-shrink:0;line-height:1" title="듣기">🔊</button>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:800;font-size:15px;color:var(--text)">${ko}</div>
-            ${tr?`<div style="font-size:12px;color:var(--muted);margin-top:1px;font-style:italic">${tr}</div>`:''}
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">오늘 배울 3문장</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">버튼을 눌러 발음을 들어보세요</div>
+      ${sentences.map((s,i)=>`
+        <div class="sent-card" onclick="sayBtn('spk-s${i}',${jq(s.ko)},'speak')">
+          <div class="sent-num">${i+1}</div>
+          <div class="sent-body">
+            <div class="sent-ko">${s.ko}</div>
+            ${s.tr?`<div class="sent-tr">${s.tr}</div>`:''}
           </div>
-        </div>`;
-      }).join('')}
-    </div>
-    <button class="btn red" onclick="next()">대화 듣기 → / Suhbatni eshiting</button>
-  `;
-}
-
-// ── Step 1: 듣기 (Listen) ──
-function rListen(d,el,uz){
-  const l=d.listen;
-  const allTexts = l.bubbles.map(b=>b.ko);
-  el.innerHTML=`
-    <div class="listen-box">
-      <div class="scene">${l.ctx.split(' ')[0]}</div>
-      <div class="ctx-tag">${l.ctx}</div>
-      ${l.bubbles.map((b,bi)=>{
-        const role = b.side==='left' ? 'manager' : 'worker';
-        return `
-        <div class="bubble-row ${b.side}">
-          <div class="bubble-avatar">${b.who}</div>
-          <div class="bubble-body">
-            <div class="bubble-name">${b.name}</div>
-            <div style="display:flex;align-items:flex-start;gap:6px">
-              <button id="spk-b${bi}" onclick="sayBtn('spk-b${bi}',${jq(b.ko)},'dialogue','${role}')"
-                style="background:rgba(255,255,255,.9);border:none;font-size:18px;cursor:pointer;
-                padding:0;flex-shrink:0;line-height:1;margin-top:2px" title="이 문장 듣기">🔊</button>
-              <div>
-                <div class="bubble-text" style="margin-bottom:3px">${b.ko}</div>
-                <div class="bubble-uz">${b.uz}</div>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      }).join('')}
-      <div class="listen-hint">버튼을 눌러 들어봐요 / Gaplar yonidagi tugmani bosing</div>
-    </div>
-    <button class="btn red" id="btn-listen-all" style="margin-bottom:8px"
-      onclick="saySeq(${jq(allTexts)},'dialogue','btn-listen-all')">전체 듣기 / Hammasini eshitish</button>
-    <button class="btn gray" onclick="next()">다음 → 단어 / Davom: So'zlar</button>
-  `;
-}
-
-// ── Step 2: 들어보세요 (Word breakdown) ──
-function rWords(d,el,uz){
-  el.innerHTML=`
-    <div class="info">단어를 눌러서 발음을 들어봐요 / So'zni bosib talaffuzni eshiting</div>
-    <div class="word-cards">
-      ${d.words.map((w,i)=>`
-        <div class="word-card" id="wc${i}" onclick="playW(${i},${jq(w.ko)})">
-          <div class="wc-left">
-            <div class="wc-ko">${w.e} ${w.ko}</div>
-            <div class="wc-syl">${w.syl}</div>
-          </div>
-          <div class="wc-right">
-            <div class="wc-rom">[${w.rom}]</div>
-            <div class="wc-uz">${w.uz}</div>
-            <div class="wc-ex">▸ ${w.ex}</div>
-          </div>
-          <div class="wc-play">▶</div>
+          <button class="sent-play" id="spk-s${i}" onclick="event.stopPropagation();sayBtn('spk-s${i}',${jq(s.ko)},'speak')">▶</button>
         </div>
       `).join('')}
     </div>
-    <button class="btn red" onclick="next()">다음 → 패턴 연습 / Davom: Namuna</button>
+    ${d.ncs?`<div style="display:inline-flex;align-items:center;gap:5px;
+      background:var(--blue-l);border:1px solid var(--blue-m);border-radius:10px;
+      padding:5px 12px;font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:12px">
+      NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
+    <button class="btn red" onclick="next()">문장 1 학습하기 →</button>
   `;
 }
-function playW(i,text){
-  document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
-  const el=document.getElementById('wc'+i); if(el) el.classList.add('playing');
-  say(text,()=>{const e=document.getElementById('wc'+i);if(e)e.classList.remove('playing')},'word');
-}
 
-// ── Step 3: 패턴 드릴 ──
-function rDrill(d,el,uz){
-  const p=d.pattern;
-  const di=ST.drillIdx;
-  if(di>=p.drills.length){
-    el.innerHTML=`
-      <div class="pattern-box" style="text-align:center;padding:24px">
-        <div style="font-size:48px;margin-bottom:10px">+1</div>
-        <div style="font-size:18px;font-weight:800;color:var(--blue)">패턴 완료! / Namuna tugadi!</div>
-      </div>
-      <button class="btn red" onclick="ST.speakIdx=0;next()">다음 → 말해봐요 / Davom: Gapirish</button>
-    `;
-    return;
+// ── Steps 1-3: 문장 학습 (sentence + vocabulary) ──
+function rSentStudy(d,el,uz,sentIdx){
+  const speaks = d.speak||[];
+  const sp = speaks[sentIdx];
+  const phrase = sp ? sp.phrase : (d.goal.can[sentIdx]||'');
+  const phraseKo = typeof phrase==='object' ? phrase.ko : phrase;
+  const phraseTr = sp ? (sp.uz||'') : (typeof phrase==='object' ? phrase.uz : '');
+
+  // Distribute words evenly, no overlap
+  const words = d.words||[];
+  const total = words.length;
+  let myWords = [];
+  if(total===0){ myWords=[]; }
+  else {
+    const perStep = Math.floor(total/3);
+    const extra = total % 3;
+    const start = sentIdx * perStep + Math.min(sentIdx, extra);
+    const end   = start + perStep + (sentIdx < extra ? 1 : 0);
+    myWords = words.slice(start, end);
   }
-  const dr=p.drills[di];
+
+  const isLast = sentIdx===2;
+  const nextLabel = isLast ? '말하기 연습 →' : `문장 ${sentIdx+2} 학습하기 →`;
+
   el.innerHTML=`
-    <div class="pattern-box">
-      <div class="pat-label">📐 ${uz?p.labelUz:p.labelKo}</div>
-      <div class="pat-template" style="color:var(--muted);font-size:15px;margin-bottom:8px">
-        ${p.template} <span style="font-size:12px">(${p.desc.split('·')[uz?1:0].trim()})</span>
-      </div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:10px">
-        패턴 ${di+1} / ${p.drills.length} — 누르면 소리가 나요 / Bosing, ovoz chiqadi
-      </div>
-      <div class="drill-items">
-        ${p.drills.map((dr2,i)=>`
-          <div class="drill-item ${i===di?'playing':''}" id="di${i}" onclick="playDrill(${i},${jq(dr2.full)})">
-            <div>
-              <div class="di-full">${dr2.full}</div>
-              <div class="di-uz">${dr2.uz}</div>
+    <div class="sent-study-box">
+      <div class="ssb-badge">문장 ${sentIdx+1} / 3</div>
+      <div class="ssb-ko">${phraseKo}</div>
+      ${phraseTr?`<div class="ssb-tr">${phraseTr}</div>`:''}
+      <button class="ssb-play-btn" id="ssb-play-${sentIdx}" onclick="sayBtn('ssb-play-${sentIdx}',${jq(phraseKo)},'speak')">
+        ▶ 발음 듣기
+      </button>
+    </div>
+    ${myWords.length>0?`
+      <div class="vocab-label">이 문장의 핵심 단어</div>
+      <div class="word-cards">
+        ${myWords.map((w,i)=>`
+          <div class="word-card" id="wc${sentIdx}_${i}" onclick="playW2('${sentIdx}_${i}',${jq(w.ko)})">
+            <div class="wc-left">
+              <div class="wc-ko">${w.ko}</div>
+              <div class="wc-syl">${w.syl}</div>
             </div>
-            <div class="di-play">${i===di?'▶️':i<di?'✅':'○'}</div>
+            <div class="wc-right">
+              <div class="wc-rom">[${w.rom}]</div>
+              <div class="wc-uz">${w.uz}</div>
+              <div class="wc-ex">▸ ${w.ex}</div>
+            </div>
+            <div class="wc-play">▶</div>
           </div>
         `).join('')}
       </div>
-    </div>
-    <button class="btn red" onclick="ST.drillIdx++;renderLesson()">
-      ${di<p.drills.length-1 ? '다음 패턴 → / Keyingi namuna' : '다음 단계 → / Keyingi bosqich'}
-    </button>
-    ${di>0?`<button class="btn gray" onclick="ST.drillIdx--;renderLesson()">← 이전 / Oldingi</button>`:''}
+    `:''}
+    <button class="btn red" style="margin-top:4px" onclick="ST.speakIdx=0;next()">${nextLabel}</button>
+    <button class="btn gray" style="margin-top:6px" onclick="ST.step--;renderLesson()">← 이전</button>
   `;
 }
-function playDrill(i,text){
-  document.querySelectorAll('.drill-item').forEach(x=>x.classList.remove('playing'));
-  const el=document.getElementById('di'+i); if(el)el.classList.add('playing');
-  say(text,()=>{const e=document.getElementById('di'+i);if(e)e.classList.remove('playing')},'drill');
+function playW2(id,text){
+  document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
+  const el=document.getElementById('wc'+id); if(el) el.classList.add('playing');
+  say(text,()=>{const e=document.getElementById('wc'+id);if(e)e.classList.remove('playing')},'word');
 }
+// Keep playW alias for compatibility
+function playW(i,text){ playW2(i,text); }
 
 // ── Step 4: 말해봐요 (Speak + 발음 인식) ──
 function rSpeak(d,el,uz){
