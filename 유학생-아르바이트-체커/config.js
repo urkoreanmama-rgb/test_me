@@ -1,8 +1,8 @@
 // ============================================================
 //  Supabase 설정 — 아래 두 값을 본인 프로젝트 값으로 교체하세요
 // ============================================================
-const SUPABASE_URL      = 'https://YOUR-PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+const SUPABASE_URL      = 'https://jtbcudkyitfkwfgusgph.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_9-oDKxiELH_30sO5C4-_VQ_4xF-FYRD';
 
 // 관리자 대시보드 비밀번호 (admin.html 접근 시 사용)
 const ADMIN_PASSWORD = 'admin1234';
