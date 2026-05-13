@@ -1474,10 +1474,6 @@ body.in-lesson #mainHdr{display:none!important}
     </div>
   </div>
   <div class="sbar" id="sbar"></div>
-  <div class="step-lbl">
-    <span class="step-name" id="stepName"></span>
-    <span class="step-hint" id="stepHint"></span>
-  </div>
   <div class="lesson-2col" id="lesson2col">
     <div class="lesson-ref" id="lref" style="display:none"></div>
     <div class="lbody lbody-inner" id="lcontent"></div>
@@ -2800,13 +2796,10 @@ function renderLesson(){
   const uz = ST.lang==='uz';
   document.getElementById('lTitle').textContent=`Day ${d.day}: ${uz?d.titleUz:d.titleKo}`;
   document.getElementById('lSub').textContent=uz?(d.subUz||d.sentence?.uz||''):(d.subKo||d.sentence?.ko||'');
-  // step bar
-  document.getElementById('sbar').innerHTML=STEPS.map((_,i)=>
-    `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
+  // step bar — 9-step 배열 기준으로 dot 개수 맞춤
   const _langSteps=(STRINGS[getUILang()]||STRINGS.ko).steps||STEPS;
-  const _langHints=(STRINGS[getUILang()]||STRINGS.ko).step_hints||STEP_HINTS_KO;
-  document.getElementById('stepName').textContent=_langSteps[s]||STEPS[s];
-  document.getElementById('stepHint').textContent=_langHints[s]||STEP_HINTS_KO[s];
+  document.getElementById('sbar').innerHTML=_langSteps.map((_,i)=>
+    `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
 
   // ── PC 2열: 좌측 참고 패널 ──────────────────────────
   const refEl=document.getElementById('lref');
@@ -2943,10 +2936,7 @@ function rFlashcard(d,el,uz){
        <button class="ssb-play-btn" style="margin-top:10px;font-size:12px" id="fc-play-btn"
          onclick="event.stopPropagation();sayBtn('fc-play-btn',${jq(w.ko)},'word')">${t('lsn_play')}</button>`;
   el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[1]}</div>
-      <div class="act-prog">${prog} <span class="act-score">✅ ${fc.known}</span></div>
-    </div>
+    <div style="text-align:right;font-size:12px;color:var(--muted);font-weight:700;padding:2px 0 4px">${prog} <span class="act-score">✅ ${fc.known}</span></div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${tipText}</div>
     <div class="fc-wrap">
       <div class="fc-card" id="fc-card" onclick="flipCard()">
@@ -2999,10 +2989,7 @@ function rMatching(d,el,uz){
   const koItems=shuffle([...m.items]);
   const uzItems=shuffle([...m.items]);
   el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[3]}</div>
-      <div class="act-prog">${m.matched.length}/${m.items.length} ${t('lsn_match_prog')}</div>
-    </div>
+    <div style="text-align:right;font-size:12px;color:var(--muted);font-weight:700;padding:2px 0 4px">${m.matched.length}/${m.items.length} ${t('lsn_match_prog')}</div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
       ${t('lsn_match_instr')}
     </div>
@@ -3079,9 +3066,6 @@ function rSentBuilder(d,el,uz){
     // 결과 화면
     const isOk=sb.correct;
     el.innerHTML=`
-      <div class="act-header">
-        <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[4]}</div>
-      </div>
       <div class="act-complete" style="margin-bottom:14px">
         <div style="font-size:32px">${isOk?'🎉':'💪'}</div>
         <div class="act-complete-msg">${isOk?t('lsn_match_ok'):t('lsn_match_no')}</div>
@@ -3108,9 +3092,6 @@ function rSentBuilder(d,el,uz){
   }).join('');
 
   el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[4]}</div>
-    </div>
     <div class="sb-ref">
       <div class="sb-ref-label">${t('lsn_sb_title')}</div>
       <div class="sb-ref-text">${sent.uz||''}</div>
@@ -3184,10 +3165,7 @@ function rSentPractice(d,el,uz){
   if(sp.phase===0){
     // Phase 0: 문장 듣고 뜻 고르기
     el.innerHTML=`
-      <div class="act-header">
-        <div class="act-badge">${t('lsn_sp_badge1')}</div>
-        <div class="act-prog">${t('lsn_sp_goal')}</div>
-      </div>
+      <div style="text-align:right;font-size:11px;color:var(--muted);font-weight:700;padding:2px 0 4px">1/2</div>
       <div class="act-play-wrap">
         <button class="act-play-btn" id="sp-btn" onclick="sayBtn('sp-btn',${jq(sent.ko)},'speak')">▶</button>
         <div class="act-instruct">${t('lsn_sp_instr')}</div>
@@ -3204,10 +3182,7 @@ function rSentPractice(d,el,uz){
   } else {
     // Phase 1: 문장 읽고 따라 말하기 (재생 → 완료)
     el.innerHTML=`
-      <div class="act-header">
-        <div class="act-badge">${t('lsn_sp_badge2')}</div>
-        <div class="act-prog">${t('lsn_sp_repeat')}</div>
-      </div>
+      <div style="text-align:right;font-size:11px;color:var(--muted);font-weight:700;padding:2px 0 4px">2/2</div>
       <div style="background:linear-gradient(145deg,#0284C7,#0EA5E9);border-radius:var(--r);
         padding:20px;color:#fff;text-align:center;margin-bottom:16px">
         <div style="font-size:22px;font-weight:900;margin-bottom:6px">${sent.ko}</div>
@@ -3253,24 +3228,13 @@ function rListenPick(d,el,uz){
     ST._act={type:'word2',items:shuffle([...allW]).slice(0,Math.min(4,allW.length)),idx:0,score:0};
   }
   const act=ST._act;
-  if(act.idx>=act.items.length){
-    el.innerHTML=`
-      <div class="act-complete">
-        <div class="act-score-big">${act.score}<span style="font-size:24px;font-weight:500;color:var(--muted)">/${act.items.length}</span></div>
-        <div class="act-complete-msg">${t('lsn_lp_done')}</div>
-        <div class="act-complete-sub">${t('lsn_lp_score')} ${act.score} / ${act.items.length}</div>
-      </div>
-      <button class="btn red" data-adv onclick="ST._act=null;next()">${t('lsn_next_quiz')}</button>`;
-    return;
-  }
+  // 완료 시 바로 다음 단계로 자동 이동 (요약 화면 없음)
+  if(act.idx>=act.items.length){ST._act=null;next();return;}
   const target=act.items[act.idx];
   const distractors=shuffle(allW.filter(w=>w.ko!==target.ko)).slice(0,3);
   const options=shuffle([target,...distractors]);
   el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[2]}</div>
-      <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
-    </div>
+    <div style="text-align:right;font-size:12px;color:var(--muted);font-weight:700;padding:2px 0 4px">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}✅</span></div>
     <div class="act-play-wrap">
       <button class="act-play-btn" id="lp-btn" onclick="sayBtn('lp-btn',${jq(target.ko)},'word')">▶</button>
       <div class="act-instruct">${t('lsn_lp_instr')}</div>
@@ -3285,8 +3249,7 @@ function rListenPick(d,el,uz){
     </div>
     <div id="act-fb" class="act-fb"></div>
     <button id="act-next" class="btn red" style="display:none;margin-top:8px"
-      onclick="ST._act.idx++;renderLesson()">
-      ${act.idx+1>=act.items.length?'결과 보기':'다음 단어 →'}</button>`;
+      onclick="ST._act.idx++;renderLesson()">${t('lsn_sp_next')}</button>`;
   setTimeout(()=>sayBtn('lp-btn',target.ko,'word'),400);
 }
 function answerLP(btn,chosen,correct){
@@ -3296,13 +3259,13 @@ function answerLP(btn,chosen,correct){
   if(chosen===correct){
     btn.classList.add('ok');
     ST._act.score++;
-    fb.textContent='정답! / To\'g\'ri!'; fb.className='act-fb ok';
+    if(fb){fb.textContent=t('lsn_match_ok');fb.className='act-fb ok';}
   } else {
     btn.classList.add('no');
     document.querySelectorAll('.act-opt').forEach(b=>{
       if((b.getAttribute('data-ko')||'').trim()===correct.trim()) b.classList.add('ok');
     });
-    fb.innerHTML=`❌ 정답: <strong>${correct}</strong>`; fb.className='act-fb no';
+    if(fb){fb.innerHTML=`${t('lsn_match_no')} → <strong>${correct}</strong>`;fb.className='act-fb no';}
   }
   if(nxt) nxt.style.display='';
 }
