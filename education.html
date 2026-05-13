@@ -27,8 +27,8 @@
   --blue-l: #E0F2FE;   /* blue-100  — light bg accent */
 
   /* ── Status / Semantic ── */
-  --green:  #059669;   /* emerald-600 — success / pass */
-  --green-l:#D1FAE5;   /* emerald-100 */
+  --green:  #0284C7;   /* sky-600 — success / pass */
+  --green-l:#E0F2FE;   /* sky-100 */
   --orange: #D97706;   /* amber-600   — caution */
   --orange-l:#FEF3C7;
   --red:    #DC2626;   /* red-600     — danger / alert */
@@ -113,7 +113,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .prog-card h3{font-size:11px;color:var(--muted);margin-bottom:8px;
   text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 .pbar{background:var(--border);border-radius:10px;height:8px;overflow:hidden;margin-bottom:5px}
-.pfill{height:100%;background:linear-gradient(90deg,var(--green),#34d399);
+.pfill{height:100%;background:linear-gradient(90deg,#0284C7,#38BDF8);
   border-radius:10px;transition:width .5s}
 .ptxt{font-size:11px;color:var(--muted);text-align:right}
 
@@ -305,7 +305,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .fc-prog{text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .fc-btns{display:flex;gap:10px;justify-content:center;margin-top:14px}
 .fc-btn-again{flex:1;background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
-.fc-btn-know{flex:1;background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
+.fc-btn-know{flex:1;background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
 
 /* ── Matching Game (Step 2) ── */
 .match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -315,7 +315,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .match-item{padding:13px 10px;border-radius:10px;text-align:center;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.3}
 .match-item.uz{font-size:12px;color:var(--ink-m);font-weight:600}
 .match-item.selected{border-color:var(--blue-m);background:var(--blue-l);color:var(--blue-d);transform:scale(1.03)}
-.match-item.correct{border-color:#22C55E;background:#DCFCE7;color:#15803D;pointer-events:none}
+.match-item.correct{border-color:#0EA5E9;background:#E0F2FE;color:#0369A1;pointer-events:none}
 .match-item.wrong{border-color:var(--red);background:#FEE2E2;animation:mshake .3s}
 .match-item.matched{visibility:hidden;pointer-events:none}
 @keyframes mshake{0%,100%{transform:translateX(0)}30%{transform:translateX(-7px)}70%{transform:translateX(7px)}}
@@ -414,11 +414,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   cursor:pointer;font-size:13px;transition:all .2s;text-align:left;background:var(--card)
 }
 .qopt:hover{border-color:var(--blue-m);background:var(--blue-l)}
-.qopt.ok{border-color:var(--green);background:var(--green-l);color:#065F46;font-weight:700}
+.qopt.ok{border-color:var(--green);background:var(--green-l);color:#0369A1;font-weight:700}
 .qopt.no{border-color:var(--red);background:var(--red-l);color:var(--red-d)}
 .qopt.off{cursor:not-allowed}
 .qfb{margin-top:10px;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:600;display:none}
-.qfb.ok{background:var(--green-l);color:#065F46;border:1.5px solid var(--green)}
+.qfb.ok{background:var(--green-l);color:#0369A1;border:1.5px solid var(--green)}
 .qfb.no{background:var(--red-l);color:var(--red-d);border:1.5px solid var(--red)}
 
 /* ── Result ── */
@@ -428,8 +428,8 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .rscore.g{color:var(--green)}.rscore.m{color:var(--orange)}.rscore.b{color:var(--red)}
 .rmsg{font-size:17px;font-weight:700;margin-bottom:5px;color:var(--ink)}
 .rsub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.rpass{background:var(--green-l);border:1.5px solid #6EE7B7;border-radius:10px;
-  padding:11px;font-size:12px;color:#065F46;margin-bottom:16px}
+.rpass{background:var(--green-l);border:1.5px solid #7DD3FC;border-radius:10px;
+  padding:11px;font-size:12px;color:#0369A1;margin-bottom:16px}
 
 /* Buttons */
 .btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;
@@ -524,7 +524,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .wk-label span:last-child{color:var(--muted)}
 .wk-bar{background:var(--border);border-radius:6px;height:7px;overflow:hidden}
 .wk-fill{height:100%;border-radius:6px;transition:width .5s}
-.wk-fill.w1{background:linear-gradient(90deg,var(--green),#34d399)}
+.wk-fill.w1{background:linear-gradient(90deg,#0284C7,#38BDF8)}
 .wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),#7DD3FC)}
 
 .session-list{background:var(--card);border-radius:var(--r);padding:14px;
@@ -537,7 +537,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .sess-day{font-size:13px;font-weight:700;color:var(--ink)}
 .sess-date{font-size:11px;color:var(--muted);margin-top:1px}
 .sess-score{font-size:13px;font-weight:700;padding:3px 9px;border-radius:10px}
-.sess-score.good{background:var(--green-l);color:#065F46}
+.sess-score.good{background:var(--green-l);color:#0369A1}
 .sess-score.mid{background:var(--orange-l);color:#92400E}
 .sess-score.low{background:var(--red-l);color:var(--red-d)}
 
@@ -651,7 +651,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .gmode-card .gmc-name{font-size:12px;font-weight:800;color:var(--ink);line-height:1.3}
 .gmode-card .gmc-desc{font-size:10px;color:var(--muted);line-height:1.4}
 .gmode-card.m1{border-top:3px solid var(--blue-m)}
-.gmode-card.m2{border-top:3px solid var(--green)}
+.gmode-card.m2{border-top:3px solid var(--blue-m)}
 .gmode-card.m3{border-top:3px solid var(--orange)}
 .gmode-card.m4{border-top:3px solid var(--red)}
 
@@ -684,7 +684,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-height:70px;gap:4px;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .gopt:hover:not(.off){border-color:var(--blue-m);background:var(--blue-l);transform:scale(1.02)}
-.gopt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#065F46}
+.gopt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#0369A1}
 .gopt.no{border-color:var(--red)!important;background:var(--red-l)!important;color:var(--red-d)}
 .gopt.off{cursor:not-allowed}
 .gopt .go-e{font-size:40px;display:block}
@@ -693,7 +693,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
 .gq-fb{display:none;border-radius:10px;padding:11px 14px;text-align:center;
   font-size:13px;font-weight:700;margin-bottom:8px;border:1.5px solid}
-.gq-fb.ok{background:var(--green-l);color:#065F46;border-color:var(--green)}
+.gq-fb.ok{background:var(--green-l);color:#0369A1;border-color:var(--green)}
 .gq-fb.no{background:var(--red-l);color:var(--red-d);border-color:var(--red)}
 
 .gr-card{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;
@@ -753,7 +753,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:3px
 }
 .act-opt:hover:not([disabled]){border-color:var(--blue-m);background:var(--blue-l)}
-.act-opt.ok{border-color:var(--green)!important;background:var(--green-l)!important}
+.act-opt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#0369A1}
 .act-opt.no{border-color:var(--red)!important;background:var(--red-l)!important}
 .act-opt[disabled]{cursor:not-allowed}
 .act-opt-ko{font-size:15px;font-weight:800;color:var(--ink)}
@@ -770,7 +770,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .act-opt-playbtn:hover{transform:scale(1.08)}
 .act-fb{display:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:700;
   margin-bottom:4px;border:1.5px solid}
-.act-fb.ok{display:block;background:var(--green-l);color:#065F46;border-color:var(--green)}
+.act-fb.ok{display:block;background:var(--green-l);color:#0369A1;border-color:var(--green)}
 .act-fb.no{display:block;background:var(--red-l);color:var(--red-d);border-color:var(--red)}
 .act-complete{text-align:center;padding:28px 18px;background:var(--card);
   border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:14px;
@@ -862,7 +862,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .stamp.earned{border-color:#0EA5E9!important;background:#E0F2FE!important;}
 
 /* Progress bars */
-.pfill{background:linear-gradient(90deg,#10B981,#34D399)!important;}
+.pfill{background:linear-gradient(90deg,#0284C7,#38BDF8)!important;}
 .gpbar-fill{background:linear-gradient(90deg,#0EA5E9,#38BDF8)!important;}
 .wk-fill.w2{background:linear-gradient(90deg,#0EA5E9,#38BDF8)!important;}
 
@@ -1335,7 +1335,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="hero">
       <div class="e">🗣️</div>
       <h2 id="heroT" data-i18n="hero_title">한국어로 안전하게 일해요</h2>
-      <p id="heroP" data-i18n="hero_sub">매일 5분 · 오늘 배운 말을 내일 현장에서 써요</p>
+      <div id="homeLangRow" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap"></div>
     </div>
 
     <div class="slabel" data-i18n="lbl_curriculum">📅 1개월 안전 한국어 과정 (Day 1–20, 하루 5분)</div>
@@ -1872,12 +1872,26 @@ const STRINGS = {
     err_login:'아이디 또는 비밀번호가 틀렸어요',
     err_name:'이름을 입력해주세요', err_phone:'핸드폰 번호를 입력해주세요', err_code:'업체 코드를 입력해주세요',
     hero_title:'한국어로 안전하게 일해요',
-    hero_sub:'하루 3문장 · 단어와 함께 익히고 현장에서 바로 써요',
+    hero_sub:'',
+    lsn_listen_tip:'오늘의 문장을 듣고, 단어를 배워봐요',
+    lsn_next_fc:'플래시카드로 외우기 →',lsn_fc_tip:'카드를 탭하면 뒤집혀요',
+    lsn_fc_done:'플래시카드 완료!',lsn_fc_known:'알고 있는 단어:',
+    lsn_next_match:'매칭 게임 →',lsn_match_done:'매칭 완료!',lsn_match_errors:'틀린 횟수:',
+    lsn_match_instr:'한국어와 뜻을 연결하세요',lsn_match_prog:'완료',
+    lsn_match_ok:'✅ 맞아요!',lsn_match_no:'❌ 다시!',
+    lsn_next_lp:'단어 듣기 →',lsn_lp_done:'단어 듣기 완료!',lsn_lp_score:'맞힌 개수:',
+    lsn_lp_instr:'소리를 듣고 알맞은 단어를 고르세요',
+    lsn_next_quiz:'퀴즈 →',
+    lsn_sp_badge1:'문장 연습 · 1/2',lsn_sp_badge2:'문장 연습 · 2/2',
+    lsn_sp_goal:'뜻 고르기',lsn_sp_instr:'소리를 듣고 뜻을 고르세요',
+    lsn_sp_next:'다음 →',lsn_sp_done_msg:'문장 연습 완료!',
+    lsn_sp_follow:'소리를 듣고 따라 말해보세요',lsn_sp_repeat:'따라 말하기',
+    lsn_sp_done_btn:'완료 →',lsn_play:'▶ 발음 듣기',lsn_today_words:'오늘의 단어',
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
-    steps:['오늘의 문장','문장 1','문장 2','문장 3','소리→단어','소리→문장','번역→소리','퀴즈','완료'],
-    step_hints:['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','들은 문장 찾기','번역 보고 소리 찾기','이해도 확인','완료!'],
+    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 연습','퀴즈','완료'],
+    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','문장 익히기','이해도 확인','완료!'],
   },
   uz:{
     tab_login:'Kirish', tab_ind:'Shaxsiy', tab_co:'Korxona',
@@ -1891,12 +1905,26 @@ const STRINGS = {
     err_login:"Login yoki parol noto'g'ri",
     err_name:"Ismingizni kiriting", err_phone:"Telefon raqamini kiriting", err_code:"Korxona kodini kiriting",
     hero_title:"Koreys tilida xavfsiz ishlang",
-    hero_sub:"Har kuni 5 daqiqa · O'rgangan gapni ertaga ish joyida ishlating",
+    hero_sub:'',
+    lsn_listen_tip:"Bugungi gapni tinglang va so'zlarni o'rganing",
+    lsn_next_fc:"Kartochkalar bilan o'rganing →",lsn_fc_tip:"Kartochkani bosing — ag'dariladi",
+    lsn_fc_done:"Kartochkalar tugadi!",lsn_fc_known:"Bilgan so'zlar:",
+    lsn_next_match:"Moslashtirish →",lsn_match_done:"Moslashtirish tugadi!",lsn_match_errors:"Xatolar:",
+    lsn_match_instr:"Koreys va o'z tilini moslashtiring",lsn_match_prog:"tugadi",
+    lsn_match_ok:"✅ To'g'ri!",lsn_match_no:"❌ Qayta!",
+    lsn_next_lp:"Tinglash →",lsn_lp_done:"Tinglash tugadi!",lsn_lp_score:"To'g'ri javoblar:",
+    lsn_lp_instr:"Eshitib, to'g'ri so'zni toping",
+    lsn_next_quiz:"Test →",
+    lsn_sp_badge1:"Gap mashqi · 1/2",lsn_sp_badge2:"Gap mashqi · 2/2",
+    lsn_sp_goal:"Ma'no tanlash",lsn_sp_instr:"Gapni tinglang va ma'nosini toping",
+    lsn_sp_next:"Keyingi →",lsn_sp_done_msg:"Gap mashqi tugadi!",
+    lsn_sp_follow:"Gapni tinglang va takrorlang",lsn_sp_repeat:"Takrorlash",
+    lsn_sp_done_btn:"Tugadi →",lsn_play:"▶ Tinglash",lsn_today_words:"Bugungi so'zlar",
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
     lbl_progress:'Mening progressim',
     lbl_profile:"Mening o'quv holatim",
-    steps:["Bugungi gaplar",'1-gap','2-gap','3-gap',"So'z topish","Gap topish","Tarjima→ovoz",'Test','Tugadi'],
-    step_hints:["3 ta gap",'1-gap','2-gap','3-gap',"So'z topish","Gap topish","Tarjima→ovoz",'Test','Tugadi!'],
+    steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap mashqi","Test","Tugadi"],
+    step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap mashqi","Test savollari","Tugadi!"],
   },
   vi:{
     tab_login:'Đăng nhập', tab_ind:'Cá nhân', tab_co:'Công ty',
@@ -1910,12 +1938,26 @@ const STRINGS = {
     err_login:'Tên đăng nhập hoặc mật khẩu không đúng',
     err_name:'Vui lòng nhập họ tên', err_phone:'Vui lòng nhập số điện thoại', err_code:'Vui lòng nhập mã công ty',
     hero_title:'Làm việc an toàn bằng tiếng Hàn',
-    hero_sub:'Mỗi ngày 5 phút · Dùng từ đã học ngay tại nơi làm việc ngày mai',
+    hero_sub:'',
+    lsn_listen_tip:'Nghe câu hôm nay và học từ vựng',
+    lsn_next_fc:'Học với thẻ →',lsn_fc_tip:'Nhấn thẻ để lật',
+    lsn_fc_done:'Hoàn thành thẻ!',lsn_fc_known:'Từ đã biết:',
+    lsn_next_match:'Nối từ →',lsn_match_done:'Hoàn thành nối từ!',lsn_match_errors:'Số lần sai:',
+    lsn_match_instr:'Nối từ tiếng Hàn với nghĩa',lsn_match_prog:'xong',
+    lsn_match_ok:'✅ Đúng rồi!',lsn_match_no:'❌ Thử lại!',
+    lsn_next_lp:'Nghe từ →',lsn_lp_done:'Hoàn thành nghe!',lsn_lp_score:'Câu trả lời đúng:',
+    lsn_lp_instr:'Nghe và chọn từ đúng',
+    lsn_next_quiz:'Kiểm tra →',
+    lsn_sp_badge1:'Luyện câu · 1/2',lsn_sp_badge2:'Luyện câu · 2/2',
+    lsn_sp_goal:'Chọn nghĩa',lsn_sp_instr:'Nghe và tìm nghĩa câu',
+    lsn_sp_next:'Tiếp theo →',lsn_sp_done_msg:'Hoàn thành luyện câu!',
+    lsn_sp_follow:'Nghe và nhắc lại',lsn_sp_repeat:'Nhắc lại',
+    lsn_sp_done_btn:'Xong →',lsn_play:'▶ Nghe phát âm',lsn_today_words:'Từ hôm nay',
     lbl_curriculum:'📅 Chương trình MVP 3 tuần (Ngày 1–21)',
     lbl_progress:'Tiến độ của tôi',
     lbl_profile:'Tình trạng học tập của tôi',
-    steps:['Câu hôm nay','Câu 1','Câu 2','Câu 3','Từ→nghe','Câu→nghe','Dịch→nghe','Kiểm tra','Xong'],
-    step_hints:['3 câu','Câu 1','Câu 2','Câu 3','Tìm từ','Tìm câu','Dịch→nghe','Kiểm tra','Xong!'],
+    steps:['Câu hôm nay','Thẻ từ','Nghe từ','Nối từ','Luyện câu','Kiểm tra','Xong'],
+    step_hints:['Đọc câu','Lật thẻ','Nghe & chọn','Nối từ','Luyện câu','Kiểm tra','Xong!'],
   },
   ne:{
     tab_login:'लगइन', tab_ind:'व्यक्तिगत', tab_co:'कम्पनी',
@@ -1929,12 +1971,26 @@ const STRINGS = {
     err_login:'प्रयोगकर्ता नाम वा पासवर्ड गलत छ',
     err_name:'नाम राख्नुस्', err_phone:'फोन नम्बर राख्नुस्', err_code:'कम्पनी कोड राख्नुस्',
     hero_title:'कोरियन भाषामा सुरक्षित काम गर्नुस्',
-    hero_sub:'प्रतिदिन ५ मिनेट · आज सिकेको कुरा भोलि कामको ठाउँमा प्रयोग गर्नुस्',
+    hero_sub:'',
+    lsn_listen_tip:'आजको वाक्य सुन्नुस् र शब्दहरू सिक्नुस्',
+    lsn_next_fc:'कार्ड →',lsn_fc_tip:'कार्ड थिच्नुस् — पल्टिन्छ',
+    lsn_fc_done:'कार्ड सकियो!',lsn_fc_known:'जानेका शब्द:',
+    lsn_next_match:'मिलाउनुस् →',lsn_match_done:'मिलाउनु सकियो!',lsn_match_errors:'गल्तीहरू:',
+    lsn_match_instr:'कोरियन र अर्थ मिलाउनुस्',lsn_match_prog:'सकियो',
+    lsn_match_ok:'✅ सही!',lsn_match_no:'❌ फेरि!',
+    lsn_next_lp:'सुन्नुस् →',lsn_lp_done:'सुन्नु सकियो!',lsn_lp_score:'सही जवाब:',
+    lsn_lp_instr:'सुन्नुस् र सही शब्द छान्नुस्',
+    lsn_next_quiz:'परीक्षा →',
+    lsn_sp_badge1:'वाक्य अभ्यास · 1/2',lsn_sp_badge2:'वाक्य अभ्यास · 2/2',
+    lsn_sp_goal:'अर्थ छान्नुस्',lsn_sp_instr:'सुन्नुस् र अर्थ पत्ता लगाउनुस्',
+    lsn_sp_next:'अर्को →',lsn_sp_done_msg:'वाक्य अभ्यास सकियो!',
+    lsn_sp_follow:'सुन्नुस् र दोहोर्याउनुस्',lsn_sp_repeat:'दोहोर्याउनुस्',
+    lsn_sp_done_btn:'सकियो →',lsn_play:'▶ उच्चारण सुन्नुस्',lsn_today_words:'आजका शब्द',
     lbl_curriculum:'📅 MVP ३ हप्ताको पाठ्यक्रम (दिन १–२१)',
     lbl_progress:'मेरो प्रगति',
     lbl_profile:'मेरो अध्ययन अवस्था',
-    steps:['आजका वाक्य','वाक्य १','वाक्य २','वाक्य ३','शब्द खोज्नुस्','वाक्य खोज्नुस्','अनुवाद→आवाज','परीक्षा','सकियो'],
-    step_hints:['३ वाक्य','वाक्य १','वाक्य २','वाक्य ३','शब्द खोज','वाक्य खोज','अनुवाद→आवाज','परीक्षा','सकियो!'],
+    steps:['आजको वाक्य','कार्ड','शब्द सुन्नुस्','मिलाउनुस्','वाक्य अभ्यास','परीक्षा','सकियो'],
+    step_hints:['वाक्य हेर्नुस्','कार्ड पल्टाउनुस्','सुन्नुस् र छान्नुस्','जोड्नुस्','वाक्य अभ्यास','परीक्षा','सकियो!'],
   },
   kk:{
     tab_login:'Кіру', tab_ind:'Жеке', tab_co:'Кәсіпорын',
@@ -1948,12 +2004,26 @@ const STRINGS = {
     err_login:'Пайдаланушы аты немесе құпия сөз қате',
     err_name:'Атыңызды енгізіңіз', err_phone:'Телефон нөмірін енгізіңіз', err_code:'Кәсіпорын кодын енгізіңіз',
     hero_title:'Корей тілінде қауіпсіз жұмыс жасаңыз',
-    hero_sub:'Күн сайын 5 минут · Бүгін үйренгенді ертең жұмыста қолданыңыз',
+    hero_sub:'',
+    lsn_listen_tip:'Бүгінгі сөйлемді тыңдап, сөздерді үйреніңіз',
+    lsn_next_fc:'Карточкалар →',lsn_fc_tip:'Карточканы басыңыз — аударылады',
+    lsn_fc_done:'Карточкалар бітті!',lsn_fc_known:'Білетін сөздер:',
+    lsn_next_match:'Сәйкестендіру →',lsn_match_done:'Сәйкестендіру бітті!',lsn_match_errors:'Қателер:',
+    lsn_match_instr:'Корей және мағынаны сәйкестендіріңіз',lsn_match_prog:'бітті',
+    lsn_match_ok:'✅ Дұрыс!',lsn_match_no:'❌ Қайта!',
+    lsn_next_lp:'Тыңдау →',lsn_lp_done:'Тыңдау бітті!',lsn_lp_score:'Дұрыс жауаптар:',
+    lsn_lp_instr:'Тыңдап, дұрыс сөзді табыңыз',
+    lsn_next_quiz:'Тест →',
+    lsn_sp_badge1:'Сөйлем жаттығуы · 1/2',lsn_sp_badge2:'Сөйлем жаттығуы · 2/2',
+    lsn_sp_goal:'Мағына таңдау',lsn_sp_instr:'Тыңдап, мағынасын табыңыз',
+    lsn_sp_next:'Келесі →',lsn_sp_done_msg:'Сөйлем жаттығуы бітті!',
+    lsn_sp_follow:'Тыңдап, қайталаңыз',lsn_sp_repeat:'Қайталау',
+    lsn_sp_done_btn:'Бітті →',lsn_play:'▶ Айтылуды тыңдау',lsn_today_words:'Бүгінгі сөздер',
     lbl_curriculum:'📅 MVP 3 аптаның оқу бағдарламасы (1–21-күн)',
     lbl_progress:'Менің үлгерімім',
     lbl_profile:'Оқу жағдайым',
-    steps:['Бүгінгі сөйлемдер','Сөйлем 1','Сөйлем 2','Сөйлем 3','Сөз табу','Сөйлем табу','Аударма→дыбыс','Тест','Аяқталды'],
-    step_hints:['3 сөйлем','1-сөйлем','2-сөйлем','3-сөйлем','Сөз табу','Сөйлем табу','Аударма→дыбыс','Тест','Аяқталды!'],
+    steps:['Бүгінгі сөйлем','Карточкалар','Сөз тыңдау','Сәйкестендіру','Сөйлем жаттығуы','Тест','Аяқталды'],
+    step_hints:['Сөйлемді оқу','Карточканы аудару','Тыңдап таңдау','Сәйкестендіру','Жаттығу','Тест','Аяқталды!'],
   },
   tet:{
     tab_login:'Tama', tab_ind:'Individuál', tab_co:'Kompañia',
@@ -1967,12 +2037,26 @@ const STRINGS = {
     err_login:'Naran utilizadór ka liafuan-passe sala',
     err_name:'Favor hatama ita-nia naran', err_phone:'Favor hatama númeru telefone', err_code:'Favor hatama kódigu kompañia',
     hero_title:"Servisu ho seguransa iha lian Korea",
-    hero_sub:"Minutu 5 loroloron · Uza liafuan ne'ebé aprende ohin iha fatin servisu aban",
+    hero_sub:'',
+    lsn_listen_tip:"Rona fraze ohin no aprende liafuan sira",
+    lsn_next_fc:"Kartaun →",lsn_fc_tip:"Klik kartaun — hira-fali",
+    lsn_fc_done:"Kartaun remata!",lsn_fc_known:"Liafuan hatene:",
+    lsn_next_match:"Kombina →",lsn_match_done:"Kombina remata!",lsn_match_errors:"Sala:",
+    lsn_match_instr:"Kombina Korea ho signifikadu",lsn_match_prog:"remata",
+    lsn_match_ok:"✅ Los!",lsn_match_no:"❌ Fali!",
+    lsn_next_lp:"Rona →",lsn_lp_done:"Rona remata!",lsn_lp_score:"Resposta loos:",
+    lsn_lp_instr:"Rona no hili liafuan loos",
+    lsn_next_quiz:"Teste →",
+    lsn_sp_badge1:"Prátika fraze · 1/2",lsn_sp_badge2:"Prátika fraze · 2/2",
+    lsn_sp_goal:"Hili signifikadu",lsn_sp_instr:"Rona no hetan signifikadu fraze",
+    lsn_sp_next:"Tuir mai →",lsn_sp_done_msg:"Prátika fraze remata!",
+    lsn_sp_follow:"Rona no repete",lsn_sp_repeat:"Repete",
+    lsn_sp_done_btn:"Remata →",lsn_play:"▶ Rona pronunsiasaun",lsn_today_words:"Liafuan ohin",
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
     lbl_progress:"Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
-    steps:['Fraze ohin','Fraze 1','Fraze 2','Fraze 3','Liafuan','Fraze','Tradusaun→lian','Teste','Remata'],
-    step_hints:['3 fraze','Fraze 1','Fraze 2','Fraze 3','Hili liafuan','Hili fraze','Tradusaun→lian','Teste','Remata!'],
+    steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Prátika fraze','Teste','Remata'],
+    step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Prátika','Teste','Remata!'],
   },
   ru:{
     tab_login:'Войти', tab_ind:'Личный', tab_co:'Предприятие',
@@ -1986,7 +2070,21 @@ const STRINGS = {
     err_login:'Неверное имя пользователя или пароль',
     err_name:'Введите ваше имя', err_phone:'Введите номер телефона', err_code:'Введите код предприятия',
     hero_title:'Работайте безопасно на корейском языке',
-    hero_sub:'Каждый день 5 минут · Используйте выученные слова завтра на работе',
+    hero_sub:'',
+    lsn_listen_tip:'Слушайте предложение дня и учите слова',
+    lsn_next_fc:'Карточки →',lsn_fc_tip:'Нажмите карточку — перевернётся',
+    lsn_fc_done:'Карточки завершены!',lsn_fc_known:'Известные слова:',
+    lsn_next_match:'Сопоставление →',lsn_match_done:'Сопоставление завершено!',lsn_match_errors:'Ошибки:',
+    lsn_match_instr:'Сопоставьте корейское и значение',lsn_match_prog:'завершено',
+    lsn_match_ok:'✅ Правильно!',lsn_match_no:'❌ Ещё раз!',
+    lsn_next_lp:'Слушать →',lsn_lp_done:'Прослушивание завершено!',lsn_lp_score:'Правильные ответы:',
+    lsn_lp_instr:'Слушайте и выберите слово',
+    lsn_next_quiz:'Тест →',
+    lsn_sp_badge1:'Практика предложения · 1/2',lsn_sp_badge2:'Практика предложения · 2/2',
+    lsn_sp_goal:'Выбор значения',lsn_sp_instr:'Слушайте и найдите значение',
+    lsn_sp_next:'Далее →',lsn_sp_done_msg:'Практика предложения завершена!',
+    lsn_sp_follow:'Слушайте и повторяйте',lsn_sp_repeat:'Повторение',
+    lsn_sp_done_btn:'Завершено →',lsn_play:'▶ Слушать произношение',lsn_today_words:'Слова дня',
     lbl_curriculum:'📅 Учебная программа MVP 3 недели (День 1–21)',
     lbl_progress:'Мой прогресс',
     lbl_profile:'Мой статус обучения',
@@ -2005,7 +2103,21 @@ const STRINGS = {
     err_login:'Incorrect username or password',
     err_name:'Please enter your name', err_phone:'Please enter your phone number', err_code:'Please enter company code',
     hero_title:'Work safely in Korean',
-    hero_sub:'Every day 5 minutes · Use today\'s words at work tomorrow',
+    hero_sub:'',
+    lsn_listen_tip:"Listen to today's sentence and learn words",
+    lsn_next_fc:'Flashcards →',lsn_fc_tip:'Tap card to flip',
+    lsn_fc_done:'Flashcards done!',lsn_fc_known:'Known words:',
+    lsn_next_match:'Matching →',lsn_match_done:'Matching done!',lsn_match_errors:'Mistakes:',
+    lsn_match_instr:'Match Korean with meaning',lsn_match_prog:'done',
+    lsn_match_ok:'✅ Correct!',lsn_match_no:'❌ Try again!',
+    lsn_next_lp:'Listen →',lsn_lp_done:'Listening done!',lsn_lp_score:'Correct answers:',
+    lsn_lp_instr:'Listen and pick the right word',
+    lsn_next_quiz:'Quiz →',
+    lsn_sp_badge1:'Sentence practice · 1/2',lsn_sp_badge2:'Sentence practice · 2/2',
+    lsn_sp_goal:'Choose meaning',lsn_sp_instr:'Listen and find the meaning',
+    lsn_sp_next:'Next →',lsn_sp_done_msg:'Sentence practice done!',
+    lsn_sp_follow:'Listen and repeat',lsn_sp_repeat:'Repeat',
+    lsn_sp_done_btn:'Done →',lsn_play:'▶ Listen to pronunciation',lsn_today_words:"Today's words",
     lbl_curriculum:'📅 MVP 3-week curriculum (Day 1–21)',
     lbl_progress:'My progress',
     lbl_profile:'My learning status',
@@ -2017,6 +2129,19 @@ const STRINGS = {
 const UILANG_KEY = 'sk_uilang';
 function getUILang(){ return localStorage.getItem(UILANG_KEY)||'ko'; }
 function t(key){ return (STRINGS[getUILang()]||STRINGS.ko)[key]||STRINGS.ko[key]||key; }
+
+// 품사 자국어 번역
+const POS_MAP = {
+  ko:{'명사':'명사','부사':'부사','조사(주격)':'조사(주격)','조사(목적격)':'조사(목적격)','서술어':'서술어','동사':'동사','형용사':'형용사','감탄사':'감탄사','접속사':'접속사'},
+  uz:{'명사':"ot",'부사':"ravish",'조사(주격)':"ega belgisi",'조사(목적격)':"tushum belgisi",'서술어':"kesim",'동사':"fe'l",'형용사':"sifat",'감탄사':"undov",'접속사':"bog'lovchi"},
+  vi:{'명사':'danh từ','부사':'trạng từ','조사(주격)':'trợ từ chủ ngữ','조사(목적격)':'trợ từ tân ngữ','서술어':'vị ngữ','동사':'động từ','형용사':'tính từ','감탄사':'thán từ','접속사':'liên từ'},
+  ne:{'명사':'नाम','부사':'क्रियाविशेषण','조사(주격)':'कर्ता कारक','조사(목적격)':'कर्म कारक','서술어':'विधेय','동사':'क्रिया','형용사':'विशेषण','감탄사':'विस्मयादिबोधक','접속사':'संयोजन'},
+  kk:{'명사':'зат есім','부사':'үстеу','조사(주격)':'бастауыш жалғауы','조사(목적격)':'толықтауыш жалғауы','서술어':'баяндауыш','동사':'етістік','형용사':'сын есім','감탄사':'одағай','접속사':'жалғаулық'},
+  tet:{'명사':'nomen','부사':'advérbiu','조사(주격)':'partíkula sujeitu','조사(목적격)':'partíkula objetivu','서술어':'predikadu','동사':'verbu','형용사':'adjetivu','감탄사':'interjeisaun','접속사':'konjunsaun'},
+  ru:{'명사':'существительное','부사':'наречие','조사(주격)':'частица подлежащего','조사(목적격)':'частица дополнения','서술어':'сказуемое','동사':'глагол','형용사':'прилагательное','감탄사':'междометие','접속사':'союз'},
+  en:{'명사':'noun','부사':'adverb','조사(주격)':'subject marker','조사(목적격)':'object marker','서술어':'predicate','동사':'verb','형용사':'adjective','감탄사':'interjection','접속사':'conjunction'},
+};
+function posT(korPos){ const m=POS_MAP[getUILang()]||POS_MAP.ko; return m[korPos]||korPos; }
 
 function setUILang(code){
   localStorage.setItem(UILANG_KEY, code);
@@ -2040,10 +2165,17 @@ function applyLang(){
 
 function renderLangChips(){
   const cur = getUILang();
-  const chips = document.getElementById('authLangChips');
-  if(!chips) return;
-  chips.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+  const chipsHtml = Object.entries(LANG_META).map(([code,m])=>
     `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')">
+      ${m.flag} ${m.native}
+    </button>`
+  ).join('');
+  const auth = document.getElementById('authLangChips');
+  if(auth) auth.innerHTML = chipsHtml;
+  // 홈화면 언어 선택 행도 갱신
+  const homeRow = document.getElementById('homeLangRow');
+  if(homeRow) homeRow.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+    `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')" style="font-size:11px;padding:4px 10px">
       ${m.flag} ${m.native}
     </button>`
   ).join('');
@@ -2536,8 +2668,10 @@ function renderLesson(){
   // step bar
   document.getElementById('sbar').innerHTML=STEPS.map((_,i)=>
     `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
-  document.getElementById('stepName').textContent=STEPS[s]||STEPS[s];
-  document.getElementById('stepHint').textContent=uz?STEP_HINTS_UZ[s]:STEP_HINTS_KO[s];
+  const _langSteps=(STRINGS[getUILang()]||STRINGS.ko).steps||STEPS;
+  const _langHints=(STRINGS[getUILang()]||STRINGS.ko).step_hints||STEP_HINTS_KO;
+  document.getElementById('stepName').textContent=_langSteps[s]||STEPS[s];
+  document.getElementById('stepHint').textContent=_langHints[s]||STEP_HINTS_KO[s];
 
   // ── PC 2열: 좌측 참고 패널 ──────────────────────────
   const refEl=document.getElementById('lref');
@@ -2588,7 +2722,7 @@ function rSentView(d,el,uz){
     <div class="sent-intro-hero">
       <div class="sih-tag">${d.icon||'📚'} Day ${d.day} · ${d.level||'A1'}</div>
       <div class="sih-title">${uz?d.titleUz:d.titleKo}</div>
-      <div class="sih-goal">오늘의 문장을 듣고, 단어를 배워봐요</div>
+      <div class="sih-goal">${t('lsn_listen_tip')}</div>
     </div>
     <div class="sent-card" style="cursor:pointer" onclick="sayBtn('spk-main',${jq(sent.ko)},'speak')">
       <div class="sent-num">▶</div>
@@ -2598,17 +2732,16 @@ function rSentView(d,el,uz){
       </div>
       <button class="sent-play" id="spk-main" onclick="event.stopPropagation();sayBtn('spk-main',${jq(sent.ko)},'speak')">▶</button>
     </div>
-    <div class="vocab-label" style="margin-top:14px">오늘의 단어 ${words.length}개</div>
+    <div class="vocab-label" style="margin-top:14px">${t('lsn_today_words')} ${words.length}</div>
     <div class="word-cards">
       ${words.map((w,i)=>`
         <div class="word-card" onclick="sayBtn('sv-w${i}',${jq(w.ko)},'word')">
           <div class="wc-left">
             <div class="wc-ko">${w.ko}</div>
-            <div class="wc-syl">${w.syl}</div>
           </div>
           <div class="wc-right">
             <div class="wc-rom">[${w.rom}]</div>
-            <div style="font-size:10px;color:var(--blue-m);font-weight:700">${w.pos}</div>
+            <div style="font-size:10px;color:var(--blue-m);font-weight:700">${posT(w.pos)}</div>
             <div class="wc-uz">${w.uz}</div>
           </div>
           <button class="wc-play" id="sv-w${i}" onclick="event.stopPropagation();sayBtn('sv-w${i}',${jq(w.ko)},'word')">▶</button>
@@ -2618,7 +2751,7 @@ function rSentView(d,el,uz){
       background:var(--blue-l);border:1px solid var(--blue-m);border-radius:10px;
       padding:5px 12px;font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:12px">
       NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
-    <button class="btn red" onclick="next()">플래시카드로 외우기 →</button>
+    <button class="btn red" onclick="next()">${t('lsn_next_fc')}</button>
   `;
   setTimeout(()=>sayBtn('spk-main',sent.ko,'speak'),500);
 }
@@ -2633,20 +2766,20 @@ function rFlashcard(d,el,uz){
   if(fc.idx>=fc.items.length){
     el.innerHTML=`
       <div class="act-complete">
-        <div class="act-complete-msg">플래시카드 완료!</div>
-        <div class="act-complete-sub">알고 있는 단어: ${fc.known} / ${fc.items.length}</div>
+        <div class="act-complete-msg">${t('lsn_fc_done')}</div>
+        <div class="act-complete-sub">${t('lsn_fc_known')} ${fc.known} / ${fc.items.length}</div>
       </div>
-      <button class="btn red" onclick="ST._fc=null;next()">매칭 게임 →</button>`;
+      <button class="btn red" onclick="ST._fc=null;next()">${t('lsn_next_match')}</button>`;
     return;
   }
   const w=fc.items[fc.idx];
   const prog=`${fc.idx+1}/${fc.items.length}`;
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">플래시카드</div>
+      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[1]}</div>
       <div class="act-prog">${prog} <span class="act-score">✅ ${fc.known}</span></div>
     </div>
-    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">카드를 탭하면 뒤집혀요</div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${t('lsn_fc_tip')}</div>
     <div class="fc-wrap">
       <div class="fc-card" id="fc-card" onclick="flipCard()">
         <div class="fc-front">
@@ -2655,13 +2788,13 @@ function rFlashcard(d,el,uz){
           <div style="font-size:11px;opacity:.7;margin-top:2px">${w.syl}</div>
         </div>
         <div class="fc-back">
-          <div style="font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:6px">${w.pos}</div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:6px">${posT(w.pos)}</div>
           <div style="font-size:18px;font-weight:800;color:var(--ink);line-height:1.4">${w.uz}</div>
           <div style="margin-top:10px;padding:8px;background:var(--blue-l);border-radius:8px;font-size:12px;color:var(--ink-s)">
             예문: ${w.ex}
           </div>
           <button class="ssb-play-btn" style="margin-top:10px;font-size:12px" id="fc-play-btn"
-            onclick="event.stopPropagation();sayBtn('fc-play-btn',${jq(w.ko)},'word')">▶ 발음 듣기</button>
+            onclick="event.stopPropagation();sayBtn('fc-play-btn',${jq(w.ko)},'word')">${t('lsn_play')}</button>
         </div>
       </div>
     </div>
@@ -2702,21 +2835,21 @@ function rMatching(d,el,uz){
   if(m.matched.length>=m.items.length){
     el.innerHTML=`
       <div class="act-complete">
-        <div class="act-complete-msg">매칭 완료!</div>
-        <div class="act-complete-sub">틀린 횟수: ${m.errors}번</div>
+        <div class="act-complete-msg">${t('lsn_match_done')}</div>
+        <div class="act-complete-sub">${t('lsn_match_errors')} ${m.errors}</div>
       </div>
-      <button class="btn red" onclick="ST._match=null;next()">단어 듣기 →</button>`;
+      <button class="btn red" onclick="ST._match=null;next()">${t('lsn_next_lp')}</button>`;
     return;
   }
   const koItems=shuffle([...m.items]);
   const uzItems=shuffle([...m.items]);
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">매칭 게임</div>
-      <div class="act-prog">${m.matched.length}/${m.items.length} 완료</div>
+      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[3]}</div>
+      <div class="act-prog">${m.matched.length}/${m.items.length} ${t('lsn_match_prog')}</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
-      한국어 단어와 우즈베크어 뜻을 연결하세요
+      ${t('lsn_match_instr')}
     </div>
     <div class="match-grid">
       <div>
@@ -2764,7 +2897,7 @@ window.matchSelUz=function(koOfUz){
     const ue=document.getElementById('mu-'+koOfUz.replace(/\//g,'-'));
     [ke,ue].forEach(e=>{if(e){e.classList.add('correct');setTimeout(()=>renderLesson(),350);}});
     const fb=document.getElementById('match-fb');
-    if(fb){fb.textContent='✅ 맞아요!';fb.style.color='#16A34A';}
+    if(fb){fb.textContent=t('lsn_match_ok');fb.style.color='#0284C7';}
   } else {
     m.errors++;
     m.selKo=null;
@@ -2773,7 +2906,7 @@ window.matchSelUz=function(koOfUz){
     if(wrongU){wrongU.classList.add('wrong');setTimeout(()=>{wrongU.classList.remove('wrong');renderLesson();},600);}
     else renderLesson();
     const fb=document.getElementById('match-fb');
-    if(fb){fb.textContent='❌ 다시!';fb.style.color='var(--red)';}
+    if(fb){fb.textContent=t('lsn_match_no');fb.style.color='var(--red)';}
   }
 };
 
@@ -2792,10 +2925,10 @@ function rSentPractice(d,el,uz){
   if(sp.done){
     el.innerHTML=`
       <div class="act-complete">
-        <div class="act-complete-msg">문장 연습 완료!</div>
+        <div class="act-complete-msg">${t('lsn_sp_done_msg')}</div>
         <div class="act-complete-sub">"${sent.ko}"</div>
       </div>
-      <button class="btn red" onclick="ST._sp=null;next()">퀴즈 →</button>`;
+      <button class="btn red" onclick="ST._sp=null;next()">${t('lsn_next_quiz')}</button>`;
     return;
   }
 
@@ -2803,12 +2936,12 @@ function rSentPractice(d,el,uz){
     // Phase 0: 문장 듣고 뜻 고르기
     el.innerHTML=`
       <div class="act-header">
-        <div class="act-badge">문장 연습 · 1/2</div>
-        <div class="act-prog">뜻 고르기</div>
+        <div class="act-badge">${t('lsn_sp_badge1')}</div>
+        <div class="act-prog">${t('lsn_sp_goal')}</div>
       </div>
       <div class="act-play-wrap">
         <button class="act-play-btn" id="sp-btn" onclick="sayBtn('sp-btn',${jq(sent.ko)},'speak')">▶</button>
-        <div class="act-instruct">소리를 듣고 뜻을 고르세요<br><small style="color:var(--muted)">Gapning ma'nosini toping</small></div>
+        <div class="act-instruct">${t('lsn_sp_instr')}</div>
       </div>
       <div class="act-opts single">
         ${sp.uzOpts.map((o,i)=>`
@@ -2817,14 +2950,14 @@ function rSentPractice(d,el,uz){
           </button>`).join('')}
       </div>
       <div id="act-fb" class="act-fb"></div>
-      <button id="act-next" class="btn red" style="display:none;margin-top:8px" onclick="ST._sp.phase=1;renderLesson()">다음 →</button>`;
+      <button id="act-next" class="btn red" style="display:none;margin-top:8px" onclick="ST._sp.phase=1;renderLesson()">${t('lsn_sp_next')}</button>`;
     setTimeout(()=>sayBtn('sp-btn',sent.ko,'speak'),400);
   } else {
     // Phase 1: 문장 읽고 따라 말하기 (재생 → 완료)
     el.innerHTML=`
       <div class="act-header">
-        <div class="act-badge">문장 연습 · 2/2</div>
-        <div class="act-prog">따라 말하기</div>
+        <div class="act-badge">${t('lsn_sp_badge2')}</div>
+        <div class="act-prog">${t('lsn_sp_repeat')}</div>
       </div>
       <div style="background:linear-gradient(145deg,#0284C7,#0EA5E9);border-radius:var(--r);
         padding:20px;color:#fff;text-align:center;margin-bottom:16px">
@@ -2833,13 +2966,13 @@ function rSentPractice(d,el,uz){
       </div>
       <div style="text-align:center;margin-bottom:14px">
         <button class="ssb-play-btn" id="sp2-btn" onclick="sayBtn('sp2-btn',${jq(sent.ko)},'speak')" style="margin:0 auto">
-          ▶ 발음 듣기
+          ${t('lsn_play')}
         </button>
       </div>
       <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px">
-        소리를 듣고 따라 말해보세요<br><small>Gapni tinglang va takrorlang</small>
+        ${t('lsn_sp_follow')}
       </div>
-      <button class="btn red" onclick="ST._sp.done=true;renderLesson()">완료 →</button>`;
+      <button class="btn red" onclick="ST._sp.done=true;renderLesson()">${t('lsn_sp_done_btn')}</button>`;
     setTimeout(()=>sayBtn('sp2-btn',sent.ko,'speak'),400);
   }
 }
@@ -2869,10 +3002,10 @@ function rListenPick(d,el,uz){
     el.innerHTML=`
       <div class="act-complete">
         <div class="act-score-big">${act.score}<span style="font-size:24px;font-weight:500;color:var(--muted)">/${act.items.length}</span></div>
-        <div class="act-complete-msg">단어 듣기 완료!</div>
-        <div class="act-complete-sub">맞힌 개수: ${act.score} / ${act.items.length}</div>
+        <div class="act-complete-msg">${t('lsn_lp_done')}</div>
+        <div class="act-complete-sub">${t('lsn_lp_score')} ${act.score} / ${act.items.length}</div>
       </div>
-      <button class="btn red" onclick="ST._act=null;next()">퀴즈 →</button>`;
+      <button class="btn red" onclick="ST._act=null;next()">${t('lsn_next_quiz')}</button>`;
     return;
   }
   const target=act.items[act.idx];
@@ -2880,12 +3013,12 @@ function rListenPick(d,el,uz){
   const options=shuffle([target,...distractors]);
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">소리 → 단어 찾기</div>
+      <div class="act-badge">${((STRINGS[getUILang()]||STRINGS.ko).steps||STEPS)[2]}</div>
       <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
     </div>
     <div class="act-play-wrap">
       <button class="act-play-btn" id="lp-btn" onclick="sayBtn('lp-btn',${jq(target.ko)},'word')">▶</button>
-      <div class="act-instruct">소리를 듣고 알맞은 단어를 고르세요</div>
+      <div class="act-instruct">${t('lsn_lp_instr')}</div>
     </div>
     <div class="act-opts">
       ${options.map((opt,i)=>`
@@ -3220,7 +3353,7 @@ function checkPwStrength(inputId, barId, hintId){
   else if(score===1){ color='var(--red)'; msg='⚠️ 약한 비밀번호 — 숫자와 영문을 함께 써주세요'; }
   else if(score===2){ color='var(--orange)'; msg='👍 보통 — 기호를 추가하면 더 안전해요'; }
   else if(score===3){ color='var(--green)'; msg='✅ 강함 — 안전한 비밀번호예요'; }
-  else { color='#22c55e'; msg='🛡️ 매우 강함!'; }
+  else { color='#0EA5E9'; msg='🛡️ 매우 강함!'; }
   bar.style.width=(score/4*100)+'%'; bar.style.background=color;
   hint.textContent=msg; hint.style.color=score>=2?color:'var(--muted)';
 }
@@ -3242,7 +3375,7 @@ function doRecovery(){
   const found=getAllUsers().filter(u=>u.name===name&&u.phone===phone);
   if(!found.length){ res.innerHTML='<span style="color:var(--red)">❌ 일치하는 계정을 찾지 못했어요.<br>이름과 번호를 다시 확인해주세요.</span>'; return; }
   res.innerHTML=found.map(u=>`
-    <div style="background:#f0fff4;border:1px solid var(--green);border-radius:10px;padding:12px;margin-top:6px;text-align:left">
+    <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;margin-top:6px;text-align:left">
       <div style="font-size:12px;color:var(--muted);margin-bottom:4px">찾은 계정</div>
       <div style="font-size:16px;font-weight:800;letter-spacing:1px">🔑 ${u.username}</div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px">
