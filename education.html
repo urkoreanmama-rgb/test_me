@@ -2548,7 +2548,7 @@ function renderLesson(){
       const sent=d.sentence||{ko:'',uz:''};
       const words=d.words||[];
       const pid='lrp0';
-      refEl.innerHTML=`<div class="lesson-ref-title">📌 오늘의 문장</div>
+      refEl.innerHTML=`<div class="lesson-ref-title">오늘의 문장</div>
         <div class="lesson-ref-sent">
           <div class="lesson-ref-num">1</div>
           <div style="flex:1;min-width:0">
@@ -2558,7 +2558,7 @@ function renderLesson(){
           <button class="lesson-ref-play" id="${pid}" onclick="sayBtn('${pid}',${jq(sent.ko)})">▶</button>
         </div>
         <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
-          <div class="lesson-ref-title">📖 오늘의 단어 (${words.length}개)</div>
+          <div class="lesson-ref-title">오늘의 단어 (${words.length}개)</div>
           ${words.map(w=>`
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">
               <span style="font-weight:800;color:var(--ink)">${w.ko}</span>
@@ -2587,17 +2587,17 @@ function rSentView(d,el,uz){
     <div class="sent-intro-hero">
       <div class="sih-tag">${d.icon||'📚'} Day ${d.day} · ${d.level||'A1'}</div>
       <div class="sih-title">${uz?d.titleUz:d.titleKo}</div>
-      <div class="sih-goal">🎯 오늘의 문장을 듣고, 단어를 배워봐요</div>
+      <div class="sih-goal">오늘의 문장을 듣고, 단어를 배워봐요</div>
     </div>
     <div class="sent-card" style="cursor:pointer" onclick="sayBtn('spk-main',${jq(sent.ko)},'speak')">
-      <div class="sent-num">📢</div>
+      <div class="sent-num">▶</div>
       <div class="sent-body">
         <div class="sent-ko" style="font-size:20px">${sent.ko}</div>
         <div class="sent-tr">${sent.uz||''}</div>
       </div>
       <button class="sent-play" id="spk-main" onclick="event.stopPropagation();sayBtn('spk-main',${jq(sent.ko)},'speak')">▶</button>
     </div>
-    <div class="vocab-label" style="margin-top:14px">📖 오늘의 단어 ${words.length}개</div>
+    <div class="vocab-label" style="margin-top:14px">오늘의 단어 ${words.length}개</div>
     <div class="word-cards">
       ${words.map((w,i)=>`
         <div class="word-card" onclick="sayBtn('sv-w${i}',${jq(w.ko)},'word')">
@@ -2632,7 +2632,6 @@ function rFlashcard(d,el,uz){
   if(fc.idx>=fc.items.length){
     el.innerHTML=`
       <div class="act-complete">
-        <div style="font-size:48px">🎉</div>
         <div class="act-complete-msg">플래시카드 완료!</div>
         <div class="act-complete-sub">알고 있는 단어: ${fc.known} / ${fc.items.length}</div>
       </div>
@@ -2643,7 +2642,7 @@ function rFlashcard(d,el,uz){
   const prog=`${fc.idx+1}/${fc.items.length}`;
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">📇 플래시카드</div>
+      <div class="act-badge">플래시카드</div>
       <div class="act-prog">${prog} <span class="act-score">✅ ${fc.known}</span></div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">카드를 탭하면 뒤집혀요</div>
@@ -2702,7 +2701,6 @@ function rMatching(d,el,uz){
   if(m.matched.length>=m.items.length){
     el.innerHTML=`
       <div class="act-complete">
-        <div style="font-size:48px">🎊</div>
         <div class="act-complete-msg">매칭 완료!</div>
         <div class="act-complete-sub">틀린 횟수: ${m.errors}번</div>
       </div>
@@ -2713,7 +2711,7 @@ function rMatching(d,el,uz){
   const uzItems=shuffle([...m.items]);
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">🔗 매칭 게임</div>
+      <div class="act-badge">매칭 게임</div>
       <div class="act-prog">${m.matched.length}/${m.items.length} 완료</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
@@ -2800,7 +2798,7 @@ function rListenPick(d,el,uz){
   const options=shuffle([target,...distractors]);
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">🎧 소리 → 단어 찾기</div>
+      <div class="act-badge">소리 → 단어 찾기</div>
       <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
     </div>
     <div class="act-play-wrap">
