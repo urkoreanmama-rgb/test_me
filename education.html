@@ -1150,7 +1150,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
         </div>
         <div class="al-feat">
           <div class="al-feat-icon">S</div>
-          <div class="al-feat-text"><strong>이수 확인증 발급</strong>21일 완료 시 수료증 발급</div>
+          <div class="al-feat-text"><strong>이수 확인증 발급</strong>20일 완료 시 월 1회 수료증 발급</div>
         </div>
       </div>
     </div>
@@ -1320,7 +1320,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <p id="heroP" data-i18n="hero_sub">매일 5분 · 오늘 배운 말을 내일 현장에서 써요</p>
     </div>
 
-    <div class="slabel" data-i18n="lbl_curriculum">📅 3주일 MVP 커리큘럼 (Day 1–21)</div>
+    <div class="slabel" data-i18n="lbl_curriculum">📅 1개월 안전 한국어 과정 (Day 1–20, 하루 5분)</div>
     <div class="day-grid" id="dayGrid"></div>
 
     <div class="prog-card">
@@ -2700,9 +2700,10 @@ const PRACTICAL_CUR = [
 // ════════════════════════
 // STATE
 // ════════════════════════
-const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','소리→단어','소리→문장','번역→소리','문장순서','퀴즈','완료'];
-const STEP_HINTS_KO = ['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','들은 문장 찾기','번역 보고 소리 찾기','순서 맞추기','이해도 확인','완료!'];
-const STEP_HINTS_UZ = ["3 ta gap",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"So'z topish","Gap topish","Tarjima→ovoz","Gapni tuzish",'Test','Tugadi!'];
+// 7단계 × 5분 구조 (소리→문장·번역→소리·순서맞추기 제거)
+const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','단어 듣기','퀴즈','완료'];
+const STEP_HINTS_KO = ['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','이해도 확인 (2문제)','완료!'];
+const STEP_HINTS_UZ = ["3 ta gap",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"So'z topish",'Test (2 savol)','Tugadi!'];
 
 let ST = {
   lang:'ko', dayIdx:null, step:0,
@@ -3438,16 +3439,14 @@ function renderLesson(){
   }
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
+  // 7단계: 목표→문장1→문장2→문장3→단어듣기→퀴즈→완료 (5분)
   if(s===0) rSentences(d,el,uz);
   else if(s===1) rSentStudy(d,el,uz,0);
   else if(s===2) rSentStudy(d,el,uz,1);
   else if(s===3) rSentStudy(d,el,uz,2);
   else if(s===4) rWordListen(d,el,uz);
-  else if(s===5) rSentListen(d,el,uz);
-  else if(s===6) rTransListen(d,el,uz);
-  else if(s===7) rScramble(d,el,uz);
-  else if(s===8) rQuiz(d,el,uz);
-  else if(s===9) rResult(d,el,uz);
+  else if(s===5) rQuiz(d,el,uz);
+  else if(s===6) rResult(d,el,uz);
 }
 
 // ── Step 0: 오늘의 문장 (3 sentences overview) ──
@@ -3556,17 +3555,18 @@ function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
 // ── Step 4: 소리듣고 단어찾기 ──
 function rWordListen(d,el,uz){
   if(!ST._act||ST._act.type!=='word'){
-    ST._act={type:'word',items:shuffle((d.speak||[]).flatMap(s=>s.words||[])),idx:0,score:0};
+    const allW=shuffle((d.speak||[]).flatMap(s=>s.words||[])).slice(0,4); // 5분 목표: 최대 4개
+    ST._act={type:'word',items:allW,idx:0,score:0};
   }
   const act=ST._act;
   if(act.idx>=act.items.length){
     el.innerHTML=`
       <div class="act-complete">
         <div class="act-score-big">${act.score}<span style="font-size:24px;font-weight:500;color:var(--muted)">/${act.items.length}</span></div>
-        <div class="act-complete-msg">소리듣고 단어찾기 완료!</div>
+        <div class="act-complete-msg">단어 듣기 완료!</div>
         <div class="act-complete-sub">맞힌 개수: ${act.score} / ${act.items.length}</div>
       </div>
-      <button class="btn red" onclick="ST._act=null;next()">소리듣고 문장찾기 →</button>`;
+      <button class="btn red" onclick="ST._act=null;next()">퀴즈 →</button>`;
     return;
   }
   const target=act.items[act.idx];
@@ -3807,7 +3807,8 @@ function rScramble(d,el,uz){
 // ── Step 8: 퀴즈 ──
 function rQuiz(d,el,uz){
   const qi=ST.quizIdx;
-  if(qi>=d.quiz.length){ST.step=9;renderLesson();return;}
+  const MAX_Q=2; // 5분 목표: 퀴즈 2문제만
+  if(qi>=Math.min(MAX_Q,d.quiz.length)){ST.step=6;renderLesson();return;}
   const q=d.quiz[qi];
   el.innerHTML=`
     <div class="qhdr">
@@ -3878,7 +3879,7 @@ function rResult(d,el,uz){
       `:''}
       ${pass
         ?`<button class="btn red" onclick="goHome()">홈으로 / Bosh sahifa</button>`
-        :`<button class="btn red" onclick="ST.step=5;ST.quizIdx=0;ST.quizScore=0;renderLesson()">다시 / Qayta</button>
+        :`<button class="btn red" onclick="ST.step=4;ST.quizIdx=0;ST.quizScore=0;renderLesson()">다시 / Qayta</button>
           <button class="btn gray" onclick="goHome()">홈으로</button>`
       }
     </div>
