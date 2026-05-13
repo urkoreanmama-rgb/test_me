@@ -1833,9 +1833,9 @@ const PRACTICAL_CUR = []; // (통합됨 — CUR 20일이 전체 과정)
 // STATE
 // ════════════════════════
 // 7단계 × 5분 구조 (소리→문장·번역→소리·순서맞추기 제거)
-const STEPS = ['오늘의 문장','플래시카드','매칭 게임','단어 듣기','퀴즈','완료'];
-const STEP_HINTS_KO = ['문장 확인하기','카드 뒤집어 외우기','단어 짝 맞추기','들은 단어 찾기','이해도 확인 (2문제)','완료!'];
-const STEP_HINTS_UZ = ["Gap bilan tanishuv","Kartochkalarni ag'darish","So'zlarni moslashtirish","Eshitib toping",'Test (2 savol)','Tugadi!'];
+const STEPS = ['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 연습','퀴즈','완료'];
+const STEP_HINTS_KO = ['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','문장 익히기','이해도 확인','완료!'];
+const STEP_HINTS_UZ = ["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap mashqi",'Test savollari','Tugadi!'];
 
 let ST = {
   lang:'ko', dayIdx:null, step:0,
@@ -2573,10 +2573,11 @@ function renderLesson(){
   // 6단계 퀴즐렛 방식: 문장→플래시카드→매칭→단어듣기→퀴즈→완료 (5분)
   if(s===0) rSentView(d,el,uz);
   else if(s===1) rFlashcard(d,el,uz);
-  else if(s===2) rMatching(d,el,uz);
-  else if(s===3) rListenPick(d,el,uz);
-  else if(s===4) rQuiz(d,el,uz);
-  else if(s===5) rResult(d,el,uz);
+  else if(s===2) rListenPick(d,el,uz);
+  else if(s===3) rMatching(d,el,uz);
+  else if(s===4) rSentPractice(d,el,uz);
+  else if(s===5) rQuiz(d,el,uz);
+  else if(s===6) rResult(d,el,uz);
 }
 
 // ── Step 0: 오늘의 문장 ──
@@ -2776,6 +2777,87 @@ window.matchSelUz=function(koOfUz){
   }
 };
 
+// ── Step 4: 문장 연습 ──
+function rSentPractice(d,el,uz){
+  const sent=d.sentence||{ko:'',uz:''};
+  if(!ST._sp||ST._sp.day!==d.day){
+    // 3가지 활동 순서로
+    const others=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz).map(c=>c.sentence.uz);
+    const distractors=shuffle(others).slice(0,3);
+    const uzOpts=shuffle([sent.uz,...distractors]).slice(0,4);
+    ST._sp={day:d.day, phase:0, uzOpts, uzAns:uzOpts.indexOf(sent.uz), done:false};
+  }
+  const sp=ST._sp;
+
+  if(sp.done){
+    el.innerHTML=`
+      <div class="act-complete">
+        <div class="act-complete-msg">문장 연습 완료!</div>
+        <div class="act-complete-sub">"${sent.ko}"</div>
+      </div>
+      <button class="btn red" onclick="ST._sp=null;next()">퀴즈 →</button>`;
+    return;
+  }
+
+  if(sp.phase===0){
+    // Phase 0: 문장 듣고 뜻 고르기
+    el.innerHTML=`
+      <div class="act-header">
+        <div class="act-badge">문장 연습 · 1/2</div>
+        <div class="act-prog">뜻 고르기</div>
+      </div>
+      <div class="act-play-wrap">
+        <button class="act-play-btn" id="sp-btn" onclick="sayBtn('sp-btn',${jq(sent.ko)},'speak')">▶</button>
+        <div class="act-instruct">소리를 듣고 뜻을 고르세요<br><small style="color:var(--muted)">Gapning ma'nosini toping</small></div>
+      </div>
+      <div class="act-opts single">
+        ${sp.uzOpts.map((o,i)=>`
+          <button class="act-opt" id="sp-o${i}" onclick="ansSP(${i},${sp.uzAns},0)">
+            <div class="act-opt-sent" style="font-size:13px">${o}</div>
+          </button>`).join('')}
+      </div>
+      <div id="act-fb" class="act-fb"></div>
+      <button id="act-next" class="btn red" style="display:none;margin-top:8px" onclick="ST._sp.phase=1;renderLesson()">다음 →</button>`;
+    setTimeout(()=>sayBtn('sp-btn',sent.ko,'speak'),400);
+  } else {
+    // Phase 1: 문장 읽고 따라 말하기 (재생 → 완료)
+    el.innerHTML=`
+      <div class="act-header">
+        <div class="act-badge">문장 연습 · 2/2</div>
+        <div class="act-prog">따라 말하기</div>
+      </div>
+      <div style="background:linear-gradient(145deg,#0284C7,#0EA5E9);border-radius:var(--r);
+        padding:20px;color:#fff;text-align:center;margin-bottom:16px">
+        <div style="font-size:22px;font-weight:900;margin-bottom:6px">${sent.ko}</div>
+        <div style="font-size:13px;opacity:.85">${sent.uz||''}</div>
+      </div>
+      <div style="text-align:center;margin-bottom:14px">
+        <button class="ssb-play-btn" id="sp2-btn" onclick="sayBtn('sp2-btn',${jq(sent.ko)},'speak')" style="margin:0 auto">
+          ▶ 발음 듣기
+        </button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px">
+        소리를 듣고 따라 말해보세요<br><small>Gapni tinglang va takrorlang</small>
+      </div>
+      <button class="btn red" onclick="ST._sp.done=true;renderLesson()">완료 →</button>`;
+    setTimeout(()=>sayBtn('sp2-btn',sent.ko,'speak'),400);
+  }
+}
+window.ansSP=function(chosen,correct,phase){
+  document.querySelectorAll('.act-opt').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';});
+  const fb=document.getElementById('act-fb');
+  const nxt=document.getElementById('act-next');
+  if(chosen===correct){
+    document.getElementById('sp-o'+chosen)?.classList.add('ok');
+    fb.textContent='맞아요! / To\'g\'ri!'; fb.className='act-fb ok';
+  } else {
+    document.getElementById('sp-o'+chosen)?.classList.add('no');
+    document.getElementById('sp-o'+correct)?.classList.add('ok');
+    fb.textContent='틀렸어요 — 다시 들어보세요 / Noto\'g\'ri.'; fb.className='act-fb no';
+  }
+  if(nxt) nxt.style.display='';
+};
+
 // ── Step 3: 단어 듣기 (Listen & Pick) ──
 function rListenPick(d,el,uz){
   const allW=d.words||[];
@@ -2826,7 +2908,7 @@ function answerLP(btn,chosen,correct){
   if(chosen===correct){
     btn.classList.add('ok');
     ST._act.score++;
-    fb.textContent='✅ 정답!'; fb.className='act-fb ok';
+    fb.textContent='정답! / To\'g\'ri!'; fb.className='act-fb ok';
   } else {
     btn.classList.add('no');
     document.querySelectorAll('.act-opt').forEach(b=>{
@@ -2849,24 +2931,61 @@ function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
 function rSentences(d,el,uz){ rSentView(d,el,uz); }
 
 
-// ── Step 4: 퀴즈 ──
+// ── 퀴즈 문제 생성 (단어 + 문장 자동 포함) ──
+function buildQuizAll(d){
+  const qs=[...d.quiz];
+  const sent=d.sentence||{ko:'',uz:''};
+  // 자동 문장 문제 1: "이 문장의 뜻은?"
+  if(sent.ko && sent.uz){
+    const others=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz&&c.sentence.uz!==sent.uz)
+                    .map(c=>c.sentence.uz);
+    const distractors=shuffle(others).slice(0,3);
+    if(distractors.length>=2){
+      const opts=shuffle([sent.uz,...distractors]).slice(0,4);
+      qs.push({tag:'문장',
+        q:`이 문장의 뜻은?\n"${sent.ko}"`,
+        qu:`Bu gapning ma'nosi nima?\n"${sent.ko}"`,
+        opts, ans:opts.indexOf(sent.uz)});
+    }
+  }
+  // 자동 문장 문제 2: 빈칸 채우기 (첫 번째 명사)
+  const noun=d.words?.find(w=>w.pos==='명사'||w.pos?.includes('명사'));
+  if(noun && sent.ko.includes(noun.ko)){
+    const blank=sent.ko.replace(noun.ko,'___');
+    const dists=shuffle(CUR.filter(c=>c.day!==d.day).flatMap(c=>c.words||[])
+                          .filter(w=>w.ko!==noun.ko).map(w=>w.ko)).slice(0,3);
+    if(dists.length>=2){
+      const opts=shuffle([noun.ko,...dists]).slice(0,4);
+      qs.push({tag:'문장',
+        q:`빈칸에 알맞은 단어는?\n"${blank}"`,
+        qu:`Bo'sh joyga to'g'ri so'zni qo'ying:\n"${blank}"`,
+        opts, ans:opts.indexOf(noun.ko)});
+    }
+  }
+  return qs;
+}
+
+// ── Step 5: 퀴즈 ──
 function rQuiz(d,el,uz){
+  if(!ST._qAll||ST._qAll.day!==d.day){
+    ST._qAll={day:d.day, qs:buildQuizAll(d)};
+  }
+  const allQs=ST._qAll.qs;
   const qi=ST.quizIdx;
-  const MAX_Q=2; // 5분 목표: 퀴즈 2문제만
-  if(qi>=Math.min(MAX_Q,d.quiz.length)){ST.step=5;renderLesson();return;}
-  const q=d.quiz[qi];
+  if(qi>=allQs.length){ST.step=6;renderLesson();return;}
+  const q=allQs[qi];
   el.innerHTML=`
     <div class="qhdr">
-      <span class="qprog">문제 ${qi+1} / ${d.quiz.length}</span>
-      <span class="qscore">✅ ${ST.quizScore}점</span>
+      <span class="qprog">문제 ${qi+1} / ${allQs.length}</span>
+      <span class="qscore">${ST.quizScore}점</span>
     </div>
     <div class="qcard">
       <div class="qtag">${q.tag}</div>
-      <div class="qq">${uz?q.qu:q.q}</div>
-      <div class="qsub">${uz?q.q:q.qu}</div>
+      <div class="qq" style="white-space:pre-line">${uz?q.qu:q.q}</div>
+      <div class="qsub" style="white-space:pre-line">${uz?q.q:q.qu}</div>
       <div class="qopts">
         ${q.opts.map((o,i)=>`
-          <button class="qopt" id="qo${i}" onclick="ansQ(${i},${q.ans})">
+          <button class="qopt" id="qo${i}" onclick="ansQ(${i},${q.ans},${allQs.length})">
             ${String.fromCharCode(65+i)}. ${o}
           </button>
         `).join('')}
@@ -2875,20 +2994,21 @@ function rQuiz(d,el,uz){
     </div>
   `;
 }
-function ansQ(chosen,correct){
+function ansQ(chosen,correct,total){
   const opts=document.querySelectorAll('.qopt');
   const fb=document.getElementById('qfb');
   opts.forEach(o=>{o.classList.add('off');o.onclick=null;});
   const ok=chosen===correct;
-  if(ok){ST.quizScore++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent='✅ 맞아요! To\'g\'ri!';}
-  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`❌ 정답: ${String.fromCharCode(65+correct)}. Noto\'g\'ri.`;}
+  if(ok){ST.quizScore++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent='맞아요! / To\'g\'ri!';}
+  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`틀렸어요 — 정답: ${String.fromCharCode(65+correct)} / Noto\'g\'ri.`;}
   fb.style.display='block';
   setTimeout(()=>{ST.quizIdx++;renderLesson();},1600);
 }
 
-// ── Step 5: 결과 ──
+// ── Step 6: 결과 ──
 function rResult(d,el,uz){
-  const t=Math.min(2,d.quiz.length), pct=t>0?Math.round(ST.quizScore/t*100):100, pass=pct>=60;
+  const allQs=ST._qAll?.qs||d.quiz;
+  const t=allQs.length, pct=t>0?Math.round(ST.quizScore/t*100):100, pass=pct>=60;
   const cls=pct>=80?'g':pct>=60?'m':'b';
   const e=pct>=80?'🏆':pct>=60?'✅':'💪';
   sessionEnd(d.day, ST.quizScore, t);
@@ -2925,7 +3045,7 @@ function rResult(d,el,uz){
       `:''}
       ${pass
         ?`<button class="btn red" onclick="goHome()">홈으로 / Bosh sahifa</button>`
-        :`<button class="btn red" onclick="ST.step=4;ST.quizIdx=0;ST.quizScore=0;renderLesson()">다시 / Qayta</button>
+        :`<button class="btn red" onclick="ST.step=5;ST.quizIdx=0;ST.quizScore=0;ST._qAll=null;renderLesson()">다시 / Qayta</button>
           <button class="btn gray" onclick="goHome()">홈으로</button>`
       }
     </div>
