@@ -61,6 +61,8 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
 /* Screens */
 .scr{display:none}.scr.on{display:block}
+/* 수업 중 메인 헤더 완전 숨김 */
+body.in-lesson #mainHdr{display:none!important}
 
 /* ═══ HOME ═══ */
 .home{padding:16px}
@@ -160,23 +162,19 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .sdot{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
 .sdot.done{background:var(--green)}.sdot.cur{background:var(--blue-m)}
 
-/* Step label */
-.step-lbl{display:flex;align-items:center;justify-content:space-between;
-  padding:7px 14px 4px;flex-shrink:0}
-.step-name{
-  display:inline-flex;align-items:center;gap:5px;
-  background:var(--blue-m);color:#fff;
-  border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.2px
-}
-.step-hint{font-size:10px;color:var(--muted);font-style:italic}
+/* Step label — 숨김 (단계명은 학습자에게 불필요) */
+.step-lbl{display:none}
 
 /* lesson content fills remaining height */
 .lesson-2col{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .lbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px 0}
 
 /* 다음 단계 버튼 — 항상 화면 하단에 고정 */
-.lsn-next{padding:10px 14px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
-.lsn-next .btn{margin:0}
+.lsn-footer{padding:10px 14px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
+.lsn-footer .btn{margin:0}
+/* act-badge, act-header 단계명 표시 제거 */
+.act-badge{display:none!important}
+.act-header{display:none!important}
 
 /* ── Goal ── */
 .goal-box{
@@ -1172,7 +1170,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   .lbody{padding:0;overflow-y:auto}
   .lhdr{padding:12px 28px}
   .sbar{padding:7px 28px}
-  .step-lbl{padding:10px 28px 4px}
+  .step-lbl{display:none}
   #lessonScr{height:100vh}
   .prof{padding:24px 32px}
   .gq-wrap{padding:16px 28px}
@@ -1965,11 +1963,12 @@ const STRINGS = {
     lsn_sp_done_btn:'완료 →',lsn_play:'▶ 발음 듣기',lsn_today_words:'오늘의 단어',
     lsn_fc_know:'알아요',lsn_fc_again:'다시',
     lsn_next_sb:'문장 만들기 →',lsn_sb_title:'문장 만들기',lsn_sb_hint:'단어를 순서대로 탭하세요',lsn_sb_check:'확인',lsn_sb_clear:'지우기',
+    lsn_final_title:'종합 테스트',lsn_final_sub:'오늘 배운 내용을 확인해요',lsn_final_done:'종합 테스트 완료!',lsn_final_pass:'완벽해요! 🏆',lsn_final_fail:'다시 해봐요 💪',lsn_final_retry:'다시 →',lsn_final_next:'결과 보기 →',lsn_final_q:'문제',lsn_next_home:'홈으로 →',
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
-    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','완료'],
-    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','완료!'],
+    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','완료'],
+    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','완료!'],
   },
   uz:{
     tab_login:'Kirish', tab_ind:'Shaxsiy', tab_co:'Korxona',
@@ -2000,11 +1999,12 @@ const STRINGS = {
     lsn_sp_done_btn:"Tugadi →",lsn_play:"▶ Tinglash",lsn_today_words:"Bugungi so'zlar",
     lsn_fc_know:"Bilaman",lsn_fc_again:"Qayta",
     lsn_next_sb:"Gap tuzing →",lsn_sb_title:"Gap tuzing",lsn_sb_hint:"So'zlarni tartib bilan bosing",lsn_sb_check:"Tekshirish",lsn_sb_clear:"Tozalash",
+    lsn_final_title:"Yakuniy test",lsn_final_sub:"Bugun o'rganganlaringizni tekshiramiz",lsn_final_done:"Yakuniy test tugadi!",lsn_final_pass:"Ajoyib! 🏆",lsn_final_fail:"Qayta urinib ko'ring 💪",lsn_final_retry:"Qayta →",lsn_final_next:"Natija →",lsn_final_q:"Savol",lsn_next_home:"Bosh sahifa →",
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
     lbl_progress:'Mening progressim',
     lbl_profile:"Mening o'quv holatim",
-    steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Tugadi"],
-    step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap tuzing","Gap mashqi","Test savollari","Tugadi!"],
+    steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Yakuniy test","Tugadi"],
+    step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap tuzing","Gap mashqi","Test savollari","Barcha takrorlash","Tugadi!"],
   },
   vi:{
     tab_login:'Đăng nhập', tab_ind:'Cá nhân', tab_co:'Công ty',
@@ -2035,11 +2035,12 @@ const STRINGS = {
     lsn_sp_done_btn:'Xong →',lsn_play:'▶ Nghe phát âm',lsn_today_words:'Từ hôm nay',
     lsn_fc_know:'Biết rồi',lsn_fc_again:'Thử lại',
     lsn_next_sb:'Xây câu →',lsn_sb_title:'Xây câu',lsn_sb_hint:'Chọn từ theo thứ tự',lsn_sb_check:'Kiểm tra',lsn_sb_clear:'Xóa',
+    lsn_final_title:'Kiểm tra tổng hợp',lsn_final_sub:'Ôn lại tất cả những gì đã học hôm nay',lsn_final_done:'Kiểm tra tổng hợp xong!',lsn_final_pass:'Tuyệt vời! 🏆',lsn_final_fail:'Thử lại nhé 💪',lsn_final_retry:'Thử lại →',lsn_final_next:'Xem kết quả →',lsn_final_q:'Câu',lsn_next_home:'Trang chủ →',
     lbl_curriculum:'📅 Chương trình MVP 3 tuần (Ngày 1–21)',
     lbl_progress:'Tiến độ của tôi',
     lbl_profile:'Tình trạng học tập của tôi',
-    steps:['Câu hôm nay','Thẻ từ','Nghe từ','Nối từ','Xây câu','Luyện câu','Kiểm tra','Xong'],
-    step_hints:['Đọc câu','Lật thẻ','Nghe & chọn','Nối từ','Sắp xếp','Luyện câu','Kiểm tra','Xong!'],
+    steps:['Câu hôm nay','Thẻ từ','Nghe từ','Nối từ','Xây câu','Luyện câu','Kiểm tra','Tổng hợp','Xong'],
+    step_hints:['Đọc câu','Lật thẻ','Nghe & chọn','Nối từ','Sắp xếp','Luyện câu','Kiểm tra','Ôn tập','Xong!'],
   },
   ne:{
     tab_login:'लगइन', tab_ind:'व्यक्तिगत', tab_co:'कम्पनी',
@@ -2070,11 +2071,12 @@ const STRINGS = {
     lsn_sp_done_btn:'सकियो →',lsn_play:'▶ उच्चारण सुन्नुस्',lsn_today_words:'आजका शब्द',
     lsn_fc_know:'थाहा छ',lsn_fc_again:'फेरि',
     lsn_next_sb:'वाक्य बनाउनुस् →',lsn_sb_title:'वाक्य बनाउनुस्',lsn_sb_hint:'शब्दहरू क्रमशः थिच्नुस्',lsn_sb_check:'जाँच',lsn_sb_clear:'मेटाउनुस्',
+    lsn_final_title:'समग्र परीक्षा',lsn_final_sub:'आज सिकेको सबै कुरा जाँच्नुस्',lsn_final_done:'समग्र परीक्षा सकियो!',lsn_final_pass:'उत्कृष्ट! 🏆',lsn_final_fail:'फेरि प्रयास गर्नुस् 💪',lsn_final_retry:'फेरि →',lsn_final_next:'नतिजा →',lsn_final_q:'प्रश्न',lsn_next_home:'गृहपृष्ठ →',
     lbl_curriculum:'📅 MVP ३ हप्ताको पाठ्यक्रम (दिन १–२१)',
     lbl_progress:'मेरो प्रगति',
     lbl_profile:'मेरो अध्ययन अवस्था',
-    steps:['आजको वाक्य','कार्ड','शब्द सुन्नुस्','मिलाउनुस्','वाक्य बनाउनुस्','वाक्य अभ्यास','परीक्षा','सकियो'],
-    step_hints:['वाक्य हेर्नुस्','कार्ड पल्टाउनुस्','सुन्नुस् र छान्नुस्','जोड्नुस्','शब्द मिलाउनुस्','वाक्य अभ्यास','परीक्षा','सकियो!'],
+    steps:['आजको वाक्य','कार्ड','शब्द सुन्नुस्','मिलाउनुस्','वाक्य बनाउनुस्','वाक्य अभ्यास','परीक्षा','समग्र परीक्षा','सकियो'],
+    step_hints:['वाक्य हेर्नुस्','कार्ड पल्टाउनुस्','सुन्नुस् र छान्नुस्','जोड्नुस्','शब्द मिलाउनुस्','वाक्य अभ्यास','परीक्षा','पूर्ण समीक्षा','सकियो!'],
   },
   kk:{
     tab_login:'Кіру', tab_ind:'Жеке', tab_co:'Кәсіпорын',
@@ -2105,11 +2107,12 @@ const STRINGS = {
     lsn_sp_done_btn:'Бітті →',lsn_play:'▶ Айтылуды тыңдау',lsn_today_words:'Бүгінгі сөздер',
     lsn_fc_know:'Білемін',lsn_fc_again:'Қайта',
     lsn_next_sb:'Сөйлем жасаңыз →',lsn_sb_title:'Сөйлем жасаңыз',lsn_sb_hint:'Сөздерді ретімен басыңыз',lsn_sb_check:'Тексеру',lsn_sb_clear:'Жою',
+    lsn_final_title:'Жалпы тест',lsn_final_sub:'Бүгін үйренгеннің барлығын тексеріңіз',lsn_final_done:'Жалпы тест аяқталды!',lsn_final_pass:'Тамаша! 🏆',lsn_final_fail:'Қайта уринып көріңіз 💪',lsn_final_retry:'Қайта →',lsn_final_next:'Нәтиже →',lsn_final_q:'Сұрақ',lsn_next_home:'Басты бет →',
     lbl_curriculum:'📅 MVP 3 аптаның оқу бағдарламасы (1–21-күн)',
     lbl_progress:'Менің үлгерімім',
     lbl_profile:'Оқу жағдайым',
-    steps:['Бүгінгі сөйлем','Карточкалар','Сөз тыңдау','Сәйкестендіру','Сөйлем жасаңыз','Сөйлем жаттығуы','Тест','Аяқталды'],
-    step_hints:['Сөйлемді оқу','Карточканы аудару','Тыңдап таңдау','Сәйкестендіру','Сөздерді рет','Жаттығу','Тест','Аяқталды!'],
+    steps:['Бүгінгі сөйлем','Карточкалар','Сөз тыңдау','Сәйкестендіру','Сөйлем жасаңыз','Сөйлем жаттығуы','Тест','Жалпы тест','Аяқталды'],
+    step_hints:['Сөйлемді оқу','Карточканы аудару','Тыңдап таңдау','Сәйкестендіру','Сөздерді рет','Жаттығу','Тест','Толық қайталау','Аяқталды!'],
   },
   tet:{
     tab_login:'Tama', tab_ind:'Individuál', tab_co:'Kompañia',
@@ -2140,11 +2143,12 @@ const STRINGS = {
     lsn_sp_done_btn:"Remata →",lsn_play:"▶ Rona pronunsiasaun",lsn_today_words:"Liafuan ohin",
     lsn_fc_know:"Hatene",lsn_fc_again:"Fali",
     lsn_next_sb:"Halo fraze →",lsn_sb_title:"Halo fraze",lsn_sb_hint:"Klik liafuan tuir ordem",lsn_sb_check:"Verifika",lsn_sb_clear:"Hamoos",
+    lsn_final_title:"Teste final",lsn_final_sub:"Verifika hotu ne'ebé aprende ohin",lsn_final_done:"Teste final remata!",lsn_final_pass:"Ekselente! 🏆",lsn_final_fail:"Koko fali 💪",lsn_final_retry:"Fali →",lsn_final_next:"Rezultadu →",lsn_final_q:"Pergunta",lsn_next_home:"Pájina inísiu →",
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
     lbl_progress:"Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
-    steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Remata'],
-    step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Hili liafuan','Prátika','Teste','Remata!'],
+    steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Teste final','Remata'],
+    step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Hili liafuan','Prátika','Teste','Revizaun','Remata!'],
   },
   ru:{
     tab_login:'Войти', tab_ind:'Личный', tab_co:'Предприятие',
@@ -2175,11 +2179,12 @@ const STRINGS = {
     lsn_sp_done_btn:'Завершено →',lsn_play:'▶ Слушать произношение',lsn_today_words:'Слова дня',
     lsn_fc_know:'Знаю',lsn_fc_again:'Снова',
     lsn_next_sb:'Составьте предложение →',lsn_sb_title:'Составьте предложение',lsn_sb_hint:'Нажимайте слова по порядку',lsn_sb_check:'Проверить',lsn_sb_clear:'Очистить',
+    lsn_final_title:'Итоговый тест',lsn_final_sub:'Проверьте всё, что узнали сегодня',lsn_final_done:'Итоговый тест завершён!',lsn_final_pass:'Отлично! 🏆',lsn_final_fail:'Попробуйте ещё раз 💪',lsn_final_retry:'Ещё раз →',lsn_final_next:'Результат →',lsn_final_q:'Вопрос',lsn_next_home:'На главную →',
     lbl_curriculum:'📅 Учебная программа MVP 3 недели (День 1–21)',
     lbl_progress:'Мой прогресс',
     lbl_profile:'Мой статус обучения',
-    steps:['Фраза дня','Карточки','Слушать слова','Сопоставление','Составьте предложение','Практика','Тест','Готово'],
-    step_hints:['Читать фразу','Перевернуть карточку','Слушать & выбрать','Сопоставить','Составить','Практика','Тест','Готово!'],
+    steps:['Фраза дня','Карточки','Слушать слова','Сопоставление','Составьте предложение','Практика','Тест','Итоговый тест','Готово'],
+    step_hints:['Читать фразу','Перевернуть карточку','Слушать & выбрать','Сопоставить','Составить','Практика','Тест','Полный обзор','Готово!'],
   },
   en:{
     tab_login:'Login', tab_ind:'Individual', tab_co:'Company',
@@ -2210,11 +2215,12 @@ const STRINGS = {
     lsn_sp_done_btn:'Done →',lsn_play:'▶ Listen to pronunciation',lsn_today_words:"Today's words",
     lsn_fc_know:'I know',lsn_fc_again:'Again',
     lsn_next_sb:'Build sentence →',lsn_sb_title:'Build sentence',lsn_sb_hint:'Tap words in order',lsn_sb_check:'Check',lsn_sb_clear:'Clear',
+    lsn_final_title:'Final test',lsn_final_sub:"Review everything you learned today",lsn_final_done:'Final test done!',lsn_final_pass:'Excellent! 🏆',lsn_final_fail:'Try again 💪',lsn_final_retry:'Retry →',lsn_final_next:'See results →',lsn_final_q:'Question',lsn_next_home:'Go home →',
     lbl_curriculum:'📅 MVP 3-week curriculum (Day 1–21)',
     lbl_progress:'My progress',
     lbl_profile:'My learning status',
-    steps:["Today's sentence","Flashcards","Listen","Matching","Build sentence","Sentence practice","Quiz","Done"],
-    step_hints:['Read sentence','Flip cards','Listen & pick','Match words','Arrange words','Practice','Quiz','Done!'],
+    steps:["Today's sentence","Flashcards","Listen","Matching","Build sentence","Sentence practice","Quiz","Final test","Done"],
+    step_hints:['Read sentence','Flip cards','Listen & pick','Match words','Arrange words','Practice','Quiz','Full review','Done!'],
   },
 };
 
@@ -2757,6 +2763,7 @@ function startLesson(i){
   sessionStart(CUR[i].day);
   window.speechSynthesis&&window.speechSynthesis.cancel();
   document.getElementById('mainHdr').style.display='none';
+  document.body.classList.add('in-lesson');
   document.getElementById('homeScr').classList.remove('on');
   document.getElementById('lessonScr').classList.add('on');
   renderLesson();
@@ -2768,6 +2775,7 @@ function startPracticalLesson(i){
   sessionStart(PRACTICAL_CUR[i].day);
   window.speechSynthesis&&window.speechSynthesis.cancel();
   document.getElementById('mainHdr').style.display='none';
+  document.body.classList.add('in-lesson');
   document.getElementById('homeScr').classList.remove('on');
   document.getElementById('lessonScr').classList.add('on');
   renderLesson();
@@ -2779,6 +2787,7 @@ function goHome(){
   document.getElementById('profileScr').classList.remove('on');
   document.getElementById('gameScr').classList.remove('on');
   document.getElementById('mainHdr').style.display='';
+  document.body.classList.remove('in-lesson');
   document.getElementById('homeScr').classList.add('on');
   setSidebarActive('home');
   showHomeLangPanel(); // 항상 언어선택 첫화면부터
@@ -2831,7 +2840,7 @@ function renderLesson(){
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
   const footer=document.getElementById('lsnFooter'); if(footer) footer.innerHTML='';
-  // 6단계 퀴즐렛 방식: 문장→플래시카드→매칭→단어듣기→퀴즈→완료 (5분)
+  // 8단계: 문장→플래시카드→듣기→매칭→문장만들기→문장연습→퀴즈→종합테스트→완료
   if(s===0) rSentView(d,el,uz);
   else if(s===1) rFlashcard(d,el,uz);
   else if(s===2) rListenPick(d,el,uz);
@@ -2839,7 +2848,8 @@ function renderLesson(){
   else if(s===4) rSentBuilder(d,el,uz);
   else if(s===5) rSentPractice(d,el,uz);
   else if(s===6) rQuiz(d,el,uz);
-  else if(s===7) rResult(d,el,uz);
+  else if(s===7) rFinalTest(d,el,uz);
+  else if(s===8) rResult(d,el,uz);
   // class="lsn-adv" 버튼들을 하단 고정 footer로 이동
   liftAdvanceButtons(el, footer);
 }
@@ -2863,7 +2873,7 @@ function rSentView(d,el,uz){
     <div class="sent-intro-hero">
       <div class="sih-tag">${d.icon||'📚'} Day ${d.day} · ${d.level||'A1'}</div>
       <div class="sih-title">${uz?d.titleUz:d.titleKo}</div>
-      <div class="sih-goal">${biT('오늘의 문장을 듣고, 단어를 배워봐요','lsn_listen_tip')}</div>
+      <div class="sih-goal">${t('lsn_listen_tip')}</div>
     </div>
     <div class="sent-card" style="cursor:pointer" onclick="sayBtn('spk-main',${jq(sent.ko)},'speak')">
       <div class="sent-num">▶</div>
@@ -2919,9 +2929,7 @@ function rFlashcard(d,el,uz){
   const w=fc.items[fc.idx];
   const isSent=(w.type==='sentence');
   const prog=`${fc.idx+1}/${fc.items.length}`;
-  const tipText = isSent
-    ? biT('문장을 탭하면 번역이 보여요','lsn_fc_tip')
-    : biT('카드를 탭하면 뒤집혀요','lsn_fc_tip');
+  const tipText = t('lsn_fc_tip');
   const frontHTML = isSent
     ? `<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:8px">📝 오늘의 문장</div>
        <div style="font-size:20px;font-weight:900;line-height:1.45;letter-spacing:-.3px">${w.ko}</div>`
@@ -2947,8 +2955,8 @@ function rFlashcard(d,el,uz){
       </div>
     </div>
     <div id="fc-btns" style="display:none;gap:10px;margin-top:12px;justify-content:center">
-      <button class="fc-btn-know" onclick="fcKnow()">${biT('알아요','lsn_fc_know')}</button>
-      <button class="fc-btn-again" onclick="fcAgain()">${biT('다시','lsn_fc_again')}</button>
+      <button class="fc-btn-know" onclick="fcKnow()">${t('lsn_fc_know')}</button>
+      <button class="fc-btn-again" onclick="fcAgain()">${t('lsn_fc_again')}</button>
     </div>
   `;
   setTimeout(()=>{ const b=document.getElementById('fc-btns'); if(b) b.style.display='flex'; },100);
@@ -2996,7 +3004,7 @@ function rMatching(d,el,uz){
       <div class="act-prog">${m.matched.length}/${m.items.length} ${t('lsn_match_prog')}</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
-      ${biT('한국어와 뜻을 연결하세요','lsn_match_instr')}
+      ${t('lsn_match_instr')}
     </div>
     <div class="match-grid">
       <div>
@@ -3076,7 +3084,7 @@ function rSentBuilder(d,el,uz){
       </div>
       <div class="act-complete" style="margin-bottom:14px">
         <div style="font-size:32px">${isOk?'🎉':'💪'}</div>
-        <div class="act-complete-msg">${isOk?biT('정답이에요!','lsn_match_ok'):biT('다시 해봐요!','lsn_match_no')}</div>
+        <div class="act-complete-msg">${isOk?t('lsn_match_ok'):t('lsn_match_no')}</div>
         <div style="margin-top:8px;font-size:15px;font-weight:700;color:var(--blue-d);line-height:1.5">${sent.ko}</div>
         ${!isOk?`<div style="font-size:12px;color:var(--muted);margin-top:6px">${sent.uz}</div>`:''}
       </div>
@@ -3108,7 +3116,7 @@ function rSentBuilder(d,el,uz){
       <div class="sb-ref-text">${sent.uz||''}</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
-      ${biT('단어를 순서대로 탭하세요','lsn_sb_hint')}
+      ${t('lsn_sb_hint')}
     </div>
     <div class="sb-answer">
       <div class="sb-answer-label">▶</div>
@@ -3182,7 +3190,7 @@ function rSentPractice(d,el,uz){
       </div>
       <div class="act-play-wrap">
         <button class="act-play-btn" id="sp-btn" onclick="sayBtn('sp-btn',${jq(sent.ko)},'speak')">▶</button>
-        <div class="act-instruct">${biT('소리를 듣고 뜻을 고르세요','lsn_sp_instr')}</div>
+        <div class="act-instruct">${t('lsn_sp_instr')}</div>
       </div>
       <div class="act-opts single">
         ${sp.uzOpts.map((o,i)=>`
@@ -3211,25 +3219,31 @@ function rSentPractice(d,el,uz){
         </button>
       </div>
       <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px">
-        ${biT('소리를 듣고 따라 말해보세요','lsn_sp_follow')}
+        ${t('lsn_sp_follow')}
       </div>
       <button class="btn red" data-adv onclick="ST._sp.done=true;renderLesson()">${t('lsn_sp_done_btn')}</button>`;
     setTimeout(()=>sayBtn('sp2-btn',sent.ko,'speak'),400);
   }
 }
 window.ansSP=function(chosen,correct,phase){
-  document.querySelectorAll('.act-opt').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';});
   const fb=document.getElementById('act-fb');
   const nxt=document.getElementById('act-next');
   if(chosen===correct){
+    // Correct: lock all, highlight green, show next button
+    document.querySelectorAll('.act-opt').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';});
     document.getElementById('sp-o'+chosen)?.classList.add('ok');
-    fb.textContent='맞아요! / To\'g\'ri!'; fb.className='act-fb ok';
+    if(fb){fb.textContent=t('lsn_match_ok');fb.className='act-fb ok';}
+    if(nxt) nxt.style.display='';
   } else {
-    document.getElementById('sp-o'+chosen)?.classList.add('no');
-    document.getElementById('sp-o'+correct)?.classList.add('ok');
-    fb.textContent='틀렸어요 — 다시 들어보세요 / Noto\'g\'ri.'; fb.className='act-fb no';
+    // Wrong: flash red on chosen button only, then re-enable for retry
+    const wrongBtn=document.getElementById('sp-o'+chosen);
+    if(wrongBtn){
+      wrongBtn.disabled=true;wrongBtn.classList.add('no');
+      setTimeout(()=>{wrongBtn.classList.remove('no');wrongBtn.disabled=false;},800);
+    }
+    if(fb){fb.textContent=t('lsn_match_no');fb.className='act-fb no';
+      setTimeout(()=>{if(fb)fb.textContent='';},800);}
   }
-  if(nxt) nxt.style.display='';
 };
 
 // ── Step 3: 단어 듣기 (Listen & Pick) ──
@@ -3259,7 +3273,7 @@ function rListenPick(d,el,uz){
     </div>
     <div class="act-play-wrap">
       <button class="act-play-btn" id="lp-btn" onclick="sayBtn('lp-btn',${jq(target.ko)},'word')">▶</button>
-      <div class="act-instruct">${biT('소리를 듣고 알맞은 단어를 고르세요','lsn_lp_instr')}</div>
+      <div class="act-instruct">${t('lsn_lp_instr')}</div>
     </div>
     <div class="act-opts">
       ${options.map((opt,i)=>`
@@ -3339,6 +3353,87 @@ function buildQuizAll(d){
   return qs;
 }
 
+// ── Step 7: 종합 테스트 (Final comprehensive test) ──
+function rFinalTest(d,el,uz){
+  const words=d.words||[];
+  const sent=d.sentence||{ko:'',uz:''};
+
+  if(!ST._ft||ST._ft.day!==d.day){
+    const qs=[];
+    // Word meaning questions: hear/see Korean → pick native meaning
+    words.forEach(w=>{
+      const others=shuffle(words.filter(x=>x.ko!==w.ko));
+      const distractors=others.slice(0,3).map(x=>x.uz.split('—')[0].trim());
+      const correctAns=w.uz.split('—')[0].trim();
+      if(distractors.length>=2){
+        const opts=shuffle([correctAns,...distractors]).slice(0,4);
+        qs.push({type:'word',q:w.ko,qSub:'['+w.rom+']',opts,ans:opts.indexOf(correctAns)});
+      }
+    });
+    // Sentence meaning question
+    if(sent.ko&&sent.uz){
+      const otherSents=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz)
+                          .map(c=>c.sentence.uz.split('—')[0].trim());
+      const distractors=shuffle(otherSents).slice(0,3);
+      if(distractors.length>=1){
+        const correctAns=sent.uz.split('—')[0].trim();
+        const opts=shuffle([correctAns,...distractors]).slice(0,4);
+        qs.push({type:'sentence',q:sent.ko,qSub:'',opts,ans:opts.indexOf(correctAns)});
+      }
+    }
+    ST._ft={day:d.day, qs:shuffle(qs), idx:0, score:0};
+  }
+
+  const ft=ST._ft;
+
+  // All done → summary
+  if(ft.idx>=ft.qs.length){
+    const pct=ft.qs.length>0?Math.round(ft.score/ft.qs.length*100):100;
+    const pass=pct>=60;
+    el.innerHTML=`
+      <div class="rcard">
+        <div style="font-size:40px">${pass?'🏆':'💪'}</div>
+        <div class="rscore ${pct>=80?'g':pct>=60?'m':'b'}">${pct}%</div>
+        <div class="rmsg">${t(pass?'lsn_final_pass':'lsn_final_fail')}</div>
+        <div class="rsub">${ft.score} / ${ft.qs.length}</div>
+      </div>
+      <button class="btn red" data-adv onclick="ST.step=8;renderLesson()">${t('lsn_final_next')}</button>`;
+    return;
+  }
+
+  const q=ft.qs[ft.idx];
+  el.innerHTML=`
+    <div class="qhdr">
+      <span class="qprog">${t('lsn_final_q')} ${ft.idx+1} / ${ft.qs.length}</span>
+      <span class="qscore">${ft.score}✅</span>
+    </div>
+    <div class="qcard">
+      <div class="qtag">${q.type==='sentence'?'📝':'📖'}</div>
+      <div class="qq">${q.q}</div>
+      ${q.qSub?`<div class="qsub">${q.qSub}</div>`:''}
+      <div class="qopts">
+        ${q.opts.map((o,i)=>`
+          <button class="qopt" id="fto${i}" onclick="ansFT(${i},${q.ans},${ft.qs.length})">
+            ${String.fromCharCode(65+i)}. ${o}
+          </button>`).join('')}
+      </div>
+      <div class="qfb" id="ftfb"></div>
+    </div>
+  `;
+  // Auto-play the Korean word/sentence
+  if(q.q) setTimeout(()=>sayHQ(q.q,null),350);
+}
+window.ansFT=function(chosen,correct,total){
+  const opts=document.querySelectorAll('.qopt');
+  const fb=document.getElementById('ftfb');
+  opts.forEach(o=>{o.classList.add('off');o.onclick=null;});
+  const ok=chosen===correct;
+  if(ok){ST._ft.score++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent=t('lsn_match_ok');}
+  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`${t('lsn_match_no')} → ${String.fromCharCode(65+correct)}`;}
+  fb.style.display='block';
+  setTimeout(()=>{ST._ft.idx++;renderLesson();},1600);
+};
+
 // ── Step 5: 퀴즈 ──
 function rQuiz(d,el,uz){
   if(!ST._qAll||ST._qAll.day!==d.day){
@@ -3346,7 +3441,7 @@ function rQuiz(d,el,uz){
   }
   const allQs=ST._qAll.qs;
   const qi=ST.quizIdx;
-  if(qi>=allQs.length){ST.step=7;renderLesson();return;}
+  if(qi>=allQs.length){ST.step=7;renderLesson();return;}// → rFinalTest
   const q=allQs[qi];
   el.innerHTML=`
     <div class="qhdr">
@@ -3373,8 +3468,8 @@ function ansQ(chosen,correct,total){
   const fb=document.getElementById('qfb');
   opts.forEach(o=>{o.classList.add('off');o.onclick=null;});
   const ok=chosen===correct;
-  if(ok){ST.quizScore++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent='맞아요! / To\'g\'ri!';}
-  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`틀렸어요 — 정답: ${String.fromCharCode(65+correct)} / Noto\'g\'ri.`;}
+  if(ok){ST.quizScore++;opts[chosen].classList.add('ok');fb.className='qfb ok';fb.textContent=t('lsn_match_ok');}
+  else{opts[chosen].classList.add('no');opts[correct].classList.add('ok');fb.className='qfb no';fb.textContent=`${t('lsn_match_no')} → ${String.fromCharCode(65+correct)}`;}
   fb.style.display='block';
   setTimeout(()=>{ST.quizIdx++;renderLesson();},1600);
 }
@@ -3382,10 +3477,10 @@ function ansQ(chosen,correct,total){
 // ── Step 6: 결과 ──
 function rResult(d,el,uz){
   const allQs=ST._qAll?.qs||d.quiz;
-  const t=allQs.length, pct=t>0?Math.round(ST.quizScore/t*100):100, pass=pct>=60;
+  const tot=allQs.length, pct=tot>0?Math.round(ST.quizScore/tot*100):100, pass=pct>=60;
   const cls=pct>=80?'g':pct>=60?'m':'b';
   const e=pct>=80?'🏆':pct>=60?'✅':'💪';
-  sessionEnd(d.day, ST.quizScore, t);
+  sessionEnd(d.day, ST.quizScore, tot);
   // 안전교육만 done 배열에 포함; 실용 한국어는 별도 관리 불필요
   if(pass && !ST.isPractical && !ST.done.includes(d.day)){ST.done.push(d.day);saveDone();}
   // 포인트 지급
@@ -3405,7 +3500,7 @@ function rResult(d,el,uz){
       <div style="font-size:48px">${e}</div>
       <div class="rscore ${cls}">${pct}%</div>
       <div class="rmsg">${uz?msgUz:msgKo}</div>
-      <div class="rsub">${ST.quizScore} / ${t} 정답 · ${pass?(uz?"O'tdi ✅":'합격 ✅'):(uz?'Qayta urinib ko\'ring':'다시 도전해봐요')}</div>
+      <div class="rsub">${ST.quizScore} / ${tot} 정답 · ${pass?(uz?"O'tdi ✅":'합격 ✅'):(uz?'Qayta urinib ko\'ring':'다시 도전해봐요')}</div>
       ${pass?`<div style="margin:10px 0 4px">
         <span class="pts-chip">⭐ +${pct>=80?30:20}점 획득!</span>
         <span style="font-size:12px;color:var(--muted);margin-left:6px">총 ${getPoints()}점</span>
@@ -3418,9 +3513,9 @@ function rResult(d,el,uz){
       </div>
       `:''}
       ${pass
-        ?`<button class="btn red" data-adv onclick="goHome()">홈으로 / Bosh sahifa</button>`
-        :`<button class="btn red" data-adv onclick="ST.step=6;ST.quizIdx=0;ST.quizScore=0;ST._qAll=null;renderLesson()">다시 / Qayta</button>
-          <button class="btn gray" data-adv onclick="goHome()">홈으로</button>`
+        ?`<button class="btn red" data-adv onclick="goHome()">${t('lsn_next_home')}</button>`
+        :`<button class="btn red" data-adv onclick="ST.step=6;ST.quizIdx=0;ST.quizScore=0;ST._qAll=null;ST._ft=null;renderLesson()">${t('lsn_final_retry')}</button>
+          <button class="btn gray" data-adv onclick="goHome()">${t('lsn_next_home')}</button>`
       }
     </div>
     <div style="padding:12px 0;font-size:10px;color:var(--muted);text-align:center;line-height:1.7">
