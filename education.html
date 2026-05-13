@@ -2225,11 +2225,11 @@ function renderLangChips(){
 function selectHomeLang(code){
   setUILang(code);
   document.getElementById('homeLangPanel').style.display='none';
-  document.getElementById('homeDayPanel').style.display='';
+  document.getElementById('homeDayPanel').style.display='block';
   renderHome();
 }
 function showHomeLangPanel(){
-  document.getElementById('homeLangPanel').style.display='';
+  document.getElementById('homeLangPanel').style.display='flex';
   document.getElementById('homeDayPanel').style.display='none';
   renderLangChips();
 }
