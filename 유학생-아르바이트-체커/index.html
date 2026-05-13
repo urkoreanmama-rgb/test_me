@@ -110,6 +110,49 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 .btn-restart{width:100%;padding:14px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;margin-top:4px}
 .saved-msg{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:10px}
 
+/* ── Next Steps (No/Warn result) ── */
+.section.next-steps-card{background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.3)}
+.section.next-steps-card .section-title{color:#f87171;border-bottom-color:rgba(239,68,68,0.2)}
+.reason-block{padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reason-block:last-child{padding-bottom:0;margin-bottom:0;border-bottom:none}
+.reason-why{font-size:0.86rem;font-weight:700;color:#fca5a5;margin-bottom:8px}
+.reason-actions{list-style:none;display:flex;flex-direction:column;gap:6px}
+.reason-actions li{display:flex;gap:8px;font-size:0.83rem;color:var(--sub);align-items:flex-start;line-height:1.5}
+.reason-actions li::before{content:"→";color:var(--accent2);flex-shrink:0;font-weight:700}
+.banned-box{background:rgba(239,68,68,0.1);border:2px solid rgba(239,68,68,0.4);border-radius:14px;padding:18px;margin-bottom:14px}
+.banned-box-title{font-size:0.9rem;font-weight:700;color:#f87171;margin-bottom:14px}
+.banned-item{display:flex;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(239,68,68,0.15);align-items:flex-start}
+.banned-item:last-child{padding-bottom:0;margin-bottom:0;border-bottom:none}
+.banned-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.banned-name{font-size:0.88rem;font-weight:700;color:#fca5a5;margin-bottom:4px}
+.banned-why{font-size:0.8rem;color:var(--muted);line-height:1.5;margin-bottom:4px}
+.banned-alt{font-size:0.8rem;color:var(--ok);line-height:1.5}
+/* ── Matching Form (Ok/Warn result) ── */
+.section.matching-form-card{background:rgba(16,185,129,0.07);border-color:rgba(16,185,129,0.3)}
+.section.matching-form-card .section-title{color:#34d399;border-bottom-color:rgba(16,185,129,0.2)}
+.mf-desc{font-size:0.84rem;color:var(--sub);margin-bottom:16px;line-height:1.65}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:0.81rem;font-weight:600;color:var(--sub);margin-bottom:6px}
+.form-label .req{color:#f87171;margin-left:2px}
+.form-input,.form-select{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid var(--border);border-radius:10px;color:var(--text);padding:11px 14px;font-size:0.88rem;font-family:inherit;outline:none;transition:border-color 0.18s}
+.form-input:focus,.form-select:focus{border-color:var(--accent2)}
+.form-select option{background:#1e293b}
+.day-checks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.day-check-input{display:none}
+.day-check-label{background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.82rem;cursor:pointer;transition:all 0.15s;color:var(--sub);user-select:none}
+.day-check-input:checked+.day-check-label{background:rgba(99,102,241,0.2);border-color:var(--accent);color:var(--text);font-weight:600}
+.btn-submit-match{width:100%;padding:14px;border:none;border-radius:12px;font-size:0.97rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#10b981,#059669);color:#fff;margin-top:8px;transition:opacity 0.18s}
+.btn-submit-match:hover{opacity:0.88}
+.match-success{text-align:center;padding:12px 0 20px}
+.match-success-icon{font-size:2.8rem;margin-bottom:10px}
+.match-success-title{font-size:1.15rem;font-weight:700;color:var(--ok);margin-bottom:8px}
+.match-success-sub{font-size:0.85rem;color:var(--sub);line-height:1.7}
+.doc-tailored{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:16px;margin-top:16px}
+.doc-tailored-title{font-size:0.83rem;font-weight:700;color:var(--accent2);margin-bottom:10px}
+.doc-tailored ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.doc-tailored li{display:flex;gap:8px;font-size:0.82rem;color:var(--sub);align-items:flex-start;line-height:1.5}
+.doc-tailored li::before{content:"📋";flex-shrink:0}
+
 @media(max-width:480px){
   .hero h1{font-size:1.45rem}
   .info-cards{grid-template-columns:1fr}
@@ -307,12 +350,13 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
   <div id="result">
     <div class="res-card" id="res-main"></div>
     <div id="res-notice"></div>
-    <div class="section">
+    <div id="res-next-steps"></div>
+    <div class="section" id="sec-docs-wrap">
       <div class="section-title" data-i18n="secDocs">필요 서류</div>
       <ul class="doc-list" id="res-docs"></ul>
       <p style="font-size:0.8rem;color:var(--muted);margin-top:10px" data-i18n="docsNote">* 출입국관리사무소마다 추가 서류를 요구할 수 있습니다.</p>
     </div>
-    <div class="section">
+    <div class="section" id="sec-proc-wrap">
       <div class="section-title" data-i18n="secProc">신청 절차</div>
       <ol class="proc-list" id="res-proc"></ol>
     </div>
@@ -337,6 +381,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
         <p class="law-note" data-i18n="lawVerNote">※ 2026년 5월 기준 공공기관 확인 정보입니다. 법령 변경 시 달라질 수 있습니다.</p>
       </div>
     </div>
+    <div id="res-matching-form"></div>
     <button class="btn-restart" onclick="restart()" data-i18n="btnRestart">처음부터 다시 하기 🔄</button>
     <p class="saved-msg" id="saved-msg"></p>
   </div>
@@ -931,6 +976,15 @@ function renderResult() {
   }
   html += `<div class="notice-arc"><strong>${t('arcTitle')}</strong> ${t('arcNote')}</div>`;
   noticeEl.innerHTML = html;
+  renderNextSteps(r);
+  renderMatchingForm(r);
+
+  // Show/hide doc+proc sections based on status
+  const showDocProc = r.status !== 'no';
+  const docWrap = document.getElementById('sec-docs-wrap');
+  const procWrap = document.getElementById('sec-proc-wrap');
+  if (docWrap) docWrap.style.display = showDocProc ? '' : 'none';
+  if (procWrap) procWrap.style.display = showDocProc ? '' : 'none';
 
   // Documents
   const docs = t('docs');
@@ -990,6 +1044,361 @@ async function saveToSupabase(r) {
     });
     if (res.ok) document.getElementById('saved-msg').textContent = t('savedMsg');
   } catch(e) {}
+}
+
+// ═══════════════════════════════════════════
+//  NEXT STEPS DATA (이유별 준비 방법)
+// ═══════════════════════════════════════════
+const NEXT_STEPS_KO = {
+  rNoVisa: {
+    why: '현재 비자(C-3, F-1 등)는 취업활동이 허용되지 않습니다.',
+    actions: [
+      '정규 대학이나 어학원에 입학하면 D-2·D-4 비자로 변경이 가능합니다.',
+      '비자 변경 절차는 HiKorea(hikorea.go.kr)에서 확인하세요.',
+      '관할 출입국관리사무소에 방문해 본인 상황에 맞는 비자 전환 상담을 받아보세요.',
+    ]
+  },
+  rNoStay: {
+    why: 'D-4·교환학생(D-2-8) 비자는 입국 후 6개월이 지나야 취업활동 허가 신청이 가능합니다.',
+    actions: [
+      '외국인등록증의 입국일 기준으로 6개월이 되는 날짜를 미리 계산해 두세요.',
+      '6개월 후 학교 글로벌센터(외국인학생 담당)에 취업활동 허가 신청을 문의하세요.',
+      '그 전까지 TOPIK을 준비해 두면 허가 후 더 많은 시간 근무가 가능합니다.',
+    ]
+  },
+  rNoLeave: {
+    why: '휴학 기간에는 체류자격 조건이 달라져 취업활동 허가가 나오지 않습니다.',
+    actions: [
+      '복학 신청은 학교 학사팀에 문의하세요 (학기 시작 전 일정 기간 내 신청 필요).',
+      '복학 후 재학증명서를 발급받으면 취업활동 허가 신청이 가능합니다.',
+      '복학 전 TOPIK을 준비해 두면 허가 후 더 빠르게 근무를 시작할 수 있습니다.',
+    ]
+  },
+  rNoGrad: {
+    why: '졸업예정·수료 상태는 재학생으로 분류되지 않아 취업활동 허가가 제한됩니다.',
+    actions: [
+      '졸업 후 취업비자(E-7) 또는 구직비자(D-10)로 전환하면 정식 취업이 가능합니다.',
+      '출입국관리사무소에서 본인 상황에 맞는 비자 전환 상담을 받아보세요.',
+      '졸업 전 취업 허가가 필요하다면 학교 글로벌센터에 예외 적용 가능 여부를 확인하세요.',
+    ]
+  },
+  rNoConstruction: {
+    why: '건설·공사 현장은 산재 위험이 높아 유학생 비자(D-2/D-4)로는 법으로 금지된 업종입니다.',
+    actions: [
+      '실내 청소, 이사 보조(운반 전담), 창고 관리 등 유사 업무로 대체해보세요.',
+      '인력사무소를 통한 건설 현장 일용직도 유학생에게는 불법입니다.',
+      '적발 시 강제출국 및 비자 취소 처분을 받을 수 있으니 절대 주의하세요.',
+    ]
+  },
+  rNoDelivery: {
+    why: '오토바이·자전거 배달은 교통사고 위험이 높고 유학생 허용 업종에 포함되지 않습니다.',
+    actions: [
+      '음식점·카페 내 서빙, 주방 보조는 합법적 허용 업종이니 해당 업소에 지원해보세요.',
+      '오토바이 배달 플랫폼(배달의민족, 쿠팡이츠 라이더 등) 취업은 절대 금지입니다.',
+      '도보 배달의 경우 관할 출입국관리사무소에 직접 가능 여부를 확인해보세요.',
+    ]
+  },
+  rNoTopik: {
+    why: '현재 비자·학년에서 취업활동 허가를 받으려면 최소 TOPIK 등급이 필요합니다.',
+    actions: [
+      'TOPIK 시험 일정 및 접수: topik.go.kr (연 6회 시험, 1~2개월 전 접수)',
+      '학사 1~2학년 → TOPIK 3급 이상 / 학사 3~4학년·석박사·교환학생 → TOPIK 4급 이상',
+      '학교 내 한국어 강좌, 언어교환(Language Exchange) 프로그램을 활용하세요.',
+      'TOPIK 합격 후 취업활동 허가를 신청하면 바로 근무를 시작할 수 있습니다.',
+    ]
+  },
+  rNoManufacture: {
+    why: '제조업·공장은 TOPIK 4급 이상인 경우에만 허용됩니다. 현재 TOPIK 등급이 부족합니다.',
+    actions: [
+      'TOPIK 4급 시험을 준비하세요. topik.go.kr에서 일정 확인 및 접수 가능합니다.',
+      '4급 취득 후 취업활동 허가를 갱신하면 제조업 취업이 가능합니다.',
+      '그 전까지 음식점·카페·편의점 등 다른 허용 업종을 활용해보세요.',
+    ]
+  },
+  rWarnGrade: {
+    why: '성적·출석 기준 미충족 시 학교 추천이 불가해 허가 신청이 거부될 수 있습니다.',
+    actions: [
+      '먼저 학교 글로벌센터(외국인학생 담당)에 현재 상태로 허가 신청이 가능한지 확인하세요.',
+      '출석 부족이라면 보충 출석 등 학교 내 구제 방법을 교학처에 문의하세요.',
+      '다음 학기 성적 정상화 후 신청하는 것이 더 안전합니다.',
+    ]
+  },
+};
+
+// ═══════════════════════════════════════════
+//  INDUSTRY DOCS DATA (직종별 맞춤 서류)
+// ═══════════════════════════════════════════
+const INDUSTRY_DOCS_KO = {
+  FOOD: {
+    name: '음식점·카페',
+    docs: [
+      '취업활동 허가증 (출입국관리사무소 발급)',
+      '고용계약서 + 사업자등록증 사본 (업주가 준비)',
+      '위생교육 이수증 (업주가 요청할 경우 — 온라인 무료 수강 가능)',
+      '건강검진 결과서 (일부 업체 요구)',
+    ]
+  },
+  RETAIL: {
+    name: '편의점·마트',
+    docs: [
+      '취업활동 허가증',
+      '고용계약서 + 사업자등록증 사본',
+      '건강검진 결과서 (일부 업체 요구)',
+    ]
+  },
+  OFFICE: {
+    name: '사무직·번역·과외',
+    docs: [
+      '취업활동 허가증',
+      '고용계약서',
+      '자격증 또는 포트폴리오 (번역·과외 해당 시)',
+      '재학증명서 (과외 시 학원이 요청할 경우)',
+    ]
+  },
+  EVENT: {
+    name: '행사·판촉 스태프',
+    docs: [
+      '취업활동 허가증',
+      '용역계약서 or 고용계약서',
+      '외국인등록증 사본',
+    ]
+  },
+  MAJOR: {
+    name: '전공 관련 (연구보조·인턴)',
+    docs: [
+      '취업활동 허가증',
+      '학교 글로벌센터(외국인학생 담당) 추천 확인서',
+      '인턴십·연구보조 계약서 또는 교수 확인서',
+      '재학증명서 (영문)',
+    ]
+  },
+  MANUFACTURE: {
+    name: '제조업·공장',
+    docs: [
+      '취업활동 허가증',
+      'TOPIK 4급 이상 성적증명서 (필수)',
+      '고용계약서 + 사업자등록증 사본',
+      '안전보건교육 이수증 (일부 사업장 요구)',
+    ]
+  },
+  OTHER_IND: {
+    name: '기타',
+    docs: [
+      '취업활동 허가증',
+      '고용계약서 + 사업자등록증 사본',
+    ]
+  },
+};
+
+// ═══════════════════════════════════════════
+//  NEXT STEPS RENDERER
+// ═══════════════════════════════════════════
+function renderNextSteps(r) {
+  const el = document.getElementById('res-next-steps');
+  if (!el) return;
+
+  const isBannedConstruction = r.industry === 'CONSTRUCTION';
+  const isBannedDelivery = r.industry === 'DELIVERY';
+  const actionableReasons = r.reasonKeys.filter(k => NEXT_STEPS_KO[k]);
+
+  if (!actionableReasons.length && !isBannedConstruction && !isBannedDelivery) {
+    el.innerHTML = ''; return;
+  }
+
+  let html = '';
+
+  // 금지 직종 박스 (건설/배달 선택 시 항상 표시)
+  if (isBannedConstruction || isBannedDelivery) {
+    html += `<div class="banned-box">
+      <div class="banned-box-title">🚫 유학생 절대 금지 직종 — 반드시 읽어주세요</div>`;
+    if (isBannedConstruction) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🏗️</div>
+        <div>
+          <div class="banned-name">건설·공사 현장</div>
+          <div class="banned-why">출입국관리법상 유학생(D-2/D-4) 취업 금지. 산업재해 위험이 매우 높고, 인력사무소를 통한 일용직도 포함됩니다. 단속 시 강제출국 및 비자 취소 가능.</div>
+          <div class="banned-alt">✅ 대신 가능한 직종: 실내 청소, 이사 보조(운반 전담), 창고 관리, 물류 센터 내 포장 작업</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedDelivery) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🛵</div>
+        <div>
+          <div class="banned-name">오토바이·자전거 배달</div>
+          <div class="banned-why">유학생 허용 업종에 포함되지 않음. 배달앱 라이더 계정 등록 자체가 불법으로 간주될 수 있으며, 사고 발생 시 산재 보상도 받을 수 없습니다.</div>
+          <div class="banned-alt">✅ 대신 가능한 직종: 음식점·카페 서빙, 주방 보조, 홀 포장 업무 (이동 없이 매장 내 근무)</div>
+        </div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  // 준비 방법 섹션
+  if (actionableReasons.length) {
+    html += `<div class="section next-steps-card">
+      <div class="section-title">🎯 어떻게 준비하면 될까요?</div>`;
+    actionableReasons.forEach(k => {
+      const step = NEXT_STEPS_KO[k];
+      if (!step) return;
+      html += `<div class="reason-block">
+        <div class="reason-why">⚠️ ${step.why}</div>
+        <ul class="reason-actions">${step.actions.map(a => `<li>${a}</li>`).join('')}</ul>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+//  MATCHING FORM RENDERER
+// ═══════════════════════════════════════════
+function renderMatchingForm(r) {
+  const el = document.getElementById('res-matching-form');
+  if (!el) return;
+  if (r.status === 'no') { el.innerHTML = ''; return; }
+
+  const industryOpts = [
+    {v:'FOOD', l:'음식점·카페 (서빙, 주방 보조)'},
+    {v:'RETAIL', l:'편의점·마트 (판매, 계산대)'},
+    {v:'OFFICE', l:'사무직·번역·과외'},
+    {v:'EVENT', l:'행사·판촉 (이벤트 스태프)'},
+    {v:'MAJOR', l:'전공 관련 (연구보조, 인턴)'},
+    {v:'MANUFACTURE', l:'제조업·공장'},
+    {v:'OTHER_IND', l:'기타 / 미정'},
+  ];
+  const regions = ['서울','경기','인천','부산','대구','광주','대전','울산','세종','강원','충북','충남','전북','전남','경북','경남','제주'];
+  const days = ['월','화','수','목','금','토','일'];
+  const timeOpts = [
+    {v:'morning', l:'아침 (6~9시)'},
+    {v:'forenoon', l:'오전 (9~12시)'},
+    {v:'afternoon', l:'오후 (12~18시)'},
+    {v:'evening', l:'저녁 (18~22시)'},
+    {v:'night', l:'야간 (22시 이후)'},
+    {v:'any', l:'무관 (언제든 가능)'},
+  ];
+
+  const preIndustry = (r.industry && r.industry !== 'CONSTRUCTION' && r.industry !== 'DELIVERY') ? r.industry : 'FOOD';
+
+  el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
+    <div class="section-title">🎁 무료 알바 매칭 신청하기</div>
+    <p class="mf-desc">
+      합법적으로 아르바이트가 가능합니다! 원하는 조건을 알려주시면 담당자가 직접 연락해 <strong>무료로 자리를 매칭</strong>해 드립니다.<br>
+      신청 후에는 직종에 맞는 <strong>준비 서류 목록</strong>도 바로 확인할 수 있어요.
+    </p>
+    <div id="matching-form-fields">
+      <div class="form-group">
+        <label class="form-label">이름 <span class="req">*</span></label>
+        <input class="form-input" id="mf-name" type="text" placeholder="홍길동">
+      </div>
+      <div class="form-group">
+        <label class="form-label">연락처 (전화번호) <span class="req">*</span></label>
+        <input class="form-input" id="mf-phone" type="tel" placeholder="010-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">이메일 <span style="font-size:0.75rem;color:var(--muted)">(선택)</span></label>
+        <input class="form-input" id="mf-email" type="email" placeholder="example@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">희망 지역 <span class="req">*</span></label>
+        <select class="form-select" id="mf-region">
+          <option value="">지역을 선택하세요</option>
+          ${regions.map(r => `<option value="${r}">${r}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">희망 직종 <span class="req">*</span></label>
+        <select class="form-select" id="mf-industry">
+          ${industryOpts.map(o => `<option value="${o.v}"${o.v===preIndustry?' selected':''}>${o.l}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">희망 요일 <span style="font-size:0.75rem;color:var(--muted)">(복수 선택 가능)</span></label>
+        <div class="day-checks">
+          ${days.map((d,i) => `<input type="checkbox" class="day-check-input" id="day${i}" value="${d}"><label class="day-check-label" for="day${i}">${d}</label>`).join('')}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">희망 시간대</label>
+        <select class="form-select" id="mf-time">
+          ${timeOpts.map(o => `<option value="${o.v}">${o.l}</option>`).join('')}
+        </select>
+      </div>
+      <button class="btn-submit-match" onclick="submitMatching()">무료 매칭 신청하기 →</button>
+    </div>
+    <div id="matching-result" style="display:none"></div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════
+//  MATCHING FORM SUBMIT
+// ═══════════════════════════════════════════
+function submitMatching() {
+  const name   = document.getElementById('mf-name')?.value.trim();
+  const phone  = document.getElementById('mf-phone')?.value.trim();
+  const region = document.getElementById('mf-region')?.value;
+  const industryVal = document.getElementById('mf-industry')?.value;
+  const email  = document.getElementById('mf-email')?.value.trim();
+  const timeEl = document.getElementById('mf-time');
+  const timeLabel = timeEl ? timeEl.options[timeEl.selectedIndex]?.text : '';
+  const checkedDays = [...document.querySelectorAll('.day-check-input:checked')].map(c => c.value);
+  const daysLabel = checkedDays.length ? checkedDays.join(', ') : '무관';
+
+  if (!name)   { alert('이름을 입력해주세요.'); return; }
+  if (!phone)  { alert('연락처를 입력해주세요.'); return; }
+  if (!region) { alert('희망 지역을 선택해주세요.'); return; }
+
+  const industryInfo = INDUSTRY_DOCS_KO[industryVal] || INDUSTRY_DOCS_KO['OTHER_IND'];
+
+  // Save to Supabase if connected
+  if (typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
+    fetch(`${SUPABASE_URL}/rest/v1/job_matching`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({
+        name, phone, email: email || null,
+        region, industry: industryVal,
+        preferred_days: daysLabel, preferred_time: timeLabel,
+        visa_type: resultData?.visa, topik_level: resultData?.topik,
+        result_status: resultData?.status,
+      }),
+    }).catch(() => {});
+  }
+
+  // Show success + tailored docs
+  document.getElementById('matching-form-fields').style.display = 'none';
+  const resultEl = document.getElementById('matching-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `
+    <div class="match-success">
+      <div class="match-success-icon">🎉</div>
+      <div class="match-success-title">신청 완료!</div>
+      <div class="match-success-sub">
+        <strong>${name}</strong>님, 신청해 주셔서 감사합니다!<br>
+        <strong>${region}</strong> 지역 <strong>${industryInfo.name}</strong> 자리를 알아보고<br>
+        연락처(<strong>${phone}</strong>)로 곧 연락드리겠습니다.
+      </div>
+    </div>
+    <div class="doc-tailored">
+      <div class="doc-tailored-title">📎 ${industryInfo.name} 취업 시 준비해야 할 서류</div>
+      <ul>${industryInfo.docs.map(d => `<li>${d}</li>`).join('')}</ul>
+    </div>
+    <div class="notice-arc" style="margin-top:14px">
+      <strong>💡 서류 준비 팁</strong>
+      취업활동 허가증은 아르바이트 시작 전 반드시 발급받아야 합니다.
+      학교 글로벌센터(외국인학생 담당부서)에 먼저 방문해 필요 서류 목록을 확인하고,
+      HiKorea(hikorea.go.kr)에서 온라인으로 신청하세요. 처리 기간은 약 1~2주입니다.
+    </div>`;
+
+  document.getElementById('matching-form-section')
+    .scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // init
