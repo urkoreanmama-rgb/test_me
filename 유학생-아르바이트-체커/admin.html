@@ -9,114 +9,175 @@
   <script src="config.js"></script>
   <style>
     :root {
-      --bg: #0f172a; --surface: #1e293b; --card: #1e293b;
-      --accent: #6366f1; --accent2: #818cf8;
-      --ok: #10b981; --warn: #f59e0b; --danger: #ef4444;
-      --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --radius: 12px;
+      --bg: #f5f5f7; --card: #ffffff; --border: #d2d2d7;
+      --accent: #0071e3; --accent2: #147ce5;
+      --text: #1d1d1f; --sub: #6e6e73; --muted: #aeaeb2;
+      --ok: #34c759; --warn: #ff9500; --no: #ff3b30;
+      --radius: 14px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', -apple-system, sans-serif; min-height: 100vh; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Segoe UI', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
     /* ── Lock Screen ── */
     #lock {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
-    .lock-box { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 2.5rem 2rem; width: min(380px, 90vw); text-align: center; }
-    .lock-box .lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .lock-box h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.3rem; }
-    .lock-box p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .lock-input { width: 100%; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); font-size: 1rem; outline: none; text-align: center; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+    .lock-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 2.5rem 2rem; width: min(380px, 90vw); text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .lock-box h2 { font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+    .lock-box p { font-size: 0.83rem; color: var(--sub); margin-bottom: 1.5rem; line-height: 1.5; }
+    .lock-input {
+      width: 100%; background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 1rem; color: var(--text);
+      font-size: 1rem; outline: none; text-align: center; letter-spacing: 0.1em; margin-bottom: 0.8rem;
+    }
     .lock-input:focus { border-color: var(--accent); }
-    .lock-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.8rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.18s; }
-    .lock-btn:hover { background: var(--accent2); }
-    .lock-err { font-size: 0.8rem; color: var(--danger); margin-top: 0.5rem; display: none; }
+    .lock-btn {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      border-radius: 10px; padding: 0.8rem; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      box-shadow: 0 4px 0 #0055b3; transform: translateY(0);
+      transition: transform 0.07s ease, box-shadow 0.07s ease;
+    }
+    .lock-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #0055b3; }
+    .lock-err { font-size: 0.8rem; color: var(--no); margin-top: 0.6rem; display: none; }
 
-    /* ── Header ── */
-    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-    .topbar-left { display: flex; align-items: center; gap: 0.8rem; }
-    .topbar-left .logo { font-size: 1.1rem; font-weight: 800; }
-    .topbar-left .badge { background: rgba(99,102,241,0.18); color: var(--accent2); font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 99px; border: 1px solid rgba(99,102,241,0.3); }
-    .topbar-right { display: flex; align-items: center; gap: 0.8rem; }
+    /* ── Topbar ── */
+    .topbar {
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 0.7rem; }
+    .topbar-logo { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .topbar-badge {
+      background: rgba(0,113,227,0.1); color: var(--accent);
+      font-size: 0.7rem; font-weight: 600; padding: 2px 10px; border-radius: 99px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 0.6rem; }
     .updated { font-size: 0.75rem; color: var(--muted); }
-    .btn-refresh { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: background 0.18s; }
-    .btn-refresh:hover { background: var(--accent2); }
-    .btn-logout { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.82rem; cursor: pointer; }
+    .btn-topbar {
+      background: var(--accent); color: #fff; border: none; border-radius: 8px;
+      padding: 0.4rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      box-shadow: 0 3px 0 #0055b3; transform: translateY(0);
+      transition: transform 0.07s, box-shadow 0.07s;
+    }
+    .btn-topbar:active { transform: translateY(3px); box-shadow: 0 0 0 #0055b3; }
+    .btn-logout {
+      background: transparent; color: var(--sub); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 0.8rem; cursor: pointer;
+    }
     .btn-logout:hover { color: var(--text); }
 
     /* ── Layout ── */
     main { padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
 
+    /* ── Section Label ── */
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; color: var(--sub);
+      letter-spacing: 0.06em; text-transform: uppercase; margin: 1.8rem 0 0.8rem;
+    }
+
     /* ── Summary Cards ── */
-    .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; margin-bottom: 0.5rem; }
     @media (max-width: 1100px) { .summary-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 700px)  { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
-    .s-card.match { border-left: 3px solid #06b6d4; }
-    .s-card.pre   { border-left: 3px solid #8b5cf6; }
-    .c-match { color: #22d3ee; }
-    .c-pre   { color: #a78bfa; }
-    .s-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
-    .s-card .s-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-    .s-card .s-val { font-size: 2rem; font-weight: 800; line-height: 1; }
-    .s-card .s-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
-    .s-card.ok  { border-left: 3px solid var(--ok); }
-    .s-card.warn{ border-left: 3px solid var(--warn); }
-    .s-card.no  { border-left: 3px solid var(--danger); }
-    .c-ok   { color: #34d399; }
-    .c-warn { color: #fbbf24; }
-    .c-no   { color: #f87171; }
+    @media (max-width: 640px)  { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+    .s-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.1rem 1.2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .s-card.ok   { border-top: 3px solid var(--ok); }
+    .s-card.warn { border-top: 3px solid var(--warn); }
+    .s-card.no   { border-top: 3px solid var(--no); }
+    .s-card.match { border-top: 3px solid #007aff; }
+    .s-card.pre   { border-top: 3px solid #5856d6; }
+    .s-label { font-size: 0.72rem; color: var(--sub); font-weight: 600; margin-bottom: 0.4rem; }
+    .s-val { font-size: 2rem; font-weight: 700; line-height: 1; color: var(--text); }
+    .s-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+    .c-ok   { color: #28a745; }
+    .c-warn { color: #e07000; }
+    .c-no   { color: var(--no); }
+    .c-match { color: #007aff; }
+    .c-pre   { color: #5856d6; }
+
+    /* ── Banner ── */
+    .banner-warn {
+      background: rgba(255,149,0,0.08); border: 1px solid rgba(255,149,0,0.3);
+      border-radius: 10px; padding: 0.75rem 1.1rem; margin-bottom: 1.2rem;
+      font-size: 0.83rem; color: #995500; display: flex; align-items: center; gap: 0.6rem;
+    }
+
+    /* ── Contact Panels ── */
+    .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 860px) { .contact-row { grid-template-columns: 1fr; } }
+
+    /* ── Card Box ── */
+    .card-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border);
+    }
+    .card-header-left { display: flex; align-items: center; gap: 0.6rem; }
+    .card-header h3 { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .card-header .cnt { font-size: 0.75rem; color: var(--sub); }
+    .export-btn {
+      background: var(--bg); border: 1px solid var(--border); color: var(--sub);
+      border-radius: 7px; padding: 0.35rem 0.8rem; font-size: 0.75rem; cursor: pointer;
+    }
+    .export-btn:hover { color: var(--text); border-color: var(--sub); }
+
+    /* ── Tables ── */
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 560px; }
+    thead tr { background: var(--bg); }
+    th {
+      padding: 0.6rem 0.9rem; text-align: left; color: var(--sub);
+      font-weight: 600; font-size: 0.72rem; letter-spacing: 0.03em; white-space: nowrap;
+    }
+    td { padding: 0.6rem 0.9rem; border-top: 1px solid var(--border); white-space: nowrap; }
+    tr:hover td { background: #fafafa; }
+    .td-name { font-weight: 600; color: var(--text); }
+    .td-phone { color: var(--accent); font-weight: 500; }
+    .td-muted { color: var(--muted); font-size: 0.78rem; }
+
+    .badge-ok   { background: rgba(52,199,89,0.12);  color: #1a7a35; padding: 2px 9px; border-radius: 99px; font-weight: 600; font-size: 0.72rem; }
+    .badge-warn { background: rgba(255,149,0,0.12); color: #994800; padding: 2px 9px; border-radius: 99px; font-weight: 600; font-size: 0.72rem; }
+    .badge-no   { background: rgba(255,59,48,0.10);  color: #cc0000; padding: 2px 9px; border-radius: 99px; font-weight: 600; font-size: 0.72rem; }
+    .empty-row td { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 0.85rem; }
+
+    /* ── Blocker Analysis ── */
+    .blocker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .blocker-grid { grid-template-columns: 1fr; } }
+    .blocker-list { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .blocker-item { display: flex; flex-direction: column; gap: 4px; }
+    .blocker-row { display: flex; justify-content: space-between; font-size: 0.82rem; }
+    .blocker-name { color: var(--text); font-weight: 500; }
+    .blocker-cnt  { color: var(--sub); }
+    .blocker-bar  { height: 7px; background: #ebebed; border-radius: 99px; overflow: hidden; }
+    .blocker-fill { height: 100%; background: linear-gradient(90deg, var(--no), #ff7b73); border-radius: 99px; transition: width 0.5s; }
 
     /* ── Charts ── */
-    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    @media (max-width: 700px) { .chart-row { grid-template-columns: 1fr; } }
-    .chart-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    @media (max-width: 900px) { .chart-row-3 { grid-template-columns: 1fr; } }
-    .chart-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
-    .chart-box h3 { font-size: 0.82rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 1rem; text-transform: uppercase; }
-    .chart-wrap { position: relative; height: 220px; }
+    .chart-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .chart-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    @media (max-width: 900px) { .chart-row-3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .chart-row-2, .chart-row-3 { grid-template-columns: 1fr; } }
+    .chart-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .chart-title { font-size: 0.78rem; font-weight: 700; color: var(--sub); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.9rem; }
+    .chart-wrap { position: relative; height: 210px; }
 
-    /* ── Insights ── */
-    .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
-    @media (max-width: 700px) { .insight-grid { grid-template-columns: 1fr; } }
-    .insight-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; }
-    .insight-card .i-label { font-size: 0.72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
-    .insight-card .i-val { font-size: 1.3rem; font-weight: 800; }
-    .insight-card .i-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
-
-    /* ── Section Title ── */
-    .section-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin: 1.5rem 0 0.8rem; }
-
-    /* ── Table ── */
-    .table-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
-    .table-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
-    .table-header h3 { font-size: 0.88rem; font-weight: 700; }
-    .table-header span { font-size: 0.75rem; color: var(--muted); }
-    .table-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 800px; }
-    thead tr { background: rgba(255,255,255,0.03); }
-    th { padding: 0.7rem 1rem; text-align: left; color: var(--muted); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.04em; white-space: nowrap; }
-    td { padding: 0.65rem 1rem; border-top: 1px solid var(--border); white-space: nowrap; }
-    tr:hover td { background: rgba(255,255,255,0.025); }
-    .badge-ok   { background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
-    .badge-warn { background: rgba(245,158,11,0.15); color: #fbbf24; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
-    .badge-no   { background: rgba(239,68,68,0.15);  color: #f87171; padding: 2px 10px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
-
-    /* ── Loading / Empty ── */
-    .loading { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+    /* ── Loading ── */
+    .loading { text-align: center; padding: 4rem; color: var(--sub); }
     .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 0.8rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .empty { text-align: center; padding: 3rem; color: var(--muted); }
-
-    /* ── Blocker Bars ── */
-    .blocker-list { display: flex; flex-direction: column; gap: 0.6rem; }
-    .blocker-item { display: flex; flex-direction: column; gap: 4px; }
-    .blocker-row { display: flex; justify-content: space-between; font-size: 0.8rem; }
-    .blocker-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .blocker-fill { height: 100%; background: linear-gradient(90deg, var(--danger), #f87171); border-radius: 99px; transition: width 0.5s; }
-
-    /* ── Export ── */
-    .export-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.8rem; cursor: pointer; transition: all 0.18s; }
-    .export-btn:hover { color: var(--text); border-color: var(--muted); }
+    .empty-state { text-align: center; padding: 4rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -126,22 +187,22 @@
   <div class="lock-box">
     <div class="lock-icon">🔐</div>
     <h2>관리자 대시보드</h2>
-    <p>유학생 아르바이트 체커 응답 분석 페이지입니다.<br>비밀번호를 입력하세요.</p>
+    <p>유학생 아르바이트 체커 운영 현황 페이지입니다.<br>비밀번호를 입력하세요.</p>
     <input class="lock-input" id="pw-input" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')unlock()" />
     <button class="lock-btn" onclick="unlock()">입력</button>
-    <div class="lock-err" id="lock-err">비밀번호가 올바르지 않습니다.</div>
+    <div class="lock-err" id="lock-err">비밀번호가 틀렸어요.</div>
   </div>
 </div>
 
 <!-- Topbar -->
 <div class="topbar">
   <div class="topbar-left">
-    <span class="logo">📊 관리자 대시보드</span>
-    <span class="badge">유학생 아르바이트 체커</span>
+    <span class="topbar-logo">📊 관리자 대시보드</span>
+    <span class="topbar-badge">유학생 아르바이트 체커</span>
   </div>
   <div class="topbar-right">
     <span class="updated" id="updated-at">--</span>
-    <button class="btn-refresh" onclick="loadData()">↻ 새로고침</button>
+    <button class="btn-topbar" onclick="loadData()">↻ 새로고침</button>
     <button class="btn-logout" onclick="logout()">로그아웃</button>
   </div>
 </div>
@@ -149,25 +210,25 @@
 <main>
   <div id="loading-area" class="loading">
     <div><div class="spinner"></div></div>
-    데이터를 불러오는 중입니다...
+    데이터를 불러오는 중이에요...
   </div>
 
   <div id="dashboard" style="display:none">
 
     <!-- Supabase 미연결 배너 -->
-    <div id="no-config-banner" style="display:none; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:0.8rem 1.2rem; margin-bottom:1.5rem; font-size:0.85rem; color:#fcd34d; align-items:center; gap:0.8rem;">
-      ⚠️ <span><strong>Supabase 미연결</strong> — config.js에 실제 URL과 키를 입력하면 실시간 데이터가 표시됩니다.</span>
+    <div id="no-config-banner" style="display:none" class="banner-warn">
+      ⚠️ <span><strong>Supabase 미연결</strong> — config.js에 실제 URL과 키를 입력하면 실시간 데이터가 표시돼요.</span>
     </div>
 
-    <!-- Summary Cards -->
+    <!-- 요약 카드 -->
     <div class="summary-grid">
       <div class="s-card">
         <div class="s-label">전체 응답</div>
         <div class="s-val" id="s-total">0</div>
-        <div class="s-sub">누적 제출 수</div>
+        <div class="s-sub">누적 응답 수</div>
       </div>
       <div class="s-card ok">
-        <div class="s-label">아르바이트 가능</div>
+        <div class="s-label">알바 가능</div>
         <div class="s-val c-ok" id="s-ok">0</div>
         <div class="s-sub" id="s-ok-pct">-</div>
       </div>
@@ -184,76 +245,123 @@
       <div class="s-card match">
         <div class="s-label">매칭 신청</div>
         <div class="s-val c-match" id="s-match">0</div>
-        <div class="s-sub">구인 연결 대기 중</div>
+        <div class="s-sub">자리 연결 대기</div>
       </div>
       <div class="s-card pre">
         <div class="s-label">예비 등록</div>
         <div class="s-val c-pre" id="s-pre">0</div>
-        <div class="s-sub">자격 갖추면 알림 예정</div>
+        <div class="s-sub">자격 갖추면 연락</div>
       </div>
     </div>
 
-    <!-- Charts Row 1 -->
-    <div class="chart-row">
-      <div class="chart-box">
-        <h3>결과 분포</h3>
-        <div class="chart-wrap"><canvas id="chart-result"></canvas></div>
+    <!-- 연락처 섹션 -->
+    <div class="section-label">📞 연락처 목록</div>
+    <div class="contact-row">
+
+      <!-- 매칭 신청 -->
+      <div class="card-box">
+        <div class="card-header">
+          <div class="card-header-left">
+            <h3>🤝 매칭 신청</h3>
+            <span class="cnt" id="match-count">0건</span>
+          </div>
+          <button class="export-btn" onclick="exportMatchCSV()">CSV 내보내기</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>신청일</th><th>이름</th><th>연락처</th>
+                <th>지역</th><th>희망직종</th><th>비자</th><th>TOPIK</th><th>판정</th>
+              </tr>
+            </thead>
+            <tbody id="match-body"></tbody>
+          </table>
+        </div>
       </div>
-      <div class="chart-box">
-        <h3>비자 유형 분포</h3>
-        <div class="chart-wrap"><canvas id="chart-visa"></canvas></div>
+
+      <!-- 예비 등록 -->
+      <div class="card-box">
+        <div class="card-header">
+          <div class="card-header-left">
+            <h3>📬 예비 등록</h3>
+            <span class="cnt" id="pre-count">0건</span>
+          </div>
+          <button class="export-btn" onclick="exportPreCSV()">CSV 내보내기</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>등록일</th><th>이름</th><th>연락처</th>
+                <th>비자</th><th>TOPIK</th><th>안 되는 이유</th>
+              </tr>
+            </thead>
+            <tbody id="pre-body"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- Charts Row 2 -->
-    <div class="chart-row-3">
-      <div class="chart-box">
-        <h3>TOPIK 수준 분포</h3>
-        <div class="chart-wrap"><canvas id="chart-topik"></canvas></div>
+    <!-- 불가 사유 분석 -->
+    <div class="section-label">🚫 불가 사유 분석</div>
+    <div class="blocker-grid">
+      <div class="card-box">
+        <div class="card-header"><h3>불가·조건부 사유 TOP</h3></div>
+        <div class="blocker-list" id="blocker-list">
+          <div style="color:var(--muted);font-size:0.85rem">데이터가 없어요.</div>
+        </div>
       </div>
       <div class="chart-box">
-        <h3>희망 근무시간 분포</h3>
-        <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>재학 상태 분포</h3>
-        <div class="chart-wrap"><canvas id="chart-enroll"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Insights -->
-    <div class="section-title">📌 서비스 니즈 분석</div>
-    <div class="insight-grid" id="insight-grid"></div>
-
-    <!-- Blockers -->
-    <div class="chart-row">
-      <div class="chart-box">
-        <h3>불가 사유 TOP 분석</h3>
-        <div id="blocker-list" class="blocker-list" style="padding-top:0.5rem"></div>
-      </div>
-      <div class="chart-box">
-        <h3>일별 응답 추이 (최근 14일)</h3>
+        <div class="chart-title">일별 응답 추이 (최근 14일)</div>
         <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
       </div>
     </div>
 
-    <!-- Table: Quiz 응답 -->
-    <div class="section-title">🗃️ 체커 응답 내역</div>
-    <div class="table-box">
-      <div class="table-header">
-        <h3>응답 목록</h3>
-        <div style="display:flex;gap:0.6rem;align-items:center">
-          <span id="table-count">0건</span>
-          <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
+    <!-- 차트 -->
+    <div class="section-label">📈 응답 분포</div>
+    <div class="chart-row-2" style="margin-bottom:1rem">
+      <div class="chart-box">
+        <div class="chart-title">판정 결과 분포</div>
+        <div class="chart-wrap"><canvas id="chart-result"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">비자 유형 분포</div>
+        <div class="chart-wrap"><canvas id="chart-visa"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row-3" style="margin-bottom:1rem">
+      <div class="chart-box">
+        <div class="chart-title">TOPIK 수준</div>
+        <div class="chart-wrap"><canvas id="chart-topik"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">희망 근무시간</div>
+        <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">재학 상태</div>
+        <div class="chart-wrap"><canvas id="chart-enroll"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 전체 응답 내역 -->
+    <div class="section-label">🗃️ 전체 응답 내역</div>
+    <div class="card-box">
+      <div class="card-header">
+        <div class="card-header-left">
+          <h3>체커 응답 목록</h3>
+          <span class="cnt" id="table-count">0건</span>
         </div>
+        <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
       </div>
       <div class="table-scroll">
-        <table>
+        <table style="min-width:900px">
           <thead>
             <tr>
-              <th>#</th><th>날짜/시간</th><th>비자</th><th>체류기간</th>
-              <th>재학상태</th><th>성적</th><th>TOPIK</th><th>학기/방학</th>
-              <th>희망시간</th><th>업종</th><th>결과</th><th>최대허용</th>
+              <th>#</th><th>날짜</th><th>비자</th><th>체류기간</th>
+              <th>재학</th><th>성적</th><th>TOPIK</th><th>학기</th>
+              <th>희망시간</th><th>업종</th><th>판정</th><th>최대허용</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -261,90 +369,37 @@
       </div>
     </div>
 
-    <!-- Table: 매칭 신청 -->
-    <div class="section-title">🤝 매칭 신청 목록</div>
-    <div class="table-box">
-      <div class="table-header">
-        <h3>아르바이트 매칭 신청</h3>
-        <div style="display:flex;gap:0.6rem;align-items:center">
-          <span id="match-count">0건</span>
-          <button class="export-btn" onclick="exportMatchCSV()">CSV 내보내기</button>
-        </div>
-      </div>
-      <div class="table-scroll">
-        <table style="min-width:720px">
-          <thead>
-            <tr>
-              <th>#</th><th>신청일시</th><th>이름</th><th>연락처</th>
-              <th>지역(시/도)</th><th>지역(구/시군)</th><th>희망직종</th>
-              <th>비자</th><th>TOPIK</th>
-            </tr>
-          </thead>
-          <tbody id="match-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Table: 예비 등록 -->
-    <div class="section-title">📋 예비 등록 목록 <span style="font-size:0.75rem;color:var(--muted);font-weight:400;text-transform:none">(현재 불가 → 자격 갖추면 알림 요청)</span></div>
-    <div class="table-box">
-      <div class="table-header">
-        <h3>예비 등록</h3>
-        <div style="display:flex;gap:0.6rem;align-items:center">
-          <span id="pre-count">0건</span>
-          <button class="export-btn" onclick="exportPreCSV()">CSV 내보내기</button>
-        </div>
-      </div>
-      <div class="table-scroll">
-        <table style="min-width:640px">
-          <thead>
-            <tr>
-              <th>#</th><th>등록일시</th><th>이름</th><th>연락처</th>
-              <th>비자</th><th>TOPIK</th><th>불가사유</th>
-            </tr>
-          </thead>
-          <tbody id="pre-body"></tbody>
-        </table>
-      </div>
-    </div>
-
   </div><!-- /dashboard -->
-
-  <div id="no-config" style="display:none" class="empty">
-    <div style="font-size:2.5rem;margin-bottom:1rem">⚙️</div>
-    <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem">Supabase 설정이 필요합니다</div>
-    <div style="font-size:0.85rem;color:var(--muted);line-height:1.6">
-      <code>config.js</code>의 <code>SUPABASE_URL</code>과 <code>SUPABASE_ANON_KEY</code>를<br>
-      실제 Supabase 프로젝트 값으로 교체한 뒤 다시 배포하세요.
-    </div>
-  </div>
 </main>
 
 <script>
-// ── Labels ──
-const VISA  = { 'D2-UG-12':'D-2 학사(1~2학년)', 'D2-UG-34':'D-2 학사(3~4학년)', 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
-const IND   = { FOOD:'식당·카페', RETAIL:'판매보조', OFFICE:'사무·번역', EVENT:'행사·관광', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', DELIVERY:'배달·택배🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
+// ── 레이블 ──
+const VISA  = { 'D2-UG-12':'D-2 학사(1~2학년)', 'D2-UG-34':'D-2 학사(3~4학년)', 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 교환학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
+const IND   = { FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'사무·번역', EVENT:'행사·판촉', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', DELIVERY:'배달🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
 const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'3급', TOPIK12:'1~2급·만료', NONE:'없음' };
 const STAY  = { LT3:'3개월↓', '3TO6':'3~6개월', GT6:'6개월↑' };
 const ENROL = { ENROLLED:'재학중', LEAVE:'휴학', GRAD:'졸업예정' };
 const GRADE = { GOOD:'기준충족', GPA_LOW:'미충족', FIRST:'첫학기' };
 const SEM   = { SEMESTER:'학기중', VACATION:'방학' };
 const HOURS = { H10:'~10h', H20:'~20h', H25:'~25h', H30:'~30h', H35:'~35h', HMAX:'무제한' };
-const BLOCKERS = {
-  'D-2 또는 D-4 비자': '비자 유형 부적합',
-  '6개월이 경과': '6개월 체류 미충족',
-  '휴학 중': '휴학 중 신청 불가',
-  '졸업·수료': '졸업예정·수료',
-  'GPA 2.0': '성적/출석 미충족',
-  '허용 시간': '근무시간 초과'
+const BLOCKER_KEYS = {
+  rNoVisa:        '비자 유형 불가 (D-2/D-4 아님)',
+  rNoStay:        '체류 6개월 미충족',
+  rNoLeave:       '휴학 중',
+  rNoGrad:        '졸업예정·수료',
+  rNoDelivery:    '금지 업종 (배달)',
+  rNoConstruction:'금지 업종 (건설)',
+  rNoTopik:       'TOPIK 등급 부족',
+  rNoManufacture: 'TOPIK 부족 (제조업)',
+  rWarnGrade:     '성적·출석 미충족',
+  rWarnHours:     '희망시간 초과',
+  rWarnMajor:     '전공관련 (조건부)',
+  rWarnManufacture:'제조업 (TOPIK 4급↑ 조건)',
 };
 
-let allData   = [];
-let matchData = [];
-let preData   = [];
-let charts    = {};
+let allData = [], matchData = [], preData = [], charts = {};
 
-// ── Auth ──
+// ── 인증 ──
 function unlock() {
   const val = document.getElementById('pw-input').value;
   if (val === ADMIN_PASSWORD) {
@@ -355,14 +410,13 @@ function unlock() {
     document.getElementById('pw-input').value = '';
   }
 }
-
 function logout() {
   document.getElementById('lock').style.display = 'flex';
   document.getElementById('pw-input').value = '';
   document.getElementById('lock-err').style.display = 'none';
 }
 
-// ── Init ──
+// ── 초기화 ──
 async function init() {
   if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('YOUR-PROJECT')) {
     document.getElementById('loading-area').style.display = 'none';
@@ -379,7 +433,6 @@ async function init() {
 async function loadData() {
   document.getElementById('loading-area').style.display = 'block';
   document.getElementById('dashboard').style.display = 'none';
-
   try {
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const [r1, r2, r3] = await Promise.all([
@@ -394,35 +447,39 @@ async function loadData() {
     matchData = r2.data || [];
     preData   = r3.data || [];
     renderAll();
-    document.getElementById('updated-at').textContent = '업데이트: ' + new Date().toLocaleTimeString('ko-KR');
+    document.getElementById('updated-at').textContent = '업데이트 ' + new Date().toLocaleTimeString('ko-KR');
   } catch(e) {
     alert('데이터 로드 실패: ' + e.message);
   }
-
   document.getElementById('loading-area').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
 }
 
-// ── Render ──
-function renderAll() {
-  renderSummary();
-  renderCharts();
-  renderInsights();
-  renderBlockers();
-  renderTrend();
-  renderTable();
-  renderMatchingTable();
-  renderPreRegisterTable();
-}
-
+// ── 공통 ──
 function count(field, val) { return allData.filter(d => d[field] === val).length; }
 function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
+const fmtDate = s => {
+  if (!s) return '-';
+  const d = new Date(s);
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+};
 
+function renderAll() {
+  renderSummary();
+  renderMatchingTable();
+  renderPreRegisterTable();
+  renderBlockers();
+  renderTrend();
+  renderCharts();
+  renderTable();
+}
+
+// ── 요약 ──
 function renderSummary() {
   const total = allData.length;
-  const ok    = count('result_status', 'ok');
-  const warn  = count('result_status', 'warn');
-  const no    = count('result_status', 'no');
+  const ok   = count('result_status', 'ok');
+  const warn = count('result_status', 'warn');
+  const no   = count('result_status', 'no');
   document.getElementById('s-total').textContent = total;
   document.getElementById('s-ok').textContent    = ok;
   document.getElementById('s-warn').textContent  = warn;
@@ -434,130 +491,75 @@ function renderSummary() {
   document.getElementById('s-pre').textContent   = preData.length;
 }
 
-const CHART_DEFAULTS = {
-  plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } }
-};
-
-function mkChart(id, type, labels, data, colors, opts = {}) {
-  if (charts[id]) charts[id].destroy();
-  const ctx = document.getElementById(id).getContext('2d');
-  charts[id] = new Chart(ctx, {
-    type,
-    data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: colors.map(c => c + 'dd'), borderWidth: type === 'doughnut' ? 2 : 0, borderRadius: type === 'bar' ? 4 : 0 }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { ...CHART_DEFAULTS.plugins, ...opts.plugins },
-      scales: opts.scales,
-      cutout: opts.cutout
-    }
-  });
+// ── 매칭 신청 테이블 ──
+function renderMatchingTable() {
+  document.getElementById('match-count').textContent = `${matchData.length}건`;
+  document.getElementById('match-body').innerHTML = matchData.length
+    ? matchData.map((d, i) => {
+        const badge = d.result_status === 'ok'
+          ? `<span class="badge-ok">가능</span>`
+          : `<span class="badge-warn">조건부</span>`;
+        const region = [d.city, d.district].filter(Boolean).join(' ') || d.region || '-';
+        return `<tr>
+          <td class="td-muted">${matchData.length - i}</td>
+          <td class="td-muted">${fmtDate(d.created_at)}</td>
+          <td class="td-name">${d.name || '-'}</td>
+          <td class="td-phone">${d.phone || '-'}</td>
+          <td>${region}</td>
+          <td>${IND[d.industry] || d.industry || '-'}</td>
+          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
+          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
+          <td>${badge}</td>
+        </tr>`;
+      }).join('')
+    : '<tr class="empty-row"><td colspan="9">매칭 신청이 아직 없어요.</td></tr>';
 }
 
-function renderCharts() {
-  const total = allData.length || 1;
-
-  // Result doughnut
-  mkChart('chart-result', 'doughnut',
-    ['가능', '조건부', '불가'],
-    [count('result_status','ok'), count('result_status','warn'), count('result_status','no')],
-    ['#10b981','#f59e0b','#ef4444'],
-    { cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 16 } } } }
-  );
-
-  // Visa doughnut
-  const visaKeys = Object.keys(VISA);
-  mkChart('chart-visa', 'doughnut',
-    visaKeys.map(k => VISA[k]),
-    visaKeys.map(k => count('visa_type', k)),
-    ['#6366f1','#8b5cf6','#06b6d4','#10b981','#6b7280'],
-    { cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 12 } } } }
-  );
-
-  // TOPIK bar
-  const topikKeys = ['TOPIK5','TOPIK4','TOPIK3','NONE'];
-  mkChart('chart-topik', 'bar',
-    topikKeys.map(k => TOPIK[k]),
-    topikKeys.map(k => count('topik_level', k)),
-    ['#6366f1','#8b5cf6','#a78bfa','#6b7280'],
-    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
-  );
-
-  // Hours bar
-  const hKeys = ['H10','H20','H25','H30','H35','HMAX'];
-  mkChart('chart-hours', 'bar',
-    hKeys.map(k => HOURS[k]),
-    hKeys.map(k => count('desired_hours', k)),
-    ['#06b6d4','#0ea5e9','#3b82f6','#6366f1','#8b5cf6','#a78bfa'],
-    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
-  );
-
-  // Enrollment bar
-  const eKeys = ['ENROLLED','LEAVE','GRAD'];
-  mkChart('chart-enroll', 'bar',
-    eKeys.map(k => ENROL[k]),
-    eKeys.map(k => count('enrollment', k)),
-    ['#10b981','#f59e0b','#6366f1'],
-    { scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } } } }
-  );
+// ── 예비 등록 테이블 ──
+function renderPreRegisterTable() {
+  document.getElementById('pre-count').textContent = `${preData.length}건`;
+  document.getElementById('pre-body').innerHTML = preData.length
+    ? preData.map((d, i) => {
+        const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
+        const blockerText = blockerKeys.map(k => BLOCKER_KEYS[k] || k).join(', ') || d.blocker || '-';
+        return `<tr>
+          <td class="td-muted">${preData.length - i}</td>
+          <td class="td-muted">${fmtDate(d.created_at)}</td>
+          <td class="td-name">${d.name || '-'}</td>
+          <td class="td-phone">${d.phone || '-'}</td>
+          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
+          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
+          <td class="td-muted">${blockerText}</td>
+        </tr>`;
+      }).join('')
+    : '<tr class="empty-row"><td colspan="7">예비 등록이 아직 없어요.</td></tr>';
 }
 
-function renderInsights() {
-  const total = allData.length || 1;
-  const noData = allData.filter(d => d.result_status === 'no');
-  const warnData = allData.filter(d => d.result_status === 'warn');
-
-  // TOPIK 없는 학생
-  const noTopik = count('topik_level', 'NONE') + count('topik_level', 'TOPIK3');
-  // 방학 중 학생
-  const vacation = count('semester', 'VACATION');
-  // 성적 미충족
-  const gradeIssue = count('grade_status', 'GPA_LOW');
-  // 휴학/졸업
-  const cantEnroll = count('enrollment', 'LEAVE') + count('enrollment', 'GRAD');
-  // 6개월 미충족
-  const stayShort = count('stay_duration', 'LT3') + count('stay_duration', '3TO6');
-  // 희망시간 25h↑
-  const longHours = allData.filter(d => ['H25','H30','H35','HMAX'].includes(d.desired_hours)).length;
-
-  const insights = [
-    { label: 'TOPIK 4급 이하', val: `${pct(noTopik, total)}%`, desc: `${noTopik}명이 한국어 능력 향상 시 근무시간 확대 가능`, color: '#f59e0b' },
-    { label: '방학 중 조회', val: `${pct(vacation, total)}%`, desc: `${vacation}명이 방학 중 → 무제한 근무 가능 대상`, color: '#10b981' },
-    { label: '장시간 희망 (주 25h↑)', val: `${pct(longHours, total)}%`, desc: `${longHours}명이 고강도 근무를 원하며 비자 확인 필요`, color: '#6366f1' },
-    { label: '성적/출석 미충족', val: `${pct(gradeIssue, total)}%`, desc: `${gradeIssue}명이 학업 상담 서비스 필요`, color: '#ef4444' },
-    { label: '체류 6개월 미충족', val: `${pct(stayShort, total)}%`, desc: `${stayShort}명이 체류 기간 경과 후 재신청 안내 필요`, color: '#f59e0b' },
-    { label: '재학 불가 상태', val: `${pct(cantEnroll, total)}%`, desc: `${cantEnroll}명이 휴학/졸업 → D-10 비자 전환 안내 필요`, color: '#ef4444' }
-  ];
-
-  document.getElementById('insight-grid').innerHTML = insights.map(i => `
-    <div class="insight-card">
-      <div class="i-label">${i.label}</div>
-      <div class="i-val" style="color:${i.color}">${i.val}</div>
-      <div class="i-desc">${i.desc}</div>
-    </div>`).join('');
-}
-
+// ── 불가 사유 분석 ──
 function renderBlockers() {
-  const noWarn = allData.filter(d => d.result_status !== 'ok' && d.blocker);
+  const noWarnData = allData.filter(d => d.result_status !== 'ok' && d.blocker);
   const counts = {};
-  for (const key in BLOCKERS) {
-    const label = BLOCKERS[key];
-    counts[label] = noWarn.filter(d => d.blocker && d.blocker.includes(key)).length;
+  for (const key in BLOCKER_KEYS) {
+    counts[key] = noWarnData.filter(d => d.blocker && d.blocker.includes(key)).length;
   }
-  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).filter(([,v]) => v > 0);
+  const sorted = Object.entries(counts)
+    .sort((a,b) => b[1]-a[1])
+    .filter(([,v]) => v > 0);
   const maxVal = sorted[0]?.[1] || 1;
 
   document.getElementById('blocker-list').innerHTML = sorted.length
-    ? sorted.map(([label, n]) => `
+    ? sorted.map(([key, n]) => `
         <div class="blocker-item">
           <div class="blocker-row">
-            <span>${label}</span>
-            <span style="color:var(--muted)">${n}건</span>
+            <span class="blocker-name">${BLOCKER_KEYS[key]}</span>
+            <span class="blocker-cnt">${n}건</span>
           </div>
           <div class="blocker-bar"><div class="blocker-fill" style="width:${pct(n,maxVal)}%"></div></div>
         </div>`).join('')
-    : '<div style="color:var(--muted);font-size:0.85rem">데이터가 없습니다.</div>';
+    : '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">데이터가 없어요.</div>';
 }
 
+// ── 추이 차트 ──
 function renderTrend() {
   const today = new Date();
   const days = Array.from({length: 14}, (_, i) => {
@@ -565,7 +567,6 @@ function renderTrend() {
     d.setDate(d.getDate() - (13 - i));
     return d.toISOString().slice(0,10);
   });
-
   const counts = days.map(day =>
     allData.filter(d => d.created_at && d.created_at.slice(0,10) === day).length
   );
@@ -573,52 +574,119 @@ function renderTrend() {
   if (charts['chart-trend']) charts['chart-trend'].destroy();
   const ctx = document.getElementById('chart-trend').getContext('2d');
   const grad = ctx.createLinearGradient(0, 0, 0, 200);
-  grad.addColorStop(0, 'rgba(99,102,241,0.35)');
-  grad.addColorStop(1, 'rgba(99,102,241,0)');
-
+  grad.addColorStop(0, 'rgba(0,113,227,0.2)');
+  grad.addColorStop(1, 'rgba(0,113,227,0)');
   charts['chart-trend'] = new Chart(ctx, {
     type: 'line',
     data: {
       labels: days.map(d => d.slice(5)),
       datasets: [{
-        data: counts, borderColor: '#6366f1', backgroundColor: grad,
-        tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#6366f1'
+        data: counts, borderColor: '#0071e3', backgroundColor: grad,
+        tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#0071e3'
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: { ticks: { color: '#94a3b8', maxRotation: 45 }, grid: { color: '#334155' } },
-        y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#334155' } }
+        x: { ticks: { color: '#6e6e73', maxRotation: 45 }, grid: { color: '#ebebed' } },
+        y: { ticks: { color: '#6e6e73', precision: 0 }, grid: { color: '#ebebed' } }
       }
     }
   });
 }
 
-function renderTable() {
-  const rows = allData.slice(0, 100);
-  document.getElementById('table-count').textContent = `${allData.length}건 (최신 100건 표시)`;
+// ── 차트 ──
+function mkChart(id, type, labels, data, colors, opts = {}) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type,
+    data: {
+      labels,
+      datasets: [{
+        data, backgroundColor: colors,
+        borderColor: type === 'doughnut' ? '#ffffff' : colors,
+        borderWidth: type === 'doughnut' ? 2 : 0,
+        borderRadius: type === 'bar' ? 5 : 0,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: opts.legendPos || 'bottom',
+          labels: { color: '#6e6e73', font: { size: 11 }, padding: 12 }
+        },
+        ...opts.plugins
+      },
+      scales: opts.scales,
+      cutout: opts.cutout
+    }
+  });
+}
 
+const LIGHT_GRID = { x: { ticks: { color: '#6e6e73' }, grid: { color: '#ebebed' } }, y: { ticks: { color: '#6e6e73', precision: 0 }, grid: { color: '#ebebed' } } };
+
+function renderCharts() {
+  // 결과 분포 도넛
+  mkChart('chart-result', 'doughnut',
+    ['가능', '조건부', '불가'],
+    [count('result_status','ok'), count('result_status','warn'), count('result_status','no')],
+    ['#34c759','#ff9500','#ff3b30'],
+    { cutout: '65%' }
+  );
+
+  // 비자 유형 도넛
+  const visaKeys = ['D2-UG-12','D2-UG-34','D2-GR','D2-VS','D4','OTHER'];
+  mkChart('chart-visa', 'doughnut',
+    visaKeys.map(k => VISA[k]),
+    visaKeys.map(k => count('visa_type', k)),
+    ['#0071e3','#147ce5','#5856d6','#007aff','#34c759','#aeaeb2'],
+    { cutout: '65%' }
+  );
+
+  // TOPIK 막대
+  mkChart('chart-topik', 'bar',
+    ['5급↑','4급','3급','1~2급·만료','없음'],
+    ['TOPIK5','TOPIK4','TOPIK3','TOPIK12','NONE'].map(k => count('topik_level', k)),
+    ['#34c759','#0071e3','#5856d6','#ff9500','#aeaeb2'],
+    { scales: LIGHT_GRID, legendPos: 'none', plugins: { legend: { display: false } } }
+  );
+
+  // 희망시간 막대
+  mkChart('chart-hours', 'bar',
+    ['~10h','~20h','~25h','~30h','~35h','무제한'],
+    ['H10','H20','H25','H30','H35','HMAX'].map(k => count('desired_hours', k)),
+    ['#0071e3','#147ce5','#5856d6','#007aff','#ff9500','#34c759'],
+    { scales: LIGHT_GRID, plugins: { legend: { display: false } } }
+  );
+
+  // 재학상태 막대
+  mkChart('chart-enroll', 'bar',
+    ['재학중','휴학','졸업예정'],
+    ['ENROLLED','LEAVE','GRAD'].map(k => count('enrollment', k)),
+    ['#34c759','#ff9500','#ff3b30'],
+    { scales: LIGHT_GRID, plugins: { legend: { display: false } } }
+  );
+}
+
+// ── 전체 응답 테이블 ──
+function renderTable() {
+  const rows = allData.slice(0, 200);
+  document.getElementById('table-count').textContent = `${allData.length}건 (최신 200건 표시)`;
   const badge = s => s === 'ok'
     ? `<span class="badge-ok">가능</span>`
     : s === 'warn'
     ? `<span class="badge-warn">조건부</span>`
     : `<span class="badge-no">불가</span>`;
-
-  const fmtDate = s => {
-    if (!s) return '-';
-    const d = new Date(s);
-    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-  };
-
   const fmtMax = n => n == null ? '-' : n === -1 ? '무제한' : `${n}h`;
 
   document.getElementById('table-body').innerHTML = rows.length
     ? rows.map((d, i) => `
         <tr>
-          <td style="color:var(--muted)">${allData.length - i}</td>
-          <td>${fmtDate(d.created_at)}</td>
+          <td class="td-muted">${allData.length - i}</td>
+          <td class="td-muted">${fmtDate(d.created_at)}</td>
           <td>${VISA[d.visa_type]||d.visa_type||'-'}</td>
           <td>${STAY[d.stay_duration]||d.stay_duration||'-'}</td>
           <td>${ENROL[d.enrollment]||d.enrollment||'-'}</td>
@@ -626,126 +694,79 @@ function renderTable() {
           <td>${TOPIK[d.topik_level]||d.topik_level||'-'}</td>
           <td>${SEM[d.semester]||d.semester||'-'}</td>
           <td>${HOURS[d.desired_hours]||d.desired_hours||'-'}</td>
-          <td style="${['DELIVERY','CONSTRUCTION'].includes(d.industry)?'color:#f87171;font-weight:700':''}">${IND[d.industry]||d.industry||'-'}</td>
+          <td style="${['DELIVERY','CONSTRUCTION'].includes(d.industry)?'color:var(--no);font-weight:600':''}">${IND[d.industry]||d.industry||'-'}</td>
           <td>${badge(d.result_status)}</td>
           <td>${fmtMax(d.max_hours_allowed)}</td>
         </tr>`).join('')
-    : '<tr><td colspan="11" class="empty">아직 응답이 없습니다.</td></tr>';
+    : '<tr class="empty-row"><td colspan="12">아직 응답이 없어요.</td></tr>';
 }
 
-// ── CSV Export ──
+// ── CSV 내보내기 ──
 function exportCSV() {
-  const headers = ['ID','날짜','비자','체류기간','재학상태','성적','TOPIK','학기','희망시간','업종','결과','최대허용','불가사유'];
-  const rows = allData.map(d => [
-    d.id,
+  const headers = ['#','날짜','비자','체류기간','재학','성적','TOPIK','학기','희망시간','업종','판정','최대허용','사유'];
+  const rows = allData.map((d, i) => [
+    allData.length - i,
     d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
-    VISA[d.visa_type] || d.visa_type || '',
-    STAY[d.stay_duration] || d.stay_duration || '',
-    ENROL[d.enrollment] || d.enrollment || '',
-    GRADE[d.grade_status] || d.grade_status || '',
-    TOPIK[d.topik_level] || d.topik_level || '',
-    SEM[d.semester] || d.semester || '',
-    HOURS[d.desired_hours] || d.desired_hours || '',
-    IND[d.industry] || d.industry || '',
+    VISA[d.visa_type]||d.visa_type||'',
+    STAY[d.stay_duration]||d.stay_duration||'',
+    ENROL[d.enrollment]||d.enrollment||'',
+    GRADE[d.grade_status]||d.grade_status||'',
+    TOPIK[d.topik_level]||d.topik_level||'',
+    SEM[d.semester]||d.semester||'',
+    HOURS[d.desired_hours]||d.desired_hours||'',
+    IND[d.industry]||d.industry||'',
     d.result_status === 'ok' ? '가능' : d.result_status === 'warn' ? '조건부' : '불가',
     d.max_hours_allowed === -1 ? '무제한' : d.max_hours_allowed ?? '',
     `"${(d.blocker||'').replace(/"/g,'""')}"`
   ]);
-
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = `유학생응답_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
-  a.click(); URL.revokeObjectURL(url);
+  dlCSV([headers, ...rows], `유학생응답_${today()}.csv`);
 }
 
-// ── Matching Table ──
-function renderMatchingTable() {
-  const fmtDate = s => {
-    if (!s) return '-';
-    const d = new Date(s);
-    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-  };
-  document.getElementById('match-count').textContent = `${matchData.length}건`;
-  document.getElementById('match-body').innerHTML = matchData.length
-    ? matchData.map((d, i) => `
-        <tr>
-          <td style="color:var(--muted)">${matchData.length - i}</td>
-          <td>${fmtDate(d.created_at)}</td>
-          <td style="font-weight:600">${d.name || '-'}</td>
-          <td>${d.phone || '-'}</td>
-          <td>${d.city || '-'}</td>
-          <td>${d.district || '-'}</td>
-          <td>${IND[d.industry] || d.industry || '-'}</td>
-          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
-          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
-        </tr>`).join('')
-    : '<tr><td colspan="9" class="empty">매칭 신청이 없습니다.</td></tr>';
-}
-
-// ── Pre-Register Table ──
-function renderPreRegisterTable() {
-  const fmtDate = s => {
-    if (!s) return '-';
-    const d = new Date(s);
-    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-  };
-  document.getElementById('pre-count').textContent = `${preData.length}건`;
-  document.getElementById('pre-body').innerHTML = preData.length
-    ? preData.map((d, i) => `
-        <tr>
-          <td style="color:var(--muted)">${preData.length - i}</td>
-          <td>${fmtDate(d.created_at)}</td>
-          <td style="font-weight:600">${d.name || '-'}</td>
-          <td>${d.phone || '-'}</td>
-          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
-          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
-          <td style="color:var(--muted);font-size:0.78rem">${d.blocker || '-'}</td>
-        </tr>`).join('')
-    : '<tr><td colspan="7" class="empty">예비 등록이 없습니다.</td></tr>';
-}
-
-// ── Match CSV ──
 function exportMatchCSV() {
-  const headers = ['#','신청일시','이름','연락처','시/도','구/시군','희망직종','비자','TOPIK'];
+  const headers = ['#','신청일시','이름','연락처','지역','희망직종','비자','TOPIK','판정'];
   const rows = matchData.map((d, i) => [
     matchData.length - i,
     d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
     `"${(d.name||'').replace(/"/g,'""')}"`,
-    d.phone || '',
-    d.city || '',
-    d.district || '',
-    IND[d.industry] || d.industry || '',
-    VISA[d.visa_type] || d.visa_type || '',
-    TOPIK[d.topik_level] || d.topik_level || ''
+    d.phone||'',
+    [d.city, d.district].filter(Boolean).join(' ')||d.region||'',
+    IND[d.industry]||d.industry||'',
+    VISA[d.visa_type]||d.visa_type||'',
+    TOPIK[d.topik_level]||d.topik_level||'',
+    d.result_status === 'ok' ? '가능' : '조건부'
   ]);
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `매칭신청_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
-  a.click(); URL.revokeObjectURL(url);
+  dlCSV([headers, ...rows], `매칭신청_${today()}.csv`);
 }
 
-// ── Pre-Register CSV ──
 function exportPreCSV() {
   const headers = ['#','등록일시','이름','연락처','비자','TOPIK','불가사유'];
-  const rows = preData.map((d, i) => [
-    preData.length - i,
-    d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
-    `"${(d.name||'').replace(/"/g,'""')}"`,
-    d.phone || '',
-    VISA[d.visa_type] || d.visa_type || '',
-    TOPIK[d.topik_level] || d.topik_level || '',
-    `"${(d.blocker||'').replace(/"/g,'""')}"`
-  ]);
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const rows = preData.map((d, i) => {
+    const blockerKeys = (d.blocker||'').split(',').filter(Boolean);
+    const blockerText = blockerKeys.map(k => BLOCKER_KEYS[k]||k).join(', ')||d.blocker||'';
+    return [
+      preData.length - i,
+      d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
+      `"${(d.name||'').replace(/"/g,'""')}"`,
+      d.phone||'',
+      VISA[d.visa_type]||d.visa_type||'',
+      TOPIK[d.topik_level]||d.topik_level||'',
+      `"${blockerText.replace(/"/g,'""')}"`
+    ];
+  });
+  dlCSV([headers, ...rows], `예비등록_${today()}.csv`);
+}
+
+function dlCSV(data, filename) {
+  const csv = data.map(r => r.join(',')).join('\n');
   const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `예비등록_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
-  a.click(); URL.revokeObjectURL(url);
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function today() {
+  return new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'');
 }
 </script>
 </body>
