@@ -48,10 +48,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   background:var(--bg);color:var(--ink);min-height:100vh;max-width:540px;margin:0 auto}
 
 /* ─── Header (dark, sleek) ─── */
-.hdr{background:var(--ink);color:#fff;padding:13px 16px;
+.hdr{background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 60%,#38BDF8 100%);color:#fff;padding:13px 16px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:200;
-  box-shadow:0 1px 0 rgba(255,255,255,.07),0 4px 20px rgba(0,0,0,.4)}
+  box-shadow:0 1px 0 rgba(255,255,255,.15),0 4px 20px rgba(2,132,199,.35)}
 .hdr-title{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
 .hdr-sub{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:2px;letter-spacing:.3px}
 .lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
@@ -380,10 +380,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .btn-hear:hover{background:var(--blue-d);transform:translateY(-1px)}
 .speak-tip{font-size:11px;color:var(--muted);line-height:1.6}
 .btn-mic{display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:13px;background:var(--ink);color:#fff;
+  width:100%;padding:13px;background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;
   border:none;border-radius:11px;font-size:14px;font-weight:700;
   cursor:pointer;margin-bottom:8px;transition:all .2s}
-.btn-mic:hover{background:#1e293b}
+.btn-mic:hover{background:rgba(2,132,199,.15)}
 .btn-mic.recording{background:var(--red);animation:pulse .8s ease infinite alternate}
 @keyframes pulse{from{opacity:1}to{opacity:.65}}
 .mic-result{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;border:1.5px solid}
@@ -459,7 +459,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .auth-tab{flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid var(--border);
   font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
   text-align:center;transition:all .2s;white-space:pre-wrap;line-height:1.3}
-.auth-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.auth-tab.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
 .auth-form label{display:block;font-size:10px;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:14px}
 .auth-form label:first-child{margin-top:0}
@@ -473,7 +473,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .auth-form .lang-pick{display:flex;gap:8px;margin-top:0}
 .auth-form .lang-pick button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;
   font-size:14px;cursor:pointer;background:#fff;transition:all .2s;font-weight:600;color:var(--ink)}
-.auth-form .lang-pick button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.auth-form .lang-pick button.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
 .notif-row{display:flex;align-items:center;justify-content:space-between;
   margin-top:14px;padding:10px 12px;background:var(--bg);border-radius:10px}
 .notif-row label{font-size:13px;font-weight:600;color:var(--ink);margin:0}
@@ -558,7 +558,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .lang-chip{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);
   font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
   transition:all .2s;white-space:nowrap}
-.lang-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lang-chip.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
 .lang-chip:hover:not(.on){border-color:var(--blue-m);color:var(--blue-m)}
 
 .lang-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
@@ -580,7 +580,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
 /* install banner */
 .install-banner{
-  background:var(--ink);color:#fff;padding:10px 14px;
+  background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;padding:10px 14px;
   display:flex;align-items:center;gap:10px;font-size:12px;
   position:sticky;bottom:0;z-index:100
 }
@@ -610,7 +610,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   text-shadow:0 2px 8px rgba(0,0,0,.25);
   animation:starPop 1.4s cubic-bezier(.25,.46,.45,.94) forwards}
 .pts-chip{display:inline-flex;align-items:center;gap:5px;
-  background:var(--ink);border-radius:20px;padding:4px 11px;
+  background:linear-gradient(135deg,#0284C7,#0EA5E9);border-radius:20px;padding:4px 11px;
   font-size:12px;font-weight:800;color:#fff;
   box-shadow:0 2px 8px rgba(4,15,28,.25)}
 .rank-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
@@ -1171,8 +1171,8 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <small style="opacity:.7">Industrial safety Korean for foreign workers</small></p>
       <div class="al-features">
         <div class="al-feat">
-          <div class="al-feat-icon">3</div>
-          <div class="al-feat-text"><strong>하루 3문장</strong>핵심 표현을 문장 단위로 학습</div>
+          <div class="al-feat-icon">1</div>
+          <div class="al-feat-text"><strong>하루 1문장</strong>핵심 문장 + 단어 분해 학습</div>
         </div>
         <div class="al-feat">
           <div class="al-feat-icon">W</div>
@@ -1367,7 +1367,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="day-grid" id="practicalGrid" style="margin-bottom:14px"></div>
 
     <div class="slabel">단어 게임</div>
-    <div style="background:linear-gradient(135deg,#1D3557,#457B9D);border-radius:var(--r);
+    <div style="background:linear-gradient(135deg,#0284C7,#0EA5E9);border-radius:var(--r);
       padding:16px;color:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;
       margin-bottom:14px;transition:opacity .2s" onclick="goGame()" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
       <div style="font-size:44px;flex-shrink:0">🃏</div>
