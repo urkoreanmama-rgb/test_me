@@ -48,8 +48,13 @@
     main { padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
 
     /* ── Summary Cards ── */
-    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-    @media (max-width: 700px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+    .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 1100px) { .summary-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px)  { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+    .s-card.match { border-left: 3px solid #06b6d4; }
+    .s-card.pre   { border-left: 3px solid #8b5cf6; }
+    .c-match { color: #22d3ee; }
+    .c-pre   { color: #a78bfa; }
     .s-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
     .s-card .s-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
     .s-card .s-val { font-size: 2rem; font-weight: 800; line-height: 1; }
@@ -176,6 +181,16 @@
         <div class="s-val c-no" id="s-no">0</div>
         <div class="s-sub" id="s-no-pct">-</div>
       </div>
+      <div class="s-card match">
+        <div class="s-label">매칭 신청</div>
+        <div class="s-val c-match" id="s-match">0</div>
+        <div class="s-sub">구인 연결 대기 중</div>
+      </div>
+      <div class="s-card pre">
+        <div class="s-label">예비 등록</div>
+        <div class="s-val c-pre" id="s-pre">0</div>
+        <div class="s-sub">자격 갖추면 알림 예정</div>
+      </div>
     </div>
 
     <!-- Charts Row 1 -->
@@ -222,8 +237,8 @@
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="section-title">🗃️ 최근 응답 내역</div>
+    <!-- Table: Quiz 응답 -->
+    <div class="section-title">🗃️ 체커 응답 내역</div>
     <div class="table-box">
       <div class="table-header">
         <h3>응답 목록</h3>
@@ -246,6 +261,53 @@
       </div>
     </div>
 
+    <!-- Table: 매칭 신청 -->
+    <div class="section-title">🤝 매칭 신청 목록</div>
+    <div class="table-box">
+      <div class="table-header">
+        <h3>아르바이트 매칭 신청</h3>
+        <div style="display:flex;gap:0.6rem;align-items:center">
+          <span id="match-count">0건</span>
+          <button class="export-btn" onclick="exportMatchCSV()">CSV 내보내기</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table style="min-width:720px">
+          <thead>
+            <tr>
+              <th>#</th><th>신청일시</th><th>이름</th><th>연락처</th>
+              <th>지역(시/도)</th><th>지역(구/시군)</th><th>희망직종</th>
+              <th>비자</th><th>TOPIK</th>
+            </tr>
+          </thead>
+          <tbody id="match-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table: 예비 등록 -->
+    <div class="section-title">📋 예비 등록 목록 <span style="font-size:0.75rem;color:var(--muted);font-weight:400;text-transform:none">(현재 불가 → 자격 갖추면 알림 요청)</span></div>
+    <div class="table-box">
+      <div class="table-header">
+        <h3>예비 등록</h3>
+        <div style="display:flex;gap:0.6rem;align-items:center">
+          <span id="pre-count">0건</span>
+          <button class="export-btn" onclick="exportPreCSV()">CSV 내보내기</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table style="min-width:640px">
+          <thead>
+            <tr>
+              <th>#</th><th>등록일시</th><th>이름</th><th>연락처</th>
+              <th>비자</th><th>TOPIK</th><th>불가사유</th>
+            </tr>
+          </thead>
+          <tbody id="pre-body"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div><!-- /dashboard -->
 
   <div id="no-config" style="display:none" class="empty">
@@ -260,9 +322,9 @@
 
 <script>
 // ── Labels ──
-const VISA  = { 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
-const IND   = { FOOD:'식당·카페', RETAIL:'판매보조', OFFICE:'사무·번역', EVENT:'행사·관광', MAJOR:'전공관련', DELIVERY:'배달·택배🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
-const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'1~3급', NONE:'없음/만료' };
+const VISA  = { 'D2-UG-12':'D-2 학사(1~2학년)', 'D2-UG-34':'D-2 학사(3~4학년)', 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 방문학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
+const IND   = { FOOD:'식당·카페', RETAIL:'판매보조', OFFICE:'사무·번역', EVENT:'행사·관광', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', DELIVERY:'배달·택배🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
+const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'3급', TOPIK12:'1~2급·만료', NONE:'없음' };
 const STAY  = { LT3:'3개월↓', '3TO6':'3~6개월', GT6:'6개월↑' };
 const ENROL = { ENROLLED:'재학중', LEAVE:'휴학', GRAD:'졸업예정' };
 const GRADE = { GOOD:'기준충족', GPA_LOW:'미충족', FIRST:'첫학기' };
@@ -277,8 +339,10 @@ const BLOCKERS = {
   '허용 시간': '근무시간 초과'
 };
 
-let allData = [];
-let charts  = {};
+let allData   = [];
+let matchData = [];
+let preData   = [];
+let charts    = {};
 
 // ── Auth ──
 function unlock() {
@@ -304,7 +368,7 @@ async function init() {
     document.getElementById('loading-area').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('no-config-banner').style.display = 'flex';
-    allData = [];
+    allData = []; matchData = []; preData = [];
     renderAll();
     document.getElementById('updated-at').textContent = 'Supabase 미연결';
     return;
@@ -318,14 +382,17 @@ async function loadData() {
 
   try {
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data, error } = await sb
-      .from('submissions')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(500);
-
-    if (error) throw error;
-    allData = data || [];
+    const [r1, r2, r3] = await Promise.all([
+      sb.from('submissions').select('*').order('created_at', { ascending: false }).limit(500),
+      sb.from('job_matching').select('*').order('created_at', { ascending: false }).limit(500),
+      sb.from('pre_register').select('*').order('created_at', { ascending: false }).limit(500)
+    ]);
+    if (r1.error) throw r1.error;
+    if (r2.error) console.warn('job_matching:', r2.error.message);
+    if (r3.error) console.warn('pre_register:', r3.error.message);
+    allData   = r1.data || [];
+    matchData = r2.data || [];
+    preData   = r3.data || [];
     renderAll();
     document.getElementById('updated-at').textContent = '업데이트: ' + new Date().toLocaleTimeString('ko-KR');
   } catch(e) {
@@ -344,6 +411,8 @@ function renderAll() {
   renderBlockers();
   renderTrend();
   renderTable();
+  renderMatchingTable();
+  renderPreRegisterTable();
 }
 
 function count(field, val) { return allData.filter(d => d[field] === val).length; }
@@ -361,6 +430,8 @@ function renderSummary() {
   document.getElementById('s-ok-pct').textContent   = `전체의 ${pct(ok, total)}%`;
   document.getElementById('s-warn-pct').textContent = `전체의 ${pct(warn, total)}%`;
   document.getElementById('s-no-pct').textContent   = `전체의 ${pct(no, total)}%`;
+  document.getElementById('s-match').textContent = matchData.length;
+  document.getElementById('s-pre').textContent   = preData.length;
 }
 
 const CHART_DEFAULTS = {
@@ -586,6 +657,94 @@ function exportCSV() {
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href = url; a.download = `유학생응답_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Matching Table ──
+function renderMatchingTable() {
+  const fmtDate = s => {
+    if (!s) return '-';
+    const d = new Date(s);
+    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+  document.getElementById('match-count').textContent = `${matchData.length}건`;
+  document.getElementById('match-body').innerHTML = matchData.length
+    ? matchData.map((d, i) => `
+        <tr>
+          <td style="color:var(--muted)">${matchData.length - i}</td>
+          <td>${fmtDate(d.created_at)}</td>
+          <td style="font-weight:600">${d.name || '-'}</td>
+          <td>${d.phone || '-'}</td>
+          <td>${d.city || '-'}</td>
+          <td>${d.district || '-'}</td>
+          <td>${IND[d.industry] || d.industry || '-'}</td>
+          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
+          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
+        </tr>`).join('')
+    : '<tr><td colspan="9" class="empty">매칭 신청이 없습니다.</td></tr>';
+}
+
+// ── Pre-Register Table ──
+function renderPreRegisterTable() {
+  const fmtDate = s => {
+    if (!s) return '-';
+    const d = new Date(s);
+    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+  document.getElementById('pre-count').textContent = `${preData.length}건`;
+  document.getElementById('pre-body').innerHTML = preData.length
+    ? preData.map((d, i) => `
+        <tr>
+          <td style="color:var(--muted)">${preData.length - i}</td>
+          <td>${fmtDate(d.created_at)}</td>
+          <td style="font-weight:600">${d.name || '-'}</td>
+          <td>${d.phone || '-'}</td>
+          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
+          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
+          <td style="color:var(--muted);font-size:0.78rem">${d.blocker || '-'}</td>
+        </tr>`).join('')
+    : '<tr><td colspan="7" class="empty">예비 등록이 없습니다.</td></tr>';
+}
+
+// ── Match CSV ──
+function exportMatchCSV() {
+  const headers = ['#','신청일시','이름','연락처','시/도','구/시군','희망직종','비자','TOPIK'];
+  const rows = matchData.map((d, i) => [
+    matchData.length - i,
+    d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
+    `"${(d.name||'').replace(/"/g,'""')}"`,
+    d.phone || '',
+    d.city || '',
+    d.district || '',
+    IND[d.industry] || d.industry || '',
+    VISA[d.visa_type] || d.visa_type || '',
+    TOPIK[d.topik_level] || d.topik_level || ''
+  ]);
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `매칭신청_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Pre-Register CSV ──
+function exportPreCSV() {
+  const headers = ['#','등록일시','이름','연락처','비자','TOPIK','불가사유'];
+  const rows = preData.map((d, i) => [
+    preData.length - i,
+    d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '',
+    `"${(d.name||'').replace(/"/g,'""')}"`,
+    d.phone || '',
+    VISA[d.visa_type] || d.visa_type || '',
+    TOPIK[d.topik_level] || d.topik_level || '',
+    `"${(d.blocker||'').replace(/"/g,'""')}"`
+  ]);
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `예비등록_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.csv`;
   a.click(); URL.revokeObjectURL(url);
 }
 </script>
