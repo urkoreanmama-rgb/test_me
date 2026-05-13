@@ -76,6 +76,31 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .hero h2{font-size:19px;font-weight:800;margin-bottom:5px;letter-spacing:-.3px}
 .hero p{font-size:13px;opacity:.8;line-height:1.6}
 
+/* ── 언어선택 첫화면 ── */
+#homeLangPanel{
+  min-height:calc(100vh - 64px);
+  background:linear-gradient(160deg,#0284C7 0%,#0EA5E9 55%,#38BDF8 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:36px 24px 48px;
+}
+.hlp-inner{width:100%;max-width:400px;text-align:center}
+.hlp-icon{font-size:56px;margin-bottom:14px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.3))}
+.hlp-title{font-size:30px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;
+  text-shadow:0 2px 10px rgba(0,0,0,.2)}
+.hlp-sub{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:32px;line-height:1.6}
+.hlp-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:0}
+.hlp-btn{
+  background:rgba(255,255,255,.95);border:2.5px solid transparent;border-radius:16px;
+  padding:16px 12px;font-size:14px;font-weight:700;color:#0369A1;cursor:pointer;
+  display:flex;align-items:center;gap:9px;transition:all .15s;text-align:left;
+  box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+.hlp-btn:active{transform:scale(.95);}
+.hlp-btn.on{border-color:#38BDF8;box-shadow:0 0 0 3px rgba(56,189,248,.5),0 2px 10px rgba(0,0,0,.1);}
+.hlp-flag{font-size:24px;flex-shrink:0}
+.hlp-name{font-size:14px;font-weight:800;color:#0369A1;line-height:1.2}
+#homeDayPanel{display:none}
+
 /* Goal badge */
 .goal-chip{
   display:inline-flex;align-items:center;gap:6px;
@@ -1331,11 +1356,23 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 <div id="appMain">
 <!-- HOME -->
 <div id="homeScr" class="scr">
+
+  <!-- ① 언어선택 첫화면 -->
+  <div id="homeLangPanel">
+    <div class="hlp-inner">
+      <div class="hlp-icon">🛡️</div>
+      <div class="hlp-title">안전 한국어<br><span style="font-size:.65em;opacity:.9">Safety Korean</span></div>
+      <div class="hlp-sub" id="hlpSub">언어를 선택하세요<br><small style="opacity:.75">Choose your language / Tilni tanlang</small></div>
+      <div class="hlp-grid" id="homeLangGrid"></div>
+    </div>
+  </div>
+
+  <!-- ② 수업 내용 -->
+  <div id="homeDayPanel">
   <div class="home">
     <div class="hero">
       <div class="e">🗣️</div>
       <h2 id="heroT" data-i18n="hero_title">한국어로 안전하게 일해요</h2>
-      <div id="homeLangRow" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap"></div>
     </div>
 
     <div class="slabel" data-i18n="lbl_curriculum">📅 1개월 안전 한국어 과정 (Day 1–20, 하루 5분)</div>
@@ -1365,6 +1402,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
       <div style="margin-left:auto;font-size:20px;flex-shrink:0">▶</div>
     </div>
   </div>
+  </div><!-- /homeDayPanel -->
 </div>
 
 <!-- PROFILE -->
@@ -2165,6 +2203,7 @@ function applyLang(){
 
 function renderLangChips(){
   const cur = getUILang();
+  // 인증화면 소형 칩
   const chipsHtml = Object.entries(LANG_META).map(([code,m])=>
     `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')">
       ${m.flag} ${m.native}
@@ -2172,13 +2211,27 @@ function renderLangChips(){
   ).join('');
   const auth = document.getElementById('authLangChips');
   if(auth) auth.innerHTML = chipsHtml;
-  // 홈화면 언어 선택 행도 갱신
-  const homeRow = document.getElementById('homeLangRow');
-  if(homeRow) homeRow.innerHTML = Object.entries(LANG_META).map(([code,m])=>
-    `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')" style="font-size:11px;padding:4px 10px">
-      ${m.flag} ${m.native}
+  // 홈 첫화면 대형 언어 버튼
+  const grid = document.getElementById('homeLangGrid');
+  if(grid) grid.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+    `<button class="hlp-btn${code===cur?' on':''}" onclick="selectHomeLang('${code}')">
+      <span class="hlp-flag">${m.flag}</span>
+      <span class="hlp-name">${m.native}</span>
     </button>`
   ).join('');
+}
+
+// 홈 언어선택 → 수업화면 전환
+function selectHomeLang(code){
+  setUILang(code);
+  document.getElementById('homeLangPanel').style.display='none';
+  document.getElementById('homeDayPanel').style.display='';
+  renderHome();
+}
+function showHomeLangPanel(){
+  document.getElementById('homeLangPanel').style.display='';
+  document.getElementById('homeDayPanel').style.display='none';
+  renderLangChips();
 }
 
 function renderLangGrid(){
@@ -2655,7 +2708,7 @@ function goHome(){
   document.getElementById('gameScr').classList.remove('on');
   document.getElementById('homeScr').classList.add('on');
   setSidebarActive('home');
-  renderHome();
+  showHomeLangPanel(); // 항상 언어선택 첫화면부터
 }
 function next(){ST.step++;renderLesson();}
 
@@ -3487,7 +3540,7 @@ function enterApp(user){
   const m = LANG_META[cur]||LANG_META.ko;
   document.getElementById('langBtn').textContent = m.flag+' '+cur.toUpperCase();
   applyLang();
-  renderHome();
+  showHomeLangPanel(); // 언어선택 첫화면으로
 }
 
 function checkAuth(){
