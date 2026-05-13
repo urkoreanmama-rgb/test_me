@@ -1011,13 +1011,13 @@ body.in-lesson #mainHdr{display:none!important}
 #dsb{display:none}
 
 @media(min-width:768px){
-  body{max-width:100%;background:#E0F2FE}
+  body{max-width:100%;background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 55%,#38BDF8 100%);min-height:100vh}
 
   #dsb{
     display:flex;flex-direction:column;
     width:240px;min-height:100vh;
-    background:linear-gradient(180deg,#0EA5E9 0%,#0284C7 100%);
-    border-right:1px solid rgba(255,255,255,.07);
+    background:linear-gradient(180deg,#023E8A 0%,#0369A1 50%,#0284C7 100%);
+    border-right:1px solid rgba(255,255,255,.12);
     position:fixed;left:0;top:0;bottom:0;z-index:400;
     overflow-y:auto;
   }
@@ -1077,19 +1077,22 @@ body.in-lesson #mainHdr{display:none!important}
   }
   .dsb-lang-btn:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);}
 
-  /* Main content area */
+  /* Main content area — sky-blue gradient */
   #appMain{
     margin-left:240px;
     flex:1;display:flex;flex-direction:column;align-items:stretch;
-    background:var(--bg);min-height:100vh;
+    background:linear-gradient(160deg,#E0F2FE 0%,#BAE6FD 50%,#F0F9FF 100%);
+    min-height:100vh;
   }
   #appMain>.scr.on{width:100%;}
 
   /* 2열 레슨 레이아웃 */
   .lesson-2col{display:grid!important;grid-template-columns:290px 1fr;flex:1;overflow:hidden}
   .lesson-ref{
-    padding:14px 16px;border-right:1px solid var(--border);
-    overflow-y:auto;background:var(--card);
+    padding:14px 16px;border-right:1px solid rgba(2,132,199,.18);
+    overflow-y:auto;
+    background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(224,242,254,.85) 100%);
+    backdrop-filter:blur(8px);
   }
   .lesson-ref-title{
     font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
@@ -1168,10 +1171,26 @@ body.in-lesson #mainHdr{display:none!important}
   /* More padding on desktop */
   .home{padding:24px 32px}
   .lbody{padding:0;overflow-y:auto}
-  .lhdr{padding:12px 28px}
-  .sbar{padding:7px 28px}
-  .step-lbl{display:none}
-  #lessonScr{height:100vh}
+  /* Lesson header — sky-blue gradient on PC */
+  .lhdr{
+    padding:12px 28px;
+    background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 60%,#38BDF8 100%);
+    border-bottom:none;
+  }
+  .lhdr-info h2{color:#fff!important}
+  .lhdr-info p{color:rgba(255,255,255,.75)!important}
+  .back{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff}
+  .back:hover{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5)}
+  /* Step bar on PC */
+  .sbar{padding:7px 28px;background:rgba(2,132,199,.12)}
+  .sdot{background:rgba(255,255,255,.35)}
+  .sdot.done{background:#0EA5E9}
+  .sdot.cur{background:#fff;box-shadow:0 0 0 2px #0EA5E9}
+  /* Lesson footer */
+  .lsn-footer{background:rgba(240,249,255,.95);border-top:1px solid rgba(2,132,199,.2)}
+  /* Home screen */
+  .home{background:transparent}
+  #lessonScr{height:100vh;background:linear-gradient(160deg,#E0F2FE 0%,#BAE6FD 50%,#F0F9FF 100%)}
   .prof{padding:24px 32px}
   .gq-wrap{padding:16px 28px}
   .game-btn-row{padding:0 28px 24px}
