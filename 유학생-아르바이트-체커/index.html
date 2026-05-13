@@ -89,7 +89,8 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 .notice-box{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:10px;padding:1rem 1.2rem;font-size:0.85rem;line-height:1.7;color:#fcd34d;margin-bottom:1.2rem;text-align:left}
 .notice-box strong{display:block;margin-bottom:4px;font-size:0.88rem}
 .notice-arc{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.35);border-radius:10px;padding:1rem 1.2rem;font-size:0.85rem;line-height:1.6;color:#a5b4fc;margin-bottom:1.2rem;text-align:left}
-.notice-arc strong{display:block;margin-bottom:4px;font-size:0.88rem}
+.notice-arc>strong:first-child{display:block;margin-bottom:4px;font-size:0.88rem}
+.notice-arc strong{font-weight:700}
 .section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
 .section-title{font-size:0.85rem;font-weight:700;color:var(--accent2);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .doc-list{list-style:none;display:flex;flex-direction:column;gap:8px}
@@ -104,8 +105,8 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 .link-card:hover{border-color:var(--accent2);background:rgba(99,102,241,0.08)}
 .lc-title{font-size:0.88rem;font-weight:600}
 .lc-sub{font-size:0.75rem;color:var(--muted);margin-top:2px}
-.law-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:0.82rem;color:var(--muted);line-height:1.7}
-.law-box strong{color:var(--sub)}
+.law-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:0.82rem;color:var(--text);line-height:1.7}
+.law-box strong{color:#fff}
 .law-note{font-size:0.78rem;color:var(--muted);opacity:0.7;margin-top:8px;font-style:italic}
 .btn-restart{width:100%;padding:14px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;margin-top:4px}
 .saved-msg{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:10px}
