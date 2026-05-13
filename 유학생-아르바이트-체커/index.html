@@ -452,7 +452,7 @@ ko: {
   rWarnGrade:'성적·출석 기준 미충족 시 허가 신청이 거부될 수 있습니다. 학교 글로벌센터 또는 외국인학생 담당부서에 먼저 확인하세요.',
   rWarnHours: m => `희망 시간이 허용 한도(${m})를 초과합니다. 허용 시간 내에서만 근무하세요.`,
   rWarnMajor:'전공 관련 인턴·연구보조는 학교 글로벌센터 또는 외국인학생 담당부서의 별도 확인 절차가 필요할 수 있습니다.',
-  rNoTopik:'이 비자·학년에서 취업활동 허가를 받으려면 TOPIK 기준 등급을 먼저 취득해야 합니다. (학사 1~2학년: 3급↑, 학사 3~4학년·석박사·방문학생: 4급↑)',
+  rNoTopik:'해당 비자와 학년에서 취업활동 허가를 받으려면 TOPIK 기준 등급을 먼저 취득해야 합니다.<br>(학사 1~2학년: 3급↑, 학사 3~4학년·석박사·방문학생: 4급↑)',
   rNoManufacture:'제조업·공장 아르바이트는 TOPIK 4급 이상인 경우에만 허용됩니다.',
   rWarnManufacture:'제조업·공장은 TOPIK 4급 이상 시 허용됩니다. 반드시 담당부서 확인 후 취업하세요.',
   savedMsg:'✓ 응답이 저장되었습니다.',
@@ -970,7 +970,7 @@ function renderResult() {
   let html = '';
   if (r.reasonKeys.length) {
     const lines = r.reasonKeys.map(k =>
-      k === '__hoursExceeded__' ? '• ' + tf('rWarnHours', maxLabel) : '• ' + t(k)
+      k === '__hoursExceeded__' ? tf('rWarnHours', maxLabel) : t(k)
     ).join('<br>');
     html += `<div class="notice-box"><strong>${t('noticeTitle')}</strong>${lines}</div>`;
   }
