@@ -143,29 +143,40 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .ptxt{font-size:11px;color:var(--muted);text-align:right}
 
 /* ═══ LESSON ═══ */
+/* ── Lesson screen: full-viewport flex column ── */
+#lessonScr{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 .lhdr{background:var(--card);border-bottom:1px solid var(--border);
-  padding:11px 14px;display:flex;align-items:center;gap:10px}
-.back{width:34px;height:34px;background:var(--bg);border:1.5px solid var(--border);
-  border-radius:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;
+  padding:8px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.back{width:32px;height:32px;background:var(--bg);border:1.5px solid var(--border);
+  border-radius:9px;cursor:pointer;font-size:15px;display:flex;align-items:center;
   justify-content:center;flex-shrink:0;transition:all .15s}
 .back:hover{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue-m)}
-.lhdr-info h2{font-size:15px;font-weight:800;color:var(--ink)}
-.lhdr-info p{font-size:11px;color:var(--muted)}
+.lhdr-info h2{font-size:13px;font-weight:800;color:var(--ink);line-height:1.2}
+.lhdr-info p{font-size:10px;color:var(--muted)}
 
 /* Step progress */
-.sbar{display:flex;gap:4px;padding:9px 14px;background:var(--card);border-bottom:1px solid var(--border)}
+.sbar{display:flex;gap:4px;padding:6px 12px;background:var(--card);
+  border-bottom:1px solid var(--border);flex-shrink:0}
 .sdot{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
 .sdot.done{background:var(--green)}.sdot.cur{background:var(--blue-m)}
 
 /* Step label */
-.step-lbl{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 0}
+.step-lbl{display:flex;align-items:center;justify-content:space-between;
+  padding:7px 14px 4px;flex-shrink:0}
 .step-name{
   display:inline-flex;align-items:center;gap:5px;
   background:var(--blue-m);color:#fff;
-  border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.2px
+  border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.2px
 }
-.step-hint{font-size:11px;color:var(--muted);font-style:italic}
-.lbody{padding:14px 16px}
+.step-hint{font-size:10px;color:var(--muted);font-style:italic}
+
+/* lesson content fills remaining height */
+.lesson-2col{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.lbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px 0}
+
+/* 다음 단계 버튼 — 항상 화면 하단에 고정 */
+.lsn-next{padding:10px 14px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
+.lsn-next .btn{margin:0}
 
 /* ── Goal ── */
 .goal-box{
@@ -216,9 +227,9 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .bubble-uz{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;font-style:italic;padding-left:2px}
 
 /* ── Words ── */
-.word-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.word-cards{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
 .word-card{
-  background:var(--card);border-radius:var(--r);
+  background:var(--card);border-radius:10px;
   border:1.5px solid var(--border);
   display:flex;align-items:stretch;overflow:hidden;
   cursor:pointer;transition:all .2s;
@@ -228,18 +239,18 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .word-card.playing{border-color:var(--blue-m);background:var(--blue-l)}
 .wc-left{
   background:linear-gradient(160deg,#0284C7,#38BDF8);color:#fff;
-  padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-width:80px;
+  padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:64px;
 }
-.wc-ko{font-size:20px;font-weight:800;margin-bottom:3px}
+.wc-ko{font-size:17px;font-weight:800;margin-bottom:0}
 .wc-syl{font-size:10px;opacity:.6;letter-spacing:1px}
-.wc-right{padding:10px 12px;flex:1}
-.wc-rom{font-size:11px;color:var(--muted);margin-bottom:3px}
-.wc-uz{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--ink-m)}
-.wc-ex{font-size:12px;color:var(--blue-m);font-style:italic}
+.wc-right{padding:7px 10px;flex:1}
+.wc-rom{font-size:10px;color:var(--muted);margin-bottom:2px}
+.wc-uz{font-size:12px;font-weight:600;margin-bottom:2px;color:var(--ink-m)}
+.wc-ex{font-size:11px;color:var(--blue-m);font-style:italic}
 .wc-play{
-  background:var(--blue-m);color:#fff;width:38px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:15px
+  background:var(--blue-m);color:#fff;width:34px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px
 }
 
 /* ── Sentence Overview (Step 0) ── */
@@ -251,27 +262,27 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 .sent-overview-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
 .sent-card{
   background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
-  padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;
+  padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;
   box-shadow:0 1px 4px rgba(0,0,0,.05);transition:all .2s;cursor:pointer;
 }
 .sent-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(14,165,233,.12)}
 .sent-card:active{transform:scale(.99)}
 .sent-num{
-  width:28px;height:28px;border-radius:8px;
+  width:26px;height:26px;border-radius:7px;
   background:linear-gradient(135deg,var(--blue-m),var(--blue-d));
   color:#fff;font-size:12px;font-weight:800;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
 }
 .sent-body{flex:1;min-width:0}
-.sent-ko{font-size:17px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:5px}
-.sent-tr{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5}
-.sent-play{background:none;border:none;font-size:20px;cursor:pointer;
-  padding:0;flex-shrink:0;color:var(--blue-m);margin-top:2px;line-height:1}
+.sent-ko{font-size:16px;font-weight:800;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.sent-tr{font-size:11px;color:var(--muted);font-style:italic;line-height:1.4}
+.sent-play{background:none;border:none;font-size:18px;cursor:pointer;
+  padding:0;flex-shrink:0;color:var(--blue-m);line-height:1}
 
 /* ── Sentence Overview (Step 0) hero header ── */
 .sent-intro-hero{
   background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%);
-  border-radius:var(--r);padding:18px 20px 16px;margin-bottom:14px;
+  border-radius:var(--r);padding:12px 16px 10px;margin-bottom:10px;
   position:relative;overflow:hidden;
   box-shadow:0 4px 24px rgba(4,15,28,.35)
 }
@@ -281,10 +292,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
              radial-gradient(ellipse at 10% 85%,rgba(56,189,248,.12),transparent 50%);
 }
 .sent-intro-hero>*{position:relative;z-index:1}
-.sih-tag{font-size:10px;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.sih-title{font-size:20px;font-weight:900;color:#fff;line-height:1.25;margin-bottom:4px;letter-spacing:-.3px}
-.sih-sub{font-size:12px;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:10px}
-.sih-goal{font-size:11px;color:rgba(255,255,255,.45);font-style:italic;margin-top:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
+.sih-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.sih-title{font-size:17px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:2px;letter-spacing:-.3px}
+.sih-sub{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:6px}
+.sih-goal{font-size:10px;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px;padding-top:5px;border-top:1px solid rgba(255,255,255,.08)}
 
 /* ── Sentence Study (Steps 1-3) ── */
 .sent-study-box{
@@ -1077,7 +1088,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
   #appMain>.scr.on{width:100%;}
 
   /* 2열 레슨 레이아웃 */
-  .lesson-2col{display:grid;grid-template-columns:290px 1fr;min-height:calc(100vh - 150px);}
+  .lesson-2col{display:grid!important;grid-template-columns:290px 1fr;flex:1;overflow:hidden}
   .lesson-ref{
     padding:14px 16px;border-right:1px solid var(--border);
     overflow-y:auto;background:var(--card);
@@ -1158,10 +1169,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 
   /* More padding on desktop */
   .home{padding:24px 32px}
-  .lbody{padding:0}
-  .lhdr{padding:14px 28px}
-  .sbar{padding:9px 28px}
-  .step-lbl{padding:12px 28px 0}
+  .lbody{padding:0;overflow-y:auto}
+  .lhdr{padding:12px 28px}
+  .sbar{padding:7px 28px}
+  .step-lbl{padding:10px 28px 4px}
+  #lessonScr{height:100vh}
   .prof{padding:24px 32px}
   .gq-wrap{padding:16px 28px}
   .game-btn-row{padding:0 28px 24px}
@@ -1472,6 +1484,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
     <div class="lesson-ref" id="lref" style="display:none"></div>
     <div class="lbody lbody-inner" id="lcontent"></div>
   </div>
+  <div class="lsn-footer" id="lsnFooter" style="display:none"></div>
 </div>
 
 <!-- 계정 찾기 모달 -->
@@ -2743,6 +2756,7 @@ function startLesson(i){
   ST.quizIdx=0; ST.quizScore=0;
   sessionStart(CUR[i].day);
   window.speechSynthesis&&window.speechSynthesis.cancel();
+  document.getElementById('mainHdr').style.display='none';
   document.getElementById('homeScr').classList.remove('on');
   document.getElementById('lessonScr').classList.add('on');
   renderLesson();
@@ -2753,6 +2767,7 @@ function startPracticalLesson(i){
   ST.quizIdx=0; ST.quizScore=0;
   sessionStart(PRACTICAL_CUR[i].day);
   window.speechSynthesis&&window.speechSynthesis.cancel();
+  document.getElementById('mainHdr').style.display='none';
   document.getElementById('homeScr').classList.remove('on');
   document.getElementById('lessonScr').classList.add('on');
   renderLesson();
@@ -2763,6 +2778,7 @@ function goHome(){
   document.getElementById('lessonScr').classList.remove('on');
   document.getElementById('profileScr').classList.remove('on');
   document.getElementById('gameScr').classList.remove('on');
+  document.getElementById('mainHdr').style.display='';
   document.getElementById('homeScr').classList.add('on');
   setSidebarActive('home');
   showHomeLangPanel(); // 항상 언어선택 첫화면부터
@@ -2814,6 +2830,7 @@ function renderLesson(){
   }
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
+  const footer=document.getElementById('lsnFooter'); if(footer) footer.innerHTML='';
   // 6단계 퀴즐렛 방식: 문장→플래시카드→매칭→단어듣기→퀴즈→완료 (5분)
   if(s===0) rSentView(d,el,uz);
   else if(s===1) rFlashcard(d,el,uz);
@@ -2823,6 +2840,19 @@ function renderLesson(){
   else if(s===5) rSentPractice(d,el,uz);
   else if(s===6) rQuiz(d,el,uz);
   else if(s===7) rResult(d,el,uz);
+  // class="lsn-adv" 버튼들을 하단 고정 footer로 이동
+  liftAdvanceButtons(el, footer);
+}
+function liftAdvanceButtons(contentEl, footerEl){
+  if(!footerEl) return;
+  // data-adv 속성이 있는 버튼 모두 footer로 이동
+  const advBtns=[...contentEl.querySelectorAll('[data-adv]')];
+  if(!advBtns.length){ footerEl.style.display='none'; return; }
+  footerEl.style.display='block';
+  const row=document.createElement('div');
+  row.style.cssText='display:flex;gap:8px';
+  advBtns.forEach(b=>{ b.style.flex='1'; row.appendChild(b); });
+  footerEl.appendChild(row);
 }
 
 // ── Step 0: 오늘의 문장 ──
@@ -2843,7 +2873,7 @@ function rSentView(d,el,uz){
       </div>
       <button class="sent-play" id="spk-main" onclick="event.stopPropagation();sayBtn('spk-main',${jq(sent.ko)},'speak')">▶</button>
     </div>
-    <div class="vocab-label" style="margin-top:14px">${t('lsn_today_words')} ${words.length}</div>
+    <div class="vocab-label" style="margin-top:6px">${t('lsn_today_words')} ${words.length}</div>
     <div class="word-cards">
       ${words.map((w,i)=>`
         <div class="word-card" onclick="sayBtn('sv-w${i}',${jq(w.ko)},'word')">
@@ -2862,7 +2892,7 @@ function rSentView(d,el,uz){
       background:var(--blue-l);border:1px solid var(--blue-m);border-radius:10px;
       padding:5px 12px;font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:12px">
       NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
-    <button class="btn red" onclick="next()">${t('lsn_next_fc')}</button>
+    <button class="btn red" data-adv onclick="next()">${t('lsn_next_fc')}</button>
   `;
   setTimeout(()=>sayBtn('spk-main',sent.ko,'speak'),500);
 }
@@ -2883,7 +2913,7 @@ function rFlashcard(d,el,uz){
         <div class="act-complete-msg">${t('lsn_fc_done')}</div>
         <div class="act-complete-sub">${t('lsn_fc_known')} ${fc.known} / ${words.length}</div>
       </div>
-      <button class="btn red" onclick="ST._fc=null;next()">${t('lsn_next_match')}</button>`;
+      <button class="btn red" data-adv onclick="ST._fc=null;next()">${t('lsn_next_match')}</button>`;
     return;
   }
   const w=fc.items[fc.idx];
@@ -2955,7 +2985,7 @@ function rMatching(d,el,uz){
         <div class="act-complete-msg">${t('lsn_match_done')}</div>
         <div class="act-complete-sub">${t('lsn_match_errors')} ${m.errors}</div>
       </div>
-      <button class="btn red" onclick="ST._match=null;next()">${t('lsn_next_sb')}</button>`;
+      <button class="btn red" data-adv onclick="ST._match=null;next()">${t('lsn_next_sb')}</button>`;
     return;
   }
   const koItems=shuffle([...m.items]);
@@ -3050,7 +3080,7 @@ function rSentBuilder(d,el,uz){
         <div style="margin-top:8px;font-size:15px;font-weight:700;color:var(--blue-d);line-height:1.5">${sent.ko}</div>
         ${!isOk?`<div style="font-size:12px;color:var(--muted);margin-top:6px">${sent.uz}</div>`:''}
       </div>
-      <button class="btn red" onclick="ST._sb=null;next()">${t('lsn_next_lp')}</button>`;
+      <button class="btn red" data-adv onclick="ST._sb=null;next()">${t('lsn_next_lp')}</button>`;
     return;
   }
 
@@ -3139,7 +3169,7 @@ function rSentPractice(d,el,uz){
         <div class="act-complete-msg">${t('lsn_sp_done_msg')}</div>
         <div class="act-complete-sub">"${sent.ko}"</div>
       </div>
-      <button class="btn red" onclick="ST._sp=null;next()">${t('lsn_next_quiz')}</button>`;
+      <button class="btn red" data-adv onclick="ST._sp=null;next()">${t('lsn_next_quiz')}</button>`;
     return;
   }
 
@@ -3183,7 +3213,7 @@ function rSentPractice(d,el,uz){
       <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px">
         ${biT('소리를 듣고 따라 말해보세요','lsn_sp_follow')}
       </div>
-      <button class="btn red" onclick="ST._sp.done=true;renderLesson()">${t('lsn_sp_done_btn')}</button>`;
+      <button class="btn red" data-adv onclick="ST._sp.done=true;renderLesson()">${t('lsn_sp_done_btn')}</button>`;
     setTimeout(()=>sayBtn('sp2-btn',sent.ko,'speak'),400);
   }
 }
@@ -3216,7 +3246,7 @@ function rListenPick(d,el,uz){
         <div class="act-complete-msg">${t('lsn_lp_done')}</div>
         <div class="act-complete-sub">${t('lsn_lp_score')} ${act.score} / ${act.items.length}</div>
       </div>
-      <button class="btn red" onclick="ST._act=null;next()">${t('lsn_next_quiz')}</button>`;
+      <button class="btn red" data-adv onclick="ST._act=null;next()">${t('lsn_next_quiz')}</button>`;
     return;
   }
   const target=act.items[act.idx];
@@ -3388,9 +3418,9 @@ function rResult(d,el,uz){
       </div>
       `:''}
       ${pass
-        ?`<button class="btn red" onclick="goHome()">홈으로 / Bosh sahifa</button>`
-        :`<button class="btn red" onclick="ST.step=6;ST.quizIdx=0;ST.quizScore=0;ST._qAll=null;renderLesson()">다시 / Qayta</button>
-          <button class="btn gray" onclick="goHome()">홈으로</button>`
+        ?`<button class="btn red" data-adv onclick="goHome()">홈으로 / Bosh sahifa</button>`
+        :`<button class="btn red" data-adv onclick="ST.step=6;ST.quizIdx=0;ST.quizScore=0;ST._qAll=null;renderLesson()">다시 / Qayta</button>
+          <button class="btn gray" data-adv onclick="goHome()">홈으로</button>`
       }
     </div>
     <div style="padding:12px 0;font-size:10px;color:var(--muted);text-align:center;line-height:1.7">
