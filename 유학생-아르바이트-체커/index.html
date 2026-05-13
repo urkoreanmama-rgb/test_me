@@ -388,6 +388,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
 
 <script src="../config.js"></script>
 <script>
+const IS_TEST = new URLSearchParams(location.search).has('test');
+if (IS_TEST) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff9500;color:#fff;text-align:center;font-size:0.82rem;font-weight:700;padding:6px;letter-spacing:0.03em';
+  banner.textContent = '🧪 테스트 모드 — 응답이 저장되지 않아요';
+  document.body.prepend(banner);
+}
 // ═══════════════════════════════════════════
 //  TRANSLATIONS
 // ═══════════════════════════════════════════
@@ -713,7 +720,7 @@ function renderResult() {
 //  SUPABASE
 // ═══════════════════════════════════════════
 async function saveToSupabase(r) {
-  if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('YOUR-PROJECT')) return;
+  if (IS_TEST || typeof SUPABASE_URL === 'undefined' || SUPABASE_URL.includes('YOUR-PROJECT')) return;
   const body = {
     visa_type: r.visa, stay_duration: answers.q2, enrollment: answers.q3,
     grade_status: answers.q4, topik_level: r.topik, semester: r.semester,
@@ -1032,7 +1039,7 @@ function submitMatching() {
   if (!name)  { alert('이름을 입력해주세요.'); return; }
   if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
 
-  if (typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
+  if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/job_matching`, {
       method: 'POST',
       headers: {
@@ -1073,7 +1080,7 @@ function submitPreRegister() {
   if (!name)  { alert('이름을 입력해주세요.'); return; }
   if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
 
-  if (typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
+  if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/pre_register`, {
       method: 'POST',
       headers: {
