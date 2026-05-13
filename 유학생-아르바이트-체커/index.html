@@ -23,20 +23,6 @@
 }
 body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','Noto Sans KR','Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
 
-/* ── Language bar ── */
-.lang-bar{
-  position:sticky;top:0;z-index:100;
-  display:flex;flex-wrap:wrap;gap:6px;
-  background:rgba(11,17,32,0.96);backdrop-filter:blur(10px);
-  padding:10px 16px;border-bottom:1px solid var(--border);
-}
-.lang-btn{
-  background:transparent;border:1px solid var(--border);
-  color:var(--muted);border-radius:20px;padding:5px 12px;
-  font-size:0.78rem;cursor:pointer;transition:all 0.18s;white-space:nowrap;
-}
-.lang-btn:hover{border-color:var(--accent2);color:var(--accent2)}
-.lang-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 
 /* ── Wrap ── */
 .wrap{max-width:640px;margin:0 auto;padding:28px 16px}
@@ -60,12 +46,26 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 .q-number{font-size:0.78rem;color:var(--accent2);font-weight:600;letter-spacing:0.04em;margin-bottom:6px}
 .q-text{font-size:1.15rem;font-weight:700;margin-bottom:6px;line-height:1.4}
 .q-sub{font-size:0.83rem;color:var(--sub)}
-.options{display:flex;flex-direction:column;gap:8px;margin-top:18px}
-.option{display:flex;align-items:center;gap:12px;background:transparent;border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.15s}
-.option:hover{border-color:rgba(96,165,250,0.4);background:rgba(37,99,235,0.05)}
-.option.selected{border-color:var(--accent);background:rgba(37,99,235,0.1)}
-.opt-icon{font-size:1.35rem;flex-shrink:0}
-.opt-label{font-size:0.92rem;line-height:1.4}
+.options{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.option{
+  display:flex;align-items:center;gap:12px;
+  background:#182437;
+  border:1px solid var(--border);
+  border-radius:14px;padding:15px 18px;cursor:pointer;
+  box-shadow:0 5px 0 #07101f, inset 0 1px 0 rgba(255,255,255,0.06);
+  transform:translateY(0);
+  transition:transform 0.07s ease, box-shadow 0.07s ease, background 0.12s;
+  user-select:none;
+}
+.option:hover{background:#1e2f47;}
+.option:active{transform:translateY(5px);box-shadow:0 0px 0 #07101f;}
+.option.selected{
+  background:rgba(37,99,235,0.18);
+  border-color:var(--accent);
+  box-shadow:0 5px 0 #0a1a3a, inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.option.selected:active{transform:translateY(5px);box-shadow:0 0px 0 #0a1a3a;}
+.opt-label{font-size:0.93rem;line-height:1.4;font-weight:500}
 .btn-row{display:flex;gap:10px;margin-top:16px}
 .btn{flex:1;padding:13px;border:none;border-radius:12px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.18s}
 .btn-prev{background:rgba(255,255,255,0.05);color:var(--sub);border:1px solid var(--border)}
@@ -160,21 +160,11 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
 @media(max-width:480px){
   .hero h1{font-size:1.45rem}
   .info-cards{grid-template-columns:1fr}
-  .lang-btn{font-size:0.72rem;padding:4px 10px}
 }
 </style>
 </head>
 <body>
 
-<!-- ① Language bar -->
-<div class="lang-bar">
-  <button class="lang-btn active" data-lang="ko" onclick="applyLang('ko')">🇰🇷 한국어</button>
-  <button class="lang-btn" data-lang="en" onclick="applyLang('en')">🇺🇸 English</button>
-  <button class="lang-btn" data-lang="uz" onclick="applyLang('uz')">🇺🇿 O'zbek</button>
-  <button class="lang-btn" data-lang="zh" onclick="applyLang('zh')">🇨🇳 中文</button>
-  <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">🇷🇺 Русский</button>
-  <button class="lang-btn" data-lang="ne" onclick="applyLang('ne')">🇳🇵 नेपाली</button>
-</div>
 
 <div class="wrap">
 
@@ -201,12 +191,12 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q1text">현재 비자 종류는 무엇인가요?</div>
       <div class="q-sub" data-i18n="q1sub">여권 또는 외국인등록증의 체류자격을 확인하세요</div>
       <div class="options">
-        <div class="option" data-q="1" data-v="D2-UG-12" onclick="pick(this)"><span class="opt-icon">🎓</span><span class="opt-label" data-i18n="D2-UG-12">D-2 학사 1~2학년 (전문학사 포함)</span></div>
-        <div class="option" data-q="1" data-v="D2-UG-34" onclick="pick(this)"><span class="opt-icon">🎓</span><span class="opt-label" data-i18n="D2-UG-34">D-2 학사 3~4학년</span></div>
-        <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-icon">🔬</span><span class="opt-label" data-i18n="D2-GR">D-2 석·박사과정</span></div>
-        <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-icon">🌏</span><span class="opt-label" data-i18n="D2-VS">D-2 방문학생 / 교환학생</span></div>
-        <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-icon">🏫</span><span class="opt-label" data-i18n="D4">D-4 (어학연수·기술연수)</span></div>
-        <div class="option" data-q="1" data-v="OTHER" onclick="pick(this)"><span class="opt-icon">🪪</span><span class="opt-label" data-i18n="OTHER">기타 비자 (C-3, F-1 등)</span></div>
+        <div class="option" data-q="1" data-v="D2-UG-12" onclick="pick(this)"><span class="opt-label" data-i18n="D2-UG-12">D-2 학사 1~2학년 (전문학사 포함)</span></div>
+        <div class="option" data-q="1" data-v="D2-UG-34" onclick="pick(this)"><span class="opt-label" data-i18n="D2-UG-34">D-2 학사 3~4학년</span></div>
+        <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label" data-i18n="D2-GR">D-2 석·박사과정</span></div>
+        <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label" data-i18n="D2-VS">D-2 방문학생 / 교환학생</span></div>
+        <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-label" data-i18n="D4">D-4 (어학연수·기술연수)</span></div>
+        <div class="option" data-q="1" data-v="OTHER" onclick="pick(this)"><span class="opt-label" data-i18n="OTHER">기타 비자 (C-3, F-1 등)</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -221,9 +211,9 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q2text">한국에 입국한 지 얼마나 됐나요?</div>
       <div class="q-sub" data-i18n="q2sub">D-4 / 교환학생은 6개월 이상이어야 합니다</div>
       <div class="options">
-        <div class="option" data-q="2" data-v="LT3" onclick="pick(this)"><span class="opt-icon">🗓️</span><span class="opt-label" data-i18n="LT3">3개월 미만</span></div>
-        <div class="option" data-q="2" data-v="3TO6" onclick="pick(this)"><span class="opt-icon">📅</span><span class="opt-label" data-i18n="3TO6">3개월 이상 ~ 6개월 미만</span></div>
-        <div class="option" data-q="2" data-v="GT6" onclick="pick(this)"><span class="opt-icon">✅</span><span class="opt-label" data-i18n="GT6">6개월 이상</span></div>
+        <div class="option" data-q="2" data-v="LT3" onclick="pick(this)"><span class="opt-label" data-i18n="LT3">3개월 미만</span></div>
+        <div class="option" data-q="2" data-v="3TO6" onclick="pick(this)"><span class="opt-label" data-i18n="3TO6">3개월 이상 ~ 6개월 미만</span></div>
+        <div class="option" data-q="2" data-v="GT6" onclick="pick(this)"><span class="opt-label" data-i18n="GT6">6개월 이상</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -239,9 +229,9 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q3text">현재 학적 상태는 무엇인가요?</div>
       <div class="q-sub" data-i18n="q3sub">휴학·졸업예정자는 취업활동 허가 대상에서 제외됩니다</div>
       <div class="options">
-        <div class="option" data-q="3" data-v="ENROLLED" onclick="pick(this)"><span class="opt-icon">📚</span><span class="opt-label" data-i18n="ENROLLED">재학 중</span></div>
-        <div class="option" data-q="3" data-v="LEAVE" onclick="pick(this)"><span class="opt-icon">⏸️</span><span class="opt-label" data-i18n="LEAVE">휴학 중</span></div>
-        <div class="option" data-q="3" data-v="GRAD" onclick="pick(this)"><span class="opt-icon">🎓</span><span class="opt-label" data-i18n="GRAD">졸업예정 (수료 포함)</span></div>
+        <div class="option" data-q="3" data-v="ENROLLED" onclick="pick(this)"><span class="opt-label" data-i18n="ENROLLED">재학 중</span></div>
+        <div class="option" data-q="3" data-v="LEAVE" onclick="pick(this)"><span class="opt-label" data-i18n="LEAVE">휴학 중</span></div>
+        <div class="option" data-q="3" data-v="GRAD" onclick="pick(this)"><span class="opt-label" data-i18n="GRAD">졸업예정 (수료 포함)</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -257,9 +247,9 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q4text">성적·출석률 기준을 충족하고 있나요?</div>
       <div class="q-sub" data-i18n="q4sub">학점 2.0 이상, 출석 70% 이상이 기준 (학교마다 다를 수 있음)</div>
       <div class="options">
-        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-icon">✅</span><span class="opt-label" data-i18n="GOOD">충족 (학점·출석 기준 이상)</span></div>
-        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-icon">⚠️</span><span class="opt-label" data-i18n="GPA_LOW">미충족 (학점 또는 출석 부족)</span></div>
-        <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-icon">🆕</span><span class="opt-label" data-i18n="FIRST">첫 학기라 성적 없음</span></div>
+        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">충족 (학점·출석 기준 이상)</span></div>
+        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">미충족 (학점 또는 출석 부족)</span></div>
+        <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-label" data-i18n="FIRST">첫 학기라 성적 없음</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -275,11 +265,11 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q5text">한국어능력시험(TOPIK) 등급은?</div>
       <div class="q-sub" data-i18n="q5sub">등급이 높을수록 더 많은 시간 근무 가능</div>
       <div class="options">
-        <div class="option" data-q="5" data-v="TOPIK5" onclick="pick(this)"><span class="opt-icon">🥇</span><span class="opt-label" data-i18n="TOPIK5">TOPIK 5급 이상</span></div>
-        <div class="option" data-q="5" data-v="TOPIK4" onclick="pick(this)"><span class="opt-icon">🥈</span><span class="opt-label" data-i18n="TOPIK4">TOPIK 4급</span></div>
-        <div class="option" data-q="5" data-v="TOPIK3" onclick="pick(this)"><span class="opt-icon">🥉</span><span class="opt-label" data-i18n="TOPIK3">TOPIK 3급</span></div>
-        <div class="option" data-q="5" data-v="TOPIK12" onclick="pick(this)"><span class="opt-icon">📋</span><span class="opt-label" data-i18n="TOPIK12">TOPIK 1~2급 또는 만료</span></div>
-        <div class="option" data-q="5" data-v="NONE" onclick="pick(this)"><span class="opt-icon">❌</span><span class="opt-label" data-i18n="NONE">TOPIK 없음</span></div>
+        <div class="option" data-q="5" data-v="TOPIK5" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK5">TOPIK 5급 이상</span></div>
+        <div class="option" data-q="5" data-v="TOPIK4" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK4">TOPIK 4급</span></div>
+        <div class="option" data-q="5" data-v="TOPIK3" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK3">TOPIK 3급</span></div>
+        <div class="option" data-q="5" data-v="TOPIK12" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK12">TOPIK 1~2급 또는 만료</span></div>
+        <div class="option" data-q="5" data-v="NONE" onclick="pick(this)"><span class="opt-label" data-i18n="NONE">TOPIK 없음</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -295,8 +285,8 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q6text">지금은 학기 중인가요, 방학 중인가요?</div>
       <div class="q-sub" data-i18n="q6sub">방학 중에는 근무 시간 제한이 완화됩니다</div>
       <div class="options">
-        <div class="option" data-q="6" data-v="SEMESTER" onclick="pick(this)"><span class="opt-icon">📖</span><span class="opt-label" data-i18n="SEMESTER">학기 중</span></div>
-        <div class="option" data-q="6" data-v="VACATION" onclick="pick(this)"><span class="opt-icon">🏖️</span><span class="opt-label" data-i18n="VACATION">방학 중</span></div>
+        <div class="option" data-q="6" data-v="SEMESTER" onclick="pick(this)"><span class="opt-label" data-i18n="SEMESTER">학기 중</span></div>
+        <div class="option" data-q="6" data-v="VACATION" onclick="pick(this)"><span class="opt-label" data-i18n="VACATION">방학 중</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -312,12 +302,12 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q7text">희망하는 주당 근무시간은?</div>
       <div class="q-sub" data-i18n="q7sub">비자·TOPIK 등급에 따라 허용 시간이 달라집니다</div>
       <div class="options">
-        <div class="option" data-q="7" data-v="H10" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="H10">10시간 이하</span></div>
-        <div class="option" data-q="7" data-v="H20" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="H20">11~20시간</span></div>
-        <div class="option" data-q="7" data-v="H25" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="H25">21~25시간</span></div>
-        <div class="option" data-q="7" data-v="H30" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="H30">26~30시간</span></div>
-        <div class="option" data-q="7" data-v="H35" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="H35">31~35시간</span></div>
-        <div class="option" data-q="7" data-v="HMAX" onclick="pick(this)"><span class="opt-icon">⏱️</span><span class="opt-label" data-i18n="HMAX">제한 없이 풀타임</span></div>
+        <div class="option" data-q="7" data-v="H10" onclick="pick(this)"><span class="opt-label" data-i18n="H10">10시간 이하</span></div>
+        <div class="option" data-q="7" data-v="H20" onclick="pick(this)"><span class="opt-label" data-i18n="H20">11~20시간</span></div>
+        <div class="option" data-q="7" data-v="H25" onclick="pick(this)"><span class="opt-label" data-i18n="H25">21~25시간</span></div>
+        <div class="option" data-q="7" data-v="H30" onclick="pick(this)"><span class="opt-label" data-i18n="H30">26~30시간</span></div>
+        <div class="option" data-q="7" data-v="H35" onclick="pick(this)"><span class="opt-label" data-i18n="H35">31~35시간</span></div>
+        <div class="option" data-q="7" data-v="HMAX" onclick="pick(this)"><span class="opt-label" data-i18n="HMAX">제한 없이 풀타임</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -333,15 +323,15 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','N
       <div class="q-text" data-i18n="q8text">희망하는 업종은 무엇인가요?</div>
       <div class="q-sub" data-i18n="q8sub">일부 업종은 유학생 취업이 법으로 금지되어 있습니다</div>
       <div class="options">
-        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-icon">🍽️</span><span class="opt-label" data-i18n="FOOD">음식점·카페 (서빙, 주방 보조)</span></div>
-        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-icon">🛍️</span><span class="opt-label" data-i18n="RETAIL">판매·유통 (마트, 편의점)</span></div>
-        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-icon">💼</span><span class="opt-label" data-i18n="OFFICE">사무직·번역·과외</span></div>
-        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-icon">🎤</span><span class="opt-label" data-i18n="EVENT">행사·판촉 (이벤트 스태프)</span></div>
-        <div class="option" data-q="8" data-v="MAJOR" onclick="pick(this)"><span class="opt-icon">🎓</span><span class="opt-label" data-i18n="MAJOR">전공 관련 (연구보조, 인턴)</span></div>
-        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-icon">🏭</span><span class="opt-label" data-i18n="MANUFACTURE">제조업·공장 (TOPIK 4급↑ 조건부)</span></div>
-        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-icon">🛵</span><span class="opt-label" data-i18n="DELIVERY">배달 (오토바이·자전거)</span></div>
-        <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-icon">🏗️</span><span class="opt-label" data-i18n="CONSTRUCTION">건설·공사 현장</span></div>
-        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-icon">❓</span><span class="opt-label" data-i18n="OTHER_IND">기타 / 잘 모름</span></div>
+        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label" data-i18n="FOOD">음식점·카페 (서빙, 주방 보조)</span></div>
+        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label" data-i18n="RETAIL">판매·유통 (마트, 편의점)</span></div>
+        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label" data-i18n="OFFICE">사무직·번역·과외</span></div>
+        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label" data-i18n="EVENT">행사·판촉 (이벤트 스태프)</span></div>
+        <div class="option" data-q="8" data-v="MAJOR" onclick="pick(this)"><span class="opt-label" data-i18n="MAJOR">전공 관련 (연구보조, 인턴)</span></div>
+        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label" data-i18n="MANUFACTURE">제조업·공장 (TOPIK 4급↑ 조건부)</span></div>
+        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label" data-i18n="DELIVERY">배달 (오토바이·자전거)</span></div>
+        <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-label" data-i18n="CONSTRUCTION">건설·공사 현장</span></div>
+        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label" data-i18n="OTHER_IND">기타 / 잘 모름</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -462,356 +452,47 @@ ko: {
   savedMsg:'✓ 응답이 저장되었습니다.',
 },
 
-en: {
-  badge:'🇰🇷 Official Ministry of Justice Standard',
-  h1:'Can I Work Part-Time? 🤔',
-  subtitle:'Find out instantly with 8 quick questions',
-  prog: s => `Question ${s} / 8`, progResult:'Your Result',
-  btnNext:'Next →', btnPrev:'← Back', btnSubmit:'Get Result ✓', btnRestart:'Start Over 🔄',
-  q1num:'Question 1', q1text:'What is your current visa type?', q1sub:'Check your passport or Alien Registration Card (ARC)',
-  q2num:'Question 2', q2text:'How long have you been in Korea?', q2sub:'D-4 / exchange students must have stayed 6+ months',
-  q3num:'Question 3', q3text:'What is your current enrollment status?', q3sub:'Students on leave or completing graduation are not eligible',
-  q4num:'Question 4', q4text:'Do you meet the grade & attendance requirements?', q4sub:'Usually GPA 2.0+ and attendance 70%+ (varies by school)',
-  q5num:'Question 5', q5text:'What is your TOPIK (Korean Proficiency) level?', q5sub:'Higher level = more working hours allowed',
-  q6num:'Question 6', q6text:'Is it currently semester or vacation?', q6sub:'Hour limits are relaxed during vacation',
-  q7num:'Question 7', q7text:'How many hours per week do you want to work?', q7sub:'Allowed hours depend on visa type and TOPIK level',
-  q8num:'Question 8', q8text:'What type of work are you interested in?', q8sub:'Some industries are prohibited for student visa holders',
-  'D2-UG-12':"D-2 Bachelor's 1st–2nd year (incl. Associate)", 'D2-UG-34':"D-2 Bachelor's 3rd–4th year", 'D2-GR':"D-2 Master's / Doctoral", 'D2-VS':'D-2 Exchange / Visiting Student',
-  'D4':'D-4 (Language / Technical Training)', 'OTHER':'Other visa (C-3, F-1, etc.)',
-  'LT3':'Less than 3 months', '3TO6':'3–6 months', 'GT6':'6 months or more',
-  'ENROLLED':'Currently enrolled', 'LEAVE':'On leave of absence', 'GRAD':'About to graduate (or completed courses)',
-  'GOOD':'Yes — meet grade & attendance standards', 'GPA_LOW':'No — below required grade or attendance', 'FIRST':'First semester — no grades yet',
-  'TOPIK5':'TOPIK Level 5 or above', 'TOPIK4':'TOPIK Level 4', 'TOPIK3':'TOPIK Level 3', 'TOPIK12':'TOPIK Level 1–2 or expired', 'NONE':'No TOPIK certificate',
-  'SEMESTER':'Semester', 'VACATION':'Vacation / Break',
-  'H10':'Up to 10 hrs/week', 'H20':'11–20 hrs/week', 'H25':'21–25 hrs/week', 'H30':'26–30 hrs/week', 'H35':'31–35 hrs/week', 'HMAX':'Full-time (no limit)',
-  'FOOD':'Restaurant / Café (server, kitchen helper)', 'RETAIL':'Sales / Distribution (mart, convenience store)', 'OFFICE':'Office / Translation / Tutoring',
-  'EVENT':'Event / Promotions staff', 'MAJOR':'Major-related (research assistant, intern)',
-  'MANUFACTURE':'Manufacturing / Factory (conditional: TOPIK 4+)', 'DELIVERY':'Delivery (motorcycle / bicycle)', 'CONSTRUCTION':'Construction site', 'OTHER_IND':'Other / Not sure',
-  resOkTitle:'You Can Work! ✅', resWarnTitle:'Conditionally Eligible ⚠️', resNoTitle:'Not Eligible ❌',
-  resOkSub:'Based on your answers, you can legally work part-time in Korea.', resWarnSub:'Please review the important notices below.', resNoSub:'Based on your current situation, part-time work is not permitted.',
-  icVisaLabel:'Visa', icHoursLabel:'Weekly Limit', icTopikLabel:'TOPIK', icSemLabel:'Period',
-  maxHoursLabel: h => h === 9999 ? 'Unlimited' : `Max ${h} hrs`,
-  noticeTitle:'Important Notices',
-  arcTitle:'📋 Check Your ARC First',
-  arcNote:'Before starting any job, check the back of your <strong>Alien Registration Card (ARC)</strong>. Look for <strong>"No restriction on work activities"</strong> or a list of permitted job types. If not shown, you must apply for a separate permission.',
-  secDocs:'Required Documents', secProc:'Application Steps', secLinks:'Official Sites', docsNote:'* Immigration offices may require additional documents.',
-  docs:['Passport (original + copy)', 'Alien Registration Card (ARC)', 'Certificate of Enrollment (English)', 'Transcript (most recent semester)', 'Financial guarantee or bank balance statement', 'Work Activity Permission Application (HiKorea form)', 'Employment contract (incl. business registration copy)', 'International Office confirmation letter (some schools)'],
-  docTopik: lv => (lv !== 'NONE' && lv !== 'TOPIK3' && lv !== 'TOPIK12') ? `TOPIK score certificate (Level ${lv === 'TOPIK5' ? '5+' : '4'})` : null,
-  docStay:'Extension of stay permit (if applicable)',
-  procs:[
-    {main:"Visit your school's international office", detail:'Confirm eligibility and any school-specific rules'},
-    {main:'Fill out application on HiKorea', detail:'hikorea.go.kr → Services → Work Activity Outside Status'},
-    {main:'Submit at local immigration office (in person or by mail)', detail:'Allow extra time for processing queues'},
-    {main:'Receive decision (approx. 1–2 weeks)', detail:'Permission noted on permit or back of ARC'},
-    {main:'Begin working within approved scope', detail:'Strictly follow the approved industry and hours'},
-  ],
-  hikoreaTitle:'HiKorea', hikoreaSub:'Apply for work permission online',
-  easyLawTitle:'Easy Law Information', easyLawSub:'Part-time work regulations for foreigners',
-  lawTitle:'Legal Basis', law1:'Immigration Act Article 20', law2:'Permission for Activities Outside Sojourn Status',
-  lawNote:'Source: Ministry of Justice, Immigration & Foreign Policy (immigration.go.kr)',
-  lawVerNote:'※ Information verified via official government sources as of May 2026.',
-  rNoVisa:'Part-time work permission applications are only for D-2 and D-4 visa holders.',
-  rNoStay:'D-4 and D-2 exchange students must have been in Korea for at least 6 months before applying.',
-  rNoLeave:'Work permissions are not granted while on leave of absence. Apply after returning to school.',
-  rNoGrad:'Work permission is restricted for students in graduation-completion status.',
-  rNoConstruction:'Construction site work is not permitted under student visa categories.',
-  rNoDelivery:'Motorcycle or bicycle delivery work is not an approved industry for student visa holders.',
-  rWarnGrade:'Failing to meet grade/attendance requirements may result in application rejection. Check with your international office first.',
-  rWarnHours: m => `Your desired hours exceed the allowed limit (${m}). You may only work up to the permitted amount.`,
-  rWarnMajor:'Major-related internships or research assistant roles may require additional verification from your international office.',
-  rNoTopik:'To obtain work permission for your visa/year, you must first meet the TOPIK requirement. (Bachelor 1st–2nd year: Level 3+, Bachelor 3rd–4th year / Master / Doctoral / Exchange: Level 4+)',
-  rNoManufacture:'Manufacturing/factory work is only permitted for those with TOPIK Level 4 or above.',
-  rWarnManufacture:'Manufacturing/factory is allowed with TOPIK Level 4+. Please confirm with your school office before starting.',
-  savedMsg:'✓ Response saved.',
-},
-
-uz: {
-  badge:'🇰🇷 Adliya vazirligi rasmiy mezonlari',
-  h1:"Men ishlay olamanmi? 🤔",
-  subtitle:"8 ta savol bilan tezda bilishing mumkin",
-  prog: s => `Savol ${s} / 8`, progResult:'Natija',
-  btnNext:"Keyingisi →", btnPrev:"← Oldingi", btnSubmit:"Natijani ko'rish ✓", btnRestart:"Qaytadan boshlash 🔄",
-  q1num:'Savol 1', q1text:'Hozirgi viza turingiz qanday?', q1sub:"Pasport yoki chet el ro'yxatga olish kartangizdagi status",
-  q2num:'Savol 2', q2text:'Koreyaga kelganingizga qancha bo\'ldi?', q2sub:'D-4 / almashinuv talabalari uchun 6 oydan ko\'proq bo\'lishi kerak',
-  q3num:'Savol 3', q3text:'Hozirgi o\'quv holatngiz qanday?', q3sub:'Ta\'tilga chiqqan yoki bitiruvchi talabalar ruxsat olish huquqiga ega emas',
-  q4num:'Savol 4', q4text:'Baho va davomad talablariga javob berasizmi?', q4sub:'Odatda GPA 2.0+, davomad 70%+ (maktabga qarab farq qiladi)',
-  q5num:'Savol 5', q5text:'TOPIK (Koreys tili) darajangiz qanday?', q5sub:'Daraja qanchalik yuqori bo\'lsa, ishlash mumkin bo\'lgan soatlar ko\'proq',
-  q6num:'Savol 6', q6text:'Hozir o\'quv semestridami yoki ta\'tildami?', q6sub:'Ta\'lil paytida soat cheklovi kamaytiladi',
-  q7num:'Savol 7', q7text:'Haftada necha soat ishlashni xohlaysiz?', q7sub:'Ruxsat etilgan soatlar viza turi va TOPIK darajasiga bog\'liq',
-  q8num:'Savol 8', q8text:'Qaysi sohada ishlashni xohlaysiz?', q8sub:"Ba'zi sohalar talaba vizasi egalari uchun taqiqlangan",
-  'D2-UG-12':"D-2 Bakalavr 1–2-kurs (kollejni ham o'z ichiga oladi)", 'D2-UG-34':"D-2 Bakalavr 3–4-kurs", 'D2-GR':'D-2 Magistratura / Doktorantura', 'D2-VS':'D-2 Almashinuv / Tashrif talabalari',
-  'D4':'D-4 (Til / Texnik ta\'lim)', 'OTHER':'Boshqa viza (C-3, F-1 va h.k.)',
-  'LT3':'3 oydan kam', '3TO6':'3–6 oy', 'GT6':'6 oy va undan ko\'proq',
-  'ENROLLED':'Hozir o\'qimoqdaman', 'LEAVE':'Akademik ta\'tilida', 'GRAD':'Bitiruvchi yoki kurs tugatgan',
-  'GOOD':'Ha — baho va davomad talablarini bajarmoqdaman', 'GPA_LOW':'Yo\'q — baho yoki davomad past', 'FIRST':'Birinchi semestr — hali bahom yo\'q',
-  'TOPIK5':'TOPIK 5-daraja va yuqori', 'TOPIK4':'TOPIK 4-daraja', 'TOPIK3':'TOPIK 3-daraja', 'TOPIK12':'TOPIK 1–2 daraja yoki muddati o\'tgan', 'NONE':'TOPIK sertifikati yo\'q',
-  'SEMESTER':'Semestr davomida', 'VACATION':'Ta\'til paytida',
-  'H10':'Haftada 10 soatgacha', 'H20':'11–20 soat', 'H25':'21–25 soat', 'H30':'26–30 soat', 'H35':'31–35 soat', 'HMAX':'To\'liq vaqt (cheksiz)',
-  'FOOD':'Restoran / Kafe (ofitsiant, oshpaz yordamchisi)', 'RETAIL':'Savdo / Tarqatish (supermarket, qulay do\'kon)', 'OFFICE':'Ofis / Tarjima / Repetitorlik',
-  'EVENT':'Tadbir / Reklama xodimi', 'MAJOR':'Mutaxassislik bo\'yicha (tadqiqot yordamchisi, stajyor)',
-  'MANUFACTURE':'Ishlab chiqarish / Zavod (shartli: TOPIK 4+)', 'DELIVERY':'Yetkazib berish (mototsikl / velosiped)', 'CONSTRUCTION':'Qurilish maydoni', 'OTHER_IND':'Boshqa / Bilmayman',
-  resOkTitle:'Ishlashingiz mumkin! ✅', resWarnTitle:'Shartli ruxsat ⚠️', resNoTitle:'Ruxsat yo\'q ❌',
-  resOkSub:'Javoblaringizga ko\'ra, Koreyada qonuniy ravishda yarim kunlik ishlashingiz mumkin.', resWarnSub:'Quyidagi muhim bildirishnomalarni ko\'rib chiqing.', resNoSub:'Joriy vaziyatingizga ko\'ra, yarim kunlik ish ruxsat etilmagan.',
-  icVisaLabel:'Viza', icHoursLabel:'Haftalik limit', icTopikLabel:'TOPIK', icSemLabel:'Davr',
-  maxHoursLabel: h => h === 9999 ? 'Cheksiz' : `Maksimal ${h} soat`,
-  noticeTitle:'Muhim eslatmalar',
-  arcTitle:"📋 Ro'yxatga olish kartangizni tekshiring",
-  arcNote:"Har qanday ish boshlamasdan oldin, <strong>chet el ro'yxatga olish kartangiz (ARC)</strong> orqa tomonini tekshiring. <strong>\"Ish faoliyatiga cheklov yo'q\"</strong> yoki ruxsat etilgan ish turlarini qidiring. Ko'rsatilmagan bo'lsa, alohida ruxsat olishingiz kerak.",
-  secDocs:'Kerakli hujjatlar', secProc:'Ariza bosqichlari', secLinks:'Rasmiy saytlar', docsNote:"* Immigratsiya idoralari qo'shimcha hujjat talab qilishi mumkin.",
-  docs:["Pasport (asl nusxa + nusxa)", "Chet el ro'yxatga olish kartasi (ARC)", "O'qishga kirish guvohnomasi (inglizcha)", "Attestat (oxirgi semestr)", "Moliyaviy kafolat yoki bank balansi hisobi", "Ish faoliyati ruxsati uchun ariza (HiKorea shakli)", "Mehnat shartnomasi (biznesni ro'yxatga olish nusxasi bilan)", "Xalqaro ofis tasdiqlash xati (ba'zi maktablar uchun)"],
-  docTopik: lv => (lv !== 'NONE' && lv !== 'TOPIK3' && lv !== 'TOPIK12') ? `TOPIK ball sertifikati (Daraja ${lv === 'TOPIK5' ? '5+' : '4'})` : null,
-  docStay:"Yashash muddatini uzaytirish ruxsati (agar kerak bo'lsa)",
-  procs:[
-    {main:"Maktabingizning xalqaro ofisiga tashrif buyuring", detail:"Muvofiqlikni va maktabga xos qoidalarni tasdiqlang"},
-    {main:"HiKorea saytida ariza to'ldiring", detail:"hikorea.go.kr → Xizmatlar → Turar joy maqomidan tashqarida ish faoliyati"},
-    {main:"Mahalliy immigratsiya idorasiga yuboring (shaxsan yoki pochta orqali)", detail:"Ishlov berish navbatlarini hisobga olib qo'shimcha vaqt ajrating"},
-    {main:"Qaror oling (taxminan 1–2 hafta)", detail:"Ruxsat ruxsatnomada yoki ARC orqa tomonida ko'rsatilgan"},
-    {main:"Tasdiqlangan doirada ishni boshlang", detail:"Tasdiqlangan soha va soatlarni qat'iy bajaring"},
-  ],
-  hikoreaTitle:'HiKorea', hikoreaSub:'Onlayn ish ruxsati olish',
-  easyLawTitle:"Qonuniy ma'lumot", easyLawSub:"Chet elliklar uchun yarim kunlik ish qoidalari",
-  lawTitle:'Huquqiy asos', law1:"Immigratsiya to'g'risidagi qonun, 20-modda", law2:"Turar joy maqomidan tashqarida faoliyat yuritishga ruxsat",
-  lawNote:'Manba: Adliya vazirligi, Immigratsiya va Chet el siyosati (immigration.go.kr)',
-  lawVerNote:'※ 2026 yil may oyiga ko\'ra rasmiy hukumat manbalari orqali tasdiqlangan ma\'lumot.',
-  rNoVisa:"Yarim kunlik ish ruxsati uchun ariza berish faqat D-2 va D-4 viza egalari uchun.",
-  rNoStay:"D-4 va D-2 almashinuv talabalari ariza berishdan oldin kamida 6 oy Koreyada yashagan bo'lishi kerak.",
-  rNoLeave:"Akademik ta'tilida bo'lgan paytda ish ruxsatlari berilmaydi. Maktabga qaytganingizdan so'ng ariza bering.",
-  rNoGrad:"Bitiruvchi holati uchun ish ruxsati cheklangan.",
-  rNoConstruction:"Qurilish maydonida ishlash talaba viza toifalari uchun ruxsat etilmaydi.",
-  rNoDelivery:"Mototsikl yoki velosiped bilan yetkazib berish talaba viza egalari uchun ruxsat etilgan soha emas.",
-  rWarnGrade:"Baho/davomad talablarini bajarmaslik arizaning rad etilishiga olib kelishi mumkin. Avval xalqaro ofis bilan tekshiring.",
-  rWarnHours: m => `Istalgan soatlar ruxsat etilgan chegaradan (${m}) oshib ketadi.`,
-  rWarnMajor:"Mutaxassislikka oid stajirovka yoki tadqiqot yordamchisi lavozimlari xalqaro ofisdan qo'shimcha tekshiruvni talab qilishi mumkin.",
-  rNoTopik:"Viza/kurs uchun ish ruxsati olish uchun TOPIK talabini bajarishingiz kerak. (Bakalavr 1–2-kurs: 3-daraja↑, Bakalavr 3–4-kurs / Magistr / Doktor / Almashinuv: 4-daraja↑)",
-  rNoManufacture:"Ishlab chiqarish/zavod ishi faqat TOPIK 4-daraja va undan yuqori bo'lganlar uchun ruxsat etiladi.",
-  rWarnManufacture:"Ishlab chiqarish/zavod TOPIK 4-daraja↑ bo'lsa ruxsat etiladi. Ishni boshlamasdan oldin maktab bo'limi bilan tasdiqlang.",
-  savedMsg:"✓ Javob saqlandi.",
-},
-
-zh: {
-  badge:'🇰🇷 韩国法务部移民局官方标准',
-  h1:'我能打工吗？🤔',
-  subtitle:'8个问题，立即查询您的打工资格',
-  prog: s => `问题 ${s} / 8`, progResult:'查看结果',
-  btnNext:'下一步 →', btnPrev:'← 上一步', btnSubmit:'查看结果 ✓', btnRestart:'重新开始 🔄',
-  q1num:'问题 1', q1text:'您目前的签证类型是什么？', q1sub:'请查看护照或外国人登录证上的居留资格',
-  q2num:'问题 2', q2text:'您在韩国居住多久了？', q2sub:'D-4 / 交换留学生须在韩居住满6个月',
-  q3num:'问题 3', q3text:'您目前的学籍状态是？', q3sub:'休学或即将毕业的学生不在申请范围内',
-  q4num:'问题 4', q4text:'您是否符合成绩和出勤要求？', q4sub:'通常要求GPA 2.0以上，出勤率70%以上（各校不同）',
-  q5num:'问题 5', q5text:'您的韩国语能力考试（TOPIK）等级是？', q5sub:'等级越高，允许工作的时间越多',
-  q6num:'问题 6', q6text:'现在是学期中还是假期？', q6sub:'假期期间工作时间限制会放宽',
-  q7num:'问题 7', q7text:'您希望每周工作多少小时？', q7sub:'允许时间取决于签证类型和TOPIK等级',
-  q8num:'问题 8', q8text:'您希望从事哪类工作？', q8sub:'部分行业依法禁止留学签证持有者从事',
-  'D2-UG-12':'D-2 本科 1~2年级（含专科）', 'D2-UG-34':'D-2 本科 3~4年级', 'D2-GR':'D-2 硕士/博士', 'D2-VS':'D-2 交换生/访问学者',
-  'D4':'D-4（语言/技术研修）', 'OTHER':'其他签证（C-3、F-1等）',
-  'LT3':'不足3个月', '3TO6':'3个月~6个月', 'GT6':'6个月以上',
-  'ENROLLED':'在读', 'LEAVE':'休学', 'GRAD':'即将毕业（或已修完学分）',
-  'GOOD':'符合（成绩和出勤达标）', 'GPA_LOW':'不符合（成绩或出勤不足）', 'FIRST':'第一学期，尚无成绩',
-  'TOPIK5':'TOPIK 5级及以上', 'TOPIK4':'TOPIK 4级', 'TOPIK3':'TOPIK 3级', 'TOPIK12':'TOPIK 1~2级或已过期', 'NONE':'无TOPIK证书',
-  'SEMESTER':'学期中', 'VACATION':'假期',
-  'H10':'每周10小时以内', 'H20':'11~20小时', 'H25':'21~25小时', 'H30':'26~30小时', 'H35':'31~35小时', 'HMAX':'全职（无限制）',
-  'FOOD':'餐厅/咖啡店（服务员、厨房助手）', 'RETAIL':'零售/配送（超市、便利店）', 'OFFICE':'办公/翻译/家教',
-  'EVENT':'活动/促销人员', 'MAJOR':'专业相关（研究助理、实习）',
-  'MANUFACTURE':'制造业/工厂（条件：TOPIK 4级↑）', 'DELIVERY':'外卖配送（摩托车/自行车）', 'CONSTRUCTION':'建筑工地', 'OTHER_IND':'其他/不确定',
-  resOkTitle:'可以打工！✅', resWarnTitle:'有条件可以 ⚠️', resNoTitle:'不可以 ❌',
-  resOkSub:'根据您的回答，您可以在韩国合法从事兼职工作。', resWarnSub:'请务必查看以下重要注意事项。', resNoSub:'根据您目前的情况，不允许从事兼职工作。',
-  icVisaLabel:'签证', icHoursLabel:'每周上限', icTopikLabel:'TOPIK', icSemLabel:'时间段',
-  maxHoursLabel: h => h === 9999 ? '无限制' : `最多 ${h} 小时`,
-  noticeTitle:'重要注意事项',
-  arcTitle:'📋 请先检查外国人登录证',
-  arcNote:'开始工作之前，请检查<strong>外国人登录证</strong>背面的<strong>"就业活动限制"</strong>栏。如显示<strong>"无就业活动限制"</strong>或列出许可职种，则可直接工作。否则需另行申请许可。',
-  secDocs:'所需材料', secProc:'申请流程', secLinks:'官方网站', docsNote:'* 各出入境管理事务所可能要求额外材料。',
-  docs:['护照（原件+复印件）', '外国人登录证', '在学证明书（英文）', '成绩单（最近一学期）', '财力担保书或银行余额证明', '就业活动许可申请书（HiKorea表格）', '劳动合同（含营业执照复印件）', '国际处确认函（部分学校需要）'],
-  docTopik: lv => (lv !== 'NONE' && lv !== 'TOPIK3' && lv !== 'TOPIK12') ? `TOPIK成绩单（${lv === 'TOPIK5' ? '5级以上' : '4级'}）` : null,
-  docStay:'居留期间延长许可（如适用）',
-  procs:[
-    {main:'前往学校国际处咨询', detail:'确认打工资格及学校内部规定'},
-    {main:'在HiKorea网站填写申请', detail:'hikorea.go.kr → 服务 → 在留资格外活动许可'},
-    {main:'前往辖区出入境管理事务所或邮寄提交', detail:'建议提前安排，考虑等待时间'},
-    {main:'等待审批结果（约1~2周）', detail:'许可信息记录在许可证或外国人登录证背面'},
-    {main:'在批准范围内开始工作', detail:'严格遵守批准的行业和时间'},
-  ],
-  hikoreaTitle:'HiKorea', hikoreaSub:'在线申请就业活动许可',
-  easyLawTitle:'生活法令查询', easyLawSub:'外国人兼职相关法律规定',
-  lawTitle:'法律依据', law1:'出入国管理法第20条', law2:'在留资格外活动许可',
-  lawNote:'来源：韩国法务部出入境·外国人政策本部（immigration.go.kr）',
-  lawVerNote:'※ 以2026年5月官方政府资料为准，法令变更时可能有所不同。',
-  rNoVisa:'就业活动许可申请仅适用于D-2和D-4签证持有者。',
-  rNoStay:'D-4和D-2交换学生须在韩居住至少6个月后才能申请。',
-  rNoLeave:'休学期间不予颁发就业许可，复学后再申请。',
-  rNoGrad:'即将毕业（修了）状态的就业许可受到限制。',
-  rNoConstruction:'建筑工地作业不适用于留学签证类别。',
-  rNoDelivery:'摩托车或自行车外卖配送不属于留学签证持有者的许可行业。',
-  rWarnGrade:'不达成绩/出勤要求可能导致申请被拒，请先咨询国际处。',
-  rWarnHours: m => `您的期望工时超过了允许上限（${m}），请在许可范围内工作。`,
-  rWarnMajor:'专业相关实习或研究助理职位可能需要国际处的额外审核。',
-  rNoTopik:'您的签证/年级需要满足TOPIK要求才能申请就业许可。（本科1~2年级：3级↑，本科3~4年级/硕士/博士/交换生：4级↑）',
-  rNoManufacture:'制造业/工厂工作仅允许TOPIK 4级及以上人员从事。',
-  rWarnManufacture:'制造业/工厂在TOPIK 4级↑时可被允许。请务必先与学校相关部门确认后再就业。',
-  savedMsg:'✓ 回答已保存。',
-},
-
-ru: {
-  badge:'🇰🇷 Официальные стандарты Министерства юстиции',
-  h1:'Могу ли я работать? 🤔',
-  subtitle:'8 вопросов — мгновенный результат',
-  prog: s => `Вопрос ${s} / 8`, progResult:'Ваш результат',
-  btnNext:'Далее →', btnPrev:'← Назад', btnSubmit:'Узнать результат ✓', btnRestart:'Начать заново 🔄',
-  q1num:'Вопрос 1', q1text:'Какой у вас тип визы?', q1sub:'Проверьте статус в паспорте или карточке иностранца',
-  q2num:'Вопрос 2', q2text:'Как долго вы находитесь в Корее?', q2sub:'Для D-4 / студентов по обмену необходимо не менее 6 месяцев',
-  q3num:'Вопрос 3', q3text:'Каков ваш текущий учебный статус?', q3sub:'Студенты в академическом отпуске или заканчивающие обучение не имеют права',
-  q4num:'Вопрос 4', q4text:'Соответствуете ли вы требованиям по успеваемости и посещаемости?', q4sub:'Обычно GPA 2.0+, посещаемость 70%+ (зависит от вуза)',
-  q5num:'Вопрос 5', q5text:'Каков ваш уровень TOPIK (корейский язык)?', q5sub:'Чем выше уровень, тем больше часов разрешено работать',
-  q6num:'Вопрос 6', q6text:'Сейчас семестр или каникулы?', q6sub:'Во время каникул ограничения по часам смягчаются',
-  q7num:'Вопрос 7', q7text:'Сколько часов в неделю вы хотите работать?', q7sub:'Разрешённые часы зависят от типа визы и уровня TOPIK',
-  q8num:'Вопрос 8', q8text:'В какой сфере вы хотите работать?', q8sub:'Некоторые отрасли запрещены для держателей студенческих виз',
-  'D2-UG-12':'D-2 Бакалавриат 1–2 курс (вкл. колледж)', 'D2-UG-34':'D-2 Бакалавриат 3–4 курс', 'D2-GR':'D-2 Магистратура / Докторантура', 'D2-VS':'D-2 Обменный / Приглашённый студент',
-  'D4':'D-4 (Языковая / Техническая стажировка)', 'OTHER':'Другая виза (C-3, F-1 и т.д.)',
-  'LT3':'Менее 3 месяцев', '3TO6':'3–6 месяцев', 'GT6':'6 месяцев и более',
-  'ENROLLED':'Обучаюсь', 'LEAVE':'Академический отпуск', 'GRAD':'Выпускник (или завершил курс)',
-  'GOOD':'Да — соответствую требованиям', 'GPA_LOW':'Нет — успеваемость или посещаемость ниже нормы', 'FIRST':'Первый семестр — оценок ещё нет',
-  'TOPIK5':'TOPIK 5 уровень и выше', 'TOPIK4':'TOPIK 4 уровень', 'TOPIK3':'TOPIK 3 уровень', 'TOPIK12':'TOPIK 1–2 уровень или истёк срок', 'NONE':'Нет сертификата TOPIK',
-  'SEMESTER':'Семестр', 'VACATION':'Каникулы',
-  'H10':'До 10 ч/нед.', 'H20':'11–20 ч', 'H25':'21–25 ч', 'H30':'26–30 ч', 'H35':'31–35 ч', 'HMAX':'Полная занятость (без ограничений)',
-  'FOOD':'Ресторан / Кафе (официант, помощник повара)', 'RETAIL':'Торговля / Дистрибуция (маркет, магазин)', 'OFFICE':'Офис / Перевод / Репетиторство',
-  'EVENT':'Мероприятия / Промоутер', 'MAJOR':'По специальности (ассистент, стажёр)',
-  'MANUFACTURE':'Производство / Завод (условно: TOPIK 4+)', 'DELIVERY':'Доставка (мотоцикл / велосипед)', 'CONSTRUCTION':'Стройплощадка', 'OTHER_IND':'Другое / Не знаю',
-  resOkTitle:'Работать можно! ✅', resWarnTitle:'Условно можно ⚠️', resNoTitle:'Нельзя ❌',
-  resOkSub:'Согласно вашим ответам, вы можете легально работать неполный день в Корее.', resWarnSub:'Пожалуйста, ознакомьтесь с важными замечаниями ниже.', resNoSub:'В вашей текущей ситуации работа неполный день не разрешена.',
-  icVisaLabel:'Виза', icHoursLabel:'Лимит в неделю', icTopikLabel:'TOPIK', icSemLabel:'Период',
-  maxHoursLabel: h => h === 9999 ? 'Без ограничений' : `Макс. ${h} ч`,
-  noticeTitle:'Важные замечания',
-  arcTitle:'📋 Проверьте карточку иностранца',
-  arcNote:'Перед началом работы проверьте оборотную сторону <strong>карточки иностранца (ARC)</strong>. Ищите отметку <strong>«Ограничений на трудовую деятельность нет»</strong> или список разрешённых видов работы. Если отметки нет — необходимо подать отдельное заявление.',
-  secDocs:'Необходимые документы', secProc:'Порядок подачи заявления', secLinks:'Официальные сайты', docsNote:'* Иммиграционные службы могут запросить дополнительные документы.',
-  docs:['Паспорт (оригинал + копия)', 'Карточка иностранца (ARC)', 'Справка о зачислении (на английском)', 'Транскрипт (последний семестр)', 'Финансовое поручительство или выписка банка', 'Заявление на разрешение (форма HiKorea)', 'Трудовой договор (с копией свидетельства о регистрации)', 'Подтверждение международного офиса (в некоторых вузах)'],
-  docTopik: lv => (lv !== 'NONE' && lv !== 'TOPIK3' && lv !== 'TOPIK12') ? `Сертификат TOPIK (уровень ${lv === 'TOPIK5' ? '5+' : '4'})` : null,
-  docStay:'Разрешение на продление пребывания (при необходимости)',
-  procs:[
-    {main:'Обратитесь в международный офис вуза', detail:'Уточните право на работу и внутренние правила'},
-    {main:'Заполните заявление на HiKorea', detail:'hikorea.go.kr → Услуги → Деятельность вне статуса пребывания'},
-    {main:'Подайте в местную иммиграционную службу (лично или почтой)', detail:'Предусмотрите время ожидания в очереди'},
-    {main:'Получите решение (около 1–2 недель)', detail:'Разрешение указывается на разрешении или обороте ARC'},
-    {main:'Начните работу в утверждённых рамках', detail:'Строго соблюдайте разрешённую сферу и часы'},
-  ],
-  hikoreaTitle:'HiKorea', hikoreaSub:'Онлайн-заявка на разрешение',
-  easyLawTitle:'Понятная правовая информация', easyLawSub:'Законы о подработке для иностранцев',
-  lawTitle:'Правовая основа', law1:'Закон об иммиграции, статья 20', law2:'Разрешение на деятельность вне статуса пребывания',
-  lawNote:'Источник: Министерство юстиции, иммиграционная служба (immigration.go.kr)',
-  lawVerNote:'※ Сведения проверены по официальным государственным источникам по состоянию на май 2026 г.',
-  rNoVisa:'Подача заявления доступна только для владельцев виз D-2 и D-4.',
-  rNoStay:'Студентам D-4 и D-2 по обмену необходимо находиться в Корее не менее 6 месяцев перед подачей заявления.',
-  rNoLeave:'В период академического отпуска разрешения не выдаются. Подайте заявление после возвращения.',
-  rNoGrad:'Для студентов в статусе завершения обучения разрешение ограничено.',
-  rNoConstruction:'Работа на стройплощадке запрещена для студенческих виз.',
-  rNoDelivery:'Доставка на мотоцикле или велосипеде не входит в разрешённые виды работ.',
-  rWarnGrade:'Несоответствие требованиям может повлечь отказ. Сначала уточните в международном офисе.',
-  rWarnHours: m => `Желаемые часы превышают разрешённый лимит (${m}).`,
-  rWarnMajor:'Стажировки по специальности могут потребовать дополнительной проверки.',
-  rNoTopik:'Для получения разрешения на работу по вашей визе/курсу необходимо сначала выполнить требование TOPIK. (Бакалавр 1–2 курс: уровень 3↑, Бакалавр 3–4 курс / Магистр / Доктор / Обменный: уровень 4↑)',
-  rNoManufacture:'Работа на производстве/заводе разрешена только при наличии TOPIK 4 уровня и выше.',
-  rWarnManufacture:'Производство/завод разрешено при TOPIK 4↑. Обязательно уточните в отделе по работе со студентами перед трудоустройством.',
-  savedMsg:'✓ Ответ сохранён.',
-},
-
-ne: {
-  badge:'🇰🇷 न्याय मन्त्रालय आधिकारिक मापदण्ड',
-  h1:'के म काम गर्न सक्छु? 🤔',
-  subtitle:'८ प्रश्नले तुरुन्तै पत्ता लगाउनुहोस्',
-  prog: s => `प्रश्न ${s} / ८`, progResult:'नतिजा',
-  btnNext:'अर्को →', btnPrev:'← अघिल्लो', btnSubmit:'नतिजा हेर्नुहोस् ✓', btnRestart:'फेरि सुरु गर्नुहोस् 🔄',
-  q1num:'प्रश्न १', q1text:'तपाईंको हालको भिसा प्रकार के हो?', q1sub:'पासपोर्ट वा विदेशी दर्ता कार्ड (ARC) मा स्थिति जाँच गर्नुहोस्',
-  q2num:'प्रश्न २', q2text:'तपाईं कोरियामा कति समयदेखि हुनुहुन्छ?', q2sub:'D-4 / विनिमय विद्यार्थीका लागि ६ महिनाभन्दा बढी हुनुपर्छ',
-  q3num:'प्रश्न ३', q3text:'तपाईंको हालको भर्ना स्थिति के हो?', q3sub:'बिदामा गएका वा स्नातक हुने विद्यार्थी पात्र छैनन्',
-  q4num:'प्रश्न ४', q4text:'के तपाईं ग्रेड र उपस्थिति आवश्यकताहरू पूरा गर्नुहुन्छ?', q4sub:'सामान्यतः GPA २.०+, उपस्थिति ७०%+ (विद्यालय अनुसार फरक)',
-  q5num:'प्रश्न ५', q5text:'तपाईंको TOPIK (कोरियाली भाषा) स्तर के हो?', q5sub:'स्तर जति उच्च, काम गर्न पाइने घण्टा त्यति बढी',
-  q6num:'प्रश्न ६', q6text:'अहिले सेमेस्टर चलिरहेको छ कि बिदा?', q6sub:'बिदाको समयमा घण्टा सीमा खुकुलो हुन्छ',
-  q7num:'प्रश्न ७', q7text:'तपाईं हप्तामा कति घण्टा काम गर्न चाहनुहुन्छ?', q7sub:'अनुमति घण्टा भिसा र TOPIK स्तरमा निर्भर छ',
-  q8num:'प्रश्न ८', q8text:'तपाईं कुन क्षेत्रमा काम गर्न चाहनुहुन्छ?', q8sub:'केही उद्योगहरू विद्यार्थी भिसाधारकका लागि निषेधित छन्',
-  'D2-UG-12':'D-2 स्नातक १–२ वर्ष (सहयोगी सहित)', 'D2-UG-34':'D-2 स्नातक ३–४ वर्ष', 'D2-GR':'D-2 स्नातकोत्तर / विद्यावारिधि', 'D2-VS':'D-2 विनिमय / भ्रमण विद्यार्थी',
-  'D4':'D-4 (भाषा / प्राविधिक तालिम)', 'OTHER':'अन्य भिसा (C-3, F-1 आदि)',
-  'LT3':'३ महिनाभन्दा कम', '3TO6':'३–६ महिना', 'GT6':'६ महिना वा बढी',
-  'ENROLLED':'हाल भर्ना भएको', 'LEAVE':'बिदामा', 'GRAD':'स्नातक हुन लागेको (वा पाठ्यक्रम पूरा)',
-  'GOOD':'हो — ग्रेड र उपस्थिति मापदण्ड पूरा छ', 'GPA_LOW':'छैन — ग्रेड वा उपस्थिति कम', 'FIRST':'पहिलो सेमेस्टर — अहिलेसम्म ग्रेड छैन',
-  'TOPIK5':'TOPIK स्तर ५ वा माथि', 'TOPIK4':'TOPIK स्तर ४', 'TOPIK3':'TOPIK स्तर ३', 'TOPIK12':'TOPIK स्तर १–२ वा म्याद सकिएको', 'NONE':'TOPIK प्रमाणपत्र छैन',
-  'SEMESTER':'सेमेस्टर', 'VACATION':'बिदा',
-  'H10':'हप्तामा १० घण्टासम्म', 'H20':'११–२० घण्टा', 'H25':'२१–२५ घण्टा', 'H30':'२६–३० घण्टा', 'H35':'३१–३५ घण्टा', 'HMAX':'पूर्णकालिक (असीमित)',
-  'FOOD':'रेस्टुरेन्ट / क्याफे (सर्भर, रसोई सहायक)', 'RETAIL':'बिक्री / वितरण (मार्ट, सुविधा पसल)', 'OFFICE':'कार्यालय / अनुवाद / ट्युसन',
-  'EVENT':'कार्यक्रम / प्रवर्धन कर्मचारी', 'MAJOR':'विशेषज्ञता सम्बन्धित (अनुसन्धान सहायक, इन्टर्न)',
-  'MANUFACTURE':'उत्पादन / कारखाना (सशर्त: TOPIK 4+)', 'DELIVERY':'डेलिभरी (मोटरसाइकल / साइकल)', 'CONSTRUCTION':'निर्माण स्थल', 'OTHER_IND':'अन्य / थाहा छैन',
-  resOkTitle:'काम गर्न सक्नुहुन्छ! ✅', resWarnTitle:'सशर्त पात्र ⚠️', resNoTitle:'पात्र हुनुहुन्न ❌',
-  resOkSub:'तपाईंका जवाफहरूका आधारमा, तपाईं कोरियामा कानुनी रूपमा अंशकालिक काम गर्न सक्नुहुन्छ।', resWarnSub:'कृपया तलका महत्त्वपूर्ण सूचनाहरू हेर्नुहोस्।', resNoSub:'तपाईंको हालको अवस्थामा अंशकालिक काम अनुमतित छैन।',
-  icVisaLabel:'भिसा', icHoursLabel:'साप्ताहिक सीमा', icTopikLabel:'TOPIK', icSemLabel:'अवधि',
-  maxHoursLabel: h => h === 9999 ? 'असीमित' : `अधिकतम ${h} घण्टा`,
-  noticeTitle:'महत्त्वपूर्ण सूचनाहरू',
-  arcTitle:'📋 पहिले ARC जाँच गर्नुहोस्',
-  arcNote:'कुनै पनि काम सुरु गर्नुअघि, <strong>विदेशी दर्ता कार्ड (ARC)</strong> को पछाडि जाँच गर्नुहोस्। <strong>"काम गतिविधिमा कुनै प्रतिबन्ध छैन"</strong> वा अनुमति दिइएका काम प्रकारहरूको सूची खोज्नुहोस्। नभेटिएमा, छुट्टै अनुमतिको लागि निवेदन दिनुपर्छ।',
-  secDocs:'आवश्यक कागजातहरू', secProc:'आवेदन चरणहरू', secLinks:'आधिकारिक साइटहरू', docsNote:'* आप्रवासन कार्यालयहरूले थप कागजात माग्न सक्छन्।',
-  docs:['पासपोर्ट (मूल + प्रतिलिपि)', 'विदेशी दर्ता कार्ड (ARC)', 'भर्ना प्रमाणपत्र (अंग्रेजीमा)', 'ट्रान्सक्रिप्ट (पछिल्लो सेमेस्टर)', 'वित्तीय ग्यारेन्टी वा बैंक ब्यालेन्स विवरण', 'काम अनुमति आवेदन फारम (HiKorea ढाँचा)', 'रोजगार सम्झौता (व्यापार दर्ता प्रतिलिपि सहित)', 'अन्तर्राष्ट्रिय कार्यालय पुष्टि पत्र (केही विद्यालयहरूमा)'],
-  docTopik: lv => (lv !== 'NONE' && lv !== 'TOPIK3' && lv !== 'TOPIK12') ? `TOPIK अंक प्रमाणपत्र (स्तर ${lv === 'TOPIK5' ? '५+' : '४'})` : null,
-  docStay:'बसाइ विस्तार अनुमति (लागू भएमा)',
-  procs:[
-    {main:'विद्यालयको अन्तर्राष्ट्रिय कार्यालयमा जानुहोस्', detail:'पात्रता र विद्यालयका नियमहरू पुष्टि गर्नुहोस्'},
-    {main:'HiKorea मा आवेदन भर्नुहोस्', detail:'hikorea.go.kr → सेवाहरू → बसाइ स्थितिबाहिर काम गतिविधि'},
-    {main:'स्थानीय आप्रवासन कार्यालयमा बुझाउनुहोस् (व्यक्तिगत वा हुलाकद्वारा)', detail:'पंक्तिमा प्रतीक्षाको लागि अतिरिक्त समय राख्नुहोस्'},
-    {main:'निर्णय प्राप्त गर्नुहोस् (लगभग १–२ हप्ता)', detail:'अनुमति परमिट वा ARC पछाडि उल्लेख हुन्छ'},
-    {main:'अनुमोदित दायरामा काम सुरु गर्नुहोस्', detail:'स्वीकृत उद्योग र घण्टाहरू कडाईका साथ पालना गर्नुहोस्'},
-  ],
-  hikoreaTitle:'HiKorea', hikoreaSub:'काम अनुमतिको लागि अनलाइन आवेदन',
-  easyLawTitle:'सजिलो कानुन जानकारी', easyLawSub:'विदेशीहरूका लागि अंशकालिक काम नियमहरू',
-  lawTitle:'कानुनी आधार', law1:'आप्रवासन अधिनियम धारा २०', law2:'बसाइ स्थितिबाहिर गतिविधिको अनुमति',
-  lawNote:'स्रोत: न्याय मन्त्रालय, आप्रवासन र विदेशी नीति (immigration.go.kr)',
-  lawVerNote:'※ मे २०२६ सम्म आधिकारिक सरकारी स्रोतहरूद्वारा पुष्टि गरिएको जानकारी।',
-  rNoVisa:'अंशकालिक काम अनुमति आवेदन केवल D-2 र D-4 भिसाधारकहरूका लागि हो।',
-  rNoStay:'D-4 र D-2 विनिमय विद्यार्थीहरूले आवेदन गर्नु अघि कम्तीमा ६ महिना कोरियामा बसेको हुनुपर्छ।',
-  rNoLeave:'शैक्षिक बिदाको समयमा काम अनुमति दिइँदैन। फर्केपछि आवेदन गर्नुहोस्।',
-  rNoGrad:'स्नातक-पूर्णता स्थितिका विद्यार्थीहरूका लागि काम अनुमति सीमित छ।',
-  rNoConstruction:'निर्माण स्थलमा काम विद्यार्थी भिसा श्रेणीहरूका लागि अनुमति छैन।',
-  rNoDelivery:'मोटरसाइकल वा साइकल डेलिभरी विद्यार्थी भिसाधारकका लागि अनुमोदित उद्योग होइन।',
-  rWarnGrade:'ग्रेड/उपस्थिति पूरा नगरेमा आवेदन अस्वीकार हुन सक्छ। पहिले अन्तर्राष्ट्रिय कार्यालयसँग जाँच गर्नुहोस्।',
-  rWarnHours: m => `इच्छित घण्टाहरू अनुमति सीमा (${m}) भन्दा बढी छन्।`,
-  rWarnMajor:'विशेषज्ञता सम्बन्धित इन्टर्नशिप वा अनुसन्धान सहायक पदहरूका लागि थप प्रमाणीकरण आवश्यक हुन सक्छ।',
-  rNoTopik:'तपाईंको भिसा/वर्षका लागि काम अनुमति पाउन TOPIK आवश्यकता पूरा गर्नुपर्छ। (स्नातक १–२ वर्ष: स्तर ३↑, स्नातक ३–४ वर्ष / स्नातकोत्तर / विद्यावारिधि / विनिमय: स्तर ४↑)',
-  rNoManufacture:'उत्पादन/कारखाना काम केवल TOPIK स्तर ४ वा माथिका लागि मात्र अनुमति छ।',
-  rWarnManufacture:'उत्पादन/कारखाना TOPIK ४↑ भएमा अनुमति छ। काम सुरु गर्नुअघि विद्यालयको सम्बन्धित विभागसँग पुष्टि गर्नुहोस्।',
-  savedMsg:'✓ जवाफ सुरक्षित गरियो।',
-},
-
 }; // end T
 
 // ═══════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════
-let lang = 'ko';
 let currentStep = 1;
 let resultData = null;
 const answers = {};
 
 // ═══════════════════════════════════════════
-//  I18N
+//  I18N (한국어 고정)
 // ═══════════════════════════════════════════
 function t(key) {
-  const v = T[lang]?.[key] ?? T['ko'][key];
+  const v = T['ko'][key];
   return v !== undefined ? v : key;
 }
 function tf(key, ...args) {
-  const fn = typeof T[lang]?.[key] === 'function' ? T[lang][key] : T['ko'][key];
+  const fn = T['ko'][key];
   return typeof fn === 'function' ? fn(...args) : key;
 }
-function applyLang(l) {
-  lang = l;
-  document.documentElement.lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const v = t(el.dataset.i18n);
-    if (typeof v === 'string') el.innerHTML = v;
-  });
-  if (resultData) {
-    document.getElementById('prog-step').textContent = t('progResult');
-    renderResult();
-  } else {
-    document.getElementById('prog-step').textContent = tf('prog', currentStep);
-  }
+
+// ═══════════════════════════════════════════
+//  CLICK SOUND
+// ═══════════════════════════════════════════
+let _audioCtx = null;
+function playClick() {
+  try {
+    if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc  = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(_audioCtx.destination);
+    osc.type = 'sine';
+    const t0 = _audioCtx.currentTime;
+    osc.frequency.setValueAtTime(900, t0);
+    osc.frequency.exponentialRampToValueAtTime(500, t0 + 0.04);
+    gain.gain.setValueAtTime(0.18, t0);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.08);
+    osc.start(t0);
+    osc.stop(t0 + 0.08);
+  } catch(e) {}
 }
 
 // ═══════════════════════════════════════════
@@ -825,6 +506,7 @@ function updateProgress(step) {
   currentStep = step;
 }
 function pick(el) {
+  playClick();
   const q = el.dataset.q;
   document.querySelectorAll(`.option[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
