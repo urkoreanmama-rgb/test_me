@@ -286,6 +286,40 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 }
 .ssb-play-btn:hover{background:rgba(255,255,255,.18)}
 
+/* ── Flashcard (Step 1) ── */
+.fc-wrap{perspective:900px;margin:8px auto 4px;max-width:380px}
+.fc-card{width:100%;min-height:190px;position:relative;transform-style:preserve-3d;transition:transform .45s ease;cursor:pointer;border-radius:var(--r)}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.fc-front{background:linear-gradient(145deg,#0284C7,#0EA5E9);color:#fff;box-shadow:0 4px 20px rgba(2,132,199,.3)}
+.fc-back{background:var(--card);border:2px solid var(--blue-m);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(2,132,199,.15)}
+.fc-emoji{font-size:40px;margin-bottom:8px}
+.fc-ko{font-size:30px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px}
+.fc-syl{font-size:12px;opacity:.65;margin-bottom:2px}
+.fc-pos-tag{font-size:10px;background:rgba(255,255,255,.2);border-radius:10px;padding:2px 10px;margin-top:4px}
+.fc-hint{font-size:11px;opacity:.55;margin-top:10px}
+.fc-back-ko{font-size:15px;font-weight:800;color:var(--blue-d);margin-bottom:2px}
+.fc-rom{font-size:11px;color:var(--muted);margin-bottom:8px}
+.fc-uz{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.fc-ex{font-size:11px;color:var(--muted);font-style:italic}
+.fc-prog{text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.fc-btns{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.fc-btn-again{flex:1;background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
+.fc-btn-know{flex:1;background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
+
+/* ── Matching Game (Step 2) ── */
+.match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.match-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--blue-m);background:var(--blue-l);padding:4px 10px;border-radius:10px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.match-col-label{font-size:10px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.match-item{padding:13px 10px;border-radius:10px;text-align:center;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.3}
+.match-item.uz{font-size:12px;color:var(--ink-m);font-weight:600}
+.match-item.selected{border-color:var(--blue-m);background:var(--blue-l);color:var(--blue-d);transform:scale(1.03)}
+.match-item.correct{border-color:#22C55E;background:#DCFCE7;color:#15803D;pointer-events:none}
+.match-item.wrong{border-color:var(--red);background:#FEE2E2;animation:mshake .3s}
+.match-item.matched{visibility:hidden;pointer-events:none}
+@keyframes mshake{0%,100%{transform:translateX(0)}30%{transform:translateX(-7px)}70%{transform:translateX(7px)}}
+
 .vocab-label{font-size:10px;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.6px;margin:4px 0 10px;
   display:flex;align-items:center;gap:8px}
@@ -1437,1273 +1471,387 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans
 // 구조: 오늘의 문장(3개) → 문장1+단어 → 문장2+단어 → 문장3+단어 → 말해봐요 → 퀴즈
 // ══════════════════════════════════════════════════
 const CUR = [
+// ═══════════════════════════════════════════════════════
+// 1개월 안전 한국어 (20일 × 하루 5분)
+// 1문장 + 단어분해 + 퀴즐렛 방식
+// Week 1 (Day 1-5): 명사 + 이에요/예요/있어요
+// Week 2 (Day 6-10): 명사 + 동사 기본형
+// Week 3 (Day 11-15): 의무·금지 패턴
+// Week 4 (Day 16-20): 소통·복습·이수
+// ═══════════════════════════════════════════════════════
 
-// ─────────────────────────────────────────────────────────────────
-// Day 1 : 안전이 먼저예요 — 기초 표현
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 1 ───────────
 {
-  day:1, icon:'👋', ncs:{code:'06010103',label:'안전교육·훈련'},
+  day:1, icon:'🛡️', level:'A1',
+  ncs:{code:'06010103',label:'안전교육·훈련'},
   titleKo:'안전이 먼저예요', titleUz:'Xavfsizlik birinchi',
-  subKo:'오늘의 목표: 위험 표현·도움 요청', subUz:"Bugungi maqsad: Xavf ifodalash va yordam so'rash",
-  level:'A1',
-  goal:{
-    ko:'"위험해요!" "도와주세요!" 라고 말할 수 있어요',
-    uz:'"Xavfli!" "Menga yordam bering!" deya olasiz',
-    can:[
-      {ko:'안전이 먼저예요. 꼭 기억하세요!', uz:'Xavfsizlik birinchi. Albatta eslab qoling!'},
-      {ko:'위험해요! 빨리 피하세요!',         uz:'Xavfli! Tez qoching!'},
-      {ko:'모르겠어요. 도와주세요.',           uz:'Bilmayman. Menga yordam bering.'},
-    ]
-  },
-  speak:[
-    {
-      phrase:'안전이 먼저예요. 꼭 기억하세요!',
-      uz:'Xavfsizlik birinchi. Albatta eslab qoling!',
-      words:[
-        {ko:'안전', syl:'안·전', rom:'an-jeon', uz:'xavfsizlik (safety)', ex:'안전이 먼저예요.', e:'🛡️'},
-        {ko:'꼭', syl:'꼭', rom:'kkok', uz:'albatta (must/definitely)', ex:'꼭 기억하세요!', e:'💯'},
-      ]
-    },
-    {
-      phrase:'위험해요! 빨리 피하세요!',
-      uz:'Xavfli! Tez qoching!',
-      words:[
-        {ko:'위험', syl:'위·험', rom:'wi-heom', uz:'xavfli (dangerous)', ex:'위험해요!', e:'⚠️'},
-        {ko:'빨리', syl:'빨·리', rom:'ppal-li', uz:'tez (quickly)', ex:'빨리 피하세요!', e:'🏃'},
-      ]
-    },
-    {
-      phrase:'모르겠어요. 도와주세요.',
-      uz:'Bilmayman. Menga yordam bering.',
-      words:[
-        {ko:'모르겠어요', syl:'모·르·겠·어·요', rom:'mo-reu-ge-sseo-yo', uz:'bilmayman (I don\'t know)', ex:'모르겠어요.', e:'🤷'},
-        {ko:'도와주세요', syl:'도·와·주·세·요', rom:'do-wa-ju-se-yo', uz:'yordam bering (please help)', ex:'도와주세요.', e:'🤝'},
-      ]
-    },
+  sentence:{ko:'안전이 먼저예요.', uz:'Xavfsizlik birinchi.'},
+  words:[
+    {ko:'안전', syl:'안·전', rom:'an-jeon', pos:'명사', uz:'xavfsizlik — safety', ex:'안전이 먼저예요.', e:'🛡️'},
+    {ko:'먼저', syl:'먼·저', rom:'meon-jeo', pos:'부사', uz:'birinchi — first', ex:'안전이 먼저예요.', e:'1️⃣'},
+    {ko:'이/가', syl:'이/가', rom:'i/ga', pos:'조사(주격)', uz:'ega belgisi — subject marker', ex:'안전이 먼저예요.', e:'📌'},
+    {ko:'예요', syl:'예·요', rom:'ye-yo', pos:'서술어', uz:'"...hisoblanadi" — is/am/are', ex:'안전이 먼저예요.', e:'✅'},
   ],
   quiz:[
-    {tag:'어휘', q:'"안전" 이 들어가는 올바른 문장은?', qu:'"안전" so\'zi to\'g\'ri ishlatilgan gap?', opts:['안전을 먹어요.','안전이 먼저예요.','안전이 자요.','안전을 입어요.'], ans:1},
-    {tag:'의사소통', q:'모르는 것이 있을 때 뭐라고 해요?', qu:"Bilmasangiz nima deysiz?", opts:['감사합니다','괜찮아요','도와주세요','안녕하세요'], ans:2},
-    {tag:'안전', q:'공장에서 가장 중요한 것은?', qu:"Zavodda eng muhim narsa nima?", opts:['빨리 일하기','안전이 먼저','도구 아끼기','잠자기'], ans:1},
+    {tag:'어휘', q:'"안전" 의 뜻은?', qu:'"안전" nima degani?', opts:['xavfsizlik','xavfli','yordam','joy'], ans:0},
+    {tag:'어휘', q:'"먼저" 의 뜻은?', qu:'"먼저" nima degani?', opts:['keyin','tez','birinchi','hamma'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 2 : 꼭 해야 해요 — 의무·금지
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 2 ───────────
 {
-  day:2, icon:'⚖️', ncs:{code:'06010102',label:'산업안전법령 준수'},
-  titleKo:'꼭 해야 해요!', titleUz:"Albatta qilish kerak!",
-  subKo:'오늘의 목표: 의무·금지 표현하기', subUz:"Bugungi maqsad: Majburiyat va taqiqni ifodalash",
-  level:'A1',
-  goal:{
-    ko:'"~해야 해요" "~하면 안 돼요" 로 말할 수 있어요',
-    uz:'"~해야 해요" "~하면 안 돼요" deb ayta olasiz',
-    can:[
-      {ko:'안전 교육은 꼭 받아야 해요!', uz:"Xavfsizlik ta'limini albatta olish kerak!"},
-      {ko:'여기 들어가면 안 돼요!',       uz:'Bu yerga kirish mumkin emas!'},
-      {ko:'보호구 안 쓰면 다쳐요. 꼭 쓰세요!', uz:'Himoya vositasini kiymasangiz zarar ko\'rasiz. Albatta kiyib oling!'},
-    ]
-  },
-  speak:[
-    {
-      phrase:'안전 교육은 꼭 받아야 해요!',
-      uz:"Xavfsizlik ta'limini albatta olish kerak!",
-      words:[
-        {ko:'교육', syl:'교·육', rom:'gyo-yuk', uz:"ta'lim (education)", ex:'안전 교육은 꼭 받아야 해요!', e:'📚'},
-        {ko:'받아야 해요', syl:'받·아·야·해·요', rom:'ba-da-ya-hae-yo', uz:'olish kerak (must receive)', ex:'안전 교육은 꼭 받아야 해요!', e:'✅'},
-      ]
-    },
-    {
-      phrase:'여기 들어가면 안 돼요!',
-      uz:'Bu yerga kirish mumkin emas!',
-      words:[
-        {ko:'들어가다', syl:'들·어·가·다', rom:'deu-reo-ga-da', uz:'kirmoq (to enter)', ex:'여기 들어가면 안 돼요!', e:'🚪'},
-        {ko:'안 돼요', syl:'안·돼·요', rom:'an-dwae-yo', uz:'mumkin emas (not allowed)', ex:'여기 들어가면 안 돼요!', e:'🚫'},
-      ]
-    },
-    {
-      phrase:'보호구 안 쓰면 다쳐요. 꼭 쓰세요!',
-      uz:"Himoya vositasini kiymasangiz zarar ko'rasiz. Albatta kiyib oling!",
-      words:[
-        {ko:'보호구', syl:'보·호·구', rom:'bo-ho-gu', uz:'himoya vositasi (PPE)', ex:'보호구 안 쓰면 다쳐요.', e:'🦺'},
-        {ko:'다쳐요', syl:'다·쳐·요', rom:'da-chyeo-yo', uz:'zarar ko\'rasiz (get hurt)', ex:'안 쓰면 다쳐요.', e:'🤕'},
-      ]
-    },
+  day:2, icon:'⚠️', level:'A1',
+  ncs:{code:'06010201',label:'기계·설비 안전'},
+  titleKo:'여기는 위험해요', titleUz:'Bu yer xavfli',
+  sentence:{ko:'여기는 위험해요.', uz:'Bu yer xavfli.'},
+  words:[
+    {ko:'여기', syl:'여·기', rom:'yeo-gi', pos:'명사', uz:'bu yer — here', ex:'여기는 위험해요.', e:'📍'},
+    {ko:'위험', syl:'위·험', rom:'wi-heom', pos:'명사/형용사', uz:'xavfli — dangerous', ex:'여기는 위험해요.', e:'⚠️'},
+    {ko:'은/는', syl:'은/는', rom:'eun/neun', pos:'조사(주제)', uz:'mavzu belgisi — topic marker', ex:'여기는 위험해요.', e:'📌'},
+    {ko:'해요', syl:'해·요', rom:'hae-yo', pos:'서술어', uz:'"...hisoblanadi" — is (adjective)', ex:'위험해요.', e:'✅'},
   ],
   quiz:[
-    {tag:'문형', q:'"보호구를 착용___ 해요." 빈칸에 들어갈 말은?', qu:"'보호구를 착용___ 해요.' Bo'shliqni to'ldiring:", opts:['하면 안','해야','하고','하지'], ans:1},
-    {tag:'법령', q:'채용 시 안전교육 시간은?', qu:"Ishga qabul paytidagi ta'lim soati?", opts:['2시간','4시간','8시간 이상','1시간'], ans:2},
-    {tag:'의사소통', q:'친구가 위험한 곳에 가려고 해요. 뭐라고 해요?', qu:'Do\'stingiz xavfli joyga borishga urunmoqda. Nima deysiz?', opts:['괜찮아요','같이 가요','들어가면 안 돼요!','빨리 가요'], ans:2},
+    {tag:'어휘', q:'"위험" 의 뜻은?', qu:'"위험" nima degani?', opts:['xavfsiz','xavfli','katta','yaxshi'], ans:1},
+    {tag:'문법', q:'"여기는" 에서 "는" 의 역할은?', qu:'"여기는" dagi "는" vazifasi?', opts:['ega belgisi','tushum belgisi','mavzu belgisi','joy belgisi'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 3 : 기계 조심해요 — 기계·설비 안전
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 3 ───────────
 {
-  day:3, icon:'⚙️', ncs:{code:'06010201',label:'기계·설비 안전'},
-  titleKo:'기계 조심해요!', titleUz:"Mashina dan ehtiyot bo'ling!",
-  subKo:'오늘의 목표: 기계 위험 경고·점검 말하기', subUz:"Bugungi maqsad: Mashina xavfi haqida ogohlantirish",
-  level:'A1',
-  goal:{
-    ko:'"지게차 조심해요!" "만지지 마세요!" 라고 말할 수 있어요',
-    uz:'"Forkliftdan ehtiyot bo\'ling!" "Tegmang!" deya olasiz',
-    can:[
-      {ko:'지게차 와요! 빨리 비켜요!',     uz:'Forklift kelmoqda! Tez chetlang!'},
-      {ko:'기계 절대 만지지 마세요!',       uz:'Mashinaga hech qachon tegmang!'},
-      {ko:'점검할 땐 전원 먼저 끄세요.',   uz:"Tekshirishdan oldin quvvatni o'chiring."},
-    ]
-  },
-  speak:[
-    {
-      phrase:'지게차 와요! 빨리 비켜요!',
-      uz:'Forklift kelmoqda! Tez chetlang!',
-      words:[
-        {ko:'지게차', syl:'지·게·차', rom:'ji-ge-cha', uz:'forklift', ex:'지게차 와요!', e:'🚜'},
-        {ko:'비켜요', syl:'비·켜·요', rom:'bi-kyeo-yo', uz:'chetlang (move aside)', ex:'빨리 비켜요!', e:'↩️'},
-      ]
-    },
-    {
-      phrase:'기계 절대 만지지 마세요!',
-      uz:'Mashinaga hech qachon tegmang!',
-      words:[
-        {ko:'기계', syl:'기·계', rom:'gi-gye', uz:'mashina (machine)', ex:'기계 절대 만지지 마세요!', e:'⚙️'},
-        {ko:'절대', syl:'절·대', rom:'jeol-dae', uz:"hech qachon (never)", ex:'절대 만지지 마세요!', e:'🚫'},
-      ]
-    },
-    {
-      phrase:'점검할 땐 전원 먼저 끄세요.',
-      uz:"Tekshirishdan oldin quvvatni o'chiring.",
-      words:[
-        {ko:'점검', syl:'점·검', rom:'jeom-geom', uz:"tekshirish (inspection)", ex:'점검할 땐 전원 끄세요.', e:'🔍'},
-        {ko:'전원', syl:'전·원', rom:'jeo-nwon', uz:"quvvat (power)", ex:'전원 먼저 끄세요.', e:'🔌'},
-      ]
-    },
+  day:3, icon:'🧤', level:'A1',
+  ncs:{code:'06010301',label:'개인보호구'},
+  titleKo:'장갑을 꼭 끼세요', titleUz:"Qo'lqopni albatta kiyib oling",
+  sentence:{ko:'장갑을 꼭 끼세요.', uz:"Qo'lqopni albatta kiyib oling."},
+  words:[
+    {ko:'장갑', syl:'장·갑', rom:'jang-gap', pos:'명사', uz:"qo'lqop — gloves", ex:'장갑을 꼭 끼세요.', e:'🧤'},
+    {ko:'꼭', syl:'꼭', rom:'kkok', pos:'부사', uz:'albatta — must/definitely', ex:'꼭 끼세요!', e:'💯'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:"tushum belgisi — object marker", ex:'장갑을 끼세요.', e:'📌'},
+    {ko:'끼세요', syl:'끼·세·요', rom:'kki-se-yo', pos:'동사', uz:'kiyib oling — please put on/wear', ex:'장갑을 끼세요.', e:'👆'},
   ],
   quiz:[
-    {tag:'어휘', q:'"방호장치" 는 무엇이에요?', qu:'"방호장치" nima?', opts:['forklift','xavfsizlik kaskogi','himoya qurilmasi','quvvat'], ans:2},
-    {tag:'의사소통', q:'기계 점검 전에 꼭 해야 하는 것은?', qu:'Mashinani tekshirishdan oldin nima qilish kerak?', opts:["quvvatni yoqish",'밥 먹기','전원 끄기','잠자기'], ans:2},
-    {tag:'안전', q:'지게차가 올 때 어떻게 해요?', qu:'Forklift kelganda nima qilasiz?', opts:['천천히 걷기','그냥 있기','빨리 비켜요','만져요'], ans:2},
+    {tag:'어휘', q:'"장갑" 의 뜻은?', qu:'"장갑" nima?', opts:["qo'lqop",'kaska','kiyim','etik'], ans:0},
+    {tag:'어휘', q:'"꼭" 의 뜻은?', qu:'"꼭" nima degani?', opts:['shoshilinch','albatta','tez','yaxshi'], ans:1},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 4 : 사고! 119! — 응급 대응
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 4 ───────────
 {
-  day:4, icon:'🚨', ncs:{code:'06010104',label:'비상시 대응'},
-  titleKo:'사고! 119!', titleUz:"Hodisa! 119!",
-  subKo:'오늘의 목표: 사고 신고·응급처치 말하기', subUz:"Bugungi maqsad: Hodisani xabar berish",
-  level:'A1',
-  goal:{
-    ko:'"사고 났어요!" "119 불러주세요!" 라고 말할 수 있어요',
-    uz:'"Hodisa bo\'ldi!" "119 chaqiring!" deya olasiz',
-    can:[
-      {ko:'사고 났어요! 빨리 119 불러주세요!', uz:"Hodisa! Tez 119 chaqiring!"},
-      {ko:'사람이 다쳤어요! 빨리 와주세요!',   uz:'Odam yaralandi! Tez keling!'},
-      {ko:'움직이지 마세요! 구급대 올 때까지 기다려요!', uz:'Qimirlamang! Tez yordam kelguncha kuting!'},
-    ]
-  },
-  speak:[
-    {
-      phrase:'사고 났어요! 빨리 119 불러주세요!',
-      uz:"Hodisa bo'ldi! Tez 119 chaqiring!",
-      words:[
-        {ko:'사고', syl:'사·고', rom:'sa-go', uz:'hodisa (accident)', ex:'사고 났어요!', e:'🚨'},
-        {ko:'불러주세요', syl:'불·러·주·세·요', rom:'bul-leo-ju-se-yo', uz:'chaqiring (call/call for)', ex:'119 불러주세요!', e:'📞'},
-      ]
-    },
-    {
-      phrase:'사람이 다쳤어요! 빨리 와주세요!',
-      uz:'Odam yaralandi! Tez keling!',
-      words:[
-        {ko:'다쳤어요', syl:'다·쳤·어·요', rom:'da-chyeo-sseo-yo', uz:'yaralandi (got injured)', ex:'사람이 다쳤어요!', e:'🤕'},
-        {ko:'와주세요', syl:'와·주·세·요', rom:'wa-ju-se-yo', uz:'keling (please come)', ex:'빨리 와주세요!', e:'🏃'},
-      ]
-    },
-    {
-      phrase:'움직이지 마세요! 구급대 올 때까지 기다려요!',
-      uz:'Qimirlamang! Tez yordam kelguncha kuting!',
-      words:[
-        {ko:'움직이지 마세요', syl:'움·직·이·지·마·세·요', rom:'um-ji-gi-ji-ma-se-yo', uz:'qimirlamang (don\'t move)', ex:'움직이지 마세요!', e:'🛑'},
-        {ko:'구급대', syl:'구·급·대', rom:'gu-geup-dae', uz:'tez yordam (ambulance)', ex:'구급대 올 때까지 기다려요!', e:'🚑'},
-      ]
-    },
+  day:4, icon:'🚻', level:'A1',
+  ncs:{code:'06010103',label:'안전교육·훈련'},
+  titleKo:'화장실이 어디예요', titleUz:'Hojatxona qayerda?',
+  sentence:{ko:'화장실이 어디예요?', uz:'Hojatxona qayerda?'},
+  words:[
+    {ko:'화장실', syl:'화·장·실', rom:'hwa-jang-sil', pos:'명사', uz:'hojatxona — bathroom/toilet', ex:'화장실이 어디예요?', e:'🚻'},
+    {ko:'어디', syl:'어·디', rom:'eo-di', pos:'의문사', uz:'qayer — where', ex:'화장실이 어디예요?', e:'❓'},
+    {ko:'이/가', syl:'이/가', rom:'i/ga', pos:'조사(주격)', uz:'ega belgisi — subject marker', ex:'화장실이 어디예요?', e:'📌'},
+    {ko:'예요', syl:'예·요', rom:'ye-yo', pos:'서술어', uz:'"...da" — is/at', ex:'어디예요?', e:'✅'},
   ],
   quiz:[
-    {tag:'의사소통', q:'사고가 났을 때 먼저 해야 할 일은?', qu:"Baxtsiz hodisa bo'lganda birinchi nima qilish kerak?", opts:['도망가기','혼자 치료하기','119에 신고하기','모른 척하기'], ans:2},
-    {tag:'어휘', q:'"다쳤어요" 가 의미하는 것은?', qu:'"다쳤어요" nimani anglatadi?', opts:['배고파요','yaralandi','피곤해요','잠와요'], ans:1},
-    {tag:'안전', q:'부상자를 발견했을 때 금지 행동은?', qu:"Jarohatlanganini topganda nima qilish mumkin emas?", opts:['119 신고','구급대 부르기','부상자 무리하게 옮기기','기다리기'], ans:2},
+    {tag:'어휘', q:'"화장실" 의 뜻은?', qu:'"화장실" nima?', opts:['oshxona','hojatxona','ofis','ombor'], ans:1},
+    {tag:'어휘', q:'"어디" 의 뜻은?', qu:'"어디" nima degani?', opts:['qachon','nima','qayer','kim'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 5 : 깨끗이 치워요 — 정리정돈·5S
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 5 ───────────
 {
-  day:5, icon:'✅', ncs:{code:'06010105',label:'작업환경 관리'},
-  titleKo:'깨끗이 치워요!', titleUz:"Tozalang!",
-  subKo:'오늘의 목표: 정리정돈·비상구 표현하기', subUz:"Bugungi maqsad: Tartib-intizom va favqulodda chiqish",
-  level:'A1',
-  goal:{
-    ko:'"치워주세요!" "통로 비워요!" 라고 말할 수 있어요',
-    uz:'"Tozalang!" "Yo\'lak bo\'sh bo\'lsin!" deya olasiz',
-    can:[
-      {ko:'작업 전에 정리정돈 꼭 해요!',    uz:'Ishdan oldin tartib-intizomni saqlang!'},
-      {ko:'통로에 물건 두면 안 돼요!',       uz:"Yo'lakda narsa qo'yish mumkin emas!"},
-      {ko:'비상구는 막으면 절대 안 돼요!',   uz:"Favqulodda chiqishni berkitish hech qachon mumkin emas!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'작업 전에 정리정돈 꼭 해요!',
-      uz:'Ishdan oldin tartib-intizomni saqlang!',
-      words:[
-        {ko:'정리정돈', syl:'정·리·정·돈', rom:'jeong-ni-jeong-don', uz:"tartib-intizom (organize/clean up)", ex:'정리정돈 꼭 해요!', e:'🗂️'},
-        {ko:'작업 전', syl:'작·업·전', rom:'ja-geop-jeon', uz:"ishdan oldin (before work)", ex:'작업 전에 꼭 해요!', e:'🔧'},
-      ]
-    },
-    {
-      phrase:'통로에 물건 두면 안 돼요!',
-      uz:"Yo'lakda narsa qo'yish mumkin emas!",
-      words:[
-        {ko:'통로', syl:'통·로', rom:'tong-no', uz:"yo'lak (aisle/passageway)", ex:'통로에 물건 두면 안 돼요!', e:'🚶'},
-        {ko:'물건', syl:'물·건', rom:'mul-geon', uz:"narsa (item/object)", ex:'통로에 물건 두면 안 돼요!', e:'📦'},
-      ]
-    },
-    {
-      phrase:'비상구는 막으면 절대 안 돼요!',
-      uz:"Favqulodda chiqishni berkitish hech qachon mumkin emas!",
-      words:[
-        {ko:'비상구', syl:'비·상·구', rom:'bi-sang-gu', uz:"favqulodda chiqish (emergency exit)", ex:'비상구는 막으면 안 돼요!', e:'🚪'},
-        {ko:'막으면', syl:'막·으·면', rom:'ma-geu-myeon', uz:"berkitish (if blocked)", ex:'막으면 절대 안 돼요!', e:'🚫'},
-      ]
-    },
+  day:5, icon:'🚪', level:'A1',
+  ncs:{code:'06010104',label:'비상시 대응'},
+  titleKo:'비상구가 저쪽이에요', titleUz:"Favqulodda chiqish u tarafda",
+  sentence:{ko:'비상구가 저쪽이에요.', uz:"Favqulodda chiqish u tarafda."},
+  words:[
+    {ko:'비상구', syl:'비·상·구', rom:'bi-sang-gu', pos:'명사', uz:"favqulodda chiqish — emergency exit", ex:'비상구가 저쪽이에요.', e:'🚪'},
+    {ko:'저쪽', syl:'저·쪽', rom:'jeo-jjok', pos:'명사', uz:'u taraf — over there', ex:'저쪽이에요.', e:'👉'},
+    {ko:'이/가', syl:'이/가', rom:'i/ga', pos:'조사(주격)', uz:'ega belgisi — subject marker', ex:'비상구가 저쪽이에요.', e:'📌'},
+    {ko:'이에요', syl:'이·에·요', rom:'i-e-yo', pos:'서술어', uz:'"...hisoblanadi" — is/am/are', ex:'저쪽이에요.', e:'✅'},
   ],
   quiz:[
-    {tag:'안전', q:'통로에 물건이 있으면 왜 위험해요?', qu:"Yo'lakda narsa bo'lsa nima uchun xavfli?", opts:['예쁘지 않아서','비상 대피 막혀서','무거워서','비싸서'], ans:1},
-    {tag:'어휘', q:'"비상구" 는 무엇이에요?', qu:'"비상구" nima?', opts:['화장실','favqulodda chiqish (emergency exit)','식당','휴게실'], ans:1},
-    {tag:'5S', q:'정리정돈을 해야 하는 시기는?', qu:"Tartib-intizomni qachon saqlash kerak?", opts:['주말에만','작업 후에만','매일, 작업 전후','월요일에만'], ans:2},
+    {tag:'어휘', q:'"비상구" 의 뜻은?', qu:'"비상구" nima?', opts:["kirish joyi","favqulodda chiqish",'oshxona','ombor'], ans:1},
+    {tag:'어휘', q:'"저쪽" 의 뜻은?', qu:'"저쪽" nima degani?', opts:['bu yer','bu taraf','u taraf','hamma yer'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 6 : 보호구 꼭 쓰세요 — 개인 보호구
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 6 ───────────
 {
-  day:6, icon:'🦺', ncs:{code:'06010301',label:'개인보호구'},
-  titleKo:'보호구 꼭 쓰세요!', titleUz:"Himoya vositasini kiyib oling!",
-  subKo:'오늘의 목표: 보호구 종류·착용 말하기', subUz:"Bugungi maqsad: Himoya vositasi turlari va kiyish",
-  level:'A1',
-  goal:{
-    ko:'"안전모 쓰세요!" "장갑 끼세요!" 라고 말할 수 있어요',
-    uz:'"Kask kiyib oling!" "Qo\'lqop kiying!" deya olasiz',
-    can:[
-      {ko:'안전모 꼭 쓰세요. 머리를 보호해요!', uz:'Kask albatta kiyib oling. Boshingizni himoya qiladi!'},
-      {ko:'먼지 많아요. 마스크 쓰세요.',         uz:'Chang ko\'p. Niqob kiyib oling.'},
-      {ko:'무거운 거 들 땐 장갑 끼세요!',         uz:'Og\'ir narsa ko\'targaningizda qo\'lqop kiying!'},
-    ]
-  },
-  speak:[
-    {
-      phrase:'안전모 꼭 쓰세요. 머리를 보호해요!',
-      uz:'Kask albatta kiyib oling. Boshingizni himoya qiladi!',
-      words:[
-        {ko:'안전모', syl:'안·전·모', rom:'an-jeon-mo', uz:'kask (hard hat)', ex:'안전모 꼭 쓰세요.', e:'⛑️'},
-        {ko:'보호', syl:'보·호', rom:'bo-ho', uz:'himoya qilish (protect)', ex:'머리를 보호해요!', e:'🛡️'},
-      ]
-    },
-    {
-      phrase:'먼지 많아요. 마스크 쓰세요.',
-      uz:"Chang ko'p. Niqob kiyib oling.",
-      words:[
-        {ko:'먼지', syl:'먼·지', rom:'meon-ji', uz:'chang (dust)', ex:'먼지 많아요.', e:'💨'},
-        {ko:'마스크', syl:'마·스·크', rom:'ma-seu-keu', uz:'niqob (mask)', ex:'마스크 쓰세요.', e:'😷'},
-      ]
-    },
-    {
-      phrase:'무거운 거 들 땐 장갑 끼세요!',
-      uz:"Og'ir narsa ko'targaningizda qo'lqop kiying!",
-      words:[
-        {ko:'장갑', syl:'장·갑', rom:'jang-gap', uz:"qo'lqop (gloves)", ex:'장갑 끼세요!', e:'🧤'},
-        {ko:'무거운', syl:'무·거·운', rom:'mu-geo-un', uz:"og'ir (heavy)", ex:'무거운 거 들 때 꼭 끼세요.', e:'🏋️'},
-      ]
-    },
+  day:6, icon:'⛑️', level:'A1',
+  ncs:{code:'06010301',label:'개인보호구'},
+  titleKo:'헬멧을 쓰세요', titleUz:'Kaskani kiyib oling',
+  sentence:{ko:'헬멧을 쓰세요.', uz:'Kaskani kiyib oling.'},
+  words:[
+    {ko:'헬멧', syl:'헬·멧', rom:'hel-met', pos:'명사', uz:'kaska — helmet', ex:'헬멧을 쓰세요.', e:'⛑️'},
+    {ko:'쓰다', syl:'쓰·다', rom:'sseu-da', pos:'동사(기본형)', uz:'kiymoq (bosh uchun) — to wear (on head)', ex:'헬멧을 쓰세요.', e:'👆'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:'tushum belgisi — object marker', ex:'헬멧을 쓰세요.', e:'📌'},
+    {ko:'-세요', syl:'세·요', rom:'se-yo', pos:'어미(명령)', uz:'iltimos qiling — please do', ex:'쓰세요.', e:'🙏'},
   ],
   quiz:[
-    {tag:'보호구', q:'높은 곳에서 일할 때 꼭 써야 하는 것은?', qu:"Baland joyda ishlayotganda nima kiyish kerak?", opts:['마스크','안전모와 안전대','장갑만','아무것도'], ans:1},
-    {tag:'어휘', q:'"먼지"는 무슨 뜻이에요?', qu:'"먼지" nima degani?', opts:['olov (fire)','chang (dust)','suv (water)','issiq (hot)'], ans:1},
-    {tag:'안전', q:'화학물질 작업 시 눈을 보호하는 것은?', qu:"Kimyoviy moddalar bilan ishlashda ko'zni himoya qiladigan narsa?", opts:['안전모','마스크','보안경','장갑'], ans:2},
+    {tag:'어휘', q:'"헬멧" 의 뜻은?', qu:'"헬멧" nima?', opts:["ko'zoynak",'kaska','qo\'lqop','etik'], ans:1},
+    {tag:'문법', q:'"쓰다" 의 기본형은?', qu:'"쓰다" asosiy shakli?', opts:['써요','쓰세요','쓰다','씁니다'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 7 : 불이야! 대피해요! — 화재 대피
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 7 ───────────
 {
-  day:7, icon:'🔥', ncs:{code:'06010104',label:'비상시 대응'},
-  titleKo:'불이야! 대피해요!', titleUz:"Yong'in! Qoching!",
-  subKo:'오늘의 목표: 화재 경보·대피 말하기', subUz:"Bugungi maqsad: Yong'in signali va qochish",
-  level:'A1',
-  goal:{
-    ko:'"불이야!" "비상구로 나가세요!" 라고 말할 수 있어요',
-    uz:'"Yong\'in!" "Favqulodda chiqishdan chiqing!" deya olasiz',
-    can:[
-      {ko:'불이야! 빨리 대피해요!',            uz:"Yong'in! Tez qoching!"},
-      {ko:'소화기로 꺼주세요!',                 uz:"O't o'chiruvchi bilan o'chiring!"},
-      {ko:'연기 있으면 낮게 엎드려 가세요!',   uz:"Tutun bo'lsa pastga egilib boring!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'불이야! 빨리 대피해요!',
-      uz:"Yong'in! Tez qoching!",
-      words:[
-        {ko:'불', syl:'불', rom:'bul', uz:"olov (fire)", ex:'불이야!', e:'🔥'},
-        {ko:'대피', syl:'대·피', rom:'dae-pi', uz:"qochish / evakuatsiya (evacuate)", ex:'빨리 대피해요!', e:'🚨'},
-      ]
-    },
-    {
-      phrase:'소화기로 꺼주세요!',
-      uz:"O't o'chiruvchi bilan o'chiring!",
-      words:[
-        {ko:'소화기', syl:'소·화·기', rom:'so-hwa-gi', uz:"o't o'chiruvchi (fire extinguisher)", ex:'소화기로 꺼주세요!', e:'🧯'},
-        {ko:'꺼주세요', syl:'꺼·주·세·요', rom:'kkeo-ju-se-yo', uz:"o'chiring (put it out)", ex:'소화기로 꺼주세요!', e:'💨'},
-      ]
-    },
-    {
-      phrase:'연기 있으면 낮게 엎드려 가세요!',
-      uz:"Tutun bo'lsa pastga egilib boring!",
-      words:[
-        {ko:'연기', syl:'연·기', rom:'yeon-gi', uz:"tutun (smoke)", ex:'연기 있으면 낮게 가세요!', e:'💨'},
-        {ko:'낮게', syl:'낮·게', rom:'nat-ge', uz:"pastga (low/down)", ex:'낮게 엎드려 가세요!', e:'👇'},
-      ]
-    },
+  day:7, icon:'🤲', level:'A1',
+  ncs:{code:'06010105',label:'작업환경 관리'},
+  titleKo:'손을 자주 씻어요', titleUz:"Qo'lni tez-tez yuving",
+  sentence:{ko:'손을 자주 씻어요.', uz:"Qo'lni tez-tez yuving."},
+  words:[
+    {ko:'손', syl:'손', rom:'son', pos:'명사', uz:"qo'l — hand", ex:'손을 씻어요.', e:'🤲'},
+    {ko:'자주', syl:'자·주', rom:'ja-ju', pos:'부사', uz:'tez-tez — often/frequently', ex:'자주 씻어요.', e:'🔄'},
+    {ko:'씻다', syl:'씻·다', rom:'ssit-da', pos:'동사(기본형)', uz:'yuvmoq — to wash', ex:'손을 씻어요.', e:'🧼'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:'tushum belgisi — object marker', ex:'손을 씻어요.', e:'📌'},
   ],
   quiz:[
-    {tag:'화재', q:'화재 시 엘리베이터를 타면 안 되는 이유는?', qu:"Yong'inda liftga chiqish mumkin emas, chunki?", opts:['느리니까','정전·연기 차 위험하니까','무서우니까','비싸니까'], ans:1},
-    {tag:'어휘', q:'"소화기"는 무엇이에요?', qu:'"소화기" nima?', opts:["suv (suv)",'o\'t o\'chiruvchi (fire extinguisher)','kask','qo\'lqop'], ans:1},
-    {tag:'대피', q:'연기가 많을 때 올바른 대피 방법은?', qu:"Ko'p tutun bo'lganda to'g'ri qochish usuli?", opts:['뛰어요','낮게 엎드려 가요','엘리베이터 타요','그냥 있어요'], ans:1},
+    {tag:'어휘', q:'"손" 의 뜻은?', qu:'"손" nima degani?', opts:["qo'l",'oyoq','bosh','ko\'z'], ans:0},
+    {tag:'어휘', q:'"자주" 의 뜻은?', qu:'"자주" nima degani?', opts:['sekin','bir marta','tez-tez','hech qachon'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 8 : 화학물질 조심해요 — 화학 안전
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 8 ───────────
 {
-  day:8, icon:'☠️', ncs:{code:'06010202',label:'화학물질 취급'},
-  titleKo:'화학물질 조심해요!', titleUz:"Kimyoviy moddalar xavfli!",
-  subKo:'오늘의 목표: 화학물질 위험 경고·취급 말하기', subUz:"Bugungi maqsad: Kimyoviy moddalar xavfi haqida",
-  level:'A2',
-  goal:{
-    ko:'"맨손으로 만지지 마세요!" "환기하세요!" 라고 말할 수 있어요',
-    uz:'"Yalang\'och qo\'l bilan tegmang!" "Shamollatish!" deya olasiz',
-    can:[
-      {ko:'이 약품 위험해요! 맨손으로 만지지 마세요!', uz:"Bu kimyoviy modda xavfli! Yalang'och qo'l bilan tegmang!"},
-      {ko:'보안경 쓰고 작업하세요. 눈에 튀면 위험해요.', uz:"Ko'zoynak kiyib ishlang. Ko'zga sachrasa xavfli."},
-      {ko:'환기 꼭 하세요. 창문 여세요.',               uz:"Shamollatishni unutmang. Deraza oching."},
-    ]
-  },
-  speak:[
-    {
-      phrase:'이 약품 위험해요! 맨손으로 만지지 마세요!',
-      uz:"Bu kimyoviy modda xavfli! Yalang'och qo'l bilan tegmang!",
-      words:[
-        {ko:'약품', syl:'약·품', rom:'yak-pum', uz:"kimyoviy modda (chemical)", ex:'이 약품 위험해요!', e:'☠️'},
-        {ko:'맨손', syl:'맨·손', rom:'maen-son', uz:"yalang'och qo'l (bare hands)", ex:'맨손으로 만지지 마세요!', e:'🙅'},
-      ]
-    },
-    {
-      phrase:'보안경 쓰고 작업하세요. 눈에 튀면 위험해요.',
-      uz:"Ko'zoynak kiyib ishlang. Ko'zga sachrasa xavfli.",
-      words:[
-        {ko:'보안경', syl:'보·안·경', rom:'bo-an-gyeong', uz:"ko'zoynak (safety glasses)", ex:'보안경 쓰고 작업하세요.', e:'👓'},
-        {ko:'눈', syl:'눈', rom:'nun', uz:"ko'z (eye)", ex:'눈에 튀면 위험해요.', e:'👁️'},
-      ]
-    },
-    {
-      phrase:'환기 꼭 하세요. 창문 여세요.',
-      uz:"Shamollatishni unutmang. Deraza oching.",
-      words:[
-        {ko:'환기', syl:'환·기', rom:'hwan-gi', uz:"shamollatish (ventilation)", ex:'환기 꼭 하세요.', e:'🌬️'},
-        {ko:'창문', syl:'창·문', rom:'chang-mun', uz:"deraza (window)", ex:'창문 여세요.', e:'🪟'},
-      ]
-    },
+  day:8, icon:'🚫', level:'A1',
+  ncs:{code:'06010201',label:'기계·설비 안전'},
+  titleKo:'들어가면 안 돼요', titleUz:"Kirish mumkin emas",
+  sentence:{ko:'여기 들어가면 안 돼요.', uz:'Bu yerga kirish mumkin emas.'},
+  words:[
+    {ko:'들어가다', syl:'들·어·가·다', rom:'deu-reo-ga-da', pos:'동사(기본형)', uz:'kirmoq — to enter/go in', ex:'들어가면 안 돼요.', e:'🚪'},
+    {ko:'안 돼요', syl:'안·돼·요', rom:'an dwae-yo', pos:'서술어', uz:"bo'lmaydi — not allowed/can't", ex:'들어가면 안 돼요.', e:'🚫'},
+    {ko:'-면', syl:'면', rom:'myeon', pos:'어미(조건)', uz:"-sa/-lsa — if/when", ex:'들어가면', e:'📎'},
+    {ko:'여기', syl:'여·기', rom:'yeo-gi', pos:'명사', uz:'bu yer — here', ex:'여기 들어가면 안 돼요.', e:'📍'},
   ],
   quiz:[
-    {tag:'화학', q:'화학물질 MSDS에서 확인해야 할 것은?', qu:"Kimyoviy modda MSDS dan nima tekshirish kerak?", opts:['맛','xavfsizlik ma\'lumoti (safety info)','색깔','냄새만'], ans:1},
-    {tag:'보호구', q:'화학물질 다룰 때 눈 보호를 위해 써야 하는 것은?', qu:"Kimyoviy moddalar bilan ishlashda ko'z uchun?", opts:['안전모','보안경','마스크','장갑'], ans:1},
-    {tag:'안전', q:'화학물질 작업 시 환기가 필요한 이유는?', qu:"Kimyoviy moddalar bilan ishlashda shamollatish kerak chunki?", opts:['덥지 않으려고','유해 가스 제거를 위해','창문이 예뻐서','규칙이라서'], ans:1},
+    {tag:'어휘', q:'"들어가다" 의 뜻은?', qu:'"들어가다" nima?', opts:["kirmoq",'chiqmoq','o\'tirmoq','turmoq'], ans:0},
+    {tag:'어휘', q:'"안 돼요" 의 뜻은?', qu:'"안 돼요" nima degani?', opts:["bo'ladi",'kerak',"bo'lmaydi",'yaxshi'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 9 : 높은 곳 조심해요 — 추락 예방
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 9 ───────────
 {
-  day:9, icon:'🏗️', ncs:{code:'06010203',label:'추락·낙하 예방'},
-  titleKo:'높은 곳 조심해요!', titleUz:"Baland joyda ehtiyot bo'ling!",
-  subKo:'오늘의 목표: 추락 위험 경고·안전장비 말하기', subUz:"Bugungi maqsad: Baland joyda xavfsizlik",
-  level:'A2',
-  goal:{
-    ko:'"안전대 매세요!" "천천히 올라가세요!" 라고 말할 수 있어요',
-    uz:'"Xavfsizlik kamarini taqing!" "Sekin chiqing!" deya olasiz',
-    can:[
-      {ko:'높은 곳 작업할 땐 안전대 꼭 매세요!', uz:'Baland joyda ishlayotganda xavfsizlik kamarini albatta taqing!'},
-      {ko:'사다리 잡고 천천히 올라가세요.',       uz:'Narvonni ushlab sekin chiqing.'},
-      {ko:'안전망 없으면 절대 올라가면 안 돼요!', uz:"To'r bo'lmasa hech qachon chiqish mumkin emas!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'높은 곳 작업할 땐 안전대 꼭 매세요!',
-      uz:'Baland joyda ishlayotganda xavfsizlik kamarini albatta taqing!',
-      words:[
-        {ko:'안전대', syl:'안·전·대', rom:'an-jeon-dae', uz:"xavfsizlik kamari (safety harness)", ex:'안전대 꼭 매세요!', e:'🦺'},
-        {ko:'높은 곳', syl:'높·은·곳', rom:'no-peun-got', uz:"baland joy (high place)", ex:'높은 곳 작업할 땐 조심해요!', e:'🏔️'},
-      ]
-    },
-    {
-      phrase:'사다리 잡고 천천히 올라가세요.',
-      uz:'Narvonni ushlab sekin chiqing.',
-      words:[
-        {ko:'사다리', syl:'사·다·리', rom:'sa-da-ri', uz:"narvon (ladder)", ex:'사다리 잡고 올라가세요.', e:'🪜'},
-        {ko:'천천히', syl:'천·천·히', rom:'cheon-cheon-hi', uz:"sekin (slowly)", ex:'천천히 올라가세요.', e:'🐢'},
-      ]
-    },
-    {
-      phrase:'안전망 없으면 절대 올라가면 안 돼요!',
-      uz:"To'r bo'lmasa hech qachon chiqish mumkin emas!",
-      words:[
-        {ko:'안전망', syl:'안·전·망', rom:'an-jeon-mang', uz:"xavfsizlik to'ri (safety net)", ex:'안전망 없으면 안 돼요!', e:'🕸️'},
-        {ko:'올라가다', syl:'올·라·가·다', rom:'ol-la-ga-da', uz:"chiqmoq (to climb/go up)", ex:'절대 올라가면 안 돼요!', e:'⬆️'},
-      ]
-    },
+  day:9, icon:'🏃', level:'A1',
+  ncs:{code:'06010104',label:'비상시 대응'},
+  titleKo:'빨리 대피하세요', titleUz:'Tez evakuatsiya qiling',
+  sentence:{ko:'빨리 대피하세요!', uz:'Tez evakuatsiya qiling!'},
+  words:[
+    {ko:'빨리', syl:'빨·리', rom:'ppal-li', pos:'부사', uz:'tez — quickly/fast', ex:'빨리 대피하세요!', e:'⚡'},
+    {ko:'대피', syl:'대·피', rom:'dae-pi', pos:'명사', uz:'evakuatsiya — evacuation', ex:'대피하세요!', e:'🏃'},
+    {ko:'하다', syl:'하·다', rom:'ha-da', pos:'동사(기본형)', uz:'qilmoq — to do', ex:'대피하세요.', e:'✅'},
+    {ko:'-세요', syl:'세·요', rom:'se-yo', pos:'어미(명령)', uz:'iltimos qiling — please do', ex:'대피하세요!', e:'🙏'},
   ],
   quiz:[
-    {tag:'추락', q:'높은 곳에서 작업 시 반드시 착용해야 하는 것은?', qu:"Baland joyda ishlashda nima kiyish shart?", opts:['마스크만','안전대와 안전모','장갑만','아무것도'], ans:1},
-    {tag:'어휘', q:'"사다리" 는 무엇이에요?', qu:'"사다리" nima?', opts:['mashina','narvon (ladder)','kask','qo\'lqop'], ans:1},
-    {tag:'안전', q:'안전망이 없을 때 올바른 행동은?', qu:"Xavfsizlik to'ri bo'lmasa to'g'ri harakat?", opts:['그냥 올라가요','천천히 올라가요','절대 올라가면 안 돼요','빨리 올라가요'], ans:2},
+    {tag:'어휘', q:'"빨리" 의 뜻은?', qu:'"빨리" nima degani?', opts:['sekin','baland','tez','past'], ans:2},
+    {tag:'어휘', q:'"대피" 의 뜻은?', qu:'"대피" nima degani?', opts:["kirish",'dam olish','evakuatsiya','to\'xtatish'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 10 : 몸 다쳤어요 — 응급처치
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 10 ───────────
 {
-  day:10, icon:'🤕', ncs:{code:'06010104',label:'응급처치·구급'},
-  titleKo:'몸 다쳤어요!', titleUz:"Qo'lim shikastlandi!",
-  subKo:'오늘의 목표: 부상 부위·응급처치 말하기', subUz:"Bugungi maqsad: Shikastlangan joy va birinchi yordam",
-  level:'A2',
-  goal:{
-    ko:'"베였어요!" "지혈해주세요!" 라고 말할 수 있어요',
-    uz:'"Kesildi!" "Qonni to\'xtating!" deya olasiz',
-    can:[
-      {ko:'손 베였어요. 지혈 먼저 해요.',              uz:"Qo'lim kesildi. Avval qonni to'xtating."},
-      {ko:'화상 입었어요. 빨리 찬물에 씻어요!',        uz:"Kuydi. Tez sovuq suvda yuving!"},
-      {ko:'의식이 없어요! 빨리 119 불러요!',           uz:"Hushidan ketdi! Tez 119 chaqiring!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'손 베였어요. 지혈 먼저 해요.',
-      uz:"Qo'lim kesildi. Avval qonni to'xtating.",
-      words:[
-        {ko:'베였어요', syl:'베·였·어·요', rom:'be-yeo-sseo-yo', uz:"kesildi (got cut)", ex:'손 베였어요.', e:'🩸'},
-        {ko:'지혈', syl:'지·혈', rom:'ji-hyeol', uz:"qonni to'xtating (stop bleeding)", ex:'지혈 먼저 해요.', e:'🩹'},
-      ]
-    },
-    {
-      phrase:'화상 입었어요. 빨리 찬물에 씻어요!',
-      uz:"Kuydi. Tez sovuq suvda yuving!",
-      words:[
-        {ko:'화상', syl:'화·상', rom:'hwa-sang', uz:"kuyish (burn)", ex:'화상 입었어요.', e:'🔥'},
-        {ko:'찬물', syl:'찬·물', rom:'chan-mul', uz:"sovuq suv (cold water)", ex:'찬물에 씻어요!', e:'💧'},
-      ]
-    },
-    {
-      phrase:'의식이 없어요! 빨리 119 불러요!',
-      uz:"Hushidan ketdi! Tez 119 chaqiring!",
-      words:[
-        {ko:'의식', syl:'의·식', rom:'ui-sik', uz:"hush (consciousness)", ex:'의식이 없어요!', e:'🧠'},
-        {ko:'없어요', syl:'없·어·요', rom:'eop-seo-yo', uz:"yo'q / ketdi (is gone/absent)", ex:'의식이 없어요!', e:'❌'},
-      ]
-    },
+  day:10, icon:'📞', level:'A1',
+  ncs:{code:'06010104',label:'비상시 대응'},
+  titleKo:'119에 신고하세요', titleUz:"119 ga xabar bering",
+  sentence:{ko:'119에 신고하세요.', uz:"119 ga xabar bering."},
+  words:[
+    {ko:'신고', syl:'신·고', rom:'sin-go', pos:'명사', uz:'xabar berish — report/notify', ex:'119에 신고하세요.', e:'📢'},
+    {ko:'에', syl:'에', rom:'e', pos:'조사(방향)', uz:"-ga/-ka — to/at (direction)", ex:'119에 신고하세요.', e:'📌'},
+    {ko:'하다', syl:'하·다', rom:'ha-da', pos:'동사(기본형)', uz:'qilmoq — to do', ex:'신고하세요.', e:'✅'},
+    {ko:'119', syl:'일·일·구', rom:'il-il-gu', pos:'명사', uz:"1-1-9 — emergency number", ex:'119에 전화하세요.', e:'🚑'},
   ],
   quiz:[
-    {tag:'응급', q:'화상을 입었을 때 첫 번째 처치는?', qu:"Kuyganda birinchi yordam?", opts:['기름 바르기','20분 이상 찬물에 씻기','그냥 두기','테이프 붙이기'], ans:1},
-    {tag:'어휘', q:'"지혈"은 무엇이에요?', qu:'"지혈" nima?', opts:["qonni to'xtating (stop bleeding)",'suv ichish','dam olish','uxlash'], ans:0},
-    {tag:'안전', q:'의식이 없는 사람을 발견하면?', qu:"Hushidan ketgan odamni topsa?", opts:['흔들어 깨우기','119 신고 & 심폐소생술','혼자 두기','물 먹이기'], ans:1},
+    {tag:'어휘', q:'"신고" 의 뜻은?', qu:'"신고" nima degani?', opts:["xabar berish",'kutish','ketish','ishlash'], ans:0},
+    {tag:'상식', q:'한국 응급 전화번호는?', qu:"Koreyadagi favqulodda yordam raqami?", opts:['110','119','112','118'], ans:1},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 11 : 작업 지시 알아들어요 — 업무 소통
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 11 ───────────
 {
-  day:11, icon:'📋', ncs:{code:'06010101',label:'작업지시·작업점검'},
-  titleKo:'알겠어요! 해볼게요!', titleUz:"Tushundim! Harakat qilaman!",
-  subKo:'오늘의 목표: 작업 지시 이해·응답하기', subUz:"Bugungi maqsad: Ish ko'rsatmalarini tushunish va javob berish",
-  level:'A2',
-  goal:{
-    ko:'"알겠어요!" "이거 어떻게 해요?" 라고 말할 수 있어요',
-    uz:'"Tushundim!" "Buni qanday qilaman?" deya olasiz',
-    can:[
-      {ko:'이거 저기 옮겨주세요. 조심해서요.',     uz:"Buni u yerga ko'chiring. Ehtiyot bo'ling."},
-      {ko:'이 기계 사용법 알아요? 모르면 알려줘요.', uz:"Bu mashinadan foydalanishni bilasizmi? Bilmasangiz ayting."},
-      {ko:'오늘 작업 다 끝났어요. 수고하셨어요!',  uz:"Bugungi ish tugadi. Rahmat!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'이거 저기 옮겨주세요. 조심해서요.',
-      uz:"Buni u yerga ko'chiring. Ehtiyot bo'ling.",
-      words:[
-        {ko:'옮겨주세요', syl:'옮·겨·주·세·요', rom:'om-gyeo-ju-se-yo', uz:"ko'chiring (please move)", ex:'저기 옮겨주세요.', e:'🚚'},
-        {ko:'조심해서', syl:'조·심·해·서', rom:'jo-sim-hae-seo', uz:"ehtiyot bilan (carefully)", ex:'조심해서요.', e:'⚠️'},
-      ]
-    },
-    {
-      phrase:'이 기계 사용법 알아요? 모르면 알려줘요.',
-      uz:"Bu mashinadan foydalanishni bilasizmi? Bilmasangiz ayting.",
-      words:[
-        {ko:'사용법', syl:'사·용·법', rom:'sa-yong-beop', uz:"foydalanish usuli (how to use)", ex:'사용법 알아요?', e:'📖'},
-        {ko:'알려줘요', syl:'알·려·줘·요', rom:'al-lyeo-jwo-yo', uz:"ayting (please tell me)", ex:'모르면 알려줘요.', e:'💬'},
-      ]
-    },
-    {
-      phrase:'오늘 작업 다 끝났어요. 수고하셨어요!',
-      uz:"Bugungi ish tugadi. Rahmat!",
-      words:[
-        {ko:'끝났어요', syl:'끝·났·어·요', rom:'kkeut-na-sseo-yo', uz:"tugadi (finished)", ex:'오늘 작업 끝났어요.', e:'✅'},
-        {ko:'수고하셨어요', syl:'수·고·하·셨·어·요', rom:'su-go-ha-syeo-sseo-yo', uz:"rahmat / yaxshi ishladingiz (good work)", ex:'수고하셨어요!', e:'👏'},
-      ]
-    },
+  day:11, icon:'⛑️', level:'A2',
+  ncs:{code:'06010301',label:'개인보호구'},
+  titleKo:'안전모를 써야 해요', titleUz:"Xavfsizlik dubulg'asini kiyish kerak",
+  sentence:{ko:'안전모를 써야 해요.', uz:"Xavfsizlik dubulg'asini kiyish kerak."},
+  words:[
+    {ko:'안전모', syl:'안·전·모', rom:'an-jeon-mo', pos:'명사', uz:"xavfsizlik dubulg'asi — safety helmet", ex:'안전모를 써야 해요.', e:'⛑️'},
+    {ko:'써야 해요', syl:'써·야·해·요', rom:'sseo-ya hae-yo', pos:'서술어(의무)', uz:'kiyish kerak — must wear', ex:'안전모를 써야 해요.', e:'✅'},
+    {ko:'-야 해요', syl:'야·해·요', rom:'ya hae-yo', pos:'어미(의무)', uz:'kerak — must/have to', ex:'써야 해요.', e:'📌'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:'tushum belgisi — object marker', ex:'안전모를 써야 해요.', e:'📌'},
   ],
   quiz:[
-    {tag:'소통', q:'"수고하셨어요" 는 언제 써요?', qu:'"수고하셨어요" qachon ishlatiladi?', opts:['아침 인사','일 끝났을 때','도움 요청할 때','위험할 때'], ans:1},
-    {tag:'어휘', q:'"사용법" 은 무슨 뜻이에요?', qu:'"사용법" nima degani?', opts:['xavf (danger)','foydalanish usuli (how to use)','ta\'mirlash (repair)','narx (price)'], ans:1},
-    {tag:'소통', q:'기계 사용법을 모를 때 어떻게 해요?', qu:"Mashina ishlatishni bilmasangiz nima qilasiz?", opts:['그냥 써요','혼자 알아봐요','담당자에게 알려줘요 (물어봐요)','도망가요'], ans:2},
+    {tag:'어휘', q:'"안전모" 의 뜻은?', qu:'"안전모" nima?', opts:["ko'zoynak","xavfsizlik dubulg'asi",'qo\'lqop','etik'], ans:1},
+    {tag:'문법', q:'"써야 해요" 의 뜻은?', qu:'"써야 해요" nima degani?', opts:["kiymayman",'kiysa ham bo\'ladi','kiyish kerak','kiymang'], ans:2},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 12 : 무거운 거 안전하게 — 중량물 취급
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 12 ───────────
 {
-  day:12, icon:'🏋️', ncs:{code:'06010204',label:'근골격계 예방'},
-  titleKo:'허리 조심해요!', titleUz:"Belingizga ehtiyot bo'ling!",
-  subKo:'오늘의 목표: 중량물 안전 취급 말하기', subUz:"Bugungi maqsad: Og'ir narsalarni xavfsiz ko'tarish",
-  level:'A2',
-  goal:{
-    ko:'"혼자 들지 마세요!" "허리 조심해요!" 라고 말할 수 있어요',
-    uz:'"Yolg\'iz ko\'tarmang!" "Belingizga ehtiyot bo\'ling!" deya olasiz',
-    can:[
-      {ko:'무거운 거 혼자 들지 마세요. 같이 해요!',   uz:"Og'ir narsani yolg'iz ko'tarmang. Birgalikda qilaylik!"},
-      {ko:'허리 굽히지 마세요. 무릎 구부려요.',        uz:"Belni bukib ko'tarmang. Tizzangizni buking."},
-      {ko:'지게차로 옮겨요. 무리하지 마세요.',          uz:"Forklift bilan ko'chiring. Zo'rlamang."},
-    ]
-  },
-  speak:[
-    {
-      phrase:'무거운 거 혼자 들지 마세요. 같이 해요!',
-      uz:"Og'ir narsani yolg'iz ko'tarmang. Birgalikda qilaylik!",
-      words:[
-        {ko:'혼자', syl:'혼·자', rom:'hon-ja', uz:"yolg'iz (alone)", ex:'혼자 들지 마세요.', e:'🧍'},
-        {ko:'같이', syl:'같·이', rom:'ga-chi', uz:"birgalikda (together)", ex:'같이 해요!', e:'🤝'},
-      ]
-    },
-    {
-      phrase:'허리 굽히지 마세요. 무릎 구부려요.',
-      uz:"Belni bukib ko'tarmang. Tizzangizni buking.",
-      words:[
-        {ko:'허리', syl:'허·리', rom:'heo-ri', uz:"bel (back/waist)", ex:'허리 굽히지 마세요.', e:'🔙'},
-        {ko:'무릎', syl:'무·릎', rom:'mu-reup', uz:"tizza (knee)", ex:'무릎 구부려요.', e:'🦵'},
-      ]
-    },
-    {
-      phrase:'지게차로 옮겨요. 무리하지 마세요.',
-      uz:"Forklift bilan ko'chiring. Zo'rlamang.",
-      words:[
-        {ko:'옮겨요', syl:'옮·겨·요', rom:'om-gyeo-yo', uz:"ko'chiring (move it)", ex:'지게차로 옮겨요.', e:'🚜'},
-        {ko:'무리하다', syl:'무·리·하·다', rom:'mu-ri-ha-da', uz:"zo'rlamoq / ortiqcha ish (overdo)", ex:'무리하지 마세요.', e:'😓'},
-      ]
-    },
+  day:12, icon:'🚫', level:'A2',
+  ncs:{code:'06010105',label:'작업환경 관리'},
+  titleKo:'뛰면 안 돼요', titleUz:"Yugurish mumkin emas",
+  sentence:{ko:'뛰면 안 돼요.', uz:"Yugurish mumkin emas."},
+  words:[
+    {ko:'뛰다', syl:'뛰·다', rom:'ttwi-da', pos:'동사(기본형)', uz:'yugurmoq — to run', ex:'뛰면 안 돼요.', e:'🏃'},
+    {ko:'안 돼요', syl:'안·돼·요', rom:'an dwae-yo', pos:'서술어', uz:"bo'lmaydi — not allowed", ex:'뛰면 안 돼요.', e:'🚫'},
+    {ko:'-면', syl:'면', rom:'myeon', pos:'어미(조건)', uz:"-sa — if/when", ex:'뛰면', e:'📎'},
+    {ko:'금지', syl:'금·지', rom:'geum-ji', pos:'명사', uz:"taqiq — prohibition/ban", ex:'금지 구역이에요.', e:'⛔'},
   ],
   quiz:[
-    {tag:'안전', q:'무거운 물건을 들 때 올바른 자세는?', qu:"Og'ir narsani ko'tarishda to'g'ri holat?", opts:['허리를 굽히고','무릎을 굽히고 허리는 곧게','빨리 들기','한 손으로 들기'], ans:1},
-    {tag:'어휘', q:'"혼자" 의 반대말은?', qu:'"혼자" ning ziddi?', opts:["yolg'iz",'같이 (birga)','빨리','조심'], ans:1},
-    {tag:'안전', q:'무거운 물건을 옮길 때 가장 좋은 방법은?', qu:"Og'ir narsani ko'chirishning eng yaxshi usuli?", opts:['혼자 빨리','허리로 들기','지게차 이용하기','한 손으로'], ans:2},
+    {tag:'어휘', q:'"뛰다" 의 뜻은?', qu:'"뛰다" nima degani?', opts:["o'tirmoq",'yugurmoq',"yurmoq",'turmoq'], ans:1},
+    {tag:'문법', q:'"뛰면 안 돼요" 의 뜻은?', qu:'"뛰면 안 돼요" nima degani?', opts:['yugurish kerak',"yugurish mumkin emas",'yuguring','yuguring iltimos'], ans:1},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 13 : 전기 조심해요 — 감전 예방
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 13 ───────────
 {
-  day:13, icon:'⚡', ncs:{code:'06010201',label:'전기 안전'},
-  titleKo:'전기 조심해요!', titleUz:"Elektr tokidan ehtiyot bo'ling!",
-  subKo:'오늘의 목표: 감전 위험·전기 안전 말하기', subUz:"Bugungi maqsad: Elektr xavfi haqida gapirish",
-  level:'A2',
-  goal:{
-    ko:'"젖은 손으로 만지면 안 돼요!" "전원 차단해요!" 라고 말할 수 있어요',
-    uz:'"Ho\'l qo\'l bilan tegish mumkin emas!" "Quvvatni uzing!" deya olasiz',
-    can:[
-      {ko:'젖은 손으로 전기 만지면 감전돼요!',        uz:"Ho'l qo'l bilan elektr toki tegsangiz tok uradi!"},
-      {ko:'전선이 끊어졌어요. 바로 신고해요.',          uz:"Elektr simi uzildi. Darhol xabar bering."},
-      {ko:'전기 작업할 땐 전원 꼭 차단하고 시작해요.', uz:"Elektr ishi paytida quvvatni albatta uziب boshlang."},
-    ]
-  },
-  speak:[
-    {
-      phrase:'젖은 손으로 전기 만지면 감전돼요!',
-      uz:"Ho'l qo'l bilan elektr toki tegsangiz tok uradi!",
-      words:[
-        {ko:'젖은 손', syl:'젖·은·손', rom:'jeo-jeun-son', uz:"ho'l qo'l (wet hands)", ex:'젖은 손으로 만지면 안 돼요!', e:'💧'},
-        {ko:'감전', syl:'감·전', rom:'gam-jeon', uz:"tok urishi (electric shock)", ex:'감전돼요!', e:'⚡'},
-      ]
-    },
-    {
-      phrase:'전선이 끊어졌어요. 바로 신고해요.',
-      uz:"Elektr simi uzildi. Darhol xabar bering.",
-      words:[
-        {ko:'전선', syl:'전·선', rom:'jeon-seon', uz:"elektr simi (electrical wire)", ex:'전선이 끊어졌어요.', e:'🔌'},
-        {ko:'바로', syl:'바·로', rom:'ba-ro', uz:"darhol (immediately)", ex:'바로 신고해요.', e:'⏱️'},
-      ]
-    },
-    {
-      phrase:'전기 작업할 땐 전원 꼭 차단하고 시작해요.',
-      uz:"Elektr ishi paytida quvvatni albatta uzib boshlang.",
-      words:[
-        {ko:'차단', syl:'차·단', rom:'cha-dan', uz:"uzish / o'chirish (cut off/disconnect)", ex:'전원 꼭 차단해요.', e:'🔴'},
-        {ko:'시작해요', syl:'시·작·해·요', rom:'si-jak-hae-yo', uz:"boshlang (start)", ex:'차단하고 시작해요.', e:'▶️'},
-      ]
-    },
+  day:13, icon:'⚙️', level:'A2',
+  ncs:{code:'06010201',label:'기계·설비 안전'},
+  titleKo:'기계를 조심하세요', titleUz:'Mashinaga ehtiyot bo\'ling',
+  sentence:{ko:'기계를 조심하세요.', uz:"Mashinaga ehtiyot bo'ling."},
+  words:[
+    {ko:'기계', syl:'기·계', rom:'gi-gye', pos:'명사', uz:"mashina/mexanizm — machine", ex:'기계를 조심하세요.', e:'⚙️'},
+    {ko:'조심', syl:'조·심', rom:'jo-sim', pos:'명사', uz:"ehtiyot bo'lish — caution/care", ex:'조심하세요.', e:'⚠️'},
+    {ko:'하다', syl:'하·다', rom:'ha-da', pos:'동사(기본형)', uz:'qilmoq — to do', ex:'조심하세요.', e:'✅'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:'tushum belgisi — object marker', ex:'기계를 조심하세요.', e:'📌'},
   ],
   quiz:[
-    {tag:'감전', q:'감전을 예방하려면?', qu:"Tok urishidan qutulish uchun?", opts:['빨리 일하기','젖은 손으로 잡기','전원 차단 후 작업','맨발로 서기'], ans:2},
-    {tag:'어휘', q:'"차단" 은 무슨 뜻이에요?', qu:'"차단" nima degani?', opts:["ulash (connect)",'uzish (cut off/disconnect)','ehtiyot','tez'], ans:1},
-    {tag:'안전', q:'전선이 끊어진 것을 봤을 때 어떻게 해요?', qu:"Elektr simi uzilganini ko'rsangiz nima qilasiz?", opts:['손으로 잡아요','발로 밟아요','담당자에게 바로 신고해요','무시해요'], ans:2},
+    {tag:'어휘', q:'"기계" 의 뜻은?', qu:'"기계" nima?', opts:["mashina",'bino','yo\'l','idish'], ans:0},
+    {tag:'어휘', q:'"조심" 의 뜻은?', qu:'"조심" nima degani?', opts:["ehtiyot bo'lish",'tez ishlash','dam olish','ketish'], ans:0},
   ]
 },
 
-// ─────────────────────────────────────────────────────────────────
-// Day 14 : 2주 총복습 — 실전 표현
-// ─────────────────────────────────────────────────────────────────
+// ─────────── Day 14 ───────────
 {
-  day:14, icon:'🏆', ncs:{code:'06010103',label:'안전교육·훈련'},
-  titleKo:'지금까지 배운 거 다 써봐요!', titleUz:"Barcha o'rganganlarni qo'llaylik!",
-  subKo:'오늘의 목표: 2주 핵심 표현 총복습', subUz:"Bugungi maqsad: 2 haftalik asosiy iboralarni takrorlash",
-  level:'A2',
-  goal:{
-    ko:'배운 안전 표현을 상황에 맞게 말할 수 있어요',
-    uz:"O'rganilgan xavfsizlik iboralarini vaziyatga mos ishlatish",
-    can:[
-      {ko:'불이 났어요! 빨리 계단으로 대피해요! 엘리베이터 타면 안 돼요!', uz:"Yong'in! Tez zinapoyadan chiqing! Liftga chiqish mumkin emas!"},
-      {ko:'움직이지 마세요. 구급상자 가져오세요. 119 불러요!',             uz:"Qimirlamang. Doriyo qutisini olib keling. 119 chaqiring!"},
-      {ko:'2주일 동안 정말 열심히 했어요. 잘 하셨어요!',                   uz:"2 hafta davomida juda qattiq ishladingiz. Ajoyib!"},
-    ]
-  },
-  speak:[
-    {
-      phrase:'불이 났어요! 빨리 계단으로 대피해요! 엘리베이터 타면 안 돼요!',
-      uz:"Yong'in! Tez zinapoyadan chiqing! Liftga chiqish mumkin emas!",
-      words:[
-        {ko:'계단', syl:'계·단', rom:'gye-dan', uz:"zinapoya (stairs)", ex:'계단으로 대피해요!', e:'🪜'},
-        {ko:'엘리베이터', syl:'엘·리·베·이·터', rom:'el-li-be-i-teo', uz:"lift (elevator)", ex:'엘리베이터 타면 안 돼요!', e:'🛗'},
-      ]
-    },
-    {
-      phrase:'움직이지 마세요. 구급상자 가져오세요. 119 불러요!',
-      uz:"Qimirlamang. Doriyo qutisini olib keling. 119 chaqiring!",
-      words:[
-        {ko:'구급상자', syl:'구·급·상·자', rom:'gu-geup-sang-ja', uz:"doriyo qutisi (first aid kit)", ex:'구급상자 가져오세요.', e:'🧰'},
-        {ko:'가져오세요', syl:'가·져·오·세·요', rom:'ga-jyeo-o-se-yo', uz:"olib keling (please bring)", ex:'구급상자 가져오세요.', e:'🎒'},
-      ]
-    },
-    {
-      phrase:'2주일 동안 정말 열심히 했어요. 잘 하셨어요!',
-      uz:"2 hafta davomida juda qattiq ishladingiz. Ajoyib!",
-      words:[
-        {ko:'열심히', syl:'열·심·히', rom:'yeol-sim-hi', uz:"qattiq / jiddiy (hard/diligently)", ex:'열심히 했어요!', e:'💪'},
-        {ko:'잘 하셨어요', syl:'잘·하·셨·어·요', rom:'jal-ha-syeo-sseo-yo', uz:"ajoyib / yaxshi qildingiz (well done)", ex:'잘 하셨어요!', e:'👏'},
-      ]
-    },
+  day:14, icon:'☠️', level:'A2',
+  ncs:{code:'06010202',label:'화학물질 취급'},
+  titleKo:'화학물질을 만지지 마세요', titleUz:"Kimyoviy moddani ushlamang",
+  sentence:{ko:'화학물질을 만지지 마세요.', uz:"Kimyoviy moddani ushlamang."},
+  words:[
+    {ko:'화학물질', syl:'화·학·물·질', rom:'hwa-hang-mul-jil', pos:'명사', uz:'kimyoviy modda — chemical substance', ex:'화학물질을 만지지 마세요.', e:'☠️'},
+    {ko:'만지다', syl:'만·지·다', rom:'man-ji-da', pos:'동사(기본형)', uz:'tegmoq/ushlamoq — to touch', ex:'만지지 마세요.', e:'🖐️'},
+    {ko:'-지 마세요', syl:'지·마·세·요', rom:'ji ma-se-yo', pos:'어미(금지)', uz:'-mang — don\'t [verb]', ex:'만지지 마세요.', e:'🚫'},
+    {ko:'을/를', syl:'을/를', rom:'eul/reul', pos:'조사(목적격)', uz:'tushum belgisi — object marker', ex:'화학물질을 만지지 마세요.', e:'📌'},
   ],
   quiz:[
-    {tag:'종합', q:'화재 시 절대 타면 안 되는 것은?', qu:"Yong'inda mutlaqo chiqmaslik kerak bo'lgan narsa?", opts:['비상구','계단','엘리베이터','화재 신고'], ans:2},
-    {tag:'종합', q:'무거운 물건을 들 때 올바른 자세는?', qu:"Og'ir narsani ko'tarishda to'g'ri holat?", opts:['허리를 굽히고','무릎을 굽히고 허리는 곧게','빨리 들기','한 손으로'], ans:1},
-    {tag:'종합', q:'전기 작업 시 착용해야 하는 보호구는?', qu:"Elektr ishi paytida kiyilishi kerak bo'lgan?", opts:['방진마스크','안전대','절연장갑','귀마개'], ans:2},
-    {tag:'종합', q:'부상 시 상처에서 피가 날 때 먼저 하는 것은?', qu:"Jarohatdan qon kelganda birinchi nima?", opts:['달리기','상처 누르기 (bosib turish)','잠자기','음식 먹기'], ans:1},
+    {tag:'어휘', q:'"화학물질" 의 뜻은?', qu:'"화학물질" nima?', opts:['suv','kimyoviy modda','oziq-ovqat','gaz'], ans:1},
+    {tag:'문법', q:'"만지지 마세요" 의 뜻은?', qu:'"만지지 마세요" nima degani?', opts:['ushlab oling','ushlamang','ushling','ushla'], ans:1},
+  ]
+},
+
+// ─────────── Day 15 ───────────
+{
+  day:15, icon:'💪', level:'A2',
+  ncs:{code:'06010204',label:'근골격계 예방'},
+  titleKo:'혼자 들지 마세요', titleUz:"Yolg'iz ko'tarmang",
+  sentence:{ko:'무거운 건 혼자 들지 마세요.', uz:"Og'ir narsani yolg'iz ko'tarmang."},
+  words:[
+    {ko:'무겁다', syl:'무·겁·다', rom:'mu-geop-da', pos:'형용사(기본형)', uz:"og'ir — heavy", ex:'무거운 건 혼자 들지 마세요.', e:'🏋️'},
+    {ko:'혼자', syl:'혼·자', rom:'hon-ja', pos:'부사', uz:"yolg'iz — alone", ex:'혼자 들지 마세요.', e:'👤'},
+    {ko:'들다', syl:'들·다', rom:'deul-da', pos:'동사(기본형)', uz:"ko'tarmoq — to lift", ex:'들지 마세요.', e:'💪'},
+    {ko:'-지 마세요', syl:'지·마·세·요', rom:'ji ma-se-yo', pos:'어미(금지)', uz:"-mang — don't", ex:'들지 마세요.', e:'🚫'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"무겁다" 의 뜻은?', qu:'"무겁다" nima degani?', opts:["engil","og'ir",'uzun','kalta'], ans:1},
+    {tag:'어휘', q:'"혼자" 의 뜻은?', qu:'"혼자" nima degani?', opts:['birga',"yolg'iz",'tez','hamma'], ans:1},
+  ]
+},
+
+// ─────────── Day 16 ───────────
+{
+  day:16, icon:'🤕', level:'A2',
+  ncs:{code:'06010104',label:'응급처치·구급'},
+  titleKo:'다쳤어요. 도와주세요', titleUz:'Yaralandim. Yordam bering',
+  sentence:{ko:'다쳤어요. 도와주세요.', uz:'Yaralandim. Yordam bering.'},
+  words:[
+    {ko:'다치다', syl:'다·치·다', rom:'da-chi-da', pos:'동사(기본형)', uz:'yaralanmoq — to get hurt', ex:'다쳤어요.', e:'🤕'},
+    {ko:'-었어요', syl:'었·어·요', rom:'eo-sseo-yo', pos:'어미(과거)', uz:"bo'ldi — past tense", ex:'다쳤어요.', e:'⏮️'},
+    {ko:'도와주다', syl:'도·와·주·다', rom:'do-wa-ju-da', pos:'동사(기본형)', uz:'yordam bermoq — to help', ex:'도와주세요.', e:'🤝'},
+    {ko:'-세요', syl:'세·요', rom:'se-yo', pos:'어미(명령)', uz:'iltimos — please do', ex:'도와주세요.', e:'🙏'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"다치다" 의 뜻은?', qu:'"다치다" nima degani?', opts:['dam olmoq','yaralanmoq','ketmoq','o\'tirmoq'], ans:1},
+    {tag:'어휘', q:'"도와주세요" 의 뜻은?', qu:'"도와주세요" nima degani?', opts:['ketmang','yordam bering','keling','turing'], ans:1},
+  ]
+},
+
+// ─────────── Day 17 ───────────
+{
+  day:17, icon:'💬', level:'A2',
+  ncs:{code:'06010103',label:'안전교육·훈련'},
+  titleKo:'다시 말해주세요', titleUz:"Yana bir bor aytib bering",
+  sentence:{ko:'모르겠어요. 다시 말해주세요.', uz:"Bilmadim. Yana bir bor aytib bering."},
+  words:[
+    {ko:'모르다', syl:'모·르·다', rom:'mo-reu-da', pos:'동사(기본형)', uz:'bilmaslik — to not know', ex:'모르겠어요.', e:'🤷'},
+    {ko:'다시', syl:'다·시', rom:'da-si', pos:'부사', uz:'yana bir bor — again', ex:'다시 말해주세요.', e:'🔄'},
+    {ko:'말하다', syl:'말·하·다', rom:'mal-ha-da', pos:'동사(기본형)', uz:'aytmoq — to say/speak', ex:'말해주세요.', e:'💬'},
+    {ko:'천천히', syl:'천·천·히', rom:'cheon-cheon-hi', pos:'부사', uz:'sekin — slowly', ex:'천천히 말해주세요.', e:'🐢'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"모르다" 의 뜻은?', qu:'"모르다" nima degani?', opts:['bilmoq','bilmaslik','ko\'rmoq','eshitmoq'], ans:1},
+    {tag:'어휘', q:'"다시" 의 뜻은?', qu:'"다시" nima degani?', opts:['bir marta','yana bir bor','hech qachon','har doim'], ans:1},
+  ]
+},
+
+// ─────────── Day 18 ───────────
+{
+  day:18, icon:'⏰', level:'A2',
+  ncs:{code:'06010101',label:'작업지시·작업점검'},
+  titleKo:'작업이 언제 끝나요', titleUz:'Ish qachon tugaydi?',
+  sentence:{ko:'작업이 언제 끝나요?', uz:'Ish qachon tugaydi?'},
+  words:[
+    {ko:'작업', syl:'작·업', rom:'ja-geop', pos:'명사', uz:'ish/vazifa — work/task', ex:'작업이 언제 끝나요?', e:'🔧'},
+    {ko:'언제', syl:'언·제', rom:'eon-je', pos:'의문사', uz:'qachon — when', ex:'언제 끝나요?', e:'⏰'},
+    {ko:'끝나다', syl:'끝·나·다', rom:'kkeut-na-da', pos:'동사(기본형)', uz:'tugamoq — to end/finish', ex:'끝나요?', e:'✅'},
+    {ko:'이/가', syl:'이/가', rom:'i/ga', pos:'조사(주격)', uz:'ega belgisi — subject marker', ex:'작업이 끝나요.', e:'📌'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"작업" 의 뜻은?', qu:'"작업" nima degani?', opts:['ovqat','ish/vazifa','joy','vaqt'], ans:1},
+    {tag:'어휘', q:'"언제" 의 뜻은?', qu:'"언제" nima degani?', opts:['qayer','nima','qachon','kim'], ans:2},
+  ]
+},
+
+// ─────────── Day 19 ───────────
+{
+  day:19, icon:'🌙', level:'A2',
+  ncs:{code:'06010101',label:'작업지시·작업점검'},
+  titleKo:'오늘 야근해요', titleUz:"Bugun qovoq ishlayapmizmi?",
+  sentence:{ko:'오늘 야근해요?', uz:"Bugun qovoq ishlaymizmi?"},
+  words:[
+    {ko:'오늘', syl:'오·늘', rom:'o-neul', pos:'명사', uz:'bugun — today', ex:'오늘 야근해요?', e:'📅'},
+    {ko:'야근', syl:'야·근', rom:'ya-geun', pos:'명사', uz:"qovoq ishi — overtime/night shift", ex:'야근해요?', e:'🌙'},
+    {ko:'하다', syl:'하·다', rom:'ha-da', pos:'동사(기본형)', uz:'qilmoq — to do', ex:'야근해요?', e:'✅'},
+    {ko:'내일', syl:'내·일', rom:'nae-il', pos:'명사', uz:'ertaga — tomorrow', ex:'내일 야근해요?', e:'📅'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"오늘" 의 뜻은?', qu:'"오늘" nima degani?', opts:['kecha','bugun','ertaga','hafta'], ans:1},
+    {tag:'어휘', q:'"야근" 의 뜻은?', qu:'"야근" nima degani?', opts:['dam olish',"qovoq ishi",'ta\'til','uchrashiv'], ans:1},
+  ]
+},
+
+// ─────────── Day 20 (이수증) ───────────
+{
+  day:20, icon:'🏆', level:'A2',
+  ncs:{code:'06010103',label:'안전교육·훈련'},
+  titleKo:'수고하셨습니다!', titleUz:"Katta rahmat! Zo'r ishladingiz!",
+  sentence:{ko:'수고하셨습니다!', uz:"Zo'r ishladingiz! Katta rahmat!"},
+  words:[
+    {ko:'수고', syl:'수·고', rom:'su-go', pos:'명사', uz:"mehnat — effort/hard work", ex:'수고하셨습니다!', e:'💪'},
+    {ko:'하다', syl:'하·다', rom:'ha-da', pos:'동사(기본형)', uz:'qilmoq — to do', ex:'수고하세요.', e:'✅'},
+    {ko:'-셨습니다', syl:'셨·습·니·다', rom:'syeo-sseum-ni-da', pos:'어미(존칭과거)', uz:"(hurmat) qildingiz — (honorific past)", ex:'수고하셨습니다!', e:'🙏'},
+    {ko:'감사합니다', syl:'감·사·합·니·다', rom:'gam-sa-ham-ni-da', pos:'표현', uz:'rahmat — thank you (formal)', ex:'감사합니다!', e:'🤝'},
+  ],
+  quiz:[
+    {tag:'어휘', q:'"수고하셨습니다" 의 뜻은?', qu:'"수고하셨습니다" nima degani?', opts:["zo'r ishladingiz",'boring',"uyga keting",'nima bo\'ldi'], ans:0},
+    {tag:'어휘', q:'"감사합니다" 의 뜻은?', qu:'"감사합니다" nima degani?', opts:["kechirasiz",'rahmat',"xayr",'salom'], ans:1},
   ]
 },
 
 ]; // END CUR
 
-// ── 실용 한국어: 작업 지시 · 병원 · 기계 명칭 (별도 섹션) ──
-const PRACTICAL_CUR = [
-{
-  day:15, icon:'📋',
-  ncs:{code:'06010101',label:'작업지시·작업점검'},
-  titleKo:'이렇게 해요! 작업 순서', titleUz:"Shunday qiling! Ish tartibi",
-  subKo:'오늘의 목표: 작업 지시 받기 + 순서 표현 이해하기', subUz:"Bugungi maqsad: Ish ko'rsatmalarini qabul qilish + tartib ifodalarini tushunish",
-  level:'A2',
-  goal:{
-    ko:'"먼저 ~하고, 그다음 ~하세요" 로 순서대로 지시를 이해하고 확인할 수 있어요',
-    uz:'"Avval ~qilib, keyin ~qiling" bilan tartibli ko\'rsatmalarni tushunib, tasdiqlaya olasiz',
-    can:['먼저 기계를 점검하세요.','그다음 작업을 시작하세요.','마지막으로 정리하세요.','알겠습니다!','다시 한번 말씀해 주세요.']
-  },
-  listen:{
-    ctx:'🏭 공장 아침 — 작업 지시 시간 / Zavod ertalabi — ish ko\'rsatma vaqti',
-    bubbles:[
-      {who:'👔',name:'관리자 (Manager)',ko:'오늘 작업 순서 알려줄게요. 잘 들어요!',uz:"Bugungi ish tartibini aytaman. Diqqat bilan eshiting!",side:'left'},
-      {who:'👷',name:'근로자',ko:'네, 알겠습니다!',uz:'Ha, tushundim!',side:'right'},
-      {who:'👔',name:'관리자',ko:'먼저 안전장비를 착용하세요.\n그다음 기계를 점검하세요.',uz:"Avval xavfsizlik jihozlarini kiyib oling.\nKeyin mashinani tekshiring.",side:'left'},
-      {who:'👷',name:'근로자',ko:'안전장비 착용 후 기계 점검이요?',uz:"Xavfsizlik jihozlarini kiyib, mashina tekshirishmi?",side:'right'},
-      {who:'👔',name:'관리자',ko:'맞아요! 마지막으로 작업일지에 서명하세요.',uz:"To'g'ri! Oxirida ish jurnalida imzo qo'ying.",side:'left'},
-      {who:'👷',name:'근로자',ko:'다시 한번 말씀해 주세요. 천천히요.',uz:'Yana bir bor aytib bering. Sekinroq.',side:'right'},
-    ]
-  },
-  words:[
-    {ko:'먼저', syl:'먼·저', rom:'meon-jeo', uz:'avval / birinchi (first/firstly)', ex:'먼저 장갑을 끼세요.', e:'1️⃣'},
-    {ko:'그다음', syl:'그·다·음', rom:'geu-da-eum', uz:'keyin / undan keyin (then/next)', ex:'그다음 기계를 켜세요.', e:'2️⃣'},
-    {ko:'마지막으로', syl:'마·지·막·으·로', rom:'ma-ji-ma-geu-ro', uz:'oxirida / nihoyat (finally/lastly)', ex:'마지막으로 정리하세요.', e:'3️⃣'},
-    {ko:'알겠습니다', syl:'알·겠·습·니·다', rom:'al-get-seum-ni-da', uz:'tushundim / mayli (I understand/Yes sir)', ex:'네, 알겠습니다!', e:'✅'},
-    {ko:'다시 한번', syl:'다·시·한·번', rom:'da-si han-beon', uz:'yana bir bor (one more time)', ex:'다시 한번 말씀해 주세요.', e:'🔄'},
-  ],
-  pattern:{
-    labelKo:'문형: 먼저 [동사]고, 그다음 [동사]세요.',
-    labelUz:"Shakl: Avval [fe'l]ib, keyin [fe'l]ing.",
-    template:'먼저 [___]고, 그다음 [___]세요.',
-    desc:'작업 순서를 말할 때 · Ish tartibini aytishda',
-    drills:[
-      {blank:'안전장비를 착용하', full:'먼저 안전장비를 착용하고, 그다음 작업하세요.', uz:'Avval xavfsizlik jihozlarini kiyib, keyin ishlang.'},
-      {blank:'기계를 점검하', full:'먼저 기계를 점검하고, 그다음 켜세요.', uz:'Avval mashinani tekshirib, keyin yoqing.'},
-      {blank:'전원을 끄', full:'먼저 전원을 끄고, 그다음 청소하세요.', uz:"Avval quvvatni o'chirib, keyin tozalang."},
-      {blank:'서명하', full:'마지막으로 서명하세요.', uz:"Oxirida imzo qo'ying."},
-    ]
-  },
-  speak:[
-    {situation:'📋 관리자가 오늘 작업 순서를 알려줘요. 따라 말해요.', prompt:"'먼저'와 '그다음'을 써봐요.", phrase:'먼저 안전장비를 착용하고, 그다음 기계를 점검하세요!', uz:'Avval xavfsizlik jihozlarini kiyib, keyin mashinani tekshiring!'},
-    {situation:'🔄 지시를 잘 못 들었어요. 다시 말해달라고 해요.', prompt:"'다시 한번 말씀해 주세요'를 써봐요.", phrase:'죄송합니다. 다시 한번 천천히 말씀해 주세요.', uz:"Kechirasiz. Yana bir bor sekin aytib bering."},
-    {situation:'✅ 지시를 다 이해했어요. 확인해요.', prompt:"'알겠습니다'로 말해봐요.", phrase:'알겠습니다! 먼저 안전장비 착용하고, 기계 점검하고, 마지막에 서명할게요.', uz:"Tushundim! Avval xavfsizlik jihozlarini kiyib, mashinani tekshirib, oxirida imzo qo'yaman."},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"그다음" 은 무슨 뜻이에요?', qu:'"Keyin" nima degani?', opts:["avval (먼저)",'keyin (then/next)',"oxirida (마지막으로)",'birga (함께)'], ans:1},
-    {tag:'문형', q:'"먼저 안전장비를 착용___고, 그다음 작업하세요." 빈칸은?', qu:'"Avval xavfsizlik jihozlarini kiyib___, keyin ishlang." Bo\'shliq?', opts:['아','하','나','이'], ans:1},
-    {tag:'의사소통', q:'작업 지시를 이해했을 때 뭐라고 해요?', qu:"Ko'rsatmani tushunganda nima deysiz?", opts:['모르겠어요','괜찮아요','알겠습니다 (tushundim)','안 해요'], ans:2},
-    {tag:'의사소통', q:'지시를 못 들었을 때 뭐라고 해요?', qu:"Ko'rsatmani eshitmagan paytda nima deysiz?", opts:['됐어요','다시 한번 말씀해 주세요 (yana bir bor)','안 돼요','가세요'], ans:1},
-  ]
-},
+const PRACTICAL_CUR = []; // (통합됨 — CUR 20일이 전체 과정)
 
-{
-  day:16, icon:'📊',
-  ncs:{code:'06010101',label:'작업점검·보고'},
-  titleKo:'다 했어요! 작업 보고', titleUz:"Tamom! Ish hisoboti",
-  subKo:'오늘의 목표: 작업 완료 보고 + 문제 보고하기', subUz:"Bugungi maqsad: Ish tugallanishi va muammo haqida hisobot berish",
-  level:'A2',
-  goal:{
-    ko:'"다 됐어요." "문제가 있어요." 로 작업 완료와 이상을 보고할 수 있어요',
-    uz:'"Tamom." "Muammo bor." bilan ish tugallanishi va muammoni xabar bera olasiz',
-    can:['다 됐어요.','불량품이 나왔어요.','기계에 이상이 있어요.','교체가 필요해요.','확인해 주세요.']
-  },
-  listen:{
-    ctx:'🏭 오후 — 작업 완료 보고 / Tushdan keyin — ish tugallash hisoboti',
-    bubbles:[
-      {who:'👷',name:'근로자',ko:'관리자님, 작업 다 했어요.',uz:"Menejer, ish tamom bo'ldi.",side:'right'},
-      {who:'👔',name:'관리자',ko:'수량 확인했어요?',uz:"Miqdorni tekshirdingizmi?",side:'left'},
-      {who:'👷',name:'근로자',ko:'네, 200개 완료했어요.\n그런데 불량품이 3개 나왔어요.',uz:"Ha, 200 ta tayyor.\nLekin 3 ta nuqsonli mahsulot chiqdi.",side:'right'},
-      {who:'👔',name:'관리자',ko:'불량품은 어디 있어요?',uz:"Nuqsonli mahsulotlar qayerda?",side:'left'},
-      {who:'👷',name:'근로자',ko:'빨간 박스에 넣었어요.\n기계에도 이상이 있어요. 확인해 주세요.',uz:"Qizil qutichaiga qo'ydim.\nMashinada ham muammo bor. Tekshirib bering.",side:'right'},
-      {who:'👔',name:'관리자',ko:'알겠어요. 수고했어요!',uz:"Tushundim. Rahmat!",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'다 됐어요', syl:'다·됐·어·요', rom:'da-dwaesseo-yo', uz:"tamom bo'ldi / tugadi (all done)", ex:'작업 다 됐어요!', e:'✅'},
-    {ko:'불량품', syl:'불·량·품', rom:'bul-lyang-pum', uz:'nuqsonli mahsulot (defective product)', ex:'불량품이 3개 나왔어요.', e:'❌'},
-    {ko:'이상', syl:'이·상', rom:'i-sang', uz:"muammo / nosozlik (problem/abnormality)", ex:'기계에 이상이 있어요.', e:'⚠️'},
-    {ko:'교체', syl:'교·체', rom:'gyo-che', uz:'almashtirish (replacement)', ex:'부품 교체가 필요해요.', e:'🔧'},
-    {ko:'수량', syl:'수·량', rom:'su-ryang', uz:'miqdor / soni (quantity/amount)', ex:'수량을 확인해요.', e:'🔢'},
-  ],
-  pattern:{
-    labelKo:'문형: 다 [동사]아요/어요. / [명사]에 이상이 있어요.',
-    labelUz:"Shakl: Hammasi [fe'l]di. / [ot]da muammo bor.",
-    template:'다 [___]아요/어요. / [___]에 이상이 있어요.',
-    desc:'작업 완료/이상을 보고할 때 · Ish tugallanishi/muammoni xabar berishda',
-    drills:[
-      {blank:'다 확인했', full:'다 확인했어요.', uz:'Hammasini tekshirdim.'},
-      {blank:'다 포장했', full:'다 포장했어요.', uz:'Hammasini qadoqladim.'},
-      {blank:'기계', full:'기계에 이상이 있어요.', uz:"Mashinada muammo bor."},
-      {blank:'전원', full:'전원에 이상이 있어요.', uz:"Quvvatda muammo bor."},
-    ]
-  },
-  speak:[
-    {situation:'📊 관리자에게 작업이 끝났다고 보고해요.', prompt:"'다 됐어요'를 써봐요.", phrase:'관리자님, 작업 다 됐어요. 200개 완료했어요.', uz:"Menejer, ish tamom. 200 ta tayyor."},
-    {situation:'⚠️ 기계에 문제가 생겼어요. 보고해요.', prompt:"'이상이 있어요'를 써봐요.", phrase:'관리자님, 기계에 이상이 있어요. 확인해 주세요!', uz:"Menejer, mashinada muammo bor. Tekshirib bering!"},
-    {situation:'❌ 불량품을 발견했어요. 어떻게 말해요?', prompt:'불량품 수와 위치를 말해봐요.', phrase:'불량품이 5개 나왔어요. 교체가 필요해요.', uz:"5 ta nuqsonli mahsulot chiqdi. Almashtirish kerak."},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"불량품" 은 무엇이에요?', qu:'"Nuqsonli mahsulot" nima?', opts:['좋은 물건','nuqsonli mahsulot (defective product)','새 기계','작업복'], ans:1},
-    {tag:'문형', q:'"기계에 ___ 있어요." 빈칸에 맞는 말은?', qu:'"Mashinada ___ bor." Bo\'shliqqa to\'g\'ri so\'z?', opts:['맛이','이상이','소리만','냄새'], ans:1},
-    {tag:'의사소통', q:'작업을 다 마쳤을 때 어떻게 말해요?', qu:"Ishni tugatganda qanday deyish kerak?", opts:['몰라요','나중에 할게요','다 됐어요 (tamom)','아직이요'], ans:2},
-    {tag:'의사소통', q:'문제를 발견했을 때 관리자에게 뭐라고 해요?', qu:"Muammo topganda menejerlga nima deysiz?", opts:['괜찮아요','혼자 고쳐요','이상이 있어요. 확인해 주세요.','숨겨요'], ans:2},
-  ]
-},
-
-{
-  day:17, icon:'⚙️',
-  ncs:{code:'06010201',label:'기계·설비 조작 안전'},
-  titleKo:'기계를 조작해요 — 켜고 끄고', titleUz:"Mashinani boshqarish — yoqish va o'chirish",
-  subKo:'오늘의 목표: 기계 조작 지시 이해 + 속도/온도 표현', subUz:"Bugungi maqsad: Mashina boshqaruv ko'rsatmalarini tushunish + tezlik/harorat ifodalari",
-  level:'A2',
-  goal:{
-    ko:'"기계를 켜세요/끄세요" "속도를 줄이세요" "비상정지 누르세요!" 를 이해할 수 있어요',
-    uz:'"Mashinani yoqing/o\'chiring" "Tezlikni kamaytiring" "Favqulodda to\'xtatishni bosing!" ni tushuna olasiz',
-    can:['기계를 켜세요.','속도를 줄이세요.','온도를 확인하세요.','비상정지 누르세요!','절대 혼자 고치지 마세요.']
-  },
-  listen:{
-    ctx:'⚙️ 기계 조작 시작 — 선배의 지시 / Mashina boshqarish — ustaning ko\'rsatmasi',
-    bubbles:[
-      {who:'🧑‍🏭',name:'선배 (Usta)',ko:'오늘부터 이 기계 담당이에요.\n먼저 전원 스위치 찾아봐요.',uz:"Bugundan boshlab bu mashina sizga topshirildi.\nAvval quvvat kalitini toping.",side:'left'},
-      {who:'👷',name:'근로자',ko:'이거요?',uz:"Shu?",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'맞아요. 켜보세요!',uz:"To'g'ri. Yoqing!",side:'left'},
-      {who:'👷',name:'근로자',ko:'켰어요. 그런데 속도가 너무 빠른 것 같아요.',uz:"Yoqdim. Lekin tezlik juda tez bo'lsa kerak.",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'이 버튼으로 속도를 줄이세요. 온도도 항상 확인하세요.',uz:"Bu tugma bilan tezlikni kamaytiring. Haroratni ham doimo tekshiring.",side:'left'},
-      {who:'👷',name:'근로자',ko:'만약 이상하면 어떻게 해요?',uz:"Agar noto'g'ri bo'lsa, nima qilaman?",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'비상정지 버튼 누르세요! 절대 혼자 고치지 마세요!',uz:"Favqulodda to'xtatish tugmasini bosing! Hech qachon o'zingiz tuzatmang!",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'가동', syl:'가·동', rom:'ga-dong', uz:'ishga tushirish / yoqish (start/operation)', ex:'기계를 가동하세요.', e:'▶️'},
-    {ko:'정지', syl:'정·지', rom:'jeong-ji', uz:"to'xtatish / o'chirish (stop/shutdown)", ex:'비상정지 버튼이에요.', e:'⏹️'},
-    {ko:'속도', syl:'속·도', rom:'sok-do', uz:'tezlik (speed)', ex:'속도를 줄이세요.', e:'🏎️'},
-    {ko:'온도', syl:'온·도', rom:'on-do', uz:'harorat (temperature)', ex:'온도를 확인하세요.', e:'🌡️'},
-    {ko:'비상정지', syl:'비·상·정·지', rom:'bi-sang-jeong-ji', uz:"favqulodda to'xtatish (emergency stop)", ex:'이상하면 비상정지 누르세요!', e:'🔴'},
-  ],
-  pattern:{
-    labelKo:'문형: [기계]를 켜세요/끄세요. / [수치]를 줄이세요/높이세요.',
-    labelUz:"Shakl: [mashina]ni yoqing/o'chiring. / [ko'rsatkich]ni kamaytiring/oshiring.",
-    template:'[___]를 [___]세요.',
-    desc:'조작 지시를 내리거나 받을 때 · Boshqaruv ko\'rsatmasi berishda',
-    drills:[
-      {blank:'기계', full:'기계를 켜세요.', uz:"Mashinani yoqing."},
-      {blank:'전원', full:'전원을 끄세요.', uz:"Quvvatni o'chiring."},
-      {blank:'속도', full:'속도를 줄이세요.', uz:'Tezlikni kamaytiring.'},
-      {blank:'비상정지', full:'비상정지를 누르세요!', uz:"Favqulodda to'xtatish tugmasini bosing!"},
-    ]
-  },
-  speak:[
-    {situation:'▶️ 기계 시작을 지시받았어요.', prompt:"'켜세요'와 '확인하세요'를 써봐요.", phrase:'기계를 켜고, 속도와 온도를 확인하세요.', uz:"Mashinani yoqing va tezlik bilan haroratni tekshiring."},
-    {situation:'⚠️ 기계가 이상해요! 어떻게 해요?', prompt:"'비상정지'를 써봐요.", phrase:'기계가 이상해요! 비상정지 누를게요!', uz:"Mashina noto'g'ri! Favqulodda to'xtatishni bosaman!"},
-    {situation:'🌡️ 온도가 너무 높아요. 관리자에게 보고해요.', prompt:'상황을 설명해봐요.', phrase:'온도가 너무 높아요. 이상이 있는 것 같아요. 확인해 주세요!', uz:"Harorat juda baland. Muammo bo'lsa kerak. Tekshirib bering!"},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"속도" 는 무슨 뜻이에요?', qu:'"Tezlik" nima degani?', opts:["harorat (온도)",'tezlik (speed)',"to'xtatish (정지)",'ish (작업)'], ans:1},
-    {tag:'의사소통', q:'기계에 이상이 생겼을 때 가장 먼저 해야 할 것은?', qu:"Mashinada muammo bo'lganda birinchi nima qilish kerak?", opts:["o'zingiz tuzatish",'혼자 고치기','비상정지 누르기 (favqulodda to\'xtatish)','무시하기'], ans:2},
-    {tag:'어휘', q:'"비상정지" 란 무엇이에요?', qu:'"Favqulodda to\'xtatish" nima?', opts:["normal to'xtatish",'비상시 기계를 바로 세우는 장치 (emergency stop)',"tezlik oshirish",'quvvat yoqish'], ans:1},
-    {tag:'문형', q:'"속도를 ___ 세요." 빈칸에 맞는 것은?', qu:'"Tezlikni ___ ing." Bo\'shliqqa to\'g\'ri so\'z?', opts:['먹','줄이','들','자'], ans:1},
-  ]
-},
-
-// ── WEEK 3 · 병원/건강 ──────────────────────────────
-{
-  day:18, icon:'🤒',
-  ncs:null,
-  titleKo:'아파요! 어디가 아파요?', titleUz:"Og'riyapman! Qayeringiz og'riydi?",
-  subKo:'오늘의 목표: 아픈 부위와 증상을 한국어로 말하기', subUz:"Bugungi maqsad: Og'rigan joy va belgilarni koreycha aytish",
-  level:'A1-A2',
-  goal:{
-    ko:'"머리가 아파요." "열이 나요." "기침이 심해요." 로 증상을 설명할 수 있어요',
-    uz:'"Boshim og\'riydi." "Isitmam bor." "Yo\'talim kuchli." bilan belgilarni tushuntira olasiz',
-    can:['머리가 아파요.','배가 아파요.','열이 나요.','기침이 심해요.','온몸이 아파요.']
-  },
-  listen:{
-    ctx:'🏥 공장 — 몸이 아파요 / Zavod — kasal bo\'ldim',
-    bubbles:[
-      {who:'👷',name:'근로자',ko:'선배님, 오늘 몸이 좀 안 좋아요.',uz:"Usta, bugun o'zimni yaxshi sezmayapman.",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'어디가 아파요?',uz:"Qayeringiz og'riydi?",side:'left'},
-      {who:'👷',name:'근로자',ko:'머리가 아프고, 열도 나요.\n기침도 좀 해요.',uz:"Boshim og'riydi va isitmam ham bor.\nYo'talim ham bor.",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'많이 아파요? 병원에 가야 할 것 같은데요.',uz:"Juda og'riyaptimi? Kasalxonaga borish kerak bo'lsa kerak.",side:'left'},
-      {who:'👷',name:'근로자',ko:'네, 온몸이 다 아파요. 어느 병원에 가요?',uz:"Ha, butun vujudim og'riydi. Qaysi kasalxonaga boraman?",side:'right'},
-      {who:'🧑‍🏭',name:'선배',ko:'가까운 내과에 가봐요. 제가 연락할게요.',uz:"Yaqin ichki kasalliklar bo'limiga boring. Men qo'ng'iroq qilaman.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'머리가 아파요', syl:'머·리·아·파·요', rom:'meo-ri a-pa-yo', uz:"boshim og'riydi (I have a headache)", ex:'어제부터 머리가 아파요.', e:'🤕'},
-    {ko:'열이 나요', syl:'열·이·나·요', rom:'yeo-ri na-yo', uz:"isitmam bor (I have a fever)", ex:'38도 열이 나요.', e:'🌡️'},
-    {ko:'기침', syl:'기·침', rom:'gi-chim', uz:"yo'tal (cough)", ex:'기침이 심해요.', e:'😷'},
-    {ko:'배가 아파요', syl:'배·아·파·요', rom:'bae-ga a-pa-yo', uz:"qorniim og'riydi (stomach hurts)", ex:'배가 많이 아파요.', e:'🤢'},
-    {ko:'온몸', syl:'온·몸', rom:'on-mom', uz:"butun vujud (whole body)", ex:'온몸이 다 아파요.', e:'😫'},
-  ],
-  pattern:{
-    labelKo:'문형: [신체부위]이/가 아파요. / [증상]이/가 나요/심해요.',
-    labelUz:"Shakl: [tana a'zosi] og'riydi. / [belgi] bor/kuchli.",
-    template:'[___]이/가 아파요.',
-    desc:'아픈 증상을 말할 때 · Kasallik belgilarini aytishda',
-    drills:[
-      {blank:'머리', full:'머리가 아파요.', uz:"Boshim og'riydi."},
-      {blank:'배', full:'배가 아파요.', uz:"Qorniim og'riydi."},
-      {blank:'기침이 심', full:'기침이 심해요.', uz:"Yo'talim kuchli."},
-      {blank:'열이 나', full:'열이 나요.', uz:'Isitmam bor.'},
-    ]
-  },
-  speak:[
-    {situation:'😷 오늘 몸이 좋지 않아요. 선배에게 말해요.', prompt:"'아파요'를 써봐요.", phrase:'선배님, 오늘 머리도 아프고 열도 나요. 좀 쉬어도 될까요?', uz:"Usta, bugun boshim ham og'riydi, isitmam ham bor. Biroz dam olsa bo'ladimi?"},
-    {situation:'🌡️ 증상이 심해요. 병원에 가고 싶어요.', prompt:'증상을 구체적으로 말해봐요.', phrase:'온몸이 다 아파요. 열도 나고 기침도 심해요. 병원에 가야 할 것 같아요.', uz:"Butun vujudim og'riydi. Isitmam bor va yo'talim kuchli. Kasalxonaga borish kerak bo'lsa kerak."},
-    {situation:'🏥 병원 접수할 때 증상을 말해요.', prompt:'의사에게 증상을 설명해봐요.', phrase:'머리가 아파요. 38도 열이 나요. 어제부터 시작됐어요.', uz:"Boshim og'riydi. 38 daraja isitmam bor. Kechadan boshlandi."},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"열이 나요" 는 무슨 뜻이에요?', qu:'"Isitmam bor" nima degani?', opts:["boshim og'riydi",'isitmam bor (I have a fever)',"qorniim og'riydi",'yo\'talim bor'], ans:1},
-    {tag:'문형', q:'"배___ 아파요." 빈칸은?', qu:'"Qorniim og\'riydi." Bo\'shliq?', opts:['은','가','에','와'], ans:1},
-    {tag:'의사소통', q:'몸이 안 좋을 때 가장 먼저 해야 할 것은?', qu:"O'zingizni yaxshi sezmayotganda birinchi nima qilish kerak?", opts:['일을 계속해요','혼자 참아요','선배/관리자에게 말해요','집에 그냥 가요'], ans:2},
-    {tag:'어휘', q:'전신이 다 아플 때 어떻게 말해요?', qu:"Butun vujudingiz og'riganda qanday deysiz?", opts:['다리만 아파요','머리만 아파요','온몸이 다 아파요','괜찮아요'], ans:2},
-  ]
-},
-
-{
-  day:19, icon:'🏥',
-  ncs:null,
-  titleKo:'어느 병원에 가요? 진료과 찾기', titleUz:"Qaysi kasalxonaga boraman? Bo'limni topish",
-  subKo:'오늘의 목표: 증상에 맞는 진료과 선택하기', subUz:"Bugungi maqsad: Belgilarga mos bo'limni tanlash",
-  level:'A2',
-  goal:{
-    ko:'"내과에 가세요." "정형외과에 가야 해요." 로 진료과를 찾아갈 수 있어요',
-    uz:'"Ichki kasalliklar bo\'limiga boring." bilan to\'g\'ri bo\'limga bora olasiz',
-    can:['내과에 가야 해요.','정형외과에 가세요.','응급실은 어디예요?','접수는 어디서 해요?','진료를 예약하고 싶어요.']
-  },
-  listen:{
-    ctx:'🏥 병원 — 접수 데스크 / Kasalxona — qabul xonasi',
-    bubbles:[
-      {who:'👷',name:'근로자',ko:'저기요, 저 어느 과에 가야 해요?',uz:"Kechirasiz, men qaysi bo'limga borish kerak?",side:'right'},
-      {who:'🏥',name:'접수담당',ko:'어디가 아프세요?',uz:"Qayeringiz og'riydi?",side:'left'},
-      {who:'👷',name:'근로자',ko:'열이 나고 기침이 심해요.',uz:"Isitmam bor va yo'talim kuchli.",side:'right'},
-      {who:'🏥',name:'접수담당',ko:'내과로 가세요. 3번 창구에서 접수하세요.',uz:"Ichki kasalliklar bo'limiga boring. 3-oynachada ro'yxatdan o'ting.",side:'left'},
-      {who:'👷',name:'근로자',ko:'일하다가 허리를 다쳤어요.',uz:"Ishda belimni shikastladim.",side:'right'},
-      {who:'🏥',name:'접수담당',ko:'그럼 정형외과로 가세요. 2층이에요.',uz:"Unda ortopediya bo'limiga boring. 2-qavat.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'내과', syl:'내·과', rom:'nae-gwa', uz:"ichki kasalliklar bo'limi (internal medicine)", ex:'열이 나면 내과에 가세요.', e:'🩺'},
-    {ko:'정형외과', syl:'정·형·외·과', rom:'jeong-hyeong-oe-gwa', uz:"ortopediya / suyak bo'g'im (orthopedics)", ex:'허리 다치면 정형외과에 가요.', e:'🦴'},
-    {ko:'응급실', syl:'응·급·실', rom:'eung-geup-sil', uz:"favqulodda yordam (emergency room)", ex:'사고 나면 응급실로 가요!', e:'🚨'},
-    {ko:'접수', syl:'접·수', rom:'jeop-su', uz:"ro'yxatdan o'tish (registration/reception)", ex:'접수는 1층에서 해요.', e:'📝'},
-    {ko:'진료', syl:'진·료', rom:'jin-ryo', uz:"tibbiy ko'rik (medical consultation)", ex:'진료 예약하고 싶어요.', e:'👨‍⚕️'},
-  ],
-  pattern:{
-    labelKo:'문형: [증상]이면 [진료과]에 가세요.',
-    labelUz:"Shakl: [belgi] bo'lsa [bo'lim]ga boring.",
-    template:'[___]이/가 아프면 [___]과/실에 가세요.',
-    desc:'증상에 맞는 진료과를 찾을 때 · Belgilarga mos bo\'limni topishda',
-    drills:[
-      {blank:'열이 나', full:'열이 나면 내과에 가세요.', uz:"Isitmangiz bo'lsa ichki kasalliklar bo'limiga boring."},
-      {blank:'허리가 아프', full:'허리가 아프면 정형외과에 가세요.', uz:"Belingiz og'risa ortopediyaga boring."},
-      {blank:'크게 다치', full:'크게 다치면 응급실에 가세요!', uz:"Kattaroq yaralanganingizda favqulodda yordamga boring!"},
-      {blank:'먼저 접수', full:'먼저 접수를 하세요.', uz:"Avval ro'yxatdan o'ting."},
-    ]
-  },
-  speak:[
-    {situation:'🏥 병원에 도착했어요. 어디로 가야 할지 물어봐요.', prompt:"'어느 과에 가야 해요?'를 써봐요.", phrase:'저기요, 저 열이 나고 기침이 심해요. 어느 과에 가야 해요?', uz:"Kechirasiz, isitmam bor va yo'talim kuchli. Qaysi bo'limga borish kerak?"},
-    {situation:'🦴 공장에서 허리를 다쳤어요. 병원에서 말해요.', prompt:'어디서 다쳤는지 말해봐요.', phrase:'일하다가 허리를 다쳤어요. 정형외과에 가야 해요?', uz:"Ishda belimni shikastladim. Ortopediyaga borishim kerakmi?"},
-    {situation:'📝 접수할 때 이름과 증상을 말해요.', prompt:'접수할 때 뭐라고 해요?', phrase:'안녕하세요. 접수하고 싶어요. 내과 진료요. 열이 나고 기침해요.', uz:"Salom. Ro'yxatdan o'tmoqchiman. Ichki kasalliklar ko'rigi. Isitmam bor va yo'talim bor."},
-  ],
-  quiz:[
-    {tag:'어휘', q:'열이 나고 기침이 심할 때 가는 곳은?', qu:"Isitma va kuchli yo'tal bo'lganda qayerga borish kerak?", opts:["ortopediya (정형외과)",'내과 (ichki kasalliklar bo\'limi)',"dorixona (약국)",'응급실'], ans:1},
-    {tag:'어휘', q:'허리나 무릎을 다쳤을 때 가는 곳은?', qu:"Bel yoki tizza shikastlanganda qayerga borish kerak?", opts:['내과','정형외과 (ortopediya)',"ko'z bo'limi",'응급실'], ans:1},
-    {tag:'의사소통', q:'병원에서 가장 먼저 해야 하는 것은?', qu:"Kasalxonada birinchi nima qilish kerak?", opts:['바로 의사실 들어가기','약국 가기','접수하기 (ro\'yxatdan o\'tish)','집에 가기'], ans:2},
-    {tag:'어휘', q:'큰 사고나 응급 상황에서는 어디로 가요?', qu:"Katta baxtsiz hodisa yoki favqulodda vaziyatda qayerga borish kerak?", opts:['약국','내과','응급실 (favqulodda yordam)','정형외과'], ans:2},
-  ]
-},
-
-{
-  day:20, icon:'🩺',
-  ncs:null,
-  titleKo:'의사 선생님, 이렇게 아파요', titleUz:"Doktor, shunday og'riyapman",
-  subKo:'오늘의 목표: 진료실에서 증상을 자세히 설명하기', subUz:"Bugungi maqsad: Qabul xonasida belgilarni batafsil tushuntirish",
-  level:'A2',
-  goal:{
-    ko:'"어제부터 아팠어요." "누르면 아파요." "점점 심해지고 있어요." 로 진료실에서 증상을 설명할 수 있어요',
-    uz:'"Kechadan og\'riydi." "Bossam og\'riydi." "Tobora kuchaymoqda." bilan qabul xonasida belgilarni tushuntira olasiz',
-    can:['언제부터 아팠어요?','어제부터 아팠어요.','여기를 누르면 아파요.','잠을 못 자요.','점점 심해지고 있어요.']
-  },
-  listen:{
-    ctx:'🩺 내과 진료실 / Ichki kasalliklar qabul xonasi',
-    bubbles:[
-      {who:'👨‍⚕️',name:'의사 (Doktor)',ko:'어디가 아프세요?',uz:"Qayeringiz og'riydi?",side:'left'},
-      {who:'👷',name:'환자',ko:'머리가 아프고, 열이 나요.',uz:"Boshim og'riydi va isitmam bor.",side:'right'},
-      {who:'👨‍⚕️',name:'의사',ko:'언제부터 아팠어요?',uz:"Qachondan beri og'riydi?",side:'left'},
-      {who:'👷',name:'환자',ko:'어제 저녁부터요. 점점 심해지고 있어요.',uz:"Kecha kechqurundan beri. Tobora kuchaymoqda.",side:'right'},
-      {who:'👨‍⚕️',name:'의사',ko:'여기 누르면 아파요? (배를 눌러요)',uz:"Shu joyni bassam og'riyaptimi?",side:'left'},
-      {who:'👷',name:'환자',ko:'네, 아파요! 그리고 밥을 먹으면 더 아파요.',uz:"Ha, og'riydi! Ovqat yesam yanada og'riydi.",side:'right'},
-      {who:'👨‍⚕️',name:'의사',ko:'알겠어요. 혈액검사를 할게요.',uz:"Tushundim. Qon tekshiruvini o'tkazamiz.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'언제부터', syl:'언·제·부·터', rom:'eon-je-bu-teo', uz:'qachondan beri (since when)', ex:'언제부터 아팠어요?', e:'📅'},
-    {ko:'점점 심해요', syl:'점·점·심·해·요', rom:'jeom-jeom sim-hae-yo', uz:'tobora kuchaymoqda (getting worse)', ex:'점점 심해지고 있어요.', e:'📈'},
-    {ko:'누르면', syl:'누·르·면', rom:'nu-reu-myeon', uz:'bossam (when pressed)', ex:'여기 누르면 아파요.', e:'👆'},
-    {ko:'검사', syl:'검·사', rom:'geom-sa', uz:"tekshiruv / tahlil (examination/test)", ex:'혈액검사를 할게요.', e:'🔬'},
-    {ko:'처방', syl:'처·방', rom:'cheo-bang', uz:"retsept / dori tayinlash (prescription)", ex:'약을 처방해 드릴게요.', e:'💊'},
-  ],
-  pattern:{
-    labelKo:'문형: [시간]부터 아팠어요. / [동작]하면 아파요.',
-    labelUz:"Shakl: [vaqt]dan beri og'riydi. / [harakat] qilsam og'riydi.",
-    template:'[___]부터 아팠어요. / [___]하면 아파요.',
-    desc:'증상의 시작과 악화를 말할 때 · Belgi boshlanishi va kuchayishini aytishda',
-    drills:[
-      {blank:'어제 저녁', full:'어제 저녁부터 아팠어요.', uz:"Kecha kechqurundan beri og'riydi."},
-      {blank:'3일 전', full:'3일 전부터 아팠어요.', uz:"3 kun oldindan beri og'riydi."},
-      {blank:'밥을 먹으', full:'밥을 먹으면 아파요.', uz:"Ovqat yesam og'riydi."},
-      {blank:'여기를 누르', full:'여기를 누르면 아파요.', uz:"Bu joyni bassam og'riydi."},
-    ]
-  },
-  speak:[
-    {situation:'🩺 의사가 언제부터 아팠냐고 물어봐요.', prompt:"'부터'를 써봐요.", phrase:'어제 저녁부터 아팠어요. 점점 심해지고 있어요.', uz:"Kecha kechqurundan beri og'riydi. Tobora kuchaymoqda."},
-    {situation:'👆 의사가 어떤 때 더 아프냐고 물어봐요.', prompt:"'하면 아파요'를 써봐요.", phrase:'여기를 누르면 아파요. 밥을 먹으면 더 심해요.', uz:"Bu joyni bassam og'riydi. Ovqat yesam yanada kuchayadi."},
-    {situation:'💊 의사에게 다른 증상도 모두 말해봐요.', prompt:'증상을 다 말해봐요.', phrase:'머리도 아프고, 열도 나고, 기침도 해요. 잠도 잘 못 자요.', uz:"Boshim ham og'riydi, isitmam ham bor, yo'talim ham bor. Uyqum ham kelmaydi."},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"언제부터" 는 무슨 뜻이에요?', qu:'"Qachondan beri" nima degani?', opts:["qayerda (어디)",'qachondan beri (since when)',"nima (뭐)",'nima uchun (왜)'], ans:1},
-    {tag:'문형', q:'"어제 ___ 아팠어요." 빈칸에 맞는 말은?', qu:'"Kecha ___ og\'riydi." Bo\'shliqqa to\'g\'ri so\'z?', opts:['부터','가서','와서','때문에'], ans:0},
-    {tag:'문형', q:'"밥을 ___ 아파요." 어떤 상황이에요?', qu:'"Ovqat ___ og\'riydi." Qanday vaziyat?', opts:['먹으면 (yesam)','먹기 전에','먹어서','먹지'], ans:0},
-    {tag:'의사소통', q:'증상이 악화될 때 의사에게 어떻게 말해요?', qu:"Belgi kuchayayotganda doktorga qanday deyish kerak?", opts:['괜찮아요','점점 좋아져요','점점 심해지고 있어요','몰라요'], ans:2},
-  ]
-},
-
-{
-  day:21, icon:'💊',
-  ncs:null,
-  titleKo:'약국에서 — 약을 받아요', titleUz:"Dorixonada — dori olish",
-  subKo:'오늘의 목표: 약 복용법 이해 + 종류별 약 사용법 묻기', subUz:"Bugungi maqsad: Dori qabul usulini tushunish + tur bo'yicha so'rash",
-  level:'A2',
-  goal:{
-    ko:'"하루에 세 번, 식후에 드세요." 로 약 복용법을 이해하고 물을 수 있어요',
-    uz:'"Kuniga 3 marta, ovqatdan keyin iching." bilan dori qabul qilish usulini tushunib, so\'raya olasiz',
-    can:['하루에 몇 번이에요?','식후에 드세요.','이 약 어떻게 먹어요?','바르는 거예요, 붙이는 거예요?','부작용이 있어요?']
-  },
-  listen:{
-    ctx:'💊 약국 — 처방전을 들고 왔어요 / Dorixona — retsept bilan keldim',
-    bubbles:[
-      {who:'👷',name:'환자',ko:'안녕하세요. 처방전이에요.',uz:"Salom. Mana retsept.",side:'right'},
-      {who:'💊',name:'약사 (Dorixonachi)',ko:'네, 잠깐만요... 약이 세 가지예요.',uz:"Ha, bir daqiqa... Uch xil dori bor.",side:'left'},
-      {who:'👷',name:'환자',ko:'어떻게 먹어요?',uz:"Qanday qabul qilaman?",side:'right'},
-      {who:'💊',name:'약사',ko:'이 흰 약은 하루 세 번, 식후에 드세요.\n이 시럽은 기침에 좋아요.',uz:"Bu oq dori kuniga 3 marta, ovqatdan keyin.\nBu sirops yo'talga yaxshi.",side:'left'},
-      {who:'👷',name:'환자',ko:'이건 바르는 거예요, 붙이는 거예요?',uz:"Bu surtiladi yoki yopishtiriladi?",side:'right'},
-      {who:'💊',name:'약사',ko:'이건 파스예요. 아픈 곳에 붙이세요.',uz:"Bu plastyr. Og'rigan joyga yopishtirib qo'ying.",side:'left'},
-      {who:'👷',name:'환자',ko:'알겠어요. 감사합니다!',uz:"Tushundim. Rahmat!",side:'right'},
-    ]
-  },
-  words:[
-    {ko:'처방전', syl:'처·방·전', rom:'cheo-bang-jeon', uz:'retsept (prescription)', ex:'약사에게 처방전을 줘요.', e:'📄'},
-    {ko:'식후', syl:'식·후', rom:'si-ku', uz:"ovqatdan keyin (after meal)", ex:'식후 30분에 드세요.', e:'🍽️'},
-    {ko:'알약', syl:'알·약', rom:'a-ryak', uz:'tabletka (pill/tablet)', ex:'알약을 물과 함께 드세요.', e:'💊'},
-    {ko:'붙이다', syl:'붙·이·다', rom:'bu-chi-da', uz:"yopishtirib qo'ymoq (to apply a patch)", ex:'파스를 아픈 곳에 붙이세요.', e:'🩹'},
-    {ko:'부작용', syl:'부·작·용', rom:'bu-ja-gyong', uz:"yon ta'sir (side effect)", ex:'이 약 부작용이 있어요?', e:'⚠️'},
-  ],
-  pattern:{
-    labelKo:'문형: 하루에 [횟수] 번, 식[전/후]에 드세요.',
-    labelUz:"Shakl: Kuniga [marta], ovqat[dan oldin/keyin] iching.",
-    template:'하루에 [___] 번, 식[전/후]에 드세요.',
-    desc:'약 복용 방법을 이해하거나 물을 때 · Dori qabul usulini tushunish yoki so\'rashda',
-    drills:[
-      {blank:'세', full:'하루에 세 번, 식후에 드세요.', uz:'Kuniga 3 marta, ovqatdan keyin iching.'},
-      {blank:'두', full:'하루에 두 번, 식전에 드세요.', uz:'Kuniga 2 marta, ovqatdan oldin iching.'},
-      {blank:'한', full:'하루에 한 번, 자기 전에 드세요.', uz:"Kuniga 1 marta, uxlashdan oldin iching."},
-      {blank:'파스를 아픈 곳에', full:'파스를 아픈 곳에 붙이세요.', uz:"Plastyrni og'rigan joyga yopishtirib qo'ying."},
-    ]
-  },
-  speak:[
-    {situation:'💊 약 복용법을 모르겠어요. 약사에게 물어봐요.', prompt:"'어떻게 먹어요?'를 써봐요.", phrase:'이 약 어떻게 먹어요? 하루에 몇 번이에요?', uz:"Bu dorini qanday qabul qilaman? Kuniga necha marta?"},
-    {situation:'🩹 파스를 어떻게 쓰는지 물어봐요.', prompt:'바르는지 붙이는지 물어봐요.', phrase:'이게 바르는 거예요, 아니면 붙이는 거예요?', uz:"Bu surtiladi yoki yopishtiriladi?"},
-    {situation:'⚠️ 약 부작용에 대해 물어봐요.', prompt:"'부작용'을 써봐요.", phrase:'이 약에 부작용이 있어요? 운전해도 괜찮아요?', uz:"Bu dorining yon ta'siri bormi? Mashina haydash mumkinmi?"},
-  ],
-  quiz:[
-    {tag:'어휘', q:'"식후" 는 무슨 뜻이에요?', qu:'"Ovqatdan keyin" nima degani?', opts:["ovqatdan oldin (식전)",'ovqatdan keyin (after meal)',"uxlashdan oldin",'ertalab (아침에)'], ans:1},
-    {tag:'문형', q:'"하루에 세 번, 식후에 ___세요." 빈칸은?', qu:'"Kuniga 3 marta, ovqatdan keyin ___ing." Bo\'shliq?', opts:['가','드','해','써'], ans:1},
-    {tag:'어휘', q:'"붙이다" 는 무슨 뜻이에요?', qu:'"Yopishtirib qo\'ymoq" nima degani?', opts:["ichmoq (먹다)",'yopishtirib qo\'ymoq (to stick/apply)',"surtmoq (바르다)",'tashlamoq (버리다)'], ans:1},
-    {tag:'의사소통', q:'약을 잘못 복용하면 어떻게 될 수 있어요?', qu:"Dorini noto'g'ri qabul qilsa nima bo'lishi mumkin?", opts:['더 빨리 낫다','부작용이 생길 수 있어요','상관없어요','더 좋아요'], ans:1},
-  ]
-},
-
-// ── 실용 Day 22: 안전 표지 ──────────────────────────────────────────
-{
-  day:22, icon:'🚧',
-  ncs:'06010201',
-  titleKo:'안전 표지를 읽어요!', titleUz:"Xavfsizlik belgilarini o'qiymiz!",
-  subKo:'오늘의 목표: 금지·경고·지시·안내 표지 4종류 이해하기', subUz:"Bugungi maqsad: Taqiqlovchi·ogohlantiruvchi·majburiy·axborot belgilarini tushunish",
-  level:'A1+',
-  goal:{
-    ko:'"출입금지예요." "안전모 착용해야 해요." 표지를 보고 뜻을 말할 수 있어요.',
-    uz:'"Kirish taqiqlangan." "Xavfsizlik dubulg\'asi kiyish kerak." Belgilarni ko\'rib ma\'nosini ayta olasiz.',
-    can:['이 표지는 출입금지예요.','안전모를 착용해야 해요.','경고 표지예요 — 위험해요!','비상구는 어디예요?','이 표지 무슨 뜻이에요?']
-  },
-  listen:{
-    ctx:'🏭 현장 — 새 직원 첫날, 표지를 배워요 / Ishxona — yangi xodim birinchi kuni, belgilarni o\'rganadi',
-    bubbles:[
-      {who:'👷',name:'Sardor',ko:'저 빨간 표지는 뭐예요?',uz:"O'sha qizil belgi nima?",side:'right'},
-      {who:'🦺',name:'관리자 (Menejer)',ko:'빨간 원 표지는 금지 표지예요. 출입금지, 사용금지 같은 거예요.',uz:"Qizil doira belgisi — taqiqlovchi belgi. Kirish taqiqlangan, foydalanish taqiqlangan kabi.",side:'left'},
-      {who:'👷',name:'Sardor',ko:'노란 삼각형은요?',uz:"Sariq uchburchak-chi?",side:'right'},
-      {who:'🦺',name:'관리자',ko:'경고 표지예요. 위험하다는 뜻이에요. 낙하물경고, 고온경고 같은 거예요.',uz:"Ogohlantiruvchi belgi. Xavfli degani. Tushayotgan predmet, yuqori harorat kabi.",side:'left'},
-      {who:'👷',name:'Sardor',ko:'파란 원은요?',uz:"Ko'k doira-chi?",side:'right'},
-      {who:'🦺',name:'관리자',ko:'지시 표지예요. 꼭 해야 한다는 뜻이에요. 안전모 착용, 안전화 착용 같은 거예요.',uz:"Majburiy belgi. Albatta bajarish kerak degani. Dubulg\'a, xavfsiz poyabzal kiyish kabi.",side:'left'},
-      {who:'👷',name:'Sardor',ko:'초록 표지는요?',uz:"Yashil belgi-chi?",side:'right'},
-      {who:'🦺',name:'관리자',ko:'안내 표지예요. 비상구, 구급함 위치를 알려줘요.',uz:"Axborot belgisi. Favqulodda chiqish, tibbiy yordam qutilarining joylashuvini ko'rsatadi.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'금지 표지', syl:'금·지·표·지', rom:'geum-ji pyo-ji', uz:"taqiqlovchi belgi (prohibition sign)", ex:'빨간 원은 금지 표지예요.', e:'🚫'},
-    {ko:'경고 표지', syl:'경·고·표·지', rom:'gyeong-go pyo-ji', uz:"ogohlantiruvchi belgi (warning sign)", ex:'노란 삼각형은 경고 표지예요.', e:'⚠️'},
-    {ko:'지시 표지', syl:'지·시·표·지', rom:'ji-si pyo-ji', uz:"majburiy belgi (mandatory sign)", ex:'파란 원은 지시 표지예요.', e:'🔵'},
-    {ko:'출입금지', syl:'출·입·금·지', rom:'chu-rip-geum-ji', uz:"kirish taqiqlangan (no entry)", ex:'이 구역은 출입금지예요.', e:'🚷'},
-    {ko:'비상구', syl:'비·상·구', rom:'bi-sang-gu', uz:"favqulodda chiqish (emergency exit)", ex:'비상구는 저쪽에 있어요.', e:'🚪'},
-  ],
-  pattern:{
-    labelKo:'문형: [표지]는 [의미]라는 뜻이에요.',
-    labelUz:"Shakl: [belgi] — [ma'no] degani.",
-    template:'[___] 표지는 [___]라는 뜻이에요.',
-    desc:'표지 뜻 설명하기 · Belgi ma\'nosini tushuntirish',
-    drills:[
-      {blank:'빨간 원 / 금지', full:'빨간 원 표지는 금지라는 뜻이에요.', uz:"Qizil doira belgisi — taqiqlangan degani."},
-      {blank:'노란 삼각형 / 위험 경고', full:'노란 삼각형 표지는 위험 경고라는 뜻이에요.', uz:"Sariq uchburchak belgisi — xavf ogohlantirishida degani."},
-      {blank:'파란 원 / 착용 의무', full:'파란 원 표지는 착용 의무라는 뜻이에요.', uz:"Ko'k doira belgisi — kiyish majburiy degani."},
-      {blank:'초록 / 비상 안내', full:'초록 표지는 비상 안내라는 뜻이에요.', uz:"Yashil belgi — favqulodda yo'nalish degani."},
-    ]
-  },
-  speak:[
-    {situation:'🚫 동료가 위험한 구역에 들어가려 해요. 표지를 보고 알려줘요.', prompt:"'출입금지'를 써봐요.", phrase:'저기 출입금지 표지 있어요! 들어가면 안 돼요!', uz:"U yerda kirish taqiqlangan belgisi bor! Kirmang!"},
-    {situation:'⚠️ 새 동료에게 경고 표지를 설명해줘요.', prompt:"'위험하다'를 포함해서 말해봐요.", phrase:'이 표지는 경고 표지예요. 위험하다는 뜻이에요. 조심하세요!', uz:"Bu ogohlantiruvchi belgi. Xavfli degani. Ehtiyot bo'ling!"},
-    {situation:'🚪 화재가 났어요! 비상구를 찾아요.', prompt:"'비상구'를 써봐요.", phrase:'비상구 어디예요? 빨리 대피해야 해요!', uz:"Favqulodda chiqish qayerda? Tez evakuatsiya qilishimiz kerak!"},
-  ],
-  quiz:[
-    {tag:'표지', q:'빨간 원 표지는 무슨 종류예요?', qu:"Qizil doira belgisi qaysi tur?", opts:['경고 표지','지시 표지','금지 표지','안내 표지'], ans:2},
-    {tag:'표지', q:'안전모 착용을 지시하는 표지 색깔은?', qu:"Dubulg'a kiyishni buyuruvchi belgi rangi?", opts:['빨간색','노란색','파란색','초록색'], ans:2},
-    {tag:'어휘', q:'"비상구" 는 무슨 뜻이에요?', qu:'"Favqulodda chiqish" nima degani?', opts:["위험 구역 (danger zone)",'favqulodda chiqish (emergency exit)',"taqiqlangan joy (forbidden area)",'Tozalash joyi'], ans:1},
-    {tag:'실전', q:'노란 삼각형 표지를 보면 어떻게 해야 해요?', qu:"Sariq uchburchak belgi ko'rsangiz nima qilish kerak?", opts:['무시해도 돼요','위험을 인식하고 조심해야 해요','바로 대피해요','관리자를 불러요'], ans:1},
-  ]
-},
-
-// ── 실용 Day 23: 화학물질 응급처치 ──────────────────────────────────
-{
-  day:23, icon:'🧪',
-  ncs:'06010301',
-  titleKo:'화학물질 — 응급처치 4단계', titleUz:"Kimyoviy moddalar — 4 vaziyatda birinchi yordam",
-  subKo:'오늘의 목표: 흡입·피부·눈·섭취 4가지 상황에서 응급처치 말하기', subUz:"Bugungi maqsad: Inhalayon·teri·ko'z·yutish — 4 holatda birinchi yordamni aytish",
-  level:'A2',
-  goal:{
-    ko:'"눈에 들어갔어요. 물로 15분 씻었어요." 화학물질 사고를 신고하고 처치를 설명할 수 있어요.',
-    uz:'"Ko\'zga kirdi. Suv bilan 15 daqiqa yuvdim." Kimyoviy hodisani xabar qilib, yordam berishni tushuntirasiz.',
-    can:['화학물질이 눈에 들어갔어요.','신선한 공기가 있는 곳으로 이동하세요.','15분 동안 물로 씻으세요.','즉시 119에 신고하세요.','어떤 화학물질인지 알려주세요.']
-  },
-  listen:{
-    ctx:'🏭 화학물질 사고 — 즉각 대응 / Kimyoviy hodisa — darhol munosabat',
-    bubbles:[
-      {who:'😨',name:'Bobur',ko:'도와주세요! 약품이 눈에 들어갔어요!',uz:"Yordam bering! Kimyoviy modda ko'zga kirdi!",side:'right'},
-      {who:'🦺',name:'관리자 (Menejer)',ko:'눈을 비비지 마세요! 세안장치로 빨리 와요!',uz:"Ko'zingizni ishqalamang! Tez ko'z yuvish joyiga keling!",side:'left'},
-      {who:'😨',name:'Bobur',ko:'아파요! 어떻게 해요?',uz:"Og'riyapti! Nima qilaman?",side:'right'},
-      {who:'🦺',name:'관리자',ko:'눈꺼풀을 벌리고 15분 동안 물로 씻으세요.',uz:"Ko'z qoqog'ini oching va 15 daqiqa suv bilan yuving.",side:'left'},
-      {who:'🦺',name:'관리자',ko:'119에 신고했어요. 어떤 약품인지 이름을 알아야 해요.',uz:"119 ga xabar berdim. Qaysi kimyoviy modda ekanini bilish kerak.",side:'left'},
-      {who:'😨',name:'Bobur',ko:'저기 용기에 이름이 있어요.',uz:"U yerda idishda nomi bor.",side:'right'},
-      {who:'🦺',name:'관리자',ko:'알겠어요. 그 용기를 가져오세요. 병원에 보여줘야 해요.',uz:"Tushundim. U idishni oling. Kasalxonaga ko'rsatish kerak.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'흡입하다', syl:'흡·입·하·다', rom:'heu-bi-pa-da', uz:"inhalayon qilmoq (to inhale)", ex:'유해 가스를 흡입했어요.', e:'😮‍💨'},
-    {ko:'세안장치', syl:'세·안·장·치', rom:'se-an-jang-chi', uz:"ko'z yuvish qurilmasi (eye wash station)", ex:'세안장치로 눈을 씻으세요.', e:'👁️'},
-    {ko:'응급처치', syl:'응·급·처·치', rom:'eung-geup-cheo-chi', uz:"birinchi yordam (first aid)", ex:'응급처치를 먼저 하세요.', e:'🩺'},
-    {ko:'신선한 공기', syl:'신·선·한 공·기', rom:'sin-seon-han gong-gi', uz:"toza havo (fresh air)", ex:'신선한 공기가 있는 곳으로 이동하세요.', e:'🌬️'},
-    {ko:'용기', syl:'용·기', rom:'yong-gi', uz:"idish/konteyner (container)", ex:'화학물질 용기에 이름이 있어요.', e:'🧴'},
-  ],
-  pattern:{
-    labelKo:'문형: [부위]에 [화학물질]이 [접촉 방식]. [응급조치]하세요.',
-    labelUz:"Shakl: [joyga] [kimyoviy modda] [ta'sir qildi]. [birinchi yordam] qiling.",
-    template:'[___]에 들어갔어요. [___]분 동안 물로 씻으세요.',
-    desc:'화학물질 사고 신고하기 · Kimyoviy hodisani xabar qilish',
-    drills:[
-      {blank:'눈 / 15', full:'눈에 들어갔어요. 15분 동안 물로 씻으세요.', uz:"Ko'zga kirdi. 15 daqiqa suv bilan yuving."},
-      {blank:'피부에 묻었어요 / 15', full:'피부에 묻었어요. 15분 동안 물로 씻으세요.', uz:"Teriga tegdi. 15 daqiqa suv bilan yuving."},
-      {blank:'가스를 마셨어요 → 신선한 공기', full:'가스를 마셨어요. 신선한 공기가 있는 곳으로 이동하세요.', uz:"Gaz yutdim. Toza havoga chiqing."},
-      {blank:'삼켰어요 → 119', full:'화학물질을 삼켰어요. 즉시 119에 신고하세요.', uz:"Kimyoviy moddani yutdim. Darhol 119 ga xabar bering."},
-    ]
-  },
-  speak:[
-    {situation:'😮‍💨 작업 중 유해 가스 냄새가 나요. 빨리 신고해요.', prompt:"'가스 냄새가 나요'를 포함해서 말해봐요.", phrase:'가스 냄새가 나요! 모두 밖으로 나가요! 119에 신고해요!', uz:"Gaz hidi kelmoqda! Hammasi tashqariga! 119 ga xabar bering!"},
-    {situation:'👁️ 동료 눈에 화학물질이 들어갔어요. 도와줘요.', prompt:"'세안장치'와 '15분'을 써봐요.", phrase:'눈꺼풀을 벌리고 세안장치에서 15분 동안 씻으세요!', uz:"Ko'z qoqog'ini oching va 15 daqiqa ko'z yuvish joyida yuving!"},
-    {situation:'📞 119에 신고해요. 상황을 설명해요.', prompt:"'화학물질', '눈에'를 써봐요.", phrase:'119예요? 화학물질이 눈에 들어갔어요. ○○공장이에요. 빨리 와주세요!', uz:"119mi? Kimyoviy modda ko'zga kirdi. ○○ zavod. Tez keling!"},
-  ],
-  quiz:[
-    {tag:'응급처치', q:'눈에 화학물질이 들어갔을 때 가장 먼저 할 일은?', qu:"Ko'zga kimyoviy modda kirganda birinchi nima qilish kerak?", opts:["눈을 비빈다","다량의 물로 최소 15분 씻는다","눈에 안약을 넣는다","그냥 기다린다"], ans:1},
-    {tag:'응급처치', q:'화학물질 가스를 흡입했을 때 즉시 해야 할 일은?', qu:"Kimyoviy gaz inhalayon qilinsa darhol nima qilish kerak?", opts:["물을 마신다","신선한 공기 있는 곳으로 이동","구토를 유발한다","누워서 쉰다"], ans:1},
-    {tag:'어휘', q:'"세안장치" 는 어디에 쓰여요?', qu:'"Ko\'z yuvish qurilmasi" qayerda ishlatiladi?', opts:["손을 씻을 때","눈에 화학물질이 들어갔을 때","약을 먹을 때","몸 전체를 씻을 때"], ans:1},
-    {tag:'실전', q:'화학물질 사고 시 용기를 왜 가져가야 해요?', qu:"Kimyoviy hodisada idishni nega olib borish kerak?", opts:['비쌔서','의료진에게 화학물질 종류를 알려주려고','다시 쓰려고','버리려고'], ans:1},
-  ]
-},
-
-// ── 실용 Day 24: 직장 내 괴롭힘 & 계절 안전 ─────────────────────────
-{
-  day:24, icon:'🛡️',
-  ncs:null,
-  titleKo:'내 권리를 알아요 — 직장 안전', titleUz:"Huquqlarimni bilaman — ish joyida xavfsizlik",
-  subKo:'오늘의 목표: 직장 내 괴롭힘 신고하기 + 폭염·한파 대비 말하기', subUz:"Bugungi maqsad: Ish joyidagi ta'qibni xabar qilish + issiq/sovuq havoda xavfsizlik",
-  level:'A2',
-  goal:{
-    ko:'"이건 직장 내 괴롭힘이에요. 고용노동부에 신고할 거예요." 내 권리를 말할 수 있어요.',
-    uz:'"Bu ish joyidagi ta\'qib. Mehnat vazirligi ga xabar qilaman." O\'z huquqlarini ayta olasiz.',
-    can:['이건 괴롭힘이에요. 신고할 거예요.','증거를 기록하고 있어요.','폭염 때는 물을 자주 마셔요.','한파에는 방한용품을 착용해요.','1345에 전화하면 도움받을 수 있어요.']
-  },
-  listen:{
-    ctx:'🏭 현장 — 권리 상담 / Ishxona — huquq maslahat',
-    bubbles:[
-      {who:'😟',name:'Dilnoza',ko:'관리자가 저한테 욕설을 해요. 어떻게 해야 해요?',uz:"Menejer menga haqorat qilyapti. Nima qilishim kerak?",side:'right'},
-      {who:'🧑‍💼',name:'상담사 (Maslahatchi)',ko:'그건 직장 내 괴롭힘에 해당해요.',uz:"Bu ish joyidagi ta'qibga kiradi.",side:'left'},
-      {who:'🧑‍💼',name:'상담사',ko:'날짜, 장소, 내용을 기록해두세요. 가능하면 녹음도요.',uz:"Sana, joy, mazmunini yozing. Imkon bo'lsa yozib oling.",side:'left'},
-      {who:'😟',name:'Dilnoza',ko:'그다음에는요?',uz:"Keyin nima?",side:'right'},
-      {who:'🧑‍💼',name:'상담사',ko:'회사 고충처리부서나 고용노동부에 신고하세요.',uz:"Kompaniya shikoyat bo'limi yoki Mehnat vazirligiga murojaat qiling.",side:'left'},
-      {who:'😟',name:'Dilnoza',ko:'신고하면 보복을 당하지 않아요?',uz:"Xabar qilsam qasos olmaymanmi?",side:'right'},
-      {who:'🧑‍💼',name:'상담사',ko:'피해 신고로 인한 보복은 근로기준법으로 금지돼 있어요. 안심하세요.',uz:"Xabar qilish uchun qasos qilish mehnat qonunchiligida taqiqlangan. Xavotir olmang.",side:'left'},
-      {who:'😟',name:'Dilnoza',ko:'도움 받으려면 어디에 전화해요?',uz:"Yordam olish uchun qayerga qo'ng'iroq qilamiz?",side:'right'},
-      {who:'🧑‍💼',name:'상담사',ko:'1345로 전화하세요. 외국어 지원도 돼요.',uz:"1345 ga qo'ng'iroq qiling. Chet tilida yordam ham bor.",side:'left'},
-    ]
-  },
-  words:[
-    {ko:'직장 내 괴롭힘', syl:'직·장 내 괴·롭·힘', rom:'jik-jang nae gwe-ro-pim', uz:"ish joyi ta'qibi (workplace harassment)", ex:'직장 내 괴롭힘은 법으로 금지예요.', e:'🚨'},
-    {ko:'신고하다', syl:'신·고·하·다', rom:'sin-go-ha-da', uz:"xabar qilmoq (to report)", ex:'고용노동부에 신고했어요.', e:'📢'},
-    {ko:'증거', syl:'증·거', rom:'jeung-geo', uz:"dalil (evidence)", ex:'날짜와 내용을 증거로 기록하세요.', e:'📝'},
-    {ko:'폭염', syl:'폭·염', rom:'pok-yeom', uz:"issiqqina (heat wave)", ex:'폭염 때는 물을 자주 마셔요.', e:'🥵'},
-    {ko:'한파', syl:'한·파', rom:'han-pa', uz:"sovuq to'lqin (cold wave)", ex:'한파에는 방한복을 입으세요.', e:'🥶'},
-  ],
-  pattern:{
-    labelKo:'문형: 이건 [행위]예요. [기관]에 신고할 거예요.',
-    labelUz:"Shakl: Bu [harakat]. [muassasa]ga xabar qilaman.",
-    template:'이건 직장 내 괴롭힘이에요. [___]에 신고할 거예요.',
-    desc:'피해 상황 신고하기 · Zararli holatni xabar qilish',
-    drills:[
-      {blank:'고용노동부', full:'이건 직장 내 괴롭힘이에요. 고용노동부에 신고할 거예요.', uz:"Bu ish joyi ta'qibi. Mehnat vazirligiga xabar qilaman."},
-      {blank:'회사 고충처리부서', full:'이건 직장 내 괴롭힘이에요. 회사 고충처리부서에 신고할 거예요.', uz:"Bu ish joyi ta'qibi. Kompaniya shikoyat bo'limiga murojaat qilaman."},
-      {blank:'1345', full:'도움이 필요해요. 1345에 전화할 거예요.', uz:"Yordam kerak. 1345 ga qo'ng'iroq qilaman."},
-      {blank:'폭염 때 물을 자주', full:'폭염 때는 물을 자주 마셔야 해요.', uz:"Issiqda ko'p suv ichish kerak."},
-    ]
-  },
-  speak:[
-    {situation:'😟 관리자가 욕설을 해요. 상담사에게 상황을 설명해요.', prompt:"'욕설'과 '기록'을 써봐요.", phrase:'관리자가 욕설을 해요. 날짜랑 내용을 기록하고 있어요. 어디에 신고해요?', uz:"Menejer haqorat qilyapti. Sana va mazmunini yozib olmoqdaman. Qayerga xabar qilaman?"},
-    {situation:'🥵 오늘 폭염주의보예요. 동료에게 알려줘요.', prompt:"'폭염', '물'을 써봐요.", phrase:'오늘 폭염주의보예요. 물을 자주 마시고 그늘에서 쉬세요!', uz:"Bugun qizib ketish ogohlantirilishi bor. Ko'p suv iching va soyada dam oling!"},
-    {situation:'📞 외국인 근로자 지원 전화로 도움을 요청해요.', prompt:"'1345'를 써봐요.", phrase:'안녕하세요? 1345예요? 저 외국인 근로자예요. 도움이 필요해요.', uz:"Salom? 1345mi? Men chet ellik ishchi. Yordamga muhtojman."},
-  ],
-  quiz:[
-    {tag:'권리', q:'직장 내 괴롭힘을 당했을 때 첫 번째로 해야 할 일은?', qu:"Ish joyida ta'qibga uchraganda birinchi nima qilish kerak?", opts:["그냥 참는다","증거를 기록하고 수집한다","바로 퇴사한다","동료에게 화풀이한다"], ans:1},
-    {tag:'어휘', q:'외국인 근로자 지원 전화번호는?', qu:"Chet ellik ishchilar uchun yordam telefon raqami?", opts:['119','112','1345','911'], ans:2},
-    {tag:'안전', q:'폭염 때 야외 활동을 자제해야 하는 시간은?', qu:"Qizib ketganda tashqaridagi harakatni cheklash kerak bo'lgan vaqt?", opts:['오전 6시~오전 10시','오전 12시~오후 5시','오후 5시~오후 9시','밤새'], ans:1},
-    {tag:'권리', q:'신고로 인한 보복 처우는 어떻게 돼요?', qu:"Xabar qilish uchun qasos qilish qanday?", opts:['허용돼요','회사 방침에 따라 달라요','근로기준법으로 금지돼 있어요','처벌이 없어요'], ans:2},
-  ]
-}
-];
 
 // ════════════════════════
 // STATE
 // ════════════════════════
 // 7단계 × 5분 구조 (소리→문장·번역→소리·순서맞추기 제거)
-const STEPS = ['오늘의 문장','문장 1','문장 2','문장 3','단어 듣기','퀴즈','완료'];
-const STEP_HINTS_KO = ['3개 문장 확인','1번 문장 + 단어','2번 문장 + 단어','3번 문장 + 단어','들은 단어 찾기','이해도 확인 (2문제)','완료!'];
-const STEP_HINTS_UZ = ["3 ta gap",'1-gap + so\'zlar','2-gap + so\'zlar','3-gap + so\'zlar',"So'z topish",'Test (2 savol)','Tugadi!'];
+const STEPS = ['오늘의 문장','플래시카드','매칭 게임','단어 듣기','퀴즈','완료'];
+const STEP_HINTS_KO = ['문장 확인하기','카드 뒤집어 외우기','단어 짝 맞추기','들은 단어 찾기','이해도 확인 (2문제)','완료!'];
+const STEP_HINTS_UZ = ["Gap bilan tanishuv","Kartochkalarni ag'darish","So'zlarni moslashtirish","Eshitib toping",'Test (2 savol)','Tugadi!'];
 
 let ST = {
   lang:'ko', dayIdx:null, step:0,
@@ -3327,7 +2475,7 @@ function renderHome(){
       <div class="dnum">Day ${d.day} · ${d.level}</div>
       <div class="dice">${d.icon}</div>
       <div class="dtitle">${ST.lang==='ko'?d.titleKo:d.titleUz}</div>
-      <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ',''):d.subUz.replace('Bugungi maqsad: ','')}</div>
+      <div class="dgoal">${ST.lang==='ko'?(d.subKo||d.sentence?.ko||'').replace('오늘의 목표: ',''):(d.subUz||d.sentence?.uz||'').replace('Bugungi maqsad: ','')}</div>
       <div class="dstat">${done?'✓':locked?'—':'›'}</div>
     `;
     if(!locked) el.onclick=()=>startLesson(i);
@@ -3349,7 +2497,7 @@ function renderHome(){
         <div class="dnum" style="color:var(--orange)">실용 ${i+1} · ${d.level}</div>
         <div class="dice">${d.icon}</div>
         <div class="dtitle">${ST.lang==='ko'?d.titleKo:d.titleUz}</div>
-        <div class="dgoal">${ST.lang==='ko'?d.subKo.replace('오늘의 목표: ',''):d.subUz.replace('Bugungi maqsad: ','')}</div>
+        <div class="dgoal">${ST.lang==='ko'?(d.subKo||d.sentence?.ko||'').replace('오늘의 목표: ',''):(d.subUz||d.sentence?.uz||'').replace('Bugungi maqsad: ','')}</div>
         <div class="dstat">›</div>
       `;
       el.onclick=()=>startPracticalLesson(i);
@@ -3400,163 +2548,258 @@ function renderLesson(){
   const d = CUR_SRC[ST.dayIdx], s = ST.step;
   const uz = ST.lang==='uz';
   document.getElementById('lTitle').textContent=`Day ${d.day}: ${uz?d.titleUz:d.titleKo}`;
-  document.getElementById('lSub').textContent=uz?d.subUz:d.subKo;
+  document.getElementById('lSub').textContent=uz?(d.subUz||d.sentence?.uz||''):(d.subKo||d.sentence?.ko||'');
   // step bar
   document.getElementById('sbar').innerHTML=STEPS.map((_,i)=>
     `<div class="sdot ${i<s?'done':i===s?'cur':''}"></div>`).join('');
-  document.getElementById('stepName').textContent=(uz?['목표','듣기','들어보세요','패턴','말하기','확인','완료']:STEPS)[s]||STEPS[s];
+  document.getElementById('stepName').textContent=STEPS[s]||STEPS[s];
   document.getElementById('stepHint').textContent=uz?STEP_HINTS_UZ[s]:STEP_HINTS_KO[s];
 
-  // ── PC 2열: 좌측 참고 문장 패널 ──────────────────────────
+  // ── PC 2열: 좌측 참고 패널 ──────────────────────────
   const refEl=document.getElementById('lref');
   if(refEl){
     const isPC=window.innerWidth>=768;
     refEl.style.display=isPC?'block':'none';
     if(isPC){
-      const speaks=(d.speak||[]).slice(0,3);
-      refEl.innerHTML=`<div class="lesson-ref-title">📌 오늘의 목표 문장</div>`+
-        speaks.map((sp,i)=>{
-          const pid=`lrp${i}`;
-          return `<div class="lesson-ref-sent">
-            <div class="lesson-ref-num">${i+1}</div>
-            <div style="flex:1;min-width:0">
-              <div class="lesson-ref-ko">${sp.phrase}</div>
-              <div class="lesson-ref-tr">${sp.uz||''}</div>
-            </div>
-            <button class="lesson-ref-play" id="${pid}" onclick="sayBtn('${pid}',${jq(sp.phrase)})">▶</button>
-          </div>`;
-        }).join('')+
-        `<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
-          <div class="lesson-ref-title">📖 이 단원 단어</div>
-          ${(d.speak||[]).flatMap(sp=>sp.words||[]).map(w=>
-            `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">
+      const sent=d.sentence||{ko:'',uz:''};
+      const words=d.words||[];
+      const pid='lrp0';
+      refEl.innerHTML=`<div class="lesson-ref-title">📌 오늘의 문장</div>
+        <div class="lesson-ref-sent">
+          <div class="lesson-ref-num">1</div>
+          <div style="flex:1;min-width:0">
+            <div class="lesson-ref-ko">${sent.ko}</div>
+            <div class="lesson-ref-tr">${sent.uz||''}</div>
+          </div>
+          <button class="lesson-ref-play" id="${pid}" onclick="sayBtn('${pid}',${jq(sent.ko)})">▶</button>
+        </div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+          <div class="lesson-ref-title">📖 오늘의 단어 (${words.length}개)</div>
+          ${words.map(w=>`
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">
               <span style="font-weight:800;color:var(--ink)">${w.ko}</span>
-              <span style="color:var(--muted)">${w.uz}</span>
-            </div>`
-          ).join('')}
+              <span style="color:var(--muted);font-size:10px">${w.pos}</span>
+              <span style="color:var(--muted)">${w.uz.split('—')[0].trim()}</span>
+            </div>`).join('')}
         </div>`;
     }
   }
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
-  // 7단계: 목표→문장1→문장2→문장3→단어듣기→퀴즈→완료 (5분)
-  if(s===0) rSentences(d,el,uz);
-  else if(s===1) rSentStudy(d,el,uz,0);
-  else if(s===2) rSentStudy(d,el,uz,1);
-  else if(s===3) rSentStudy(d,el,uz,2);
-  else if(s===4) rWordListen(d,el,uz);
-  else if(s===5) rQuiz(d,el,uz);
-  else if(s===6) rResult(d,el,uz);
+  // 6단계 퀴즐렛 방식: 문장→플래시카드→매칭→단어듣기→퀴즈→완료 (5분)
+  if(s===0) rSentView(d,el,uz);
+  else if(s===1) rFlashcard(d,el,uz);
+  else if(s===2) rMatching(d,el,uz);
+  else if(s===3) rListenPick(d,el,uz);
+  else if(s===4) rQuiz(d,el,uz);
+  else if(s===5) rResult(d,el,uz);
 }
 
-// ── Step 0: 오늘의 문장 (3 sentences overview) ──
-function rSentences(d,el,uz){
-  // Use speak[0..2].phrase/uz as the 3 target sentences
-  const speaks = d.speak||[];
-  const sentences = [0,1,2].map(i=>{
-    if(speaks[i]) return {ko:speaks[i].phrase, tr:speaks[i].uz||''};
-    // fallback to goal.can
-    const c=d.goal.can[i]||'';
-    return {ko: typeof c==='object'?c.ko:c, tr: typeof c==='object'?c.uz:''};
-  });
+// ── Step 0: 오늘의 문장 ──
+function rSentView(d,el,uz){
+  const sent=d.sentence||{ko:'',uz:''};
+  const words=d.words||[];
   el.innerHTML=`
     <div class="sent-intro-hero">
       <div class="sih-tag">${d.icon||'📚'} Day ${d.day} · ${d.level||'A1'}</div>
-      <div class="sih-title">${d.titleKo||'오늘의 수업'}</div>
-      <div class="sih-sub">${d.subKo||''}</div>
-      <div class="sih-goal">🎯 오늘 배울 3문장 — 버튼을 눌러 발음을 들어보세요</div>
+      <div class="sih-title">${uz?d.titleUz:d.titleKo}</div>
+      <div class="sih-goal">🎯 오늘의 문장을 듣고, 단어를 배워봐요</div>
     </div>
-    <div style="margin-bottom:14px">
-      ${sentences.map((s,i)=>`
-        <div class="sent-card" onclick="sayBtn('spk-s${i}',${jq(s.ko)},'speak')">
-          <div class="sent-num">${i+1}</div>
-          <div class="sent-body">
-            <div class="sent-ko">${s.ko}</div>
-            ${s.tr?`<div class="sent-tr">${s.tr}</div>`:''}
+    <div class="sent-card" style="cursor:pointer" onclick="sayBtn('spk-main',${jq(sent.ko)},'speak')">
+      <div class="sent-num">📢</div>
+      <div class="sent-body">
+        <div class="sent-ko" style="font-size:20px">${sent.ko}</div>
+        <div class="sent-tr">${sent.uz||''}</div>
+      </div>
+      <button class="sent-play" id="spk-main" onclick="event.stopPropagation();sayBtn('spk-main',${jq(sent.ko)},'speak')">▶</button>
+    </div>
+    <div class="vocab-label" style="margin-top:14px">📖 오늘의 단어 ${words.length}개</div>
+    <div class="word-cards">
+      ${words.map((w,i)=>`
+        <div class="word-card" onclick="sayBtn('sv-w${i}',${jq(w.ko)},'word')">
+          <div class="wc-left">
+            <div class="wc-ko">${w.ko}</div>
+            <div class="wc-syl">${w.syl}</div>
           </div>
-          <button class="sent-play" id="spk-s${i}" onclick="event.stopPropagation();sayBtn('spk-s${i}',${jq(s.ko)},'speak')">▶</button>
-        </div>
-      `).join('')}
+          <div class="wc-right">
+            <div class="wc-rom">[${w.rom}]</div>
+            <div style="font-size:10px;color:var(--blue-m);font-weight:700">${w.pos}</div>
+            <div class="wc-uz">${w.uz}</div>
+          </div>
+          <button class="wc-play" id="sv-w${i}" onclick="event.stopPropagation();sayBtn('sv-w${i}',${jq(w.ko)},'word')">▶</button>
+        </div>`).join('')}
     </div>
     ${d.ncs?`<div style="display:inline-flex;align-items:center;gap:5px;
       background:var(--blue-l);border:1px solid var(--blue-m);border-radius:10px;
       padding:5px 12px;font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:12px">
       NCS ${d.ncs.code} · ${d.ncs.label}</div>`:''}
-    <button class="btn red" onclick="next()">문장 1 학습하기 →</button>
+    <button class="btn red" onclick="next()">플래시카드로 외우기 →</button>
   `;
+  setTimeout(()=>sayBtn('spk-main',sent.ko,'speak'),500);
 }
 
-// ── Steps 1-3: 문장 학습 (sentence + vocabulary) ──
-function rSentStudy(d,el,uz,sentIdx){
-  const speaks = d.speak||[];
-  const sp = speaks[sentIdx];
-  const phrase = sp ? sp.phrase : (d.goal.can[sentIdx]||'');
-  const phraseKo = typeof phrase==='object' ? phrase.ko : phrase;
-  const phraseTr = sp ? (sp.uz||'') : (typeof phrase==='object' ? phrase.uz : '');
-
-  // 이 문장에 직접 연결된 단어만 사용
-  const myWords = (sp && sp.words) ? sp.words : [];
-
-  const isLast = sentIdx===2;
-  const nextLabel = isLast ? '듣기 연습 →' : `문장 ${sentIdx+2} 배우기 →`;
-
+// ── Step 1: 플래시카드 (Quizlet 방식) ──
+function rFlashcard(d,el,uz){
+  const words=d.words||[];
+  if(!ST._fc||ST._fc.day!==d.day){
+    ST._fc={day:d.day, items:[...words], idx:0, known:0};
+  }
+  const fc=ST._fc;
+  if(fc.idx>=fc.items.length){
+    el.innerHTML=`
+      <div class="act-complete">
+        <div style="font-size:48px">🎉</div>
+        <div class="act-complete-msg">플래시카드 완료!</div>
+        <div class="act-complete-sub">알고 있는 단어: ${fc.known} / ${fc.items.length}</div>
+      </div>
+      <button class="btn red" onclick="ST._fc=null;next()">매칭 게임 →</button>`;
+    return;
+  }
+  const w=fc.items[fc.idx];
+  const prog=`${fc.idx+1}/${fc.items.length}`;
   el.innerHTML=`
-    <div class="sent-study-box">
-      <div class="ssb-badge">문장 ${sentIdx+1} / 3</div>
-      <div class="ssb-ko">${phraseKo}</div>
-      ${phraseTr?`<div class="ssb-tr">${phraseTr}</div>`:''}
-      <div style="display:flex;gap:8px;margin-top:4px">
-        <button class="ssb-play-btn" id="ssb-play-${sentIdx}" onclick="sayBtn('ssb-play-${sentIdx}',${jq(phraseKo)})">
-          ▶ 발음 듣기
-        </button>
-        <button class="ssb-play-btn" id="ssb-slow-${sentIdx}"
-          style="background:rgba(255,255,255,.08);font-size:13px;padding:10px 14px"
-          onclick="sayBtnSlow('ssb-slow-${sentIdx}',${jq(phraseKo)})">
-          🐢 느리게
-        </button>
+    <div class="act-header">
+      <div class="act-badge">📇 플래시카드</div>
+      <div class="act-prog">${prog} <span class="act-score">✅ ${fc.known}</span></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">카드를 탭하면 뒤집혀요</div>
+    <div class="fc-wrap">
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-front">
+          <div style="font-size:36px;margin-bottom:6px">${w.e||'📝'}</div>
+          <div style="font-size:26px;font-weight:900;letter-spacing:1px">${w.ko}</div>
+          <div style="font-size:13px;opacity:.8;margin-top:4px">[${w.rom}]</div>
+          <div style="font-size:11px;opacity:.7;margin-top:2px">${w.syl}</div>
+        </div>
+        <div class="fc-back">
+          <div style="font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:6px">${w.pos}</div>
+          <div style="font-size:18px;font-weight:800;color:var(--ink);line-height:1.4">${w.uz}</div>
+          <div style="margin-top:10px;padding:8px;background:var(--blue-l);border-radius:8px;font-size:12px;color:var(--ink-s)">
+            예문: ${w.ex}
+          </div>
+          <button class="ssb-play-btn" style="margin-top:10px;font-size:12px" id="fc-play-btn"
+            onclick="event.stopPropagation();sayBtn('fc-play-btn',${jq(w.ko)},'word')">▶ 발음 듣기</button>
+        </div>
       </div>
     </div>
-    ${myWords.length>0?`
-      <div class="vocab-label">이 문장의 핵심 단어</div>
-      <div class="word-cards">
-        ${myWords.map((w,i)=>`
-          <div class="word-card" id="wc${sentIdx}_${i}" onclick="playW2('${sentIdx}_${i}',${jq(w.ko)})">
-            <div class="wc-left">
-              <div class="wc-ko">${w.ko}</div>
-              <div class="wc-syl">${w.syl}</div>
-            </div>
-            <div class="wc-right">
-              <div class="wc-rom">[${w.rom}]</div>
-              <div class="wc-uz">${w.uz}</div>
-              <div class="wc-ex">▸ ${w.ex}</div>
-            </div>
-            <div class="wc-play">▶</div>
-          </div>
-        `).join('')}
-      </div>
-    `:''}
-    <button class="btn red" style="margin-top:4px" onclick="ST.speakIdx=0;next()">${nextLabel}</button>
-    <button class="btn gray" style="margin-top:6px" onclick="ST.step--;renderLesson()">← 이전</button>
+    <div id="fc-btns" style="display:none;display:flex;gap:10px;margin-top:12px;justify-content:center">
+      <button class="fc-btn-know" onclick="fcKnow()">✅ 알아요</button>
+      <button class="fc-btn-again" onclick="fcAgain()">🔄 다시</button>
+    </div>
   `;
-  // 자동 재생 (문장 학습 진입 시)
-  setTimeout(()=>sayHQ(phraseKo,null),550);
+  // Show buttons after card is visible
+  setTimeout(()=>{ const b=document.getElementById('fc-btns'); if(b) b.style.display='flex'; },100);
 }
-function playW2(id,text){
-  document.querySelectorAll('.word-card').forEach(x=>x.classList.remove('playing'));
-  const el=document.getElementById('wc'+id); if(el) el.classList.add('playing');
-  sayHQ(text,()=>{const e=document.getElementById('wc'+id);if(e)e.classList.remove('playing')});
+function flipCard(){
+  const c=document.getElementById('fc-card');
+  if(c){ c.classList.toggle('flipped'); sayBtn('fc-play-btn',(ST._fc?.items[ST._fc?.idx]?.ko||''),'word'); }
 }
-// Keep playW alias for compatibility
-function playW(i,text){ playW2(i,text); }
+function fcKnow(){
+  if(!ST._fc) return;
+  ST._fc.known++;
+  ST._fc.idx++;
+  renderLesson();
+}
+function fcAgain(){
+  if(!ST._fc) return;
+  // push current to end
+  const item=ST._fc.items.splice(ST._fc.idx,1)[0];
+  ST._fc.items.push(item);
+  renderLesson();
+}
 
-// ── 셔플 유틸 ──
-function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+// ── Step 2: 매칭 게임 ──
+function rMatching(d,el,uz){
+  const words=d.words||[];
+  if(!ST._match||ST._match.day!==d.day){
+    const items=shuffle(words).slice(0,Math.min(4,words.length));
+    ST._match={day:d.day,items,selKo:null,matched:[],errors:0};
+  }
+  const m=ST._match;
+  if(m.matched.length>=m.items.length){
+    el.innerHTML=`
+      <div class="act-complete">
+        <div style="font-size:48px">🎊</div>
+        <div class="act-complete-msg">매칭 완료!</div>
+        <div class="act-complete-sub">틀린 횟수: ${m.errors}번</div>
+      </div>
+      <button class="btn red" onclick="ST._match=null;next()">단어 듣기 →</button>`;
+    return;
+  }
+  const koItems=shuffle([...m.items]);
+  const uzItems=shuffle([...m.items]);
+  el.innerHTML=`
+    <div class="act-header">
+      <div class="act-badge">🔗 매칭 게임</div>
+      <div class="act-prog">${m.matched.length}/${m.items.length} 완료</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">
+      한국어 단어와 우즈베크어 뜻을 연결하세요
+    </div>
+    <div class="match-grid">
+      <div>
+        ${koItems.map(w=>`
+          <div class="match-item ${m.matched.includes(w.ko)?'matched':m.selKo===w.ko?'selected':''}"
+            id="mk-${w.ko.replace(/\//g,'-')}"
+            onclick="matchSelKo(${jq(w.ko)})">
+            <div>
+              <div style="font-weight:900;font-size:15px">${w.ko}</div>
+              <div style="font-size:10px;color:var(--muted)">[${w.rom}]</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div>
+        ${uzItems.map(w=>{
+          const uzShort=w.uz.split('—')[0].trim();
+          return `<div class="match-item ${m.matched.includes(w.ko)?'matched':''}"
+            id="mu-${w.ko.replace(/\//g,'-')}"
+            onclick="matchSelUz(${jq(w.ko)})">
+            ${uzShort}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div id="match-fb" style="text-align:center;font-size:13px;font-weight:700;min-height:22px;color:var(--muted)"></div>
+  `;
+}
+window.matchSelKo=function(ko){
+  if(!ST._match) return;
+  if(ST._match.matched.includes(ko)) return;
+  ST._match.selKo=ko;
+  renderLesson();
+  setTimeout(()=>sayHQ(ko,null),100);
+};
+window.matchSelUz=function(koOfUz){
+  if(!ST._match) return;
+  const m=ST._match;
+  if(m.matched.includes(koOfUz)) return;
+  if(!m.selKo){ m.selKo=null; renderLesson(); return; }
+  if(m.selKo===koOfUz){
+    m.matched.push(koOfUz);
+    m.selKo=null;
+    // flash correct
+    const ke=document.getElementById('mk-'+koOfUz.replace(/\//g,'-'));
+    const ue=document.getElementById('mu-'+koOfUz.replace(/\//g,'-'));
+    [ke,ue].forEach(e=>{if(e){e.classList.add('correct');setTimeout(()=>renderLesson(),350);}});
+    const fb=document.getElementById('match-fb');
+    if(fb){fb.textContent='✅ 맞아요!';fb.style.color='#16A34A';}
+  } else {
+    m.errors++;
+    m.selKo=null;
+    const ke=document.getElementById('mk-'+m.selKo?.replace(/\//g,'-'));
+    const wrongU=document.getElementById('mu-'+koOfUz.replace(/\//g,'-'));
+    if(wrongU){wrongU.classList.add('wrong');setTimeout(()=>{wrongU.classList.remove('wrong');renderLesson();},600);}
+    else renderLesson();
+    const fb=document.getElementById('match-fb');
+    if(fb){fb.textContent='❌ 다시!';fb.style.color='var(--red)';}
+  }
+};
 
-// ── Step 4: 소리듣고 단어찾기 ──
-function rWordListen(d,el,uz){
-  if(!ST._act||ST._act.type!=='word'){
-    const allW=shuffle((d.speak||[]).flatMap(s=>s.words||[])).slice(0,4); // 5분 목표: 최대 4개
-    ST._act={type:'word',items:allW,idx:0,score:0};
+// ── Step 3: 단어 듣기 (Listen & Pick) ──
+function rListenPick(d,el,uz){
+  const allW=d.words||[];
+  if(!ST._act||ST._act.type!=='word2'){
+    ST._act={type:'word2',items:shuffle([...allW]).slice(0,Math.min(4,allW.length)),idx:0,score:0};
   }
   const act=ST._act;
   if(act.idx>=act.items.length){
@@ -3570,22 +2813,21 @@ function rWordListen(d,el,uz){
     return;
   }
   const target=act.items[act.idx];
-  const allWords=(d.speak||[]).flatMap(s=>s.words||[]).concat(d.words||[]);
-  const distractors=shuffle(allWords.filter(w=>w.ko!==target.ko)).slice(0,3);
+  const distractors=shuffle(allW.filter(w=>w.ko!==target.ko)).slice(0,3);
   const options=shuffle([target,...distractors]);
   el.innerHTML=`
     <div class="act-header">
-      <div class="act-badge">소리 → 단어 찾기</div>
+      <div class="act-badge">🎧 소리 → 단어 찾기</div>
       <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
     </div>
     <div class="act-play-wrap">
-      <button class="act-play-btn" id="wl-btn" onclick="sayBtn('wl-btn',${jq(target.ko)},'word')">▶</button>
+      <button class="act-play-btn" id="lp-btn" onclick="sayBtn('lp-btn',${jq(target.ko)},'word')">▶</button>
       <div class="act-instruct">소리를 듣고 알맞은 단어를 고르세요</div>
     </div>
     <div class="act-opts">
       ${options.map((opt,i)=>`
-        <button class="act-opt" id="wl-o${i}" data-ko="${opt.ko.replace(/"/g,'&quot;')}"
-          onclick="answerAct(this,${jq(opt.ko)},${jq(target.ko)},'wl','word','소리듣고 단어찾기')">
+        <button class="act-opt" id="lp-o${i}" data-ko="${opt.ko.replace(/"/g,'&quot;')}"
+          onclick="answerLP(this,${jq(opt.ko)},${jq(target.ko)})">
           <div class="act-opt-ko">${opt.ko}</div>
           <div class="act-opt-sub">[${opt.rom}]</div>
         </button>`).join('')}
@@ -3594,221 +2836,43 @@ function rWordListen(d,el,uz){
     <button id="act-next" class="btn red" style="display:none;margin-top:8px"
       onclick="ST._act.idx++;renderLesson()">
       ${act.idx+1>=act.items.length?'결과 보기':'다음 단어 →'}</button>`;
-  setTimeout(()=>sayBtn('wl-btn',target.ko,'word'),350);
+  setTimeout(()=>sayBtn('lp-btn',target.ko,'word'),400);
 }
-
-// ── Step 5: 소리듣고 문장찾기 ──
-function rSentListen(d,el,uz){
-  if(!ST._act||ST._act.type!=='sent'){
-    const speaks=(d.speak||[]).slice(0,3);
-    ST._act={type:'sent',items:shuffle(speaks.map(s=>({...s}))),idx:0,score:0};
-  }
-  const act=ST._act;
-  if(act.idx>=act.items.length){
-    el.innerHTML=`
-      <div class="act-complete">
-        <div class="act-score-big">${act.score}<span style="font-size:24px;font-weight:500;color:var(--muted)">/${act.items.length}</span></div>
-        <div class="act-complete-msg">소리듣고 문장찾기 완료!</div>
-        <div class="act-complete-sub">맞힌 개수: ${act.score} / ${act.items.length}</div>
-      </div>
-      <button class="btn red" onclick="ST._act=null;next()">번역→소리 찾기 →</button>`;
-    return;
-  }
-  const target=act.items[act.idx];
-  const allSents=(d.speak||[]).slice(0,3);
-  const options=shuffle(allSents);
-  el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">소리 → 문장 찾기</div>
-      <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
-    </div>
-    <div class="act-play-wrap">
-      <button class="act-play-btn" id="sl-btn" onclick="sayBtn('sl-btn',${jq(target.phrase)},'speak')">▶</button>
-      <div class="act-instruct">들은 문장을 고르세요</div>
-    </div>
-    <div class="act-opts single">
-      ${options.map((opt,i)=>`
-        <button class="act-opt" id="sl-o${i}"
-          onclick="answerAct(this,${jq(opt.phrase)},${jq(target.phrase)},'sl','sent','소리듣고 문장찾기')">
-          <div class="act-opt-sent">${opt.phrase}</div>
-        </button>`).join('')}
-    </div>
-    <div id="act-fb" class="act-fb"></div>
-    <button id="act-next" class="btn red" style="display:none;margin-top:8px"
-      onclick="ST._act.idx++;renderLesson()">
-      ${act.idx+1>=act.items.length?'결과 보기':'다음 문장 →'}</button>`;
-  setTimeout(()=>sayBtn('sl-btn',target.phrase,'speak'),350);
-}
-
-// ── Step 6: 자국어 보고 한국어 소리찾기 ──
-function rTransListen(d,el,uz){
-  if(!ST._act||ST._act.type!=='trans'){
-    const speaks=(d.speak||[]).slice(0,3);
-    ST._act={type:'trans',items:shuffle(speaks.map(s=>({...s}))),idx:0,score:0};
-  }
-  const act=ST._act;
-  if(act.idx>=act.items.length){
-    el.innerHTML=`
-      <div class="act-complete">
-        <div class="act-score-big">${act.score}<span style="font-size:24px;font-weight:500;color:var(--muted)">/${act.items.length}</span></div>
-        <div class="act-complete-msg">번역→소리 찾기 완료!</div>
-        <div class="act-complete-sub">맞힌 개수: ${act.score} / ${act.items.length}</div>
-      </div>
-      <button class="btn red" onclick="ST._act=null;ST._scr=null;next()">문장 순서 맞추기 →</button>`;
-    return;
-  }
-  const target=act.items[act.idx];
-  const allSents=(d.speak||[]).slice(0,3);
-  const options=shuffle(allSents);
-  el.innerHTML=`
-    <div class="act-header">
-      <div class="act-badge">번역 → 소리 찾기</div>
-      <div class="act-prog">${act.idx+1}/${act.items.length} &nbsp;<span class="act-score">${act.score}점</span></div>
-    </div>
-    <div class="act-target-box">
-      <div class="act-target-label">이 문장의 한국어 소리는?</div>
-      <div class="act-target-text">${target.uz||target.phrase}</div>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">소리 버튼을 눌러보고 맞는 것을 고르세요</div>
-    <div class="act-opts single">
-      ${options.map((opt,i)=>`
-        <button class="act-opt" id="tl-o${i}"
-          onclick="answerActTrans(this,${jq(opt.phrase)},${jq(target.phrase)},${i})">
-          <div class="act-opt-row">
-            <button class="act-opt-playbtn" id="tl-p${i}"
-              onclick="event.stopPropagation();sayBtn('tl-p${i}',${jq(opt.phrase)},'speak')">▶</button>
-            <div style="font-size:12px;color:var(--muted)">선택지 ${i+1} 듣기</div>
-          </div>
-        </button>`).join('')}
-    </div>
-    <div id="act-fb" class="act-fb"></div>
-    <button id="act-next" class="btn red" style="display:none;margin-top:8px"
-      onclick="ST._act.idx++;renderLesson()">
-      ${act.idx+1>=act.items.length?'결과 보기':'다음 →'}</button>`;
-}
-
-// ── 공통 정답처리 (단어/문장 찾기) ──
-function answerAct(btn, chosen, correct, pfx, type, label){
+function answerLP(btn,chosen,correct){
   document.querySelectorAll('.act-opt').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';});
   const fb=document.getElementById('act-fb');
-  const next=document.getElementById('act-next');
+  const nxt=document.getElementById('act-next');
   if(chosen===correct){
     btn.classList.add('ok');
     ST._act.score++;
-    fb.textContent='정답!'; fb.className='act-fb ok';
+    fb.textContent='✅ 정답!'; fb.className='act-fb ok';
   } else {
     btn.classList.add('no');
     document.querySelectorAll('.act-opt').forEach(b=>{
-      const k=b.getAttribute('data-ko')||b.querySelector('.act-opt-sent,.act-opt-ko')?.textContent;
-      if(k&&k.trim()===correct.trim()) b.classList.add('ok');
+      if((b.getAttribute('data-ko')||'').trim()===correct.trim()) b.classList.add('ok');
     });
-    fb.innerHTML='오답 — 정답: <strong>'+correct+'</strong>';
-    fb.className='act-fb no';
+    fb.innerHTML=`❌ 정답: <strong>${correct}</strong>`; fb.className='act-fb no';
   }
-  if(next) next.style.display='';
+  if(nxt) nxt.style.display='';
 }
 
-// ── 번역→소리 정답처리 ──
-function answerActTrans(btn, chosen, correct, idx){
-  document.querySelectorAll('.act-opt').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';});
-  const fb=document.getElementById('act-fb');
-  const next=document.getElementById('act-next');
-  if(chosen===correct){
-    btn.classList.add('ok');
-    ST._act.score++;
-    fb.textContent='정답!'; fb.className='act-fb ok';
-  } else {
-    btn.classList.add('no');
-    fb.textContent='오답! 다시 들어보세요'; fb.className='act-fb no';
-    // Play correct answer
-    setTimeout(()=>sayHQ(correct,null),400);
-  }
-  if(next) next.style.display='';
-}
+// 이하 구 함수 (하위 호환용 — 더 이상 routing되지 않음)
+function rSentStudy(d,el,uz,sentIdx){ rSentView(d,el,uz); }
+function playW2(id,text){sayHQ(text,null);}
+function playW(i,text){ playW2(i,text); }
+
+// ── 셔플 유틸 ──
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+// === 구 함수 stub (더 이상 사용 안 함) ===
+function rSentences(d,el,uz){ rSentView(d,el,uz); }
 
 
-// ── Step 7: 문장 순서 맞추기 (Sentence Scramble) ─────────────────────────────
-function rScramble(d,el,uz){
-  if(!ST._scr||ST._scr._day!==d.day){
-    const speaks=(d.speak||[]).slice(0,3);
-    const idx=(d.day-1)%speaks.length;
-    const sp=speaks[idx];
-    const phrase=sp?sp.phrase:'';
-    const trText=sp?(sp.uz||sp.phrase):phrase;
-    const rawWords=phrase.split(/\s+/).filter(Boolean);
-    ST._scr={_day:d.day,phrase,trText,words:rawWords,shuffled:shuffle([...rawWords]),assembled:[],done:false,wrong:0};
-  }
-  const sc=ST._scr;
-
-  function countInArr(arr,w){return arr.filter(x=>x===w).length;}
-
-  function renderScr(){
-    // Build pool (track usage per word)
-    const usageMap={};
-    sc.assembled.forEach(w=>{usageMap[w]=(usageMap[w]||0)+1;});
-    const poolHTML=sc.shuffled.map((w,i)=>{
-      const totalOcc=countInArr(sc.words,w);
-      const usedOcc=usageMap[w]||0;
-      const exhausted=usedOcc>=totalOcc;
-      return `<button class="scr-tile${exhausted?' used':''}" onclick="${exhausted?'':'scrAdd('+JSON.stringify(w)+')'}">${w}</button>`;
-    }).join('');
-    const asmHTML=sc.assembled.length===0
-      ?'<span class="scr-placeholder">단어를 눌러서 여기에 모아요</span>'
-      :sc.assembled.map((w,i)=>`<button class="scr-tile asm" onclick="scrRemove(${i})">${w}</button>`).join('');
-    el.innerHTML=`
-      <div class="act-header">
-        <div class="act-badge">문장 순서 맞추기</div>
-        <div style="font-size:11px;color:var(--muted)">${uz?sc.trText:''}</div>
-      </div>
-      <div class="scr-hint">${uz?"Gapni toʻgʻri tartibda tuz":'단어를 올바른 순서로 배열하세요'}</div>
-      <div class="scr-target-tr">${uz?'':'뜻: '+sc.trText}</div>
-      <div class="scr-asm" id="scr-asm">${asmHTML}</div>
-      <div class="scr-pool" id="scr-pool">${poolHTML}</div>
-      <div id="scr-fb" class="scr-fb" style="display:none"></div>
-      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-        <button class="btn gray" onclick="ST._scr.assembled=[];renderLesson()">초기화</button>
-        ${sc.assembled.length>0&&!sc.done?`<button class="btn red" onclick="scrCheck()">✓ 확인</button>`:''}
-        ${sc.done?`<button class="btn red" onclick="ST._scr=null;ST.quizIdx=0;ST.quizScore=0;next()">퀴즈 →</button>`:''}
-      </div>
-    `;
-  }
-
-  window.scrAdd=function(w){
-    const totalOcc=countInArr(sc.words,w);
-    const usedOcc=sc.assembled.filter(x=>x===w).length;
-    if(usedOcc>=totalOcc) return;
-    sc.assembled.push(w);
-    renderScr();
-  };
-  window.scrRemove=function(i){
-    sc.assembled.splice(i,1);
-    renderScr();
-  };
-  window.scrCheck=function(){
-    const attempt=sc.assembled.join(' ');
-    const fb=document.getElementById('scr-fb');
-    if(attempt===sc.phrase){
-      fb.innerHTML='🎉 정답! 정말 잘했어요!';
-      fb.className='scr-fb ok';fb.style.display='';
-      sc.done=true;
-      sayHQ(sc.phrase,null);
-      setTimeout(renderScr,200);
-    } else {
-      sc.wrong++;
-      fb.innerHTML='❌ 다시 해보세요! (힌트: '+sc.words.length+'개 단어)';
-      fb.className='scr-fb no';fb.style.display='';
-      setTimeout(()=>{if(fb)fb.style.display='none';},2000);
-    }
-  };
-
-  renderScr();
-}
-
-// ── Step 8: 퀴즈 ──
+// ── Step 4: 퀴즈 ──
 function rQuiz(d,el,uz){
   const qi=ST.quizIdx;
   const MAX_Q=2; // 5분 목표: 퀴즈 2문제만
-  if(qi>=Math.min(MAX_Q,d.quiz.length)){ST.step=6;renderLesson();return;}
+  if(qi>=Math.min(MAX_Q,d.quiz.length)){ST.step=5;renderLesson();return;}
   const q=d.quiz[qi];
   el.innerHTML=`
     <div class="qhdr">
@@ -3841,29 +2905,29 @@ function ansQ(chosen,correct){
   setTimeout(()=>{ST.quizIdx++;renderLesson();},1600);
 }
 
-// ── Step 6: 결과 ──
+// ── Step 5: 결과 ──
 function rResult(d,el,uz){
-  const t=d.quiz.length, pct=Math.round(ST.quizScore/t*100), pass=pct>=60;
+  const t=Math.min(2,d.quiz.length), pct=t>0?Math.round(ST.quizScore/t*100):100, pass=pct>=60;
   const cls=pct>=80?'g':pct>=60?'m':'b';
-  const e=pct>=80?'우수':pct>=60?'양호':'계속';
+  const e=pct>=80?'🏆':pct>=60?'✅':'💪';
   sessionEnd(d.day, ST.quizScore, t);
   // 안전교육만 done 배열에 포함; 실용 한국어는 별도 관리 불필요
   if(pass && !ST.isPractical && !ST.done.includes(d.day)){ST.done.push(d.day);saveDone();}
   // 포인트 지급
   if(pass){
     const pts = pct>=80 ? 30 : 20;
-    const firstTime = !ST.isPractical && ST.done.includes(d.day) && ST.done.filter(x=>x===d.day).length<=1;
+    const firstTime = !ST.isPractical && ST.done.filter(x=>x===d.day).length<=1;
     addPoints(pts, firstTime ? '첫 이수' : '재이수');
   }
-  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! +1':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
-  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! +1':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
+  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
+  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! 🎉':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
 
-  // What can I say now?
-  const can = d.goal.can;
+  // 오늘의 문장 보여주기
+  const sent=d.sentence||{ko:'',uz:''};
 
   el.innerHTML=`
     <div class="rcard">
-      <div style="font-size:52px">${e}</div>
+      <div style="font-size:48px">${e}</div>
       <div class="rscore ${cls}">${pct}%</div>
       <div class="rmsg">${uz?msgUz:msgKo}</div>
       <div class="rsub">${ST.quizScore} / ${t} 정답 · ${pass?(uz?"O'tdi ✅":'합격 ✅'):(uz?'Qayta urinib ko\'ring':'다시 도전해봐요')}</div>
@@ -3871,10 +2935,11 @@ function rResult(d,el,uz){
         <span class="pts-chip">⭐ +${pct>=80?30:20}점 획득!</span>
         <span style="font-size:12px;color:var(--muted);margin-left:6px">총 ${getPoints()}점</span>
       </div>`:''}
-      ${pass?`
+      ${pass&&sent.ko?`
       <div class="rpass">
-        <strong>이제 이렇게 말할 수 있어요 / Endi shunday dey olasiz:</strong><br>
-        ${can.map(c=>`▸ ${c}`).join('<br>')}
+        <strong>오늘 배운 문장 / Bugungi gap:</strong><br>
+        ▸ ${sent.ko}<br>
+        <span style="color:var(--muted);font-size:12px">▸ ${sent.uz||''}</span>
       </div>
       `:''}
       ${pass
