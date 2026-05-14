@@ -133,6 +133,49 @@
     }
     .ci-date { font-size: 0.72rem; color: var(--muted); }
     .contact-empty { padding: 2rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+    .contact-item { cursor: pointer; transition: background 0.12s; }
+    .contact-item:hover { background: rgba(0,113,227,0.03); }
+    .ci-arrow { font-size: 0.65rem; color: var(--muted); display: inline-block; transition: transform 0.2s; margin-left: 2px; }
+    .ci-arrow.open { transform: rotate(180deg); }
+    .ci-status { font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+    .st-wait { background: rgba(255,149,0,0.12); color: #994800; }
+    .st-talk { background: rgba(0,113,227,0.1);  color: #0055bb; }
+    .st-done { background: rgba(52,199,89,0.12); color: #1a7a35; }
+    .st-hold { background: rgba(142,142,147,0.15); color: #636366; }
+
+    /* ── 상담 기록 패널 ── */
+    .student-detail {
+      border-top: 1px solid var(--border); background: var(--bg);
+      padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .sd-status-row { display: flex; align-items: center; gap: 0.6rem; }
+    .sd-label { font-size: 0.75rem; color: var(--sub); font-weight: 600; }
+    .sd-status-sel {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.28rem 0.65rem; font-size: 0.8rem;
+      background: var(--card); color: var(--text); cursor: pointer;
+    }
+    .note-list { display: flex; flex-direction: column; gap: 0.45rem; }
+    .note-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.6rem 0.85rem;
+    }
+    .note-item-date { font-size: 0.7rem; color: var(--muted); margin-bottom: 3px; }
+    .note-item-text { font-size: 0.82rem; color: var(--text); white-space: pre-wrap; line-height: 1.5; }
+    .note-empty { font-size: 0.8rem; color: var(--muted); text-align: center; padding: 0.6rem 0; }
+    .note-add { display: flex; flex-direction: column; gap: 0.4rem; }
+    .note-textarea {
+      width: 100%; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.55rem 0.75rem; font-size: 0.82rem; font-family: inherit;
+      color: var(--text); background: var(--card); resize: vertical; min-height: 70px;
+    }
+    .note-textarea:focus { outline: none; border-color: var(--accent); }
+    .note-save-btn {
+      align-self: flex-end; background: var(--accent); color: #fff;
+      border: none; border-radius: 8px; padding: 0.38rem 1.1rem;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .note-save-btn:disabled { opacity: 0.5; }
 
     /* ── Card Box ── */
     .card-box {
@@ -429,11 +472,13 @@ async function init() {
   await loadData();
 }
 
+let sb = null; // 전역 Supabase 클라이언트
+
 async function loadData() {
   document.getElementById('loading-area').style.display = 'block';
   document.getElementById('dashboard').style.display = 'none';
   try {
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    if (!sb) sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const [r1, r2, r3] = await Promise.all([
       sb.from('submissions').select('*').order('created_at', { ascending: false }).limit(500),
       sb.from('job_matching').select('*').order('created_at', { ascending: false }).limit(500),
@@ -490,31 +535,127 @@ function renderSummary() {
   document.getElementById('s-pre').textContent   = preData.length;
 }
 
-// ── 매칭 신청 카드 ──
+// ── 매칭 신청 카드 (상담 기록 포함) ──
+const STATUS_CLS   = {대기중:'st-wait', 상담중:'st-talk', 매칭완료:'st-done', 보류:'st-hold'};
+const STATUS_EMOJI = {대기중:'🟡', 상담중:'🔵', 매칭완료:'✅', 보류:'⏸'};
+
 function renderMatchingTable() {
   document.getElementById('match-count').textContent = `${matchData.length}건`;
   document.getElementById('match-body').innerHTML = matchData.length
     ? matchData.map(d => {
-        const badge = d.result_status === 'ok'
+        const quizBadge = d.result_status === 'ok'
           ? `<span class="badge-ok">가능</span>`
           : `<span class="badge-warn">조건부</span>`;
-        const region = [d.city, d.district].filter(Boolean).join(' ') || d.region || '';
-        const ind    = IND[d.industry] || d.industry || '';
-        const visa   = VISA[d.visa_type] || d.visa_type || '';
-        const topik  = TOPIK[d.topik_level] || d.topik_level || '';
-        const tags   = [region, ind, visa, topik].filter(Boolean)
+        const status   = d.status || '대기중';
+        const stCls    = STATUS_CLS[status] || 'st-wait';
+        const stEmoji  = STATUS_EMOJI[status] || '🟡';
+        const region   = [d.city, d.district].filter(Boolean).join(' ') || d.region || '';
+        const ind      = IND[d.industry] || d.industry || '';
+        const visa     = VISA[d.visa_type] || d.visa_type || '';
+        const topik    = TOPIK[d.topik_level] || d.topik_level || '';
+        const tags     = [region, ind, visa, topik].filter(Boolean)
           .map(t => `<span class="ci-tag">${t}</span>`).join('');
-        return `<div class="contact-item">
+        const stOpts   = ['대기중','상담중','매칭완료','보류'].map(s =>
+          `<option value="${s}" ${s===status?'selected':''}>${STATUS_EMOJI[s]} ${s}</option>`
+        ).join('');
+        return `
+        <div class="contact-item" onclick="toggleDetail(${d.id})">
           <div class="ci-top">
             <span class="ci-name">${d.name || '-'}</span>
-            ${badge}
+            <div style="display:flex;align-items:center;gap:0.35rem;flex-shrink:0">
+              <span class="ci-status ${stCls}" id="ci-status-${d.id}">${stEmoji} ${status}</span>
+              ${quizBadge}
+              <span class="ci-arrow" id="ci-arrow-${d.id}">▼</span>
+            </div>
           </div>
           <div class="ci-phone">${d.phone || '-'}</div>
           ${tags ? `<div class="ci-tags">${tags}</div>` : ''}
           <div class="ci-date">${fmtDate(d.created_at)}</div>
+        </div>
+        <div class="student-detail" id="sd-${d.id}" style="display:none">
+          <div class="sd-status-row">
+            <span class="sd-label">진행 상태</span>
+            <select class="sd-status-sel" onchange="updateMatchStatus(${d.id}, this.value)" onclick="event.stopPropagation()">
+              ${stOpts}
+            </select>
+          </div>
+          <div class="note-list" id="notes-${d.id}">
+            <div class="note-empty">불러오는 중...</div>
+          </div>
+          <div class="note-add">
+            <textarea class="note-textarea" id="note-input-${d.id}"
+              placeholder="카톡 상담 내용, 면접 일정, 특이사항 등을 메모하세요..."
+              onclick="event.stopPropagation()"></textarea>
+            <button class="note-save-btn" onclick="saveNote(${d.id}, event)">저장</button>
+          </div>
         </div>`;
       }).join('')
     : '<div class="contact-empty">매칭 신청이 아직 없어요.</div>';
+}
+
+// ── 상담 패널 열고 닫기 ──
+async function toggleDetail(id) {
+  const detail = document.getElementById(`sd-${id}`);
+  const arrow  = document.getElementById(`ci-arrow-${id}`);
+  if (!detail) return;
+  const isOpen = detail.style.display !== 'none';
+  if (isOpen) {
+    detail.style.display = 'none';
+    arrow.classList.remove('open');
+  } else {
+    detail.style.display = 'flex';
+    arrow.classList.add('open');
+    await fetchNotes(id);
+  }
+}
+
+// ── 메모 불러오기 ──
+async function fetchNotes(matchingId) {
+  const container = document.getElementById(`notes-${matchingId}`);
+  if (!sb) return;
+  const { data, error } = await sb.from('student_notes')
+    .select('*').eq('matching_id', matchingId).order('created_at', { ascending: true });
+  if (error) {
+    container.innerHTML = '<div class="note-empty">⚠️ 메모를 불러오지 못했어요. SQL을 실행했는지 확인해주세요.</div>';
+    return;
+  }
+  container.innerHTML = data.length
+    ? data.map(n => `
+        <div class="note-item">
+          <div class="note-item-date">${new Date(n.created_at).toLocaleString('ko-KR')}</div>
+          <div class="note-item-text">${(n.note_text || '').replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
+        </div>`).join('')
+    : '<div class="note-empty">아직 메모가 없어요.</div>';
+}
+
+// ── 메모 저장 ──
+async function saveNote(matchingId, event) {
+  event.stopPropagation();
+  const input = document.getElementById(`note-input-${matchingId}`);
+  const text  = input?.value.trim();
+  if (!text || !sb) return;
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const { error } = await sb.from('student_notes')
+    .insert({ matching_id: matchingId, note_text: text });
+  if (!error) {
+    input.value = '';
+    await fetchNotes(matchingId);
+  } else {
+    alert('저장 실패: ' + error.message);
+  }
+  btn.disabled = false; btn.textContent = '저장';
+}
+
+// ── 상태 변경 ──
+async function updateMatchStatus(matchingId, status) {
+  if (!sb) return;
+  await sb.from('job_matching').update({ status }).eq('id', matchingId);
+  const badge = document.getElementById(`ci-status-${matchingId}`);
+  if (badge) {
+    badge.className = `ci-status ${STATUS_CLS[status] || 'st-wait'}`;
+    badge.textContent = `${STATUS_EMOJI[status] || '🟡'} ${status}`;
+  }
 }
 
 // ── 예비 등록 카드 ──
