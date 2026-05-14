@@ -177,6 +177,35 @@
     }
     .note-save-btn:disabled { opacity: 0.5; }
 
+    /* ── 학생 기록부 폼 ── */
+    .sd-section-title {
+      font-size: 0.72rem; font-weight: 700; color: var(--sub);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.5rem 0 0.3rem; border-bottom: 1px solid var(--border);
+      margin-top: 0.2rem;
+    }
+    .profile-form { display: flex; flex-direction: column; gap: 0.6rem; }
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    @media (max-width: 480px) { .profile-grid { grid-template-columns: 1fr; } }
+    .pf-field { display: flex; flex-direction: column; gap: 3px; }
+    .pf-field.full { grid-column: 1 / -1; }
+    .pf-label { font-size: 0.71rem; color: var(--sub); font-weight: 600; }
+    .pf-input {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.38rem 0.65rem; font-size: 0.82rem;
+      color: var(--text); background: var(--card); width: 100%;
+      font-family: inherit;
+    }
+    .pf-input:focus { outline: none; border-color: var(--accent); }
+    .pf-textarea { min-height: 56px; resize: vertical; }
+    .profile-save-btn {
+      align-self: flex-end; background: var(--accent); color: #fff;
+      border: none; border-radius: 8px; padding: 0.4rem 1.2rem;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; margin-top: 0.2rem;
+    }
+    .profile-save-btn:disabled { opacity: 0.55; }
+    .profile-save-btn.saved { background: var(--ok); }
+
     /* ── Card Box ── */
     .card-box {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
@@ -579,6 +608,11 @@ function renderMatchingTable() {
               ${stOpts}
             </select>
           </div>
+          <div class="sd-section-title">📋 학생 기록부</div>
+          <div class="profile-form" id="profile-form-${d.id}">
+            <div class="note-empty">불러오는 중...</div>
+          </div>
+          <div class="sd-section-title">💬 상담 메모</div>
           <div class="note-list" id="notes-${d.id}">
             <div class="note-empty">불러오는 중...</div>
           </div>
@@ -605,7 +639,120 @@ async function toggleDetail(id) {
   } else {
     detail.style.display = 'flex';
     arrow.classList.add('open');
-    await fetchNotes(id);
+    await Promise.all([fetchProfile(id), fetchNotes(id)]);
+  }
+}
+
+// ── 기록부 불러오기 ──
+async function fetchProfile(matchingId) {
+  if (!sb) return;
+  const { data } = await sb.from('student_profiles')
+    .select('*').eq('matching_id', matchingId).maybeSingle();
+  renderProfileForm(matchingId, data || {});
+}
+
+// ── 기록부 폼 렌더 ──
+function renderProfileForm(matchingId, d) {
+  const el = document.getElementById(`profile-form-${matchingId}`);
+  if (!el) return;
+
+  const sel = (id, label, opts, full=false) => `
+    <div class="pf-field${full?' full':''}">
+      <label class="pf-label">${label}</label>
+      <select class="pf-input" id="pf-${matchingId}-${id}" onclick="event.stopPropagation()">
+        <option value="">선택 안 함</option>
+        ${opts.map(([v,l])=>`<option value="${v}" ${d[id]===v?'selected':''}>${l}</option>`).join('')}
+      </select>
+    </div>`;
+
+  const inp = (id, label, type='text', full=false, ph='') => `
+    <div class="pf-field${full?' full':''}">
+      <label class="pf-label">${label}</label>
+      <input class="pf-input" type="${type}" id="pf-${matchingId}-${id}"
+        value="${(d[id]||'').toString().replace(/"/g,'&quot;')}"
+        placeholder="${ph}" onclick="event.stopPropagation()">
+    </div>`;
+
+  const txt = (id, label, ph='', full=true) => `
+    <div class="pf-field${full?' full':''}">
+      <label class="pf-label">${label}</label>
+      <textarea class="pf-input pf-textarea" id="pf-${matchingId}-${id}"
+        placeholder="${ph}" onclick="event.stopPropagation()">${d[id]||''}</textarea>
+    </div>`;
+
+  el.innerHTML = `
+    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:0.2rem">학생과 상담하며 아래 항목을 채워주세요.</div>
+
+    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.3rem">🧑 기본 정보</div>
+    <div class="profile-grid">
+      ${inp('nationality','국적','text',false,'예: 중국, 베트남, 우즈베키스탄')}
+      ${inp('age','나이','number',false,'예: 22')}
+      ${sel('gender','성별',[['여','여성'],['남','남성'],['기타','기타/무응답']])}
+      ${inp('visa_expiry','비자 만료일','date')}
+      ${inp('university','학교명','text',false,'예: 한국대학교')}
+      ${inp('major','전공','text',false,'예: 경영학')}
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">🗣️ 언어 · 능력</div>
+    <div class="profile-grid">
+      ${sel('korean_speaking','한국어 회화 수준',[
+        ['상','상 — 자연스러운 대화 가능'],
+        ['중','중 — 기본 업무 대화 가능'],
+        ['하','하 — 간단한 표현만 가능']
+      ])}
+      ${inp('special_skills','특기·자격증','text',false,'예: 바리스타 2급, 엑셀')}
+      ${txt('work_experience','이전 알바 경험','예: 편의점 6개월, 식당 보조 3개월')}
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">📅 희망 근무 조건</div>
+    <div class="profile-grid">
+      ${sel('preferred_days','희망 요일',[['평일','평일 (월~금)'],['주말','주말 (토·일)'],['무관','요일 무관']])}
+      ${sel('preferred_time','희망 시간대',[
+        ['오전','오전 (9시~13시)'],
+        ['오후','오후 (13시~18시)'],
+        ['저녁','저녁 (18시~22시)'],
+        ['무관','시간 무관']
+      ])}
+      ${inp('expected_wage','희망 시급 (원)','text',false,'예: 10,030 이상')}
+      ${inp('start_date','시작 가능일','date')}
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">📝 담당자 평가</div>
+    <div class="profile-grid">
+      ${inp('strengths','핵심 강점 한 줄','text',true,'예: 성실하고 야간 근무 가능, 요리 경험 있음')}
+      ${txt('coordinator_memo','담당자 평가·특이사항','업주에게 소개할 때 참고할 내용을 적어주세요.')}
+    </div>
+
+    <button class="profile-save-btn" id="pf-save-${matchingId}" onclick="saveProfile(${matchingId}, event)">💾 기록부 저장</button>
+  `;
+}
+
+// ── 기록부 저장 ──
+async function saveProfile(matchingId, event) {
+  event.stopPropagation();
+  if (!sb) return;
+  const FIELDS = ['nationality','age','gender','visa_expiry','university','major',
+    'korean_speaking','special_skills','work_experience',
+    'preferred_days','preferred_time','expected_wage','start_date',
+    'strengths','coordinator_memo'];
+  const profile = { matching_id: matchingId };
+  FIELDS.forEach(f => {
+    const el = document.getElementById(`pf-${matchingId}-${f}`);
+    if (!el) return;
+    profile[f] = el.value.trim() || null;
+  });
+  if (profile.age) profile.age = parseInt(profile.age) || null;
+
+  const btn = document.getElementById(`pf-save-${matchingId}`);
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const { error } = await sb.from('student_profiles')
+    .upsert(profile, { onConflict: 'matching_id' });
+  if (error) {
+    alert('저장 실패: ' + error.message);
+    btn.disabled = false; btn.textContent = '💾 기록부 저장';
+  } else {
+    btn.classList.add('saved'); btn.textContent = '✓ 저장 완료';
+    setTimeout(() => { btn.classList.remove('saved'); btn.disabled = false; btn.textContent = '💾 기록부 저장'; }, 2000);
   }
 }
 
