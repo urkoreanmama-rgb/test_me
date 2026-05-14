@@ -958,6 +958,10 @@ function renderNextSteps(r) {
           <input class="form-input" id="pr-name" type="text" placeholder="홍길동">
         </div>
         <div class="form-group">
+          <label class="form-label">전화번호 <span class="req">*</span></label>
+          <input class="form-input" id="pr-phone" type="tel" placeholder="010-0000-0000">
+        </div>
+        <div class="form-group">
           <label class="form-label">카카오 ID <span class="req">*</span></label>
           <input class="form-input" id="pr-kakao" type="text" placeholder="kakao_id_example">
         </div>
@@ -1013,11 +1017,15 @@ function renderMatchingForm(r) {
 
   el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
     <div class="section-title">🎁 알바 자리를 직접 연결해드릴까요?</div>
-    <p class="mf-desc">이름과 카카오 ID만 남겨주세요. 담당자가 카톡으로 직접 연락해 <strong>무료로 자리를 연결</strong>해 드려요.</p>
+    <p class="mf-desc">이름, 전화번호, 카카오 ID를 남겨주세요. 담당자가 직접 연락해 <strong>무료로 자리를 연결</strong>해 드려요.</p>
     <div id="matching-form-fields">
       <div class="form-group">
         <label class="form-label">이름 <span class="req">*</span></label>
         <input class="form-input" id="mf-name" type="text" placeholder="홍길동">
+      </div>
+      <div class="form-group">
+        <label class="form-label">전화번호 <span class="req">*</span></label>
+        <input class="form-input" id="mf-phone" type="tel" placeholder="010-0000-0000">
       </div>
       <div class="form-group">
         <label class="form-label">카카오 ID <span class="req">*</span></label>
@@ -1034,9 +1042,11 @@ function renderMatchingForm(r) {
 // ═══════════════════════════════════════════
 function submitMatching() {
   const name  = document.getElementById('mf-name')?.value.trim();
+  const phone = document.getElementById('mf-phone')?.value.trim();
   const kakao = document.getElementById('mf-kakao')?.value.trim();
 
   if (!name)  { alert('이름을 입력해주세요.'); return; }
+  if (!phone) { alert('전화번호를 입력해주세요.'); return; }
   if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
@@ -1049,7 +1059,7 @@ function submitMatching() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        name, phone: kakao,
+        name, phone: `${phone} / 카카오: ${kakao}`,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         result_status: resultData?.status,
       }),
@@ -1065,7 +1075,7 @@ function submitMatching() {
       <div class="match-success-title">신청 완료!</div>
       <div class="match-success-sub">
         <strong>${name}</strong>님, 감사합니다!<br>
-        카카오 ID <strong>${kakao}</strong>로 곧 연락드릴게요.
+        <strong>${phone}</strong> 또는 카카오 ID <strong>${kakao}</strong>로 곧 연락드릴게요.
       </div>
     </div>`;
   document.getElementById('matching-form-section').scrollIntoView({behavior:'smooth', block:'start'});
@@ -1076,8 +1086,10 @@ function submitMatching() {
 // ═══════════════════════════════════════════
 function submitPreRegister() {
   const name  = document.getElementById('pr-name')?.value.trim();
+  const phone = document.getElementById('pr-phone')?.value.trim();
   const kakao = document.getElementById('pr-kakao')?.value.trim();
   if (!name)  { alert('이름을 입력해주세요.'); return; }
+  if (!phone) { alert('전화번호를 입력해주세요.'); return; }
   if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
@@ -1090,7 +1102,7 @@ function submitPreRegister() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        name, phone: kakao,
+        name, phone: `${phone} / 카카오: ${kakao}`,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         blocker: resultData?.reasonKeys?.join(','),
       }),
@@ -1105,7 +1117,7 @@ function submitPreRegister() {
       <div class="match-success-title">등록 완료!</div>
       <div class="match-success-sub">
         <strong>${name}</strong>님, 자격 요건이 갖춰지면<br>
-        카카오 ID <strong>${kakao}</strong>로 먼저 연락드릴게요.
+        <strong>${phone}</strong> 또는 카카오 ID <strong>${kakao}</strong>로 먼저 연락드릴게요.
       </div>
     </div>`;
 }
