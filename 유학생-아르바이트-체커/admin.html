@@ -206,6 +206,35 @@
     .profile-save-btn:disabled { opacity: 0.55; }
     .profile-save-btn.saved { background: var(--ok); }
 
+    /* ── 질문+답변 카드 ── */
+    .copy-all-btn {
+      width: 100%; background: var(--bg); border: 1.5px dashed var(--accent);
+      color: var(--accent); border-radius: 10px; padding: 0.55rem;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer; text-align: center;
+      margin-bottom: 0.2rem;
+    }
+    .copy-all-btn:active { background: rgba(0,113,227,0.07); }
+    .q-section-title {
+      font-size: 0.72rem; font-weight: 700; color: var(--text);
+      margin: 0.6rem 0 0.35rem; display: flex; align-items: center; gap: 0.3rem;
+    }
+    .q-row { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.55rem; }
+    .q-bubble {
+      background: rgba(0,113,227,0.07); border-radius: 10px 10px 10px 2px;
+      padding: 0.5rem 0.75rem; font-size: 0.8rem; color: var(--text);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;
+      line-height: 1.45;
+    }
+    .q-text { flex: 1; }
+    .q-copy-btn {
+      flex-shrink: 0; background: none; border: 1px solid var(--border);
+      border-radius: 6px; padding: 2px 7px; font-size: 0.68rem; color: var(--sub);
+      cursor: pointer; white-space: nowrap; align-self: flex-start; margin-top: 1px;
+    }
+    .q-copy-btn.copied { background: var(--ok); color: #fff; border-color: var(--ok); }
+    .q-answer { display: flex; flex-direction: column; gap: 2px; }
+    .q-answer-label { font-size: 0.68rem; color: var(--muted); padding-left: 2px; }
+
     /* ── Card Box ── */
     .card-box {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
@@ -651,80 +680,147 @@ async function fetchProfile(matchingId) {
   renderProfileForm(matchingId, data || {});
 }
 
-// ── 기록부 폼 렌더 ──
+// ── 기록부 폼 렌더 (질문+답변 방식) ──
+const QUESTIONS = [
+  // [field, question, type, options, placeholder]
+  // 🧑 기본 정보
+  ['nationality', '어느 나라에서 오셨어요?', 'text', null, '예: 중국, 베트남, 우즈베키스탄'],
+  ['age',         '나이가 어떻게 되세요?',    'number', null, '예: 22'],
+  ['gender',      '성별이 어떻게 되세요?',     'select',
+    [['여','여성'],['남','남성'],['기타','무응답']], ''],
+  ['visa_expiry', '비자 만료일이 언제예요?',   'date',   null, ''],
+  ['university',  '다니고 계신 학교 이름이 어떻게 돼요?', 'text', null, '예: 한국대학교'],
+  ['major',       '전공이 뭐예요?',             'text',   null, '예: 경영학'],
+  // 🗣️ 언어·능력
+  ['korean_speaking', '한국어로 대화하는 게 얼마나 편하세요?\n(상: 자연스럽게 / 중: 일상 대화 / 하: 기초 수준)',
+    'select', [['상','상 — 자연스럽게 가능'],['중','중 — 일상 대화 가능'],['하','하 — 기초 수준']], ''],
+  ['special_skills', '자격증이나 특기가 있으면 알려주세요.\n(없으면 없음이라고 해도 괜찮아요 😊)',
+    'text', null, '예: 바리스타 2급, 엑셀, 운전면허'],
+  ['work_experience', '전에 한국에서 알바한 경험이 있으면 알려주세요.\n(직종, 기간 등)',
+    'textarea', null, '예: 편의점 6개월, 식당 보조 3개월, 처음이에요'],
+  // 📅 희망 조건
+  ['preferred_days', '평일이랑 주말 중 어떤 날에 일하고 싶으세요?',
+    'select', [['평일','평일 (월~금)'],['주말','주말 (토·일)'],['무관','요일 무관']], ''],
+  ['preferred_time', '오전·오후·저녁 중 언제 일하고 싶으세요?',
+    'select', [
+      ['오전','오전 (9시~13시)'],['오후','오후 (13시~18시)'],
+      ['저녁','저녁 (18시~22시)'],['무관','시간 무관']], ''],
+  ['expected_wage', '시급은 얼마 정도 원하세요?',
+    'text', null, '예: 최저시급 이상, 12,000원 이상'],
+  ['start_date', '언제부터 일을 시작할 수 있어요?', 'date', null, ''],
+];
+
+const SECTION_BEFORE = {
+  nationality:      '🧑 기본 정보',
+  korean_speaking:  '🗣️ 언어 · 능력',
+  preferred_days:   '📅 희망 근무 조건',
+};
+
 function renderProfileForm(matchingId, d) {
   const el = document.getElementById(`profile-form-${matchingId}`);
   if (!el) return;
 
-  const sel = (id, label, opts, full=false) => `
-    <div class="pf-field${full?' full':''}">
-      <label class="pf-label">${label}</label>
-      <select class="pf-input" id="pf-${matchingId}-${id}" onclick="event.stopPropagation()">
+  // 전체 질문 목록 (카톡 복사용)
+  const allQText = QUESTIONS.map((q, i) =>
+    `${i+1}. ${q[1].replace(/\n.*/,'')}`
+  ).join('\n');
+  const copyAllText =
+    `안녕하세요! 알바 매칭을 위해 몇 가지 여쭤볼게요 😊\n\n${allQText}\n\n답변해 주시면 바로 연락드릴게요. 감사합니다 🙏`;
+
+  const makeField = (field, type, opts, ph, val) => {
+    if (type === 'select') {
+      return `<select class="pf-input" id="pf-${matchingId}-${field}" onclick="event.stopPropagation()">
         <option value="">선택 안 함</option>
-        ${opts.map(([v,l])=>`<option value="${v}" ${d[id]===v?'selected':''}>${l}</option>`).join('')}
-      </select>
-    </div>`;
+        ${(opts||[]).map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}
+      </select>`;
+    }
+    if (type === 'textarea') {
+      return `<textarea class="pf-input pf-textarea" id="pf-${matchingId}-${field}"
+        placeholder="${ph}" onclick="event.stopPropagation()">${val}</textarea>`;
+    }
+    return `<input class="pf-input" type="${type}" id="pf-${matchingId}-${field}"
+      value="${val.replace(/"/g,'&quot;')}" placeholder="${ph}" onclick="event.stopPropagation()">`;
+  };
 
-  const inp = (id, label, type='text', full=false, ph='') => `
-    <div class="pf-field${full?' full':''}">
-      <label class="pf-label">${label}</label>
-      <input class="pf-input" type="${type}" id="pf-${matchingId}-${id}"
-        value="${(d[id]||'').toString().replace(/"/g,'&quot;')}"
-        placeholder="${ph}" onclick="event.stopPropagation()">
+  const rows = QUESTIONS.map(([field, question, type, opts, ph], idx) => {
+    const val = (d[field] || '').toString();
+    const sectionTitle = SECTION_BEFORE[field]
+      ? `<div class="q-section-title">${SECTION_BEFORE[field]}</div>` : '';
+    const qLines = question.replace(/\n/g, '<br>');
+    return `${sectionTitle}
+    <div class="q-row">
+      <div class="q-bubble">
+        <span class="q-text">${idx+1}. ${qLines}</span>
+        <button class="q-copy-btn" id="qcopy-${matchingId}-${idx}"
+          onclick="copyQ(${matchingId}, ${idx}, event)">복사</button>
+      </div>
+      <div class="q-answer">
+        <span class="q-answer-label">↳ 답변 입력</span>
+        ${makeField(field, type, opts, ph, val)}
+      </div>
     </div>`;
-
-  const txt = (id, label, ph='', full=true) => `
-    <div class="pf-field${full?' full':''}">
-      <label class="pf-label">${label}</label>
-      <textarea class="pf-input pf-textarea" id="pf-${matchingId}-${id}"
-        placeholder="${ph}" onclick="event.stopPropagation()">${d[id]||''}</textarea>
-    </div>`;
+  }).join('');
 
   el.innerHTML = `
-    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:0.2rem">학생과 상담하며 아래 항목을 채워주세요.</div>
-
-    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.3rem">🧑 기본 정보</div>
-    <div class="profile-grid">
-      ${inp('nationality','국적','text',false,'예: 중국, 베트남, 우즈베키스탄')}
-      ${inp('age','나이','number',false,'예: 22')}
-      ${sel('gender','성별',[['여','여성'],['남','남성'],['기타','기타/무응답']])}
-      ${inp('visa_expiry','비자 만료일','date')}
-      ${inp('university','학교명','text',false,'예: 한국대학교')}
-      ${inp('major','전공','text',false,'예: 경영학')}
+    <button class="copy-all-btn" onclick="copyAllQ(${matchingId}, event)">
+      📋 전체 질문 복사 — 카톡에 한 번에 붙여넣기
+    </button>
+    <textarea id="copy-all-src-${matchingId}" style="position:absolute;opacity:0;pointer-events:none;height:1px">${copyAllText.replace(/</g,'&lt;')}</textarea>
+    ${rows}
+    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.6rem">📝 담당자 메모 (업주 소개용)</div>
+    <div class="q-row">
+      <div class="q-answer">
+        <span class="q-answer-label">핵심 강점 한 줄</span>
+        <input class="pf-input" id="pf-${matchingId}-strengths" type="text"
+          value="${(d.strengths||'').replace(/"/g,'&quot;')}"
+          placeholder="예: 야간 가능, 요리 경험, 성실함"
+          onclick="event.stopPropagation()">
+      </div>
     </div>
-
-    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">🗣️ 언어 · 능력</div>
-    <div class="profile-grid">
-      ${sel('korean_speaking','한국어 회화 수준',[
-        ['상','상 — 자연스러운 대화 가능'],
-        ['중','중 — 기본 업무 대화 가능'],
-        ['하','하 — 간단한 표현만 가능']
-      ])}
-      ${inp('special_skills','특기·자격증','text',false,'예: 바리스타 2급, 엑셀')}
-      ${txt('work_experience','이전 알바 경험','예: 편의점 6개월, 식당 보조 3개월')}
+    <div class="q-row">
+      <div class="q-answer">
+        <span class="q-answer-label">담당자 평가 · 특이사항</span>
+        <textarea class="pf-input pf-textarea" id="pf-${matchingId}-coordinator_memo"
+          placeholder="업주에게 소개할 때 참고할 내용을 적어주세요."
+          onclick="event.stopPropagation()">${d.coordinator_memo||''}</textarea>
+      </div>
     </div>
-
-    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">📅 희망 근무 조건</div>
-    <div class="profile-grid">
-      ${sel('preferred_days','희망 요일',[['평일','평일 (월~금)'],['주말','주말 (토·일)'],['무관','요일 무관']])}
-      ${sel('preferred_time','희망 시간대',[
-        ['오전','오전 (9시~13시)'],
-        ['오후','오후 (13시~18시)'],
-        ['저녁','저녁 (18시~22시)'],
-        ['무관','시간 무관']
-      ])}
-      ${inp('expected_wage','희망 시급 (원)','text',false,'예: 10,030 이상')}
-      ${inp('start_date','시작 가능일','date')}
-    </div>
-
-    <div style="font-size:0.72rem;font-weight:700;color:var(--text);margin-top:0.5rem">📝 담당자 평가</div>
-    <div class="profile-grid">
-      ${inp('strengths','핵심 강점 한 줄','text',true,'예: 성실하고 야간 근무 가능, 요리 경험 있음')}
-      ${txt('coordinator_memo','담당자 평가·특이사항','업주에게 소개할 때 참고할 내용을 적어주세요.')}
-    </div>
-
     <button class="profile-save-btn" id="pf-save-${matchingId}" onclick="saveProfile(${matchingId}, event)">💾 기록부 저장</button>
   `;
+}
+
+// ── 개별 질문 복사 ──
+function copyQ(matchingId, idx, event) {
+  event.stopPropagation();
+  const q = QUESTIONS[idx];
+  const text = `${idx+1}. ${q[1].replace(/\n/g,' ')}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(`qcopy-${matchingId}-${idx}`);
+    if (!btn) return;
+    btn.textContent = '✓ 복사됨'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── 전체 질문 복사 ──
+function copyAllQ(matchingId, event) {
+  event.stopPropagation();
+  const src = document.getElementById(`copy-all-src-${matchingId}`);
+  const text = src ? src.value : '';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✓ 복사 완료! 카톡에 붙여넣기 하세요';
+    btn.style.background = 'rgba(52,199,89,0.1)';
+    btn.style.borderColor = 'var(--ok)';
+    btn.style.color = '#1a7a35';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2500);
+  });
 }
 
 // ── 기록부 저장 ──
