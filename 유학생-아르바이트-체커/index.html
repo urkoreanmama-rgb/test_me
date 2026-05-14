@@ -1031,6 +1031,24 @@ function renderMatchingForm(r) {
         <label class="form-label">카카오 ID <span class="req">*</span></label>
         <input class="form-input" id="mf-kakao" type="text" placeholder="kakao_id_example">
       </div>
+      <div class="form-group">
+        <label class="form-label">활동 희망 지역 <span class="req">*</span></label>
+        <select class="form-input" id="mf-city">
+          <option value="">-- 지역 선택 --</option>
+          <option value="서울">서울</option>
+          <option value="경기/인천">경기 / 인천</option>
+          <option value="부산">부산</option>
+          <option value="대구">대구</option>
+          <option value="대전">대전</option>
+          <option value="광주">광주</option>
+          <option value="울산">울산</option>
+          <option value="강원">강원</option>
+          <option value="충청">충청</option>
+          <option value="전라">전라</option>
+          <option value="경상">경상</option>
+          <option value="제주">제주</option>
+        </select>
+      </div>
       <button class="btn-submit-match" onclick="submitMatching()">신청하기 →</button>
     </div>
     <div id="matching-result" style="display:none"></div>
@@ -1044,10 +1062,12 @@ function submitMatching() {
   const name  = document.getElementById('mf-name')?.value.trim();
   const phone = document.getElementById('mf-phone')?.value.trim();
   const kakao = document.getElementById('mf-kakao')?.value.trim();
+  const city  = document.getElementById('mf-city')?.value.trim();
 
   if (!name)  { alert('이름을 입력해주세요.'); return; }
   if (!phone) { alert('전화번호를 입력해주세요.'); return; }
   if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
+  if (!city)  { alert('활동 희망 지역을 선택해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/job_matching`, {
@@ -1060,6 +1080,7 @@ function submitMatching() {
       },
       body: JSON.stringify({
         name, phone: `${phone} / 카카오: ${kakao}`,
+        city,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         result_status: resultData?.status,
       }),
