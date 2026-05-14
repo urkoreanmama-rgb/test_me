@@ -1015,9 +1015,16 @@ function renderMatchingForm(r) {
   if (!el) return;
   if (r.status === 'no') { el.innerHTML = ''; return; }
 
+  // 퀴즈에서 선택한 업종을 미리 선택해둠
+  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'사무·번역', EVENT:'행사·판촉', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', OTHER_IND:'기타/미정'};
+  const quizInd = answers.q8 || '';
+  const indOptions = Object.entries(IND_KO).map(([v, label]) =>
+    `<option value="${v}" ${v === quizInd ? 'selected' : ''}>${label}</option>`
+  ).join('');
+
   el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
     <div class="section-title">🎁 알바 자리를 직접 연결해드릴까요?</div>
-    <p class="mf-desc">이름, 전화번호, 카카오 ID를 남겨주세요. 담당자가 직접 연락해 <strong>무료로 자리를 연결</strong>해 드려요.</p>
+    <p class="mf-desc">아래 정보를 남겨주세요. 담당자가 직접 연락해 <strong>무료로 자리를 연결</strong>해 드려요.</p>
     <div id="matching-form-fields">
       <div class="form-group">
         <label class="form-label">이름 <span class="req">*</span></label>
@@ -1032,7 +1039,7 @@ function renderMatchingForm(r) {
         <input class="form-input" id="mf-kakao" type="text" placeholder="kakao_id_example">
       </div>
       <div class="form-group">
-        <label class="form-label">활동 희망 지역 <span class="req">*</span></label>
+        <label class="form-label">희망 지역 <span class="req">*</span></label>
         <select class="form-input" id="mf-city">
           <option value="">-- 지역 선택 --</option>
           <option value="서울">서울</option>
@@ -1049,6 +1056,13 @@ function renderMatchingForm(r) {
           <option value="제주">제주</option>
         </select>
       </div>
+      <div class="form-group">
+        <label class="form-label">희망 직종 <span class="req">*</span></label>
+        <select class="form-input" id="mf-industry">
+          <option value="">-- 직종 선택 --</option>
+          ${indOptions}
+        </select>
+      </div>
       <button class="btn-submit-match" onclick="submitMatching()">신청하기 →</button>
     </div>
     <div id="matching-result" style="display:none"></div>
@@ -1059,15 +1073,17 @@ function renderMatchingForm(r) {
 //  MATCHING FORM SUBMIT
 // ═══════════════════════════════════════════
 function submitMatching() {
-  const name  = document.getElementById('mf-name')?.value.trim();
-  const phone = document.getElementById('mf-phone')?.value.trim();
-  const kakao = document.getElementById('mf-kakao')?.value.trim();
-  const city  = document.getElementById('mf-city')?.value.trim();
+  const name     = document.getElementById('mf-name')?.value.trim();
+  const phone    = document.getElementById('mf-phone')?.value.trim();
+  const kakao    = document.getElementById('mf-kakao')?.value.trim();
+  const city     = document.getElementById('mf-city')?.value.trim();
+  const industry = document.getElementById('mf-industry')?.value.trim();
 
-  if (!name)  { alert('이름을 입력해주세요.'); return; }
-  if (!phone) { alert('전화번호를 입력해주세요.'); return; }
-  if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
-  if (!city)  { alert('활동 희망 지역을 선택해주세요.'); return; }
+  if (!name)     { alert('이름을 입력해주세요.'); return; }
+  if (!phone)    { alert('전화번호를 입력해주세요.'); return; }
+  if (!kakao)    { alert('카카오 ID를 입력해주세요.'); return; }
+  if (!city)     { alert('희망 지역을 선택해주세요.'); return; }
+  if (!industry) { alert('희망 직종을 선택해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/job_matching`, {
@@ -1080,7 +1096,7 @@ function submitMatching() {
       },
       body: JSON.stringify({
         name, phone: `${phone} / 카카오: ${kakao}`,
-        city,
+        city, industry,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         result_status: resultData?.status,
       }),
@@ -1099,7 +1115,6 @@ function submitMatching() {
         <strong>${phone}</strong> 또는 카카오 ID <strong>${kakao}</strong>로 곧 연락드릴게요.
       </div>
     </div>`;
-  document.getElementById('matching-form-section').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // ═══════════════════════════════════════════

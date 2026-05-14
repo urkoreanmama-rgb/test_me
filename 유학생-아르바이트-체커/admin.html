@@ -116,6 +116,24 @@
     .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media (max-width: 860px) { .contact-row { grid-template-columns: 1fr; } }
 
+    /* ── Contact Cards (모바일 카드형) ── */
+    .contact-list { display: flex; flex-direction: column; }
+    .contact-item {
+      padding: 0.85rem 1.1rem; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0.35rem;
+    }
+    .contact-item:first-child { border-top: none; }
+    .ci-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .ci-name { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .ci-phone { font-size: 0.82rem; color: var(--accent); font-weight: 500; word-break: break-all; }
+    .ci-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.1rem; }
+    .ci-tag {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; color: var(--sub);
+    }
+    .ci-date { font-size: 0.72rem; color: var(--muted); }
+    .contact-empty { padding: 2rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+
     /* ── Card Box ── */
     .card-box {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
@@ -268,17 +286,7 @@
           </div>
           <button class="export-btn" onclick="exportMatchCSV()">CSV 내보내기</button>
         </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>신청일</th><th>이름</th><th>연락처</th>
-                <th>지역</th><th>희망직종</th><th>비자</th><th>TOPIK</th><th>판정</th>
-              </tr>
-            </thead>
-            <tbody id="match-body"></tbody>
-          </table>
-        </div>
+        <div class="contact-list" id="match-body"></div>
       </div>
 
       <!-- 예비 등록 -->
@@ -290,17 +298,7 @@
           </div>
           <button class="export-btn" onclick="exportPreCSV()">CSV 내보내기</button>
         </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>등록일</th><th>이름</th><th>연락처</th>
-                <th>비자</th><th>TOPIK</th><th>안 되는 이유</th>
-              </tr>
-            </thead>
-            <tbody id="pre-body"></tbody>
-          </table>
-        </div>
+        <div class="contact-list" id="pre-body"></div>
       </div>
     </div>
 
@@ -492,48 +490,56 @@ function renderSummary() {
   document.getElementById('s-pre').textContent   = preData.length;
 }
 
-// ── 매칭 신청 테이블 ──
+// ── 매칭 신청 카드 ──
 function renderMatchingTable() {
   document.getElementById('match-count').textContent = `${matchData.length}건`;
   document.getElementById('match-body').innerHTML = matchData.length
-    ? matchData.map((d, i) => {
+    ? matchData.map(d => {
         const badge = d.result_status === 'ok'
           ? `<span class="badge-ok">가능</span>`
           : `<span class="badge-warn">조건부</span>`;
-        const region = [d.city, d.district].filter(Boolean).join(' ') || d.region || '-';
-        return `<tr>
-          <td class="td-muted">${matchData.length - i}</td>
-          <td class="td-muted">${fmtDate(d.created_at)}</td>
-          <td class="td-name">${d.name || '-'}</td>
-          <td class="td-phone">${d.phone || '-'}</td>
-          <td>${region}</td>
-          <td>${IND[d.industry] || d.industry || '-'}</td>
-          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
-          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
-          <td>${badge}</td>
-        </tr>`;
+        const region = [d.city, d.district].filter(Boolean).join(' ') || d.region || '';
+        const ind    = IND[d.industry] || d.industry || '';
+        const visa   = VISA[d.visa_type] || d.visa_type || '';
+        const topik  = TOPIK[d.topik_level] || d.topik_level || '';
+        const tags   = [region, ind, visa, topik].filter(Boolean)
+          .map(t => `<span class="ci-tag">${t}</span>`).join('');
+        return `<div class="contact-item">
+          <div class="ci-top">
+            <span class="ci-name">${d.name || '-'}</span>
+            ${badge}
+          </div>
+          <div class="ci-phone">${d.phone || '-'}</div>
+          ${tags ? `<div class="ci-tags">${tags}</div>` : ''}
+          <div class="ci-date">${fmtDate(d.created_at)}</div>
+        </div>`;
       }).join('')
-    : '<tr class="empty-row"><td colspan="9">매칭 신청이 아직 없어요.</td></tr>';
+    : '<div class="contact-empty">매칭 신청이 아직 없어요.</div>';
 }
 
-// ── 예비 등록 테이블 ──
+// ── 예비 등록 카드 ──
 function renderPreRegisterTable() {
   document.getElementById('pre-count').textContent = `${preData.length}건`;
   document.getElementById('pre-body').innerHTML = preData.length
-    ? preData.map((d, i) => {
+    ? preData.map(d => {
         const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
-        const blockerText = blockerKeys.map(k => BLOCKER_KEYS[k] || k).join(', ') || d.blocker || '-';
-        return `<tr>
-          <td class="td-muted">${preData.length - i}</td>
-          <td class="td-muted">${fmtDate(d.created_at)}</td>
-          <td class="td-name">${d.name || '-'}</td>
-          <td class="td-phone">${d.phone || '-'}</td>
-          <td>${VISA[d.visa_type] || d.visa_type || '-'}</td>
-          <td>${TOPIK[d.topik_level] || d.topik_level || '-'}</td>
-          <td class="td-muted">${blockerText}</td>
-        </tr>`;
+        const blockerText = blockerKeys.map(k => BLOCKER_KEYS[k] || k).join(' · ') || d.blocker || '';
+        const visa  = VISA[d.visa_type] || d.visa_type || '';
+        const topik = TOPIK[d.topik_level] || d.topik_level || '';
+        const tags  = [visa, topik].filter(Boolean)
+          .map(t => `<span class="ci-tag">${t}</span>`).join('');
+        return `<div class="contact-item">
+          <div class="ci-top">
+            <span class="ci-name">${d.name || '-'}</span>
+            <span class="badge-no">불가</span>
+          </div>
+          <div class="ci-phone">${d.phone || '-'}</div>
+          ${tags ? `<div class="ci-tags">${tags}</div>` : ''}
+          ${blockerText ? `<div class="ci-date">사유: ${blockerText}</div>` : ''}
+          <div class="ci-date">${fmtDate(d.created_at)}</div>
+        </div>`;
       }).join('')
-    : '<tr class="empty-row"><td colspan="7">예비 등록이 아직 없어요.</td></tr>';
+    : '<div class="contact-empty">예비 등록이 아직 없어요.</div>';
 }
 
 // ── 불가 사유 분석 ──
