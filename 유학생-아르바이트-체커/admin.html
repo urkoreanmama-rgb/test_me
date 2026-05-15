@@ -343,6 +343,57 @@
     .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 0.8rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .empty-state { text-align: center; padding: 4rem; color: var(--muted); }
+
+    /* ── 3D 네비게이션 ── */
+    .nav-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+      margin: 1.2rem 0 1.5rem;
+    }
+    @media (max-width: 640px) { .nav-grid { grid-template-columns: repeat(2, 1fr); } }
+    .nav-btn {
+      background: var(--card); border: 1px solid var(--border);
+      border-bottom: 4px solid #c8c8d0; border-radius: 18px;
+      padding: 1.1rem 0.8rem; text-align: center; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+      transform: translateY(0); transition: transform 0.09s ease, box-shadow 0.09s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+      position: relative; overflow: hidden;
+    }
+    .nav-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 60%);
+      border-radius: 18px; pointer-events: none;
+    }
+    .nav-btn:active { transform: translateY(4px); box-shadow: 0 0 4px rgba(0,0,0,0.06); border-bottom-width: 1px; }
+    .nav-btn.active {
+      background: linear-gradient(160deg, #0071e3 0%, #0058c4 100%);
+      border-color: #004faa; border-bottom-color: #003880;
+      box-shadow: 0 6px 20px rgba(0,113,227,0.4), 0 2px 6px rgba(0,113,227,0.25);
+    }
+    .nav-btn.active::before { background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%); }
+    .nav-btn.active:active { transform: translateY(4px); box-shadow: 0 1px 4px rgba(0,113,227,0.25); border-bottom-width: 1px; }
+    .nav-btn-icon { font-size: 1.9rem; line-height: 1; }
+    .nav-btn-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .nav-btn.active .nav-btn-title { color: #fff; }
+    .nav-btn-sub { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+    .nav-btn.active .nav-btn-sub { color: rgba(255,255,255,0.72); }
+
+    /* ── 탭 패널 ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── 미니 현황 바 ── */
+    .mini-stats {
+      display: flex; gap: 0.8rem 1.2rem; flex-wrap: wrap;
+      margin-bottom: 1rem; padding: 0.75rem 1.1rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; font-size: 0.8rem; color: var(--sub);
+      align-items: center;
+    }
+    .mini-stat-item { display: flex; align-items: center; gap: 0.35rem; }
+    .mini-stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .mini-stats b { color: var(--text); font-size: 0.9rem; font-weight: 700; }
+    .mini-stats .ms-divider { flex: 1; }
   </style>
 </head>
 <body>
@@ -385,61 +436,56 @@
       ⚠️ <span><strong>Supabase 미연결</strong> — config.js에 실제 URL과 키를 입력하면 실시간 데이터가 표시돼요.</span>
     </div>
 
-    <!-- 요약 카드 -->
-    <div class="summary-grid">
-      <div class="s-card">
-        <div class="s-label">전체 응답</div>
-        <div class="s-val" id="s-total">0</div>
-        <div class="s-sub">누적 응답 수</div>
-      </div>
-      <div class="s-card ok">
-        <div class="s-label">알바 가능</div>
-        <div class="s-val c-ok" id="s-ok">0</div>
-        <div class="s-sub" id="s-ok-pct">-</div>
-      </div>
-      <div class="s-card warn">
-        <div class="s-label">조건부 가능</div>
-        <div class="s-val c-warn" id="s-warn">0</div>
-        <div class="s-sub" id="s-warn-pct">-</div>
-      </div>
-      <div class="s-card no">
-        <div class="s-label">현재 불가</div>
-        <div class="s-val c-no" id="s-no">0</div>
-        <div class="s-sub" id="s-no-pct">-</div>
-      </div>
-      <div class="s-card match">
-        <div class="s-label">매칭 신청</div>
-        <div class="s-val c-match" id="s-match">0</div>
-        <div class="s-sub">자리 연결 대기</div>
-      </div>
-      <div class="s-card pre">
-        <div class="s-label">예비 등록</div>
-        <div class="s-val c-pre" id="s-pre">0</div>
-        <div class="s-sub">자격 갖추면 연락</div>
-      </div>
+    <!-- 3D 네비게이션 -->
+    <div class="nav-grid">
+      <button class="nav-btn active" id="nav-students" onclick="switchTab('students')">
+        <div class="nav-btn-icon">👥</div>
+        <div class="nav-btn-title">학생 관리</div>
+        <div class="nav-btn-sub" id="nav-sub-students">매칭 신청 0명</div>
+      </button>
+      <button class="nav-btn" id="nav-employers" onclick="switchTab('employers')">
+        <div class="nav-btn-icon">🏪</div>
+        <div class="nav-btn-title">업주 관리</div>
+        <div class="nav-btn-sub" id="nav-sub-employers">0곳 상담 중</div>
+      </button>
+      <button class="nav-btn" id="nav-matching" onclick="switchTab('matching')">
+        <div class="nav-btn-icon">🤝</div>
+        <div class="nav-btn-title">매칭 현황</div>
+        <div class="nav-btn-sub" id="nav-sub-matching">완료 0건</div>
+      </button>
+      <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">
+        <div class="nav-btn-icon">📊</div>
+        <div class="nav-btn-title">응답 분석</div>
+        <div class="nav-btn-sub" id="nav-sub-analytics">총 0건 응답</div>
+      </button>
     </div>
 
-    <!-- 연락처 섹션 -->
-    <div class="section-label">📞 연락처 목록</div>
-    <div class="contact-row">
-
-      <!-- 매칭 신청 -->
+    <!-- ① 탭: 학생 관리 -->
+    <div id="tab-students" class="tab-panel active">
+      <div class="mini-stats">
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#ff9500"></div>대기중 <b id="ms-wait">0</b></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#0071e3"></div>상담중 <b id="ms-talk">0</b></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#34c759"></div>매칭완료 <b id="ms-done">0</b></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#aeaeb2"></div>보류 <b id="ms-hold">0</b></div>
+        <div class="ms-divider"></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#5856d6"></div>예비등록 <b id="ms-pre">0</b></div>
+      </div>
+      <div class="section-label">🤝 알바 매칭 신청</div>
       <div class="card-box">
         <div class="card-header">
           <div class="card-header-left">
-            <h3>🤝 매칭 신청</h3>
+            <h3>신청 학생 목록</h3>
             <span class="cnt" id="match-count">0건</span>
           </div>
           <button class="export-btn" onclick="exportMatchCSV()">CSV 내보내기</button>
         </div>
         <div class="contact-list" id="match-body"></div>
       </div>
-
-      <!-- 예비 등록 -->
+      <div class="section-label">📬 예비 등록 (현재 불가 → 추후 연락)</div>
       <div class="card-box">
         <div class="card-header">
           <div class="card-header-left">
-            <h3>📬 예비 등록</h3>
+            <h3>예비 등록 학생</h3>
             <span class="cnt" id="pre-count">0건</span>
           </div>
           <button class="export-btn" onclick="exportPreCSV()">CSV 내보내기</button>
@@ -448,84 +494,97 @@
       </div>
     </div>
 
-    <!-- 업주 상담기록지 -->
-    <div class="section-label">🏪 업주 상담기록지</div>
-    <div class="card-box">
-      <div class="card-header">
-        <div class="card-header-left">
-          <h3>업주 목록</h3>
-          <span class="cnt" id="employer-count">0건</span>
-        </div>
+    <!-- ② 탭: 업주 관리 -->
+    <div id="tab-employers" class="tab-panel">
+      <div class="mini-stats">
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#0071e3"></div>상담중 <b id="em-talk">0</b></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#34c759"></div>채용완료 <b id="em-done">0</b></div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#aeaeb2"></div>보류 <b id="em-hold">0</b></div>
       </div>
-      <div class="contact-list" id="employer-body">
-        <div class="contact-empty">아래 버튼으로 업주를 추가해주세요.</div>
-      </div>
-      <button class="add-employer-btn" onclick="addEmployer()">➕ 업주 추가하기</button>
-    </div>
-
-    <!-- 불가 사유 분석 -->
-    <div class="section-label">🚫 불가 사유 분석</div>
-    <div class="blocker-grid">
       <div class="card-box">
-        <div class="card-header"><h3>불가·조건부 사유 TOP</h3></div>
-        <div class="blocker-list" id="blocker-list">
-          <div style="color:var(--muted);font-size:0.85rem">데이터가 없어요.</div>
+        <div class="card-header">
+          <div class="card-header-left">
+            <h3>업주 목록</h3>
+            <span class="cnt" id="employer-count">0건</span>
+          </div>
         </div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">일별 응답 추이 (최근 14일)</div>
-        <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
+        <div class="contact-list" id="employer-body">
+          <div class="contact-empty">아래 버튼으로 업주를 추가해주세요.</div>
+        </div>
+        <button class="add-employer-btn" onclick="addEmployer()">➕ 업주 추가하기</button>
       </div>
     </div>
 
-    <!-- 차트 -->
-    <div class="section-label">📈 응답 분포</div>
-    <div class="chart-row-2" style="margin-bottom:1rem">
-      <div class="chart-box">
-        <div class="chart-title">판정 결과 분포</div>
-        <div class="chart-wrap"><canvas id="chart-result"></canvas></div>
+    <!-- ③ 탭: 매칭 현황 -->
+    <div id="tab-matching" class="tab-panel">
+      <div class="mini-stats">
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#34c759"></div>매칭완료 학생 <b id="mc-students">0</b>명</div>
+        <div class="mini-stat-item"><div class="mini-stat-dot" style="background:#0071e3"></div>채용완료 업주 <b id="mc-employers">0</b>곳</div>
       </div>
-      <div class="chart-box">
-        <div class="chart-title">비자 유형 분포</div>
-        <div class="chart-wrap"><canvas id="chart-visa"></canvas></div>
+      <div class="section-label">✅ 현재 알바 중인 학생</div>
+      <div class="card-box">
+        <div class="card-header"><h3>매칭완료 학생</h3></div>
+        <div class="contact-list" id="matched-students-body">
+          <div class="contact-empty">아직 매칭완료된 학생이 없어요.</div>
+        </div>
       </div>
-    </div>
-    <div class="chart-row-3" style="margin-bottom:1rem">
-      <div class="chart-box">
-        <div class="chart-title">TOPIK 수준</div>
-        <div class="chart-wrap"><canvas id="chart-topik"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">희망 근무시간</div>
-        <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">재학 상태</div>
-        <div class="chart-wrap"><canvas id="chart-enroll"></canvas></div>
+      <div class="section-label">✅ 채용 완료된 업주</div>
+      <div class="card-box">
+        <div class="card-header"><h3>매칭완료 업주</h3></div>
+        <div class="contact-list" id="matched-employers-body">
+          <div class="contact-empty">아직 매칭완료된 업주가 없어요.</div>
+        </div>
       </div>
     </div>
 
-    <!-- 전체 응답 내역 -->
-    <div class="section-label">🗃️ 전체 응답 내역</div>
-    <div class="card-box">
-      <div class="card-header">
-        <div class="card-header-left">
-          <h3>체커 응답 목록</h3>
-          <span class="cnt" id="table-count">0건</span>
-        </div>
-        <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
+    <!-- ④ 탭: 응답 분석 -->
+    <div id="tab-analytics" class="tab-panel">
+      <div class="summary-grid">
+        <div class="s-card"><div class="s-label">전체 응답</div><div class="s-val" id="s-total">0</div><div class="s-sub">누적 응답 수</div></div>
+        <div class="s-card ok"><div class="s-label">알바 가능</div><div class="s-val c-ok" id="s-ok">0</div><div class="s-sub" id="s-ok-pct">-</div></div>
+        <div class="s-card warn"><div class="s-label">조건부 가능</div><div class="s-val c-warn" id="s-warn">0</div><div class="s-sub" id="s-warn-pct">-</div></div>
+        <div class="s-card no"><div class="s-label">현재 불가</div><div class="s-val c-no" id="s-no">0</div><div class="s-sub" id="s-no-pct">-</div></div>
+        <div class="s-card match"><div class="s-label">매칭 신청</div><div class="s-val c-match" id="s-match">0</div><div class="s-sub">자리 연결 대기</div></div>
+        <div class="s-card pre"><div class="s-label">예비 등록</div><div class="s-val c-pre" id="s-pre">0</div><div class="s-sub">자격 갖추면 연락</div></div>
       </div>
-      <div class="table-scroll">
-        <table style="min-width:900px">
-          <thead>
-            <tr>
-              <th>#</th><th>날짜</th><th>비자</th><th>체류기간</th>
-              <th>재학</th><th>성적</th><th>TOPIK</th><th>학기</th>
-              <th>희망시간</th><th>업종</th><th>판정</th><th>최대허용</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
+      <div class="section-label">🚫 불가 사유 분석</div>
+      <div class="blocker-grid">
+        <div class="card-box">
+          <div class="card-header"><h3>불가·조건부 사유 TOP</h3></div>
+          <div class="blocker-list" id="blocker-list"><div style="color:var(--muted);font-size:0.85rem">데이터가 없어요.</div></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">일별 응답 추이 (최근 14일)</div>
+          <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
+        </div>
+      </div>
+      <div class="section-label">📈 응답 분포</div>
+      <div class="chart-row-2" style="margin-bottom:1rem">
+        <div class="chart-box"><div class="chart-title">판정 결과 분포</div><div class="chart-wrap"><canvas id="chart-result"></canvas></div></div>
+        <div class="chart-box"><div class="chart-title">비자 유형 분포</div><div class="chart-wrap"><canvas id="chart-visa"></canvas></div></div>
+      </div>
+      <div class="chart-row-3" style="margin-bottom:1rem">
+        <div class="chart-box"><div class="chart-title">TOPIK 수준</div><div class="chart-wrap"><canvas id="chart-topik"></canvas></div></div>
+        <div class="chart-box"><div class="chart-title">희망 근무시간</div><div class="chart-wrap"><canvas id="chart-hours"></canvas></div></div>
+        <div class="chart-box"><div class="chart-title">재학 상태</div><div class="chart-wrap"><canvas id="chart-enroll"></canvas></div></div>
+      </div>
+      <div class="section-label">🗃️ 전체 응답 내역</div>
+      <div class="card-box">
+        <div class="card-header">
+          <div class="card-header-left"><h3>체커 응답 목록</h3><span class="cnt" id="table-count">0건</span></div>
+          <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
+        </div>
+        <div class="table-scroll">
+          <table style="min-width:900px">
+            <thead>
+              <tr>
+                <th>#</th><th>날짜</th><th>비자</th><th>체류기간</th>
+                <th>재학</th><th>성적</th><th>TOPIK</th><th>학기</th>
+                <th>희망시간</th><th>업종</th><th>판정</th><th>최대허용</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
       </div>
     </div>
 
@@ -634,6 +693,19 @@ const fmtDate = s => {
   return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 };
 
+// ── 탭 전환 ──
+let currentTab = 'students';
+function switchTab(tab) {
+  ['students','employers','matching','analytics'].forEach(t => {
+    document.getElementById(`nav-${t}`)?.classList.remove('active');
+    document.getElementById(`tab-${t}`)?.classList.remove('active');
+  });
+  document.getElementById(`nav-${tab}`)?.classList.add('active');
+  document.getElementById(`tab-${tab}`)?.classList.add('active');
+  currentTab = tab;
+  if (tab === 'matching') renderMatchingStatus();
+}
+
 function renderAll() {
   renderSummary();
   renderMatchingTable();
@@ -660,6 +732,76 @@ function renderSummary() {
   document.getElementById('s-no-pct').textContent   = `전체의 ${pct(no, total)}%`;
   document.getElementById('s-match').textContent = matchData.length;
   document.getElementById('s-pre').textContent   = preData.length;
+
+  // ── 네비게이션 버튼 숫자 ──
+  const matchedStu = matchData.filter(s => s.status === '매칭완료').length;
+  const matchedEmp = employerData.filter(e => e.status === '매칭완료').length;
+  const el = id => document.getElementById(id);
+  el('nav-sub-students') && (el('nav-sub-students').textContent = `매칭 신청 ${matchData.length}명`);
+  el('nav-sub-employers') && (el('nav-sub-employers').textContent = `${employerData.length}곳 상담 중`);
+  el('nav-sub-matching')  && (el('nav-sub-matching').textContent  = `완료 ${matchedStu + matchedEmp}건`);
+  el('nav-sub-analytics') && (el('nav-sub-analytics').textContent = `총 ${total}건 응답`);
+
+  // ── 학생 탭 미니 현황 ──
+  el('ms-wait') && (el('ms-wait').textContent = matchData.filter(s => (s.status||'대기중') === '대기중').length);
+  el('ms-talk') && (el('ms-talk').textContent = matchData.filter(s => s.status === '상담중').length);
+  el('ms-done') && (el('ms-done').textContent = matchedStu);
+  el('ms-hold') && (el('ms-hold').textContent = matchData.filter(s => s.status === '보류').length);
+  el('ms-pre')  && (el('ms-pre').textContent  = preData.length);
+
+  // ── 업주 탭 미니 현황 ──
+  el('em-talk') && (el('em-talk').textContent = employerData.filter(e => (e.status||'상담중') === '상담중').length);
+  el('em-done') && (el('em-done').textContent = matchedEmp);
+  el('em-hold') && (el('em-hold').textContent = employerData.filter(e => e.status === '보류').length);
+
+  // ── 매칭 현황 탭 미니 현황 ──
+  el('mc-students') && (el('mc-students').textContent = matchedStu);
+  el('mc-employers') && (el('mc-employers').textContent = matchedEmp);
+}
+
+// ── 매칭 현황 탭 렌더 ──
+function renderMatchingStatus() {
+  const matchedStudents  = matchData.filter(s => s.status === '매칭완료');
+  const matchedEmployers = employerData.filter(e => e.status === '매칭완료');
+
+  const stuEl = document.getElementById('matched-students-body');
+  if (stuEl) stuEl.innerHTML = matchedStudents.length
+    ? matchedStudents.map(s => {
+        const prof  = studentProfilesMap[s.id] || {};
+        const region = s.city || prof.city || '';
+        const ind    = IND[s.industry] || s.industry || '';
+        const tags   = [region, ind, VISA[s.visa_type]||s.visa_type, TOPIK[s.topik_level]||s.topik_level]
+          .filter(Boolean).map(t => `<span class="ci-tag">${t}</span>`).join('');
+        return `<div class="contact-item">
+          <div class="ci-top">
+            <span class="ci-name">${s.name || '-'}</span>
+            <span class="ci-status st-done">✅ 알바 중</span>
+          </div>
+          <div class="ci-phone">${s.phone || '-'}</div>
+          ${tags ? `<div class="ci-tags">${tags}</div>` : ''}
+          ${prof.university ? `<div class="ci-date">${prof.university}${prof.major?' · '+prof.major:''}</div>` : ''}
+          <div class="ci-date">${fmtDate(s.created_at)}</div>
+        </div>`;
+      }).join('')
+    : '<div class="contact-empty">아직 매칭완료된 학생이 없어요.<br>학생 탭에서 상태를 "매칭완료"로 바꾸면 여기 표시돼요.</div>';
+
+  const empEl = document.getElementById('matched-employers-body');
+  if (empEl) empEl.innerHTML = matchedEmployers.length
+    ? matchedEmployers.map(e => {
+        const ind  = IND[e.industry] || e.industry || '';
+        const tags = [e.city, ind, e.offered_wage].filter(Boolean)
+          .map(t => `<span class="ci-tag">${t}</span>`).join('');
+        return `<div class="contact-item">
+          <div class="ci-top">
+            <span class="ei-biz">${e.business_name || '(미입력)'}</span>
+            <span class="es-badge es-matched">✅ 채용완료</span>
+          </div>
+          ${e.phone ? `<div class="ei-phone">${e.owner_name ? e.owner_name+' · ' : ''}${e.phone}</div>` : ''}
+          ${tags ? `<div class="ci-tags">${tags}</div>` : ''}
+          <div class="ci-date">${fmtDate(e.created_at)}</div>
+        </div>`;
+      }).join('')
+    : '<div class="contact-empty">아직 매칭완료된 업주가 없어요.<br>업주 탭에서 상태를 "매칭완료"로 바꾸면 여기 표시돼요.</div>';
 }
 
 // ── 매칭 신청 카드 (상담 기록 포함) ──
