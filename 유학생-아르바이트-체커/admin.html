@@ -896,17 +896,50 @@ function renderMatchingTable() {
     : '<div class="contact-empty">매칭 신청이 아직 없어요.</div>';
 }
 
+// ── submissions 연결 (job_matching·pre_register는 일부 필드만 저장하므로 보완) ──
+function findLinkedSubmission(d) {
+  if (!d.created_at || !allData.length) return null;
+  const matchTime = new Date(d.created_at).getTime();
+  const candidates = allData.filter(s =>
+    s.visa_type === d.visa_type &&
+    s.topik_level === d.topik_level &&
+    s.result_status === d.result_status
+  );
+  if (!candidates.length) return null;
+  candidates.sort((a, b) =>
+    Math.abs(new Date(a.created_at).getTime() - matchTime) -
+    Math.abs(new Date(b.created_at).getTime() - matchTime)
+  );
+  const best = candidates[0];
+  // 10분 이내 것만 유효
+  return Math.abs(new Date(best.created_at).getTime() - matchTime) < 10 * 60 * 1000
+    ? best : null;
+}
+
 // ── 체커 응답 요약 HTML ──
 function buildQuizSummary(d) {
-  const visa    = VISA[d.visa_type]  || d.visa_type  || '-';
-  const stay    = STAY[d.stay_duration] || d.stay_duration || '-';
-  const enroll  = ENROL[d.enrollment]  || d.enrollment  || '-';
-  const grade   = GRADE[d.grade_status] || d.grade_status || '-';
-  const topik   = TOPIK[d.topik_level] || d.topik_level || '-';
-  const sem     = SEM[d.semester]   || d.semester   || '-';
-  const hours   = HOURS[d.desired_hours] || d.desired_hours || '-';
-  const ind     = IND[d.industry]   || d.industry   || '-';
-  const city    = [d.city, d.district].filter(Boolean).join(' ') || '-';
+  // job_matching / pre_register 레코드에 없는 체커 필드를 submissions에서 보완
+  const linked = findLinkedSubmission(d);
+  const extra = linked ? {
+    stay_duration:    linked.stay_duration,
+    enrollment:       linked.enrollment,
+    grade_status:     linked.grade_status,
+    semester:         linked.semester,
+    desired_hours:    linked.desired_hours,
+    max_hours_allowed: d.max_hours_allowed ?? linked.max_hours_allowed,
+    blocker:          d.blocker || linked.blocker,
+  } : {};
+  const s = { ...extra, ...d };   // d(원본) 필드가 최우선
+
+  const visa    = VISA[s.visa_type]      || s.visa_type      || '-';
+  const stay    = STAY[s.stay_duration]  || s.stay_duration  || '-';
+  const enroll  = ENROL[s.enrollment]    || s.enrollment     || '-';
+  const grade   = GRADE[s.grade_status]  || s.grade_status   || '-';
+  const topik   = TOPIK[s.topik_level]   || s.topik_level    || '-';
+  const sem     = SEM[s.semester]        || s.semester        || '-';
+  const hours   = HOURS[s.desired_hours] || s.desired_hours  || '-';
+  const ind     = IND[s.industry]        || s.industry        || '-';
+  const city    = [s.city, s.district].filter(Boolean).join(' ') || '-';
 
   const tags = [
     { label: '비자', val: visa },
@@ -921,7 +954,7 @@ function buildQuizSummary(d) {
   ].map(t => `<span class="quiz-tag">${t.label}: <strong>${t.val}</strong></span>`).join('');
 
   // 조건부/불가 사유
-  const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
+  const blockerKeys = (s.blocker || '').split(',').filter(Boolean);
   let blockerHtml = '';
   if (blockerKeys.length) {
     const items = blockerKeys.map(k => {
@@ -937,7 +970,7 @@ function buildQuizSummary(d) {
   }
 
   // 허용 근무시간
-  const maxH = d.max_hours_allowed;
+  const maxH = s.max_hours_allowed;
   const maxHtml = maxH != null
     ? `<div class="quiz-max">허용 근무시간: <b>${maxH === -1 ? '무제한' : maxH + 'h/주'}</b></div>`
     : '';
