@@ -251,6 +251,33 @@
     }
     .no-candidates { text-align: center; padding: 1.5rem; color: var(--muted); font-size: 0.82rem; }
 
+    /* ── 체커 응답 요약 ── */
+    .quiz-summary {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 0.9rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .quiz-summary-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .quiz-tag {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 2px 9px; font-size: 0.75rem; color: var(--sub);
+    }
+    .quiz-tag.accent { border-color: rgba(0,113,227,0.3); color: var(--accent); background: rgba(0,113,227,0.06); }
+    .quiz-blocker {
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+    .quiz-blocker-item {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem;
+    }
+    .quiz-blocker-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .quiz-max {
+      font-size: 0.78rem; color: var(--sub);
+    }
+    .quiz-max b { color: var(--text); }
+
     /* ── 질문+답변 카드 ── */
     .copy-all-btn {
       width: 100%; background: var(--bg); border: 1.5px dashed var(--accent);
@@ -848,6 +875,8 @@ function renderMatchingTable() {
               ${stOpts}
             </select>
           </div>
+          <div class="sd-section-title">🔍 체커 응답 요약</div>
+          ${buildQuizSummary(d)}
           <div class="sd-section-title">📋 학생 기록부</div>
           <div class="profile-form" id="profile-form-${d.id}">
             <div class="note-empty">불러오는 중...</div>
@@ -865,6 +894,59 @@ function renderMatchingTable() {
         </div>`;
       }).join('')
     : '<div class="contact-empty">매칭 신청이 아직 없어요.</div>';
+}
+
+// ── 체커 응답 요약 HTML ──
+function buildQuizSummary(d) {
+  const visa    = VISA[d.visa_type]  || d.visa_type  || '-';
+  const stay    = STAY[d.stay_duration] || d.stay_duration || '-';
+  const enroll  = ENROL[d.enrollment]  || d.enrollment  || '-';
+  const grade   = GRADE[d.grade_status] || d.grade_status || '-';
+  const topik   = TOPIK[d.topik_level] || d.topik_level || '-';
+  const sem     = SEM[d.semester]   || d.semester   || '-';
+  const hours   = HOURS[d.desired_hours] || d.desired_hours || '-';
+  const ind     = IND[d.industry]   || d.industry   || '-';
+  const city    = [d.city, d.district].filter(Boolean).join(' ') || '-';
+
+  const tags = [
+    { label: '비자', val: visa },
+    { label: '체류', val: stay },
+    { label: '재학', val: enroll },
+    { label: '성적', val: grade },
+    { label: 'TOPIK', val: topik },
+    { label: '학기', val: sem },
+    { label: '희망시간', val: hours },
+    { label: '업종', val: ind },
+    { label: '지역', val: city },
+  ].map(t => `<span class="quiz-tag">${t.label}: <strong>${t.val}</strong></span>`).join('');
+
+  // 조건부/불가 사유
+  const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
+  let blockerHtml = '';
+  if (blockerKeys.length) {
+    const items = blockerKeys.map(k => {
+      const isWarn = k.startsWith('rWarn');
+      const color  = isWarn ? '#e07000' : '#cc0000';
+      const icon   = isWarn ? '⚠️' : '🚫';
+      return `<div class="quiz-blocker-item">
+        <div class="quiz-blocker-dot" style="background:${color}"></div>
+        <span style="color:${color};font-weight:600">${icon} ${BLOCKER_KEYS[k] || k}</span>
+      </div>`;
+    }).join('');
+    blockerHtml = `<div class="quiz-blocker">${items}</div>`;
+  }
+
+  // 허용 근무시간
+  const maxH = d.max_hours_allowed;
+  const maxHtml = maxH != null
+    ? `<div class="quiz-max">허용 근무시간: <b>${maxH === -1 ? '무제한' : maxH + 'h/주'}</b></div>`
+    : '';
+
+  return `<div class="quiz-summary">
+    <div class="quiz-summary-tags">${tags}</div>
+    ${blockerHtml}
+    ${maxHtml}
+  </div>`;
 }
 
 // ── 상담 패널 열고 닫기 ──
