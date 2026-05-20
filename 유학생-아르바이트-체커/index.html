@@ -327,15 +327,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
       <div class="q-text" data-i18n="q8text">희망하는 업종은 무엇인가요?</div>
       <div class="q-sub" data-i18n="q8sub">일부 업종은 유학생 취업이 법으로 금지되어 있습니다</div>
       <div class="options">
-        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label" data-i18n="FOOD">음식점·카페 (서빙, 주방 보조)</span></div>
-        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label" data-i18n="RETAIL">판매·유통 (마트, 편의점)</span></div>
-        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label" data-i18n="OFFICE">사무직·번역·과외</span></div>
-        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label" data-i18n="EVENT">행사·판촉 (이벤트 스태프)</span></div>
-        <div class="option" data-q="8" data-v="MAJOR" onclick="pick(this)"><span class="opt-label" data-i18n="MAJOR">전공 관련 (연구보조, 인턴)</span></div>
-        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label" data-i18n="MANUFACTURE">제조업·공장 (TOPIK 4급↑ 조건부)</span></div>
-        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label" data-i18n="DELIVERY">배달 (오토바이·자전거)</span></div>
-        <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-label" data-i18n="CONSTRUCTION">건설·공사 현장</span></div>
-        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label" data-i18n="OTHER_IND">기타 / 잘 모름</span></div>
+        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label">음식점·카페 (서빙, 주방 보조)</span></div>
+        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label">판매·유통 (마트, 편의점)</span></div>
+        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label">단순 사무보조 (복사, 정리, 입력 등)</span></div>
+        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">통번역 보조 (어학원·유학원 등 보조 업무)</span></div>
+        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">행사·판촉 (이벤트 스태프)</span></div>
+        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label">제조업·공장 (TOPIK 4급↑ 조건부)</span></div>
+        <div class="option" data-q="8" data-v="LANG_TEACHER" onclick="pick(this)"><span class="opt-label">🚫 외국어 강사·튜터 (영어캠프, 회화지도 등)</span></div>
+        <div class="option" data-q="8" data-v="PROFESSIONAL" onclick="pick(this)"><span class="opt-label">🚫 IT·전문직·지식산업 (개발, 연구, 컨설팅 등)</span></div>
+        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label">🚫 배달 (오토바이·자전거)</span></div>
+        <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-label">🚫 건설·공사 현장</span></div>
+        <div class="option" data-q="8" data-v="ENTERTAINMENT" onclick="pick(this)"><span class="opt-label">🚫 유흥업소 (주점, 단란주점, 마사지 등)</span></div>
+        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">기타 / 잘 모름</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -423,9 +426,12 @@ ko: {
   'TOPIK5':'5급 이상', 'TOPIK4':'4급', 'TOPIK3':'3급', 'TOPIK12':'1~2급 또는 만료됨', 'NONE':'없어요',
   'SEMESTER':'학기 중이에요', 'VACATION':'방학이에요',
   'H10':'10시간 이하', 'H20':'11~20시간', 'H25':'21~25시간', 'H30':'26~30시간', 'H35':'31~35시간', 'HMAX':'제한 없이 풀타임으로 일하고 싶어요',
-  'FOOD':'음식점·카페 (서빙, 주방 보조)', 'RETAIL':'편의점·마트 (계산, 진열)', 'OFFICE':'사무직·번역·과외',
-  'EVENT':'행사·판촉 스태프', 'MAJOR':'전공 관련 (연구보조, 인턴)',
-  'MANUFACTURE':'공장·제조업 (조건 있음)', 'DELIVERY':'배달 (오토바이·자전거)', 'CONSTRUCTION':'건설·공사 현장', 'OTHER_IND':'잘 모르겠어요',
+  'FOOD':'음식점·카페 (서빙, 주방 보조)', 'RETAIL':'편의점·마트 (계산, 진열)',
+  'OFFICE':'단순 사무보조', 'TRANSLATE':'통번역 보조 (어학원·유학원)',
+  'EVENT':'행사·판촉 스태프', 'MANUFACTURE':'공장·제조업 (조건 있음)',
+  'LANG_TEACHER':'외국어 강사·튜터 🚫', 'PROFESSIONAL':'IT·전문직·지식산업 🚫',
+  'DELIVERY':'배달 (오토바이·자전거) 🚫', 'CONSTRUCTION':'건설·공사 현장 🚫',
+  'ENTERTAINMENT':'유흥업소 🚫', 'OTHER_IND':'잘 모르겠어요',
   resOkTitle:'알바 가능해요! ✅', resWarnTitle:'조건부로 가능해요 ⚠️', resNoTitle:'지금은 알바가 안 돼요 ❌',
   resOkSub:'지금 상황이면 합법적으로 알바할 수 있어요.', resWarnSub:'가능하긴 한데, 아래 주의사항을 꼭 읽어보세요.', resNoSub:'지금은 알바를 하면 안 돼요. 이유와 준비 방법을 알려드릴게요.',
   icVisaLabel:'비자', icHoursLabel:'주당 최대', icTopikLabel:'TOPIK', icSemLabel:'지금',
@@ -455,9 +461,11 @@ ko: {
   rNoGrad:'이번 학기에 졸업하는 상태에서는 알바 허가가 제한돼요.',
   rNoConstruction:'건설·공사 현장 일은 유학생 비자로는 절대 안 돼요.',
   rNoDelivery:'오토바이나 자전거 배달은 유학생이 할 수 없어요.',
+  rNoLangTeacher:'외국어 강사·튜터(영어캠프, 회화지도 등)는 유학생이 할 수 없어요. E-2 비자 소지자만 가능한 직종이에요.',
+  rNoProfessional:'IT·개발·연구·컨설팅 등 지식산업 업무는 유학생이 할 수 없어요. 정식 취업(E-7 비자) 이후에만 가능해요.',
+  rNoEntertainment:'유흥업소(주점, 단란주점, 마사지업소 등)는 유학생을 포함한 모든 외국인에게 취업이 금지돼 있어요.',
   rWarnGrade:'학점이나 출석이 부족하면 허가가 거부될 수 있어요. 먼저 학교 외국인학생 담당 부서에 여쭤보세요.',
   rWarnHours: m => `지금 허용되는 최대 시간은 ${m}이에요. 그 안에서만 일해야 해요.`,
-  rWarnMajor:'전공 관련 인턴이나 연구보조는 학교 외국인학생 담당 부서에서 먼저 확인이 필요해요.',
   rNoTopik:'알바를 하려면 먼저 TOPIK 시험에서 기준 등급을 받아야 해요.<br>(대학교 1~2학년: 3급 이상, 3~4학년·대학원·교환학생: 4급 이상)',
   rNoManufacture:'공장 알바는 TOPIK 4급 이상인 경우에만 할 수 있어요.',
   rWarnManufacture:'공장 알바는 TOPIK 4급 이상이면 가능해요. 시작 전에 학교 담당 부서에 꼭 확인해보세요.',
@@ -578,9 +586,9 @@ function computeResult() {
   const stayOk          = isD4orVS ? stay === 'GT6' : true;
   const enrollOk        = enroll === 'ENROLLED';
   const gradeOk         = grade !== 'GPA_LOW';
-  const industryBanned      = industry === 'CONSTRUCTION' || industry === 'DELIVERY';
+  const BANNED_INDUSTRIES = ['CONSTRUCTION','DELIVERY','LANG_TEACHER','PROFESSIONAL','ENTERTAINMENT'];
+  const industryBanned      = BANNED_INDUSTRIES.includes(industry);
   const industryManufacture = industry === 'MANUFACTURE';
-  const industryMajor       = industry === 'MAJOR';
 
   const topikNum = {TOPIK5:5, TOPIK4:4, TOPIK3:3, TOPIK12:1, NONE:0}[topik] ?? 0;
 
@@ -622,8 +630,11 @@ function computeResult() {
     status = 'no'; reasonKeys.push(enroll === 'LEAVE' ? 'rNoLeave' : 'rNoGrad');
   } else if (industryBanned) {
     status = 'no';
-    if (industry === 'CONSTRUCTION') reasonKeys.push('rNoConstruction');
-    if (industry === 'DELIVERY')     reasonKeys.push('rNoDelivery');
+    if (industry === 'CONSTRUCTION')  reasonKeys.push('rNoConstruction');
+    if (industry === 'DELIVERY')      reasonKeys.push('rNoDelivery');
+    if (industry === 'LANG_TEACHER')  reasonKeys.push('rNoLangTeacher');
+    if (industry === 'PROFESSIONAL')  reasonKeys.push('rNoProfessional');
+    if (industry === 'ENTERTAINMENT') reasonKeys.push('rNoEntertainment');
   } else if (!topikOk) {
     status = 'no'; reasonKeys.push('rNoTopik');
   } else if (industryManufacture && topikNum < 4) {
@@ -631,7 +642,6 @@ function computeResult() {
   } else {
     if (!gradeOk)          { status = 'warn'; reasonKeys.push('rWarnGrade'); }
     if (!hoursOk)          { status = 'warn'; reasonKeys.push('__hoursExceeded__'); }
-    if (industryMajor)     { if (status === 'ok') status = 'warn'; reasonKeys.push('rWarnMajor'); }
     if (industryManufacture) { if (status === 'ok') status = 'warn'; reasonKeys.push('rWarnManufacture'); }
   }
 
@@ -788,6 +798,30 @@ const NEXT_STEPS_KO = {
       '걸리면 강제출국될 수 있으니 절대 하지 마세요.',
     ]
   },
+  rNoLangTeacher: {
+    why: '외국어 강사·튜터 업무는 E-2(회화지도) 비자 소지자만 할 수 있어요. 유학생(D-2/D-4)은 법으로 금지돼 있어요.',
+    actions: [
+      '언어를 살리고 싶다면 어학원·유학원에서 단순 번역 보조 업무(TRANSLATE)는 가능해요.',
+      '1:1 과외나 영어캠프 강사는 비자 위반이에요. 걸리면 비자 취소·강제출국 위험이 있어요.',
+      '졸업 후 E-2 비자나 E-7 비자로 전환하면 강사 활동이 가능해요.',
+    ]
+  },
+  rNoProfessional: {
+    why: 'IT 개발·연구·컨설팅 등 지식산업 분야는 정식 취업비자(E-7)가 있어야만 일할 수 있어요. 유학생은 불가해요.',
+    actions: [
+      '단순 데이터 입력, 복사·정리 같은 단순 사무보조(OFFICE) 업무는 가능해요.',
+      '졸업 후 E-7 비자를 받으면 IT·연구·컨설팅 직종에 정식으로 취업할 수 있어요.',
+      '재학 중에는 학교 산학협력단을 통한 정식 인턴 프로그램을 이용해보세요 (학교마다 다름).',
+    ]
+  },
+  rNoEntertainment: {
+    why: '유흥업소(주점, 단란주점, 마사지업소 등)는 비자 종류에 상관없이 모든 외국인에게 취업이 금지돼 있어요.',
+    actions: [
+      '음식점·카페 홀 서빙이나 주방 보조 일로 바꿔보세요.',
+      '유흥업소에서 일하다 걸리면 비자 취소·추방·재입국 금지 처분을 받을 수 있어요.',
+      '합법적으로 일할 수 있는 직종 목록을 확인하고 싶으면 HiKorea(hikorea.go.kr)에서 확인해요.',
+    ]
+  },
   rNoDelivery: {
     why: '오토바이·자전거 배달은 유학생이 할 수 없는 일이에요.',
     actions: [
@@ -845,12 +879,20 @@ const INDUSTRY_DOCS_KO = {
     ]
   },
   OFFICE: {
-    name: '사무직·번역·과외',
+    name: '단순 사무보조 (복사, 정리, 입력 등)',
     docs: [
       '알바 허가증',
-      '근로계약서',
-      '자격증 또는 포트폴리오 (번역·과외할 때)',
-      '재학증명서 (학원에서 요청하는 경우)',
+      '근로계약서 + 사업자등록증 사본',
+      '재학증명서 (일부 업체에서 요청해요)',
+    ]
+  },
+  TRANSLATE: {
+    name: '통번역 보조 (어학원·유학원)',
+    docs: [
+      '알바 허가증',
+      '근로계약서 + 사업자등록증 사본',
+      '어학 관련 자격증 또는 TOPIK 성적표 (요청하는 경우)',
+      '재학증명서',
     ]
   },
   EVENT: {
@@ -859,15 +901,6 @@ const INDUSTRY_DOCS_KO = {
       '알바 허가증',
       '근로계약서 또는 용역계약서',
       '외국인등록증 사본',
-    ]
-  },
-  MAJOR: {
-    name: '전공 관련 (연구보조·인턴)',
-    docs: [
-      '알바 허가증',
-      '학교 외국인학생 담당부서 추천서',
-      '인턴·연구보조 계약서 또는 교수님 확인서',
-      '재학증명서 (영문)',
     ]
   },
   MANUFACTURE: {
@@ -895,18 +928,22 @@ function renderNextSteps(r) {
   const el = document.getElementById('res-next-steps');
   if (!el) return;
 
-  const isBannedConstruction = r.industry === 'CONSTRUCTION';
-  const isBannedDelivery = r.industry === 'DELIVERY';
+  const isBannedConstruction  = r.industry === 'CONSTRUCTION';
+  const isBannedDelivery      = r.industry === 'DELIVERY';
+  const isBannedLangTeacher   = r.industry === 'LANG_TEACHER';
+  const isBannedProfessional  = r.industry === 'PROFESSIONAL';
+  const isBannedEntertainment = r.industry === 'ENTERTAINMENT';
+  const anyBanned = isBannedConstruction || isBannedDelivery || isBannedLangTeacher || isBannedProfessional || isBannedEntertainment;
   const actionableReasons = r.reasonKeys.filter(k => NEXT_STEPS_KO[k]);
 
-  if (!actionableReasons.length && !isBannedConstruction && !isBannedDelivery) {
+  if (!actionableReasons.length && !anyBanned) {
     el.innerHTML = ''; return;
   }
 
   let html = '';
 
-  // 금지 직종 박스 (건설/배달 선택 시 항상 표시)
-  if (isBannedConstruction || isBannedDelivery) {
+  // 금지 직종 박스
+  if (anyBanned) {
     html += `<div class="banned-box">
       <div class="banned-box-title">🚫 유학생이 하면 안 되는 알바예요</div>`;
     if (isBannedConstruction) {
@@ -926,6 +963,36 @@ function renderNextSteps(r) {
           <div class="banned-name">오토바이·자전거 배달</div>
           <div class="banned-why">유학생이 할 수 없는 일이에요. 배달앱에 라이더로 등록하는 것 자체도 불법이고, 사고가 나도 산재 보상을 받을 수 없어요.</div>
           <div class="banned-alt">✅ 대신 가능한 것: 음식점·카페 서빙, 주방 보조, 매장 안에서 포장하는 일</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedLangTeacher) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🎓</div>
+        <div>
+          <div class="banned-name">외국어 강사·튜터 (영어캠프, 회화지도 등)</div>
+          <div class="banned-why">외국어 강의는 E-2(회화지도) 비자를 가진 사람만 할 수 있어요. 유학생(D-2/D-4) 신분으로는 과외·캠프 강사·튜터 모두 불법이에요.</div>
+          <div class="banned-alt">✅ 대신 가능한 것: 어학원·유학원에서 단순 번역 보조 업무, 통역 보조</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedProfessional) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">💻</div>
+        <div>
+          <div class="banned-name">IT·전문직·지식산업 (개발, 연구, 컨설팅 등)</div>
+          <div class="banned-why">지식산업 업무는 E-7(특정활동) 비자 소지자만 가능해요. 정식 취업 전에 유학생이 이 분야 알바를 하면 비자 위반이에요.</div>
+          <div class="banned-alt">✅ 대신 가능한 것: 단순 데이터 입력·정리, 서류 복사 같은 단순 사무보조</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedEntertainment) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🚷</div>
+        <div>
+          <div class="banned-name">유흥업소 (주점, 단란주점, 마사지업소 등)</div>
+          <div class="banned-why">비자 종류에 상관없이 모든 외국인에게 취업이 금지돼 있어요. 걸리면 비자 취소·강제출국·재입국 금지 처분을 받을 수 있어요.</div>
+          <div class="banned-alt">✅ 대신 가능한 것: 일반 음식점·카페 홀 서빙, 주방 보조, 편의점·마트 알바</div>
         </div>
       </div>`;
     }
@@ -1016,7 +1083,7 @@ function renderMatchingForm(r) {
   if (r.status === 'no') { el.innerHTML = ''; return; }
 
   // 퀴즈에서 선택한 업종을 미리 선택해둠
-  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'사무·번역', EVENT:'행사·판촉', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', OTHER_IND:'기타/미정'};
+  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'단순 사무보조', TRANSLATE:'통번역 보조', EVENT:'행사·판촉', MANUFACTURE:'제조업·공장 (조건있음)', OTHER_IND:'기타/미정'};
   const quizInd = answers.q8 || '';
   const indOptions = Object.entries(IND_KO).map(([v, label]) =>
     `<option value="${v}" ${v === quizInd ? 'selected' : ''}>${label}</option>`

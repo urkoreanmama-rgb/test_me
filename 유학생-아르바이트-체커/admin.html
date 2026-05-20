@@ -621,7 +621,7 @@
 <script>
 // ── 레이블 ──
 const VISA  = { 'D2-UG-12':'D-2 학사(1~2학년)', 'D2-UG-34':'D-2 학사(3~4학년)', 'D2-UG':'D-2 학사', 'D2-GR':'D-2 석박사', 'D2-VS':'D-2 교환학생', 'D4':'D-4 어학연수', 'OTHER':'기타' };
-const IND   = { FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'사무·번역', EVENT:'행사·판촉', MAJOR:'전공관련', MANUFACTURE:'제조업·공장', DELIVERY:'배달🚫', CONSTRUCTION:'건설현장🚫', OTHER_IND:'기타/미정' };
+const IND   = { FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'단순 사무보조', TRANSLATE:'통번역 보조', EVENT:'행사·판촉', MANUFACTURE:'제조업·공장(조건)', DELIVERY:'배달🚫', CONSTRUCTION:'건설현장🚫', LANG_TEACHER:'외국어강사🚫', PROFESSIONAL:'IT·전문직🚫', ENTERTAINMENT:'유흥업소🚫', OTHER_IND:'기타/미정' };
 const TOPIK = { TOPIK5:'5급↑', TOPIK4:'4급', TOPIK3:'3급', TOPIK12:'1~2급·만료', NONE:'없음' };
 const STAY  = { LT3:'3개월↓', '3TO6':'3~6개월', GT6:'6개월↑' };
 const ENROL = { ENROLLED:'재학중', LEAVE:'휴학', GRAD:'졸업예정' };
@@ -629,17 +629,19 @@ const GRADE = { GOOD:'기준충족', GPA_LOW:'미충족', FIRST:'첫학기' };
 const SEM   = { SEMESTER:'학기중', VACATION:'방학' };
 const HOURS = { H10:'~10h', H20:'~20h', H25:'~25h', H30:'~30h', H35:'~35h', HMAX:'무제한' };
 const BLOCKER_KEYS = {
-  rNoVisa:        '비자 유형 불가 (D-2/D-4 아님)',
-  rNoStay:        '체류 6개월 미충족',
-  rNoLeave:       '휴학 중',
-  rNoGrad:        '졸업예정·수료',
-  rNoDelivery:    '금지 업종 (배달)',
-  rNoConstruction:'금지 업종 (건설)',
-  rNoTopik:       'TOPIK 등급 부족',
-  rNoManufacture: 'TOPIK 부족 (제조업)',
-  rWarnGrade:     '성적·출석 미충족',
-  rWarnHours:     '희망시간 초과',
-  rWarnMajor:     '전공관련 (조건부)',
+  rNoVisa:         '비자 유형 불가 (D-2/D-4 아님)',
+  rNoStay:         '체류 6개월 미충족',
+  rNoLeave:        '휴학 중',
+  rNoGrad:         '졸업예정·수료',
+  rNoDelivery:     '금지 업종 (배달)',
+  rNoConstruction: '금지 업종 (건설)',
+  rNoLangTeacher:  '금지 업종 (외국어 강사)',
+  rNoProfessional: '금지 업종 (IT·전문직·지식산업)',
+  rNoEntertainment:'금지 업종 (유흥업소)',
+  rNoTopik:        'TOPIK 등급 부족',
+  rNoManufacture:  'TOPIK 부족 (제조업)',
+  rWarnGrade:      '성적·출석 미충족',
+  rWarnHours:      '희망시간 초과',
   rWarnManufacture:'제조업 (TOPIK 4급↑ 조건)',
 };
 
@@ -1339,16 +1341,19 @@ async function updateMatchStatus(matchingId, status) {
 
 // ── 불가 사유별 조언 ──
 const BLOCKER_ADVICE = {
-  rNoVisa:         { icon:'🪪', advice:'D-2(유학) 또는 D-4(어학연수) 비자 보유자만 체류자격 외 활동 허가를 받을 수 있어요. 현재 비자로는 신청이 어렵지만, 담당 출입국관리소에 문의해 보는 걸 추천드려요.' },
-  rNoStay:         { icon:'📅', advice:'입국 후 6개월이 지나야 알바 허가 신청이 가능해요. 6개월이 되는 날짜를 알려주시면 그때 맞춰 연락드릴게요!' },
-  rNoLeave:        { icon:'📚', advice:'휴학 중에는 알바 허가가 나오지 않아요. 복학하시면 바로 진행할 수 있어요! 복학 예정일이 있으면 알려주세요 😊' },
-  rNoGrad:         { icon:'🎓', advice:'졸업예정·수료 상태에서는 학생 비자 혜택이 제한돼요. 졸업 후 취업비자(E 계열) 전환을 출입국관리소에 문의해보시는 게 좋아요.' },
-  rNoDelivery:     { icon:'🚫', advice:'배달 업종은 외국인 유학생에게 허용되지 않는 직종이에요. 식당·카페, 편의점, 사무보조 등 다른 업종은 가능해요! 원하시면 다시 체커 해볼게요 😊' },
-  rNoConstruction: { icon:'🚫', advice:'건설현장은 외국인 유학생에게 허용되지 않는 직종이에요. 다른 업종으로 바꾸시면 가능할 수 있어요. 원하시면 다시 체커 해볼게요 😊' },
-  rNoTopik:        { icon:'📖', advice:'현재 TOPIK 자격이 없거나 만료된 상태예요. TOPIK 4급 이상을 취득하시면 더 많은 일자리가 열려요! 시험 일정 함께 알아볼까요? 📚\n(TOPIK 접수: topik.go.kr)' },
-  rNoManufacture:  { icon:'🏭', advice:'제조업은 TOPIK 4급 이상이 필요해요. TOPIK를 준비하시거나, 식당·편의점 같은 다른 업종을 선택해보세요!' },
-  rWarnGrade:      { icon:'📊', advice:'성적이나 출석률이 학교 기준에 미달하고 있어요. 다음 학기에 기준을 맞추면 바로 진행 가능해요! 학교 담당자에게도 확인해보세요.' },
-  rWarnHours:      { icon:'⏰', advice:'희망하신 근무시간이 비자 허용 시간을 초과해요. 허용 시간 내에서 먼저 시작하고, 방학이 되면 근무 시간이 늘어나요 😊' },
+  rNoVisa:          { icon:'🪪', advice:'D-2(유학) 또는 D-4(어학연수) 비자 보유자만 체류자격 외 활동 허가를 받을 수 있어요. 현재 비자로는 신청이 어렵지만, 담당 출입국관리소에 문의해 보는 걸 추천드려요.' },
+  rNoStay:          { icon:'📅', advice:'입국 후 6개월이 지나야 알바 허가 신청이 가능해요. 6개월이 되는 날짜를 알려주시면 그때 맞춰 연락드릴게요!' },
+  rNoLeave:         { icon:'📚', advice:'휴학 중에는 알바 허가가 나오지 않아요. 복학하시면 바로 진행할 수 있어요! 복학 예정일이 있으면 알려주세요 😊' },
+  rNoGrad:          { icon:'🎓', advice:'졸업예정·수료 상태에서는 학생 비자 혜택이 제한돼요. 졸업 후 취업비자(E 계열) 전환을 출입국관리소에 문의해보시는 게 좋아요.' },
+  rNoDelivery:      { icon:'🛵', advice:'배달 업종은 외국인 유학생에게 허용되지 않는 직종이에요. 식당·카페, 편의점, 사무보조 등 다른 업종은 가능해요! 원하시면 다시 체커 해볼게요 😊' },
+  rNoConstruction:  { icon:'🏗️', advice:'건설현장은 외국인 유학생에게 허용되지 않는 직종이에요. 다른 업종으로 바꾸시면 가능할 수 있어요. 원하시면 다시 체커 해볼게요 😊' },
+  rNoLangTeacher:   { icon:'🎓', advice:'외국어 강사·튜터 업무는 E-2(회화지도) 비자 소지자만 가능해요. 유학생 신분으로는 법으로 금지돼 있어요. 어학원·유학원의 단순 번역 보조 업무로 바꿔보시는 건 어떨까요?' },
+  rNoProfessional:  { icon:'💻', advice:'IT·개발·연구·컨설팅 등 지식산업은 E-7(특정활동) 비자 소지자만 일할 수 있어요. 정식 취업 전까지는 단순 사무보조로 시작하시고, 졸업 후 E-7 전환을 준비해보세요!' },
+  rNoEntertainment: { icon:'🚷', advice:'유흥업소는 비자 종류에 상관없이 모든 외국인에게 취업이 금지된 곳이에요. 일반 음식점·카페나 편의점 알바로 바꿔보세요!' },
+  rNoTopik:         { icon:'📖', advice:'현재 TOPIK 자격이 없거나 만료된 상태예요. TOPIK 4급 이상을 취득하시면 더 많은 일자리가 열려요! 시험 일정 함께 알아볼까요? 📚\n(TOPIK 접수: topik.go.kr)' },
+  rNoManufacture:   { icon:'🏭', advice:'제조업은 TOPIK 4급 이상이 필요해요. TOPIK를 준비하시거나, 식당·편의점 같은 다른 업종을 선택해보세요!' },
+  rWarnGrade:       { icon:'📊', advice:'성적이나 출석률이 학교 기준에 미달하고 있어요. 다음 학기에 기준을 맞추면 바로 진행 가능해요! 학교 담당자에게도 확인해보세요.' },
+  rWarnHours:       { icon:'⏰', advice:'희망하신 근무시간이 비자 허용 시간을 초과해요. 허용 시간 내에서 먼저 시작하고, 방학이 되면 근무 시간이 늘어나요 😊' },
 };
 
 // ── 예비등록 카톡 메시지 생성 ──
@@ -1705,8 +1710,8 @@ const EMPLOYER_QUESTIONS = [
   // [field, question, type, options, placeholder]
   ['business_name', '상호명이 어떻게 되세요?',                         'text',   null, '예: 행복식당, 스타편의점'],
   ['industry',      '업종이 어떻게 되나요?',                            'select',
-    [['FOOD','식당·카페'],['RETAIL','편의점·마트'],['OFFICE','사무·번역'],
-     ['EVENT','행사·판촉'],['MAJOR','전공관련'],['MANUFACTURE','제조업·공장'],['OTHER_IND','기타']], ''],
+    [['FOOD','식당·카페'],['RETAIL','편의점·마트'],['OFFICE','단순 사무보조'],
+     ['TRANSLATE','통번역 보조'],['EVENT','행사·판촉'],['MANUFACTURE','제조업·공장'],['OTHER_IND','기타']], ''],
   ['city',          '사업장이 어느 지역에 있나요?',                      'select',
     [['서울','서울'],['경기/인천','경기/인천'],['부산','부산'],['대구','대구'],
      ['대전','대전'],['광주','광주'],['울산','울산'],['강원','강원'],
