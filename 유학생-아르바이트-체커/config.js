@@ -5,7 +5,7 @@ const SUPABASE_URL      = 'https://jtbcudkyitfkwfgusgph.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_9-oDKxiELH_30sO5C4-_VQ_4xF-FYRD';
 
 // 관리자 대시보드 비밀번호 (admin.html 접근 시 사용)
-const ADMIN_PASSWORD = 'admin1234';
+const ADMIN_PASSWORD = 'Kmom2026';
 
 // ============================================================
 //  Supabase 테이블 생성 SQL (처음 한 번만 실행)
