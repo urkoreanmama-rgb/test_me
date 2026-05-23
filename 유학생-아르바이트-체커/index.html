@@ -332,12 +332,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
         <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label">단순 사무보조 (복사, 정리, 입력 등)</span></div>
         <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">통번역 보조 (어학원·유학원 등 보조 업무)</span></div>
         <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">행사·판촉 (이벤트 스태프)</span></div>
-        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label">제조업·공장 (TOPIK 4급↑ 조건부)</span></div>
-        <div class="option" data-q="8" data-v="LANG_TEACHER" onclick="pick(this)"><span class="opt-label">🚫 외국어 강사·튜터 (영어캠프, 회화지도 등)</span></div>
+        <div class="option" data-q="8" data-v="LANG_TEACHER" onclick="pick(this)"><span class="opt-label">🚫 외국어 강사·과외 (영어키즈카페, 개인과외, 회화지도 등)</span></div>
         <div class="option" data-q="8" data-v="PROFESSIONAL" onclick="pick(this)"><span class="opt-label">🚫 IT·전문직·지식산업 (개발, 연구, 컨설팅 등)</span></div>
-        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label">🚫 배달 (오토바이·자전거)</span></div>
+        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label">🚫 배달·택배 (오토바이·자전거·택배기사)</span></div>
+        <div class="option" data-q="8" data-v="PLATFORM" onclick="pick(this)"><span class="opt-label">🚫 특수형태근로 (대리기사, 방문판매원, 선원 등)</span></div>
+        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label">🚫 제조업·공장</span></div>
         <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-label">🚫 건설·공사 현장</span></div>
-        <div class="option" data-q="8" data-v="ENTERTAINMENT" onclick="pick(this)"><span class="opt-label">🚫 유흥업소 (주점, 단란주점, 마사지 등)</span></div>
+        <div class="option" data-q="8" data-v="ENTERTAINMENT" onclick="pick(this)"><span class="opt-label">🚫 유흥·풍속 업소 (주점, 단란주점, 마사지 등)</span></div>
         <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">기타 / 잘 모름</span></div>
       </div>
     </div>
@@ -428,10 +429,11 @@ ko: {
   'H10':'10시간 이하', 'H20':'11~20시간', 'H25':'21~25시간', 'H30':'26~30시간', 'H35':'31~35시간', 'HMAX':'제한 없이 풀타임으로 일하고 싶어요',
   'FOOD':'음식점·카페 (서빙, 주방 보조)', 'RETAIL':'편의점·마트 (계산, 진열)',
   'OFFICE':'단순 사무보조', 'TRANSLATE':'통번역 보조 (어학원·유학원)',
-  'EVENT':'행사·판촉 스태프', 'MANUFACTURE':'공장·제조업 (조건 있음)',
-  'LANG_TEACHER':'외국어 강사·튜터 🚫', 'PROFESSIONAL':'IT·전문직·지식산업 🚫',
-  'DELIVERY':'배달 (오토바이·자전거) 🚫', 'CONSTRUCTION':'건설·공사 현장 🚫',
-  'ENTERTAINMENT':'유흥업소 🚫', 'OTHER_IND':'잘 모르겠어요',
+  'EVENT':'행사·판촉 스태프',
+  'LANG_TEACHER':'외국어 강사·과외 🚫', 'PROFESSIONAL':'IT·전문직·지식산업 🚫',
+  'DELIVERY':'배달·택배 🚫', 'PLATFORM':'특수형태근로 🚫',
+  'MANUFACTURE':'제조업·공장 🚫', 'CONSTRUCTION':'건설·공사 현장 🚫',
+  'ENTERTAINMENT':'유흥·풍속 업소 🚫', 'OTHER_IND':'잘 모르겠어요',
   resOkTitle:'알바 가능해요! ✅', resWarnTitle:'조건부로 가능해요 ⚠️', resNoTitle:'지금은 알바가 안 돼요 ❌',
   resOkSub:'지금 상황이면 합법적으로 알바할 수 있어요.', resWarnSub:'가능하긴 한데, 아래 주의사항을 꼭 읽어보세요.', resNoSub:'지금은 알바를 하면 안 돼요. 이유와 준비 방법을 알려드릴게요.',
   icVisaLabel:'비자', icHoursLabel:'주당 최대', icTopikLabel:'TOPIK', icSemLabel:'지금',
@@ -461,14 +463,14 @@ ko: {
   rNoGrad:'이번 학기에 졸업하는 상태에서는 알바 허가가 제한돼요.',
   rNoConstruction:'건설·공사 현장 일은 유학생 비자로는 절대 안 돼요.',
   rNoDelivery:'오토바이나 자전거 배달은 유학생이 할 수 없어요.',
-  rNoLangTeacher:'외국어 강사·튜터(영어캠프, 회화지도 등)는 유학생이 할 수 없어요. E-2 비자 소지자만 가능한 직종이에요.',
+  rNoLangTeacher:'외국어 강사·개인과외·영어키즈카페는 유학생이 할 수 없어요. E-2 비자 소지자만 가능한 직종이에요.',
   rNoProfessional:'IT·개발·연구·컨설팅 등 지식산업 업무는 유학생이 할 수 없어요. 정식 취업(E-7 비자) 이후에만 가능해요.',
-  rNoEntertainment:'유흥업소(주점, 단란주점, 마사지업소 등)는 유학생을 포함한 모든 외국인에게 취업이 금지돼 있어요.',
+  rNoPlatform:'대리기사, 방문판매원, 선원, 택배기사 등 특수형태근로는 유학생 비자로는 할 수 없어요.',
+  rNoEntertainment:'유흥·풍속 업소(주점, 단란주점, 마사지 등)는 모든 외국인에게 취업이 금지돼 있어요.',
+  rNoManufacture:'제조업·공장 알바는 유학생 비자로는 허가가 나오지 않아요.',
   rWarnGrade:'학점이나 출석이 부족하면 허가가 거부될 수 있어요. 먼저 학교 외국인학생 담당 부서에 여쭤보세요.',
   rWarnHours: m => `지금 허용되는 최대 시간은 ${m}이에요. 그 안에서만 일해야 해요.`,
   rNoTopik:'알바를 하려면 먼저 TOPIK 시험에서 기준 등급을 받아야 해요.<br>(대학교 1~2학년: 3급 이상, 3~4학년·대학원·교환학생: 4급 이상)',
-  rNoManufacture:'공장 알바는 TOPIK 4급 이상인 경우에만 할 수 있어요.',
-  rWarnManufacture:'공장 알바는 TOPIK 4급 이상이면 가능해요. 시작 전에 학교 담당 부서에 꼭 확인해보세요.',
   savedMsg:'✓ 저장됐어요.',
 },
 
@@ -586,9 +588,8 @@ function computeResult() {
   const stayOk          = isD4orVS ? stay === 'GT6' : true;
   const enrollOk        = enroll === 'ENROLLED';
   const gradeOk         = grade !== 'GPA_LOW';
-  const BANNED_INDUSTRIES = ['CONSTRUCTION','DELIVERY','LANG_TEACHER','PROFESSIONAL','ENTERTAINMENT'];
-  const industryBanned      = BANNED_INDUSTRIES.includes(industry);
-  const industryManufacture = industry === 'MANUFACTURE';
+  const BANNED_INDUSTRIES = ['CONSTRUCTION','DELIVERY','LANG_TEACHER','PROFESSIONAL','ENTERTAINMENT','MANUFACTURE','PLATFORM'];
+  const industryBanned = BANNED_INDUSTRIES.includes(industry);
 
   const topikNum = {TOPIK5:5, TOPIK4:4, TOPIK3:3, TOPIK12:1, NONE:0}[topik] ?? 0;
 
@@ -635,14 +636,13 @@ function computeResult() {
     if (industry === 'LANG_TEACHER')  reasonKeys.push('rNoLangTeacher');
     if (industry === 'PROFESSIONAL')  reasonKeys.push('rNoProfessional');
     if (industry === 'ENTERTAINMENT') reasonKeys.push('rNoEntertainment');
+    if (industry === 'MANUFACTURE')   reasonKeys.push('rNoManufacture');
+    if (industry === 'PLATFORM')      reasonKeys.push('rNoPlatform');
   } else if (!topikOk) {
     status = 'no'; reasonKeys.push('rNoTopik');
-  } else if (industryManufacture && topikNum < 4) {
-    status = 'no'; reasonKeys.push('rNoManufacture');
   } else {
-    if (!gradeOk)          { status = 'warn'; reasonKeys.push('rWarnGrade'); }
-    if (!hoursOk)          { status = 'warn'; reasonKeys.push('__hoursExceeded__'); }
-    if (industryManufacture) { if (status === 'ok') status = 'warn'; reasonKeys.push('rWarnManufacture'); }
+    if (!gradeOk) { status = 'warn'; reasonKeys.push('rWarnGrade'); }
+    if (!hoursOk) { status = 'warn'; reasonKeys.push('__hoursExceeded__'); }
   }
 
   return { status, reasonKeys, maxHours, wantNum, visa, topik, semester, industry, stay };
@@ -840,11 +840,19 @@ const NEXT_STEPS_KO = {
     ]
   },
   rNoManufacture: {
-    why: '공장·제조업은 TOPIK 4급 이상이어야만 일할 수 있어요. 지금은 등급이 부족해요.',
+    why: '제조업·공장은 유학생 비자(D-2/D-4)로는 알바 허가가 나오지 않아요.',
     actions: [
-      'topik.go.kr에서 4급 시험 일정을 확인하고 준비해 보세요.',
-      '4급 따고 나서 허가를 다시 받으면 공장에서 일할 수 있어요.',
-      '그 전까지는 음식점·카페·편의점 같은 다른 곳에서 일해 보세요.',
+      '음식점·카페·편의점·통번역 보조 같이 허가가 가능한 다른 업종을 골라보세요.',
+      '졸업 후 E-9(비전문취업) 또는 관련 취업비자를 받으면 제조업 취업이 가능해요.',
+      '몰랐다면 지금이라도 바꾸면 괜찮아요. 잘못 선택했다고 비자에 문제가 생기지는 않아요.',
+    ]
+  },
+  rNoPlatform: {
+    why: '대리기사, 방문판매원, 선원, 택배기사 등은 특수형태근로로 분류돼 유학생 비자로는 할 수 없어요.',
+    actions: [
+      '이런 일은 근로계약이 아닌 도급·용역 형태로, 유학생 취업허가 범위에 포함되지 않아요.',
+      '대신 편의점·마트·음식점 같이 정식 근로계약서를 쓰는 곳에서 일해 보세요.',
+      '걸리면 비자 취소나 강제출국 처분을 받을 수 있어요.',
     ]
   },
   rWarnGrade: {
@@ -903,15 +911,6 @@ const INDUSTRY_DOCS_KO = {
       '외국인등록증 사본',
     ]
   },
-  MANUFACTURE: {
-    name: '제조업·공장',
-    docs: [
-      '알바 허가증',
-      'TOPIK 4급 이상 성적표 (반드시 필요해요)',
-      '근로계약서 + 사업자등록증 사본',
-      '안전교육 수료증 (일부 사업장만 요구해요)',
-    ]
-  },
   OTHER_IND: {
     name: '기타',
     docs: [
@@ -933,7 +932,9 @@ function renderNextSteps(r) {
   const isBannedLangTeacher   = r.industry === 'LANG_TEACHER';
   const isBannedProfessional  = r.industry === 'PROFESSIONAL';
   const isBannedEntertainment = r.industry === 'ENTERTAINMENT';
-  const anyBanned = isBannedConstruction || isBannedDelivery || isBannedLangTeacher || isBannedProfessional || isBannedEntertainment;
+  const isBannedManufacture   = r.industry === 'MANUFACTURE';
+  const isBannedPlatform      = r.industry === 'PLATFORM';
+  const anyBanned = isBannedConstruction || isBannedDelivery || isBannedLangTeacher || isBannedProfessional || isBannedEntertainment || isBannedManufacture || isBannedPlatform;
   const actionableReasons = r.reasonKeys.filter(k => NEXT_STEPS_KO[k]);
 
   if (!actionableReasons.length && !anyBanned) {
@@ -990,9 +991,29 @@ function renderNextSteps(r) {
       html += `<div class="banned-item">
         <div class="banned-icon">🚷</div>
         <div>
-          <div class="banned-name">유흥업소 (주점, 단란주점, 마사지업소 등)</div>
+          <div class="banned-name">유흥·풍속 업소 (주점, 단란주점, 마사지업소 등)</div>
           <div class="banned-why">비자 종류에 상관없이 모든 외국인에게 취업이 금지돼 있어요. 걸리면 비자 취소·강제출국·재입국 금지 처분을 받을 수 있어요.</div>
           <div class="banned-alt">✅ 대신 가능한 것: 일반 음식점·카페 홀 서빙, 주방 보조, 편의점·마트 알바</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedManufacture) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🏭</div>
+        <div>
+          <div class="banned-name">제조업·공장</div>
+          <div class="banned-why">제조업·공장은 유학생 비자(D-2/D-4)로는 알바 허가가 나오지 않아요. TOPIK 등급과 관계없이 허가 대상에서 제외돼 있어요.</div>
+          <div class="banned-alt">✅ 대신 가능한 것: 음식점·카페, 편의점·마트, 통번역 보조, 행사 스태프</div>
+        </div>
+      </div>`;
+    }
+    if (isBannedPlatform) {
+      html += `<div class="banned-item">
+        <div class="banned-icon">🚗</div>
+        <div>
+          <div class="banned-name">특수형태근로 (대리기사, 방문판매원, 선원, 택배기사 등)</div>
+          <div class="banned-why">이런 일은 정식 근로계약이 아닌 도급·용역 형태라서 유학생 취업허가 범위에 포함되지 않아요. 앱에 등록하거나 대리기사로 활동하는 것 자체가 비자 위반이에요.</div>
+          <div class="banned-alt">✅ 대신 가능한 것: 편의점·마트, 음식점·카페, 행사 스태프 (정식 근로계약 있는 곳)</div>
         </div>
       </div>`;
     }
@@ -1083,7 +1104,7 @@ function renderMatchingForm(r) {
   if (r.status === 'no') { el.innerHTML = ''; return; }
 
   // 퀴즈에서 선택한 업종을 미리 선택해둠
-  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'단순 사무보조', TRANSLATE:'통번역 보조', EVENT:'행사·판촉', MANUFACTURE:'제조업·공장 (조건있음)', OTHER_IND:'기타/미정'};
+  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'단순 사무보조', TRANSLATE:'통번역 보조', EVENT:'행사·판촉', OTHER_IND:'기타/미정'};
   const quizInd = answers.q8 || '';
   const indOptions = Object.entries(IND_KO).map(([v, label]) =>
     `<option value="${v}" ${v === quizInd ? 'selected' : ''}>${label}</option>`
