@@ -213,7 +213,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
       <div class="q-sub" data-i18n="q1sub">여권 또는 외국인등록증의 체류자격을 확인하세요</div>
       <div class="options">
         <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label">D-2 — 석사·박사과정 (일반 유학비자)</span></div>
-        <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환·방문 대학원생</span></div>
+        <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환학생 / 방문연구생</span></div>
         <div class="option" data-q="1" data-v="F6" onclick="pick(this)"><span class="opt-label">F-6 — 한국인 배우자 (결혼이민비자)</span></div>
         <div class="option" data-q="1" data-v="F5" onclick="pick(this)"><span class="opt-label">F-5 — 영주권자</span></div>
         <div class="option" data-q="1" data-v="F2" onclick="pick(this)"><span class="opt-label">F-2 — 거주비자 (장기거주 허가)</span></div>
@@ -233,7 +233,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
     <div class="step-card">
       <div class="q-number" data-i18n="q2num">질문 2</div>
       <div class="q-text" data-i18n="q2text">한국에 입국한 지 얼마나 됐나요?</div>
-      <div class="q-sub" data-i18n="q2sub">교환·방문 대학원생은 입국 후 6개월이 지나야 허가 신청이 가능해요</div>
+      <div class="q-sub" data-i18n="q2sub">교환학생·방문연구생은 입국 후 6개월이 지나야 허가 신청이 가능해요</div>
       <div class="options">
         <div class="option" data-q="2" data-v="LT3" onclick="pick(this)"><span class="opt-label" data-i18n="LT3">3개월 미만</span></div>
         <div class="option" data-q="2" data-v="3TO6" onclick="pick(this)"><span class="opt-label" data-i18n="3TO6">3개월 이상 ~ 6개월 미만</span></div>
@@ -442,7 +442,7 @@ ko: {
   prog: s => `${s} / 7`, progResult:'결과 보기',
   btnNext:'다음 →', btnPrev:'← 이전', btnSubmit:'결과 확인하기', btnRestart:'처음부터 다시 하기',
   q1num:'질문 1', q1text:'지금 어떤 비자로 한국에 있어요?', q1sub:'⚠️ 외국인등록증이나 여권에 적힌 비자 종류를 확인해보세요. 대학원(석·박사)이면 D-2 석·박사과정을 선택하세요.',
-  q2num:'질문 2', q2text:'한국에 들어온 지 얼마나 됐어요?', q2sub:'⚠️ 교환·방문 대학원생은 입국 후 6개월이 지나야 허가 신청이 가능해요',
+  q2num:'질문 2', q2text:'한국에 들어온 지 얼마나 됐어요?', q2sub:'⚠️ 교환학생·방문연구생은 입국 후 6개월이 지나야 허가 신청이 가능해요',
   q3num:'질문 3', q3text:'지금 학교에 다니고 있어요?', q3sub:'⚠️ 휴학 중이거나 이번 학기에 졸업하는 분은 알바가 안 돼요',
   q4num:'질문 4', q4text:'학점·출석 기준을 확인해주세요', q4sub:'⚠️ 허가 신청 시 학교 국제처에서 성적증명서를 확인해요. D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상 (D-4: 출석률 90% 이상)',
   q5num:'질문 5', q5text:'TOPIK(한국어 시험) 등급이 어떻게 돼요?', q5sub:'⚠️ 등급이 높을수록 더 많이 일할 수 있어요',
