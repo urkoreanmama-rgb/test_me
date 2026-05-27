@@ -44,7 +44,17 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
 .step-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
 .q-number{font-size:0.72rem;color:var(--accent);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
 .q-text{font-size:1.12rem;font-weight:600;margin-bottom:6px;line-height:1.4;letter-spacing:-0.01em;color:var(--text)}
-.q-sub{font-size:0.82rem;color:var(--sub);line-height:1.5}
+.q-sub{
+  font-size:0.83rem;
+  color:#b45309;
+  background:#fffbeb;
+  border:1px solid #fcd34d;
+  border-radius:8px;
+  padding:8px 12px;
+  margin-top:8px;
+  line-height:1.5;
+  display:block;
+}
 .options{display:flex;flex-direction:column;gap:10px;margin-top:20px}
 .option{
   display:flex;align-items:center;gap:12px;
@@ -161,6 +171,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
 .doc-tailored li{display:flex;gap:8px;font-size:0.82rem;color:var(--sub);align-items:flex-start;line-height:1.5}
 .doc-tailored li::before{content:"—";flex-shrink:0;color:var(--muted)}
 
+.banned-notice-box{background:#fff5f5;border:1px solid #fca5a5;border-left:4px solid #ef4444;border-radius:12px;padding:16px;margin-bottom:16px}
+.banned-notice-title{font-size:0.84rem;font-weight:700;color:#dc2626;margin-bottom:10px}
+.banned-notice-list{list-style:none;display:flex;flex-direction:column;gap:7px;padding-left:4px}
+.banned-notice-list li{font-size:0.8rem;color:#7f1d1d;line-height:1.5;padding-left:8px;border-left:2px solid #fca5a5}
+.banned-notice-list li strong{color:#dc2626}
+.banned-notice-note{font-size:0.75rem;color:#9b1c1c;margin-top:10px;font-style:italic}
+
 @media(max-width:480px){
   .hero h1{font-size:1.5rem}
   .info-cards{grid-template-columns:1fr}
@@ -174,15 +191,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
 
   <!-- ② Hero -->
   <div class="hero">
-    <div class="badge">🇰🇷 <span data-i18n="badge">법무부 출입국 공식 기준</span></div>
-    <h1 data-i18n="h1">나도 알바할 수 있을까? 🤔</h1>
-    <p data-i18n="subtitle">8가지 질문으로 즉시 확인해 드려요</p>
+    <div class="badge">🇰🇷 <span data-i18n="badge">법무부 출입국 공식 기준 · 대학원생 맞춤</span></div>
+    <h1 data-i18n="h1">대학원생 아르바이트 체커 🎓</h1>
+    <p data-i18n="subtitle">7가지 질문으로 합법 여부를 즉시 확인해요</p>
   </div>
 
   <!-- ③ Progress -->
   <div class="progress-bar">
     <div class="prog-top">
-      <span id="prog-step">질문 1 / 8</span>
+      <span id="prog-step">질문 1 / 7</span>
       <span id="prog-pct">0%</span>
     </div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
@@ -192,7 +209,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
   <div class="step active" id="step1">
     <div class="step-card">
       <div class="q-number" data-i18n="q1num">질문 1</div>
-      <div class="q-text" data-i18n="q1text">현재 비자 종류는 무엇인가요?</div>
+      <div class="q-text" data-i18n="q1text">지금 어떤 비자로 한국에 있어요?</div>
       <div class="q-sub" data-i18n="q1sub">여권 또는 외국인등록증의 체류자격을 확인하세요</div>
       <div class="options">
         <div class="option" data-q="1" data-v="D2-UG-12" onclick="pick(this)"><span class="opt-label" data-i18n="D2-UG-12">D-2 학사 1~2학년 (전문학사 포함)</span></div>
@@ -248,12 +265,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
   <div class="step" id="step4">
     <div class="step-card">
       <div class="q-number" data-i18n="q4num">질문 4</div>
-      <div class="q-text" data-i18n="q4text">성적·출석률 기준을 충족하고 있나요?</div>
-      <div class="q-sub" data-i18n="q4sub">학점 2.0 이상, 출석 70% 이상이 기준 (학교마다 다를 수 있음)</div>
+      <div class="q-text" data-i18n="q4text">학점·출석 기준을 확인해주세요</div>
+      <div class="q-sub" data-i18n="q4sub">⚠️ 허가 신청 시 학교 국제처에서 성적증명서를 확인해요. D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상 (D-4: 출석률 90% 이상)</div>
       <div class="options">
-        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">충족 (학점·출석 기준 이상)</span></div>
-        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">미충족 (학점 또는 출석 부족)</span></div>
-        <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-label" data-i18n="FIRST">첫 학기라 성적 없음</span></div>
+        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">기준 충족 (학점 2.0+, 출석 70% 이상)</span></div>
+        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">기준 미달 (학점 부족 또는 출석 70% 미만)</span></div>
+        <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-label" data-i18n="FIRST">첫 학기 (성적 없음) — 신청 가능해요</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -313,10 +330,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
         <div class="option" data-q="7" data-v="H35" onclick="pick(this)"><span class="opt-label" data-i18n="H35">31~35시간</span></div>
         <div class="option" data-q="7" data-v="HMAX" onclick="pick(this)"><span class="opt-label" data-i18n="HMAX">제한 없이 풀타임</span></div>
       </div>
+      <div id="q7-warning" style="display:none; background:#fff3cd; border:1px solid #ffc107; border-radius:10px; padding:12px 14px; font-size:0.85rem; color:#856404; margin-top:12px; line-height:1.6;">
+        ⚠️ 지금 조건에서는 최대 <strong id="q7-max-label"></strong>까지만 가능해요.<br>
+        아래 선택지 중 그 범위 안의 시간을 선택해주세요.
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-prev" onclick="prev(7)" data-i18n="btnPrev">← 이전</button>
-      <button class="btn btn-next" id="btn7" disabled onclick="next(7)" data-i18n="btnNext">다음 →</button>
+      <button class="btn btn-next" id="btn7" disabled onclick="nextStep7()" data-i18n="btnNext">다음 →</button>
     </div>
   </div>
 
@@ -324,22 +345,28 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
   <div class="step" id="step8">
     <div class="step-card">
       <div class="q-number" data-i18n="q8num">질문 8</div>
-      <div class="q-text" data-i18n="q8text">희망하는 업종은 무엇인가요?</div>
-      <div class="q-sub" data-i18n="q8sub">일부 업종은 유학생 취업이 법으로 금지되어 있습니다</div>
+      <div class="q-text" data-i18n="q8text">어떤 일을 하고 싶어요?</div>
+      <div class="q-sub" data-i18n="q8sub">⚠️ 아래 금지 업종을 먼저 확인하고, 원하는 허용 업종을 선택하세요</div>
+      <div class="banned-notice-box">
+        <div class="banned-notice-title">🚫 유학생이 절대 할 수 없는 업종 (법으로 금지)</div>
+        <ul class="banned-notice-list">
+          <li><strong>건설·공사 현장</strong> — 비자 무관 절대 금지 (출입국관리법 시행령)</li>
+          <li><strong>배달·택배</strong> (오토바이·자전거 라이더, 배달앱 라이더) — 특수형태근로, 법적 고용관계 없음</li>
+          <li><strong>대리운전·방문판매·선원</strong> 등 특수형태근로 전반</li>
+          <li><strong>외국어 강사·개인과외</strong> (영어키즈카페, 개인 회화과외, 영어캠프 강사) — E-2 비자 전용</li>
+          <li><strong>IT·개발·연구·컨설팅</strong> 등 지식산업 전문직 — E-7 비자 전용 (취업비자 필요)</li>
+          <li><strong>유흥·풍속 업소</strong> (주점, 단란주점, 마사지업소) — 외국인 전원 금지</li>
+          <li><strong>제조업·공장</strong> — 원칙적 금지, TOPIK 4급 이상 시 예외 허용</li>
+        </ul>
+        <div class="banned-notice-note">※ 위 업종에 종사하다 적발 시: 출국명령·강제퇴거·입국금지 처분 가능 (출입국관리법 제46조, 제94조)</div>
+      </div>
       <div class="options">
-        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label">음식점·카페 (서빙, 주방 보조)</span></div>
-        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label">판매·유통 (마트, 편의점)</span></div>
-        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label">단순 사무보조 (복사, 정리, 입력 등)</span></div>
-        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">통번역 보조 (어학원·유학원 등 보조 업무)</span></div>
-        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">행사·판촉 (이벤트 스태프)</span></div>
-        <div class="option" data-q="8" data-v="LANG_TEACHER" onclick="pick(this)"><span class="opt-label">🚫 외국어 강사·과외 (영어키즈카페, 개인과외, 회화지도 등)</span></div>
-        <div class="option" data-q="8" data-v="PROFESSIONAL" onclick="pick(this)"><span class="opt-label">🚫 IT·전문직·지식산업 (개발, 연구, 컨설팅 등)</span></div>
-        <div class="option" data-q="8" data-v="DELIVERY" onclick="pick(this)"><span class="opt-label">🚫 배달·택배 (오토바이·자전거·택배기사)</span></div>
-        <div class="option" data-q="8" data-v="PLATFORM" onclick="pick(this)"><span class="opt-label">🚫 특수형태근로 (대리기사, 방문판매원, 선원 등)</span></div>
-        <div class="option" data-q="8" data-v="MANUFACTURE" onclick="pick(this)"><span class="opt-label">🚫 제조업·공장</span></div>
-        <div class="option" data-q="8" data-v="CONSTRUCTION" onclick="pick(this)"><span class="opt-label">🚫 건설·공사 현장</span></div>
-        <div class="option" data-q="8" data-v="ENTERTAINMENT" onclick="pick(this)"><span class="opt-label">🚫 유흥·풍속 업소 (주점, 단란주점, 마사지 등)</span></div>
-        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">기타 / 잘 모름</span></div>
+        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label">🍽️ 음식점·카페 (서빙, 주방 보조)</span></div>
+        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label">🏪 판매·유통 (마트, 편의점, 계산·진열)</span></div>
+        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label">📄 단순 사무보조 (복사, 정리, 데이터 입력)</span></div>
+        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">🗣️ 통번역 보조 (어학원·유학원 보조 업무)</span></div>
+        <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">🎪 행사·판촉 스태프 (이벤트 보조)</span></div>
+        <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">❓ 아직 정하지 않았음</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -352,6 +379,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
   <div id="result">
     <div class="res-card" id="res-main"></div>
     <div id="res-notice"></div>
+    <div id="res-answer-summary"></div>
     <div id="res-next-steps"></div>
     <div class="section" id="sec-docs-wrap">
       <div class="section-title" data-i18n="secDocs">필요 서류</div>
@@ -405,25 +433,25 @@ if (IS_TEST) {
 const T = {
 
 ko: {
-  badge:'법무부 공식 기준으로 만들었어요',
-  h1:'나 한국에서 알바해도 될까? 🤔',
-  subtitle:'8가지 질문으로 바로 알 수 있어요',
-  prog: s => `${s} / 8 단계`, progResult:'결과 보기',
+  badge:'법무부 출입국 공식 기준 · 대학원생 맞춤',
+  h1:'대학원생 아르바이트 체커 🎓',
+  subtitle:'7가지 질문으로 합법 여부를 즉시 확인해요',
+  prog: s => `${s} / 7`, progResult:'결과 보기',
   btnNext:'다음 →', btnPrev:'← 이전', btnSubmit:'결과 확인하기', btnRestart:'처음부터 다시 하기',
-  q1num:'질문 1', q1text:'지금 어떤 비자로 한국에 있어요?', q1sub:'외국인등록증이나 여권에 적힌 비자 종류를 확인해보세요',
-  q2num:'질문 2', q2text:'한국에 들어온 지 얼마나 됐어요?', q2sub:'D-4나 교환학생 비자는 6개월이 지나야 알바가 가능해요',
-  q3num:'질문 3', q3text:'지금 학교에 다니고 있어요?', q3sub:'휴학 중이거나 이번 학기에 졸업하는 분은 알바가 안 돼요',
-  q4num:'질문 4', q4text:'학점과 출석이 기준에 맞아요?', q4sub:'보통 학점 2.0 이상, 출석 70% 이상이에요 (학교마다 달라요)',
-  q5num:'질문 5', q5text:'TOPIK(한국어 시험) 등급이 어떻게 돼요?', q5sub:'등급이 높을수록 더 많이 일할 수 있어요',
-  q6num:'질문 6', q6text:'지금 학기예요, 방학이에요?', q6sub:'방학 중에는 일할 수 있는 시간이 더 많아져요',
-  q7num:'질문 7', q7text:'일주일에 몇 시간 일하고 싶어요?', q7sub:'비자와 TOPIK 등급에 따라 최대 시간이 달라요',
-  q8num:'질문 8', q8text:'어떤 일을 하고 싶어요?', q8sub:'배달이나 건설 현장은 유학생이 절대 해서는 안 돼요',
+  q1num:'질문 1', q1text:'지금 어떤 비자로 한국에 있어요?', q1sub:'⚠️ 외국인등록증이나 여권에 적힌 비자 종류를 확인해보세요. 대학원(석·박사)이면 D-2 석·박사과정을 선택하세요.',
+  q2num:'질문 2', q2text:'한국에 들어온 지 얼마나 됐어요?', q2sub:'⚠️ D-4나 교환학생 비자는 6개월이 지나야 알바가 가능해요',
+  q3num:'질문 3', q3text:'지금 학교에 다니고 있어요?', q3sub:'⚠️ 휴학 중이거나 이번 학기에 졸업하는 분은 알바가 안 돼요',
+  q4num:'질문 4', q4text:'학점·출석 기준을 확인해주세요', q4sub:'⚠️ 허가 신청 시 학교 국제처에서 성적증명서를 확인해요. D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상 (D-4: 출석률 90% 이상)',
+  q5num:'질문 5', q5text:'TOPIK(한국어 시험) 등급이 어떻게 돼요?', q5sub:'⚠️ 등급이 높을수록 더 많이 일할 수 있어요',
+  q6num:'질문 6', q6text:'지금 학기예요, 방학이에요?', q6sub:'⚠️ 방학 중 변화: D-2(석박사·학부) → 시간제한 없음(무제한) | D-4(어학연수) → 항상 주 20시간 고정 (방학에도 동일)',
+  q7num:'질문 7', q7text:'일주일에 몇 시간 일하고 싶어요?', q7sub:'⚠️ 비자와 TOPIK 등급에 따라 최대 시간이 달라요',
+  q8num:'질문 8', q8text:'어떤 일을 하고 싶어요?', q8sub:'⚠️ 아래 금지 업종을 먼저 확인하고, 원하는 허용 업종을 선택하세요',
   'D2-UG-12':'대학교 1~2학년 (D-2 비자)', 'D2-UG-34':'대학교 3~4학년 (D-2 비자)',
   'D2-GR':'대학원생 — 석사·박사 (D-2 비자)', 'D2-VS':'교환학생·방문학생 (D-2 비자)',
   'D4':'어학원·기술 연수생 (D-4 비자)', 'OTHER':'그 외 비자 (C-3, F-1 등)',
   'LT3':'3개월이 안 됐어요', '3TO6':'3개월은 넘었지만 6개월은 안 됐어요', 'GT6':'6개월 이상 됐어요',
   'ENROLLED':'지금 다니고 있어요 (재학 중)', 'LEAVE':'지금 휴학 중이에요', 'GRAD':'이번 학기에 졸업해요',
-  'GOOD':'네, 기준에 맞아요 (학점·출석 모두 OK)', 'GPA_LOW':'아니요, 부족해요 (학점이나 출석이 낮아요)', 'FIRST':'첫 학기라 아직 성적이 없어요',
+  'GOOD':'기준 충족 (학점 2.0+, 출석 70% 이상)', 'GPA_LOW':'기준 미달 (학점 부족 또는 출석 70% 미만)', 'FIRST':'첫 학기 (성적 없음) — 신청 가능해요',
   'TOPIK5':'5급 이상', 'TOPIK4':'4급', 'TOPIK3':'3급', 'TOPIK12':'1~2급 또는 만료됨', 'NONE':'없어요',
   'SEMESTER':'학기 중이에요', 'VACATION':'방학이에요',
   'H10':'10시간 이하', 'H20':'11~20시간', 'H25':'21~25시간', 'H30':'26~30시간', 'H35':'31~35시간', 'HMAX':'제한 없이 풀타임으로 일하고 싶어요',
@@ -433,7 +461,7 @@ ko: {
   'LANG_TEACHER':'외국어 강사·과외 🚫', 'PROFESSIONAL':'IT·전문직·지식산업 🚫',
   'DELIVERY':'배달·택배 🚫', 'PLATFORM':'특수형태근로 🚫',
   'MANUFACTURE':'제조업·공장 🚫', 'CONSTRUCTION':'건설·공사 현장 🚫',
-  'ENTERTAINMENT':'유흥·풍속 업소 🚫', 'OTHER_IND':'잘 모르겠어요',
+  'ENTERTAINMENT':'유흥·풍속 업소 🚫', 'OTHER_IND':'아직 정하지 않았음',
   resOkTitle:'알바 가능해요! ✅', resWarnTitle:'조건부로 가능해요 ⚠️', resNoTitle:'지금은 알바가 안 돼요 ❌',
   resOkSub:'지금 상황이면 합법적으로 알바할 수 있어요.', resWarnSub:'가능하긴 한데, 아래 주의사항을 꼭 읽어보세요.', resNoSub:'지금은 알바를 하면 안 돼요. 이유와 준비 방법을 알려드릴게요.',
   icVisaLabel:'비자', icHoursLabel:'주당 최대', icTopikLabel:'TOPIK', icSemLabel:'지금',
@@ -521,7 +549,7 @@ function playClick() {
 //  NAVIGATION
 // ═══════════════════════════════════════════
 function updateProgress(step) {
-  const pct = Math.round((step / 8) * 100);
+  const pct = Math.round((step / 7) * 100);
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-pct').textContent = pct + '%';
   document.getElementById('prog-step').textContent = tf('prog', step);
@@ -535,6 +563,19 @@ function pick(el) {
   answers[`q${q}`] = el.dataset.v;
   const btn = document.getElementById(`btn${q}`);
   if (btn) btn.disabled = false;
+
+  // Early termination checks
+  if (q === '1') {
+    if (answers.q1 === 'OTHER') { earlySubmit(); return; }
+  } else if (q === '2') {
+    if ((answers.q1 === 'D4' || answers.q1 === 'D2-VS') && (answers.q2 === 'LT3' || answers.q2 === '3TO6')) {
+      earlySubmit(); return;
+    }
+  } else if (q === '3') {
+    if (answers.q3 === 'LEAVE' || answers.q3 === 'GRAD') {
+      setTimeout(earlySubmit, 600); return;
+    }
+  }
 }
 function next(step) {
   document.getElementById(`step${step}`).classList.remove('active');
@@ -558,6 +599,47 @@ function submit() {
   renderResult();
   document.getElementById('result').style.display = 'block';
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+function earlySubmit() {
+  answers.q1 = answers.q1 || 'OTHER';
+  answers.q2 = answers.q2 || 'LT3';
+  answers.q3 = answers.q3 || 'ENROLLED';
+  answers.q4 = answers.q4 || 'GOOD';
+  answers.q5 = answers.q5 || 'NONE';
+  answers.q6 = answers.q6 || 'SEMESTER';
+  answers.q7 = answers.q7 || 'H10';
+  answers.q8 = answers.q8 || 'OTHER_IND';
+  submit();
+}
+function nextStep7() {
+  const visa = answers.q1 || 'OTHER';
+  const topik = answers.q5 || 'NONE';
+  const sem = answers.q6 || 'SEMESTER';
+
+  let maxH = 9999;
+  if (sem === 'SEMESTER') {
+    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) maxH = 30;
+    else if (visa === 'D4') maxH = 20;
+    else maxH = 10;
+  } else {
+    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) maxH = 9999;
+    else if (visa === 'D4') maxH = 20;
+    else maxH = 10;
+  }
+
+  const wantMap = {H10:10,H20:20,H25:25,H30:30,H35:35,HMAX:9999};
+  const wantNum = wantMap[answers.q7||'H10']||10;
+
+  const warnEl = document.getElementById('q7-warning');
+  const maxLabelEl = document.getElementById('q7-max-label');
+
+  if (maxH !== 9999 && wantNum > maxH) {
+    if (warnEl) { warnEl.style.display='block'; }
+    if (maxLabelEl) maxLabelEl.textContent = `주 ${maxH}시간`;
+    return;
+  }
+  if (warnEl) warnEl.style.display='none';
+  next(7);
 }
 function restart() {
   resultData = null;
@@ -604,17 +686,17 @@ function computeResult() {
     if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) {
       maxHours = 30;
     } else if (visa === 'D4') {
-      maxHours = topikNum >= 5 ? 25 : topikNum >= 4 ? 20 : 15;
+      maxHours = 20;
     } else {
-      maxHours = 15;
+      maxHours = 10;
     }
   } else {
     if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) {
       maxHours = 9999;
     } else if (visa === 'D4') {
-      maxHours = topikNum >= 4 ? 9999 : 15;
+      maxHours = 20;
     } else {
-      maxHours = 15;
+      maxHours = 10;
     }
   }
 
@@ -685,6 +767,7 @@ function renderResult() {
   html += `<div class="notice-arc"><strong>${t('arcTitle')}</strong> ${t('arcNote')}</div>`;
   noticeEl.innerHTML = html;
   renderNextSteps(r);
+  renderAnswerSummary(r);
   renderMatchingForm(r);
 
   // Show/hide doc+proc sections based on status
@@ -724,6 +807,108 @@ function renderResult() {
     const v = t(el.dataset.i18n);
     if (typeof v === 'string') el.innerHTML = v;
   });
+}
+
+// ═══════════════════════════════════════════
+//  ANSWER SUMMARY
+// ═══════════════════════════════════════════
+function renderAnswerSummary(r) {
+  const el = document.getElementById('res-answer-summary');
+  if (!el) return;
+
+  const visaNames = {
+    'D2-UG-12':'D-2 학사 1~2학년',
+    'D2-UG-34':'D-2 학사 3~4학년',
+    'D2-GR':'D-2 석·박사',
+    'D2-VS':'D-2 교환·방문학생',
+    'D4':'D-4 어학연수',
+    'OTHER':'기타 비자'
+  };
+  const stayNames = {'LT3':'3개월 미만','3TO6':'3~6개월','GT6':'6개월 이상'};
+  const enrollNames = {'ENROLLED':'재학 중','LEAVE':'휴학 중','GRAD':'졸업예정'};
+  const gradeNames = {'GOOD':'기준 충족','GPA_LOW':'기준 미달','FIRST':'첫 학기'};
+  const topikNames = {'TOPIK5':'5급 이상','TOPIK4':'4급','TOPIK3':'3급','TOPIK12':'1~2급·만료','NONE':'없음'};
+  const semNames = {'SEMESTER':'학기 중','VACATION':'방학 중'};
+  const hoursNames = {'H10':'10시간 이하','H20':'11~20시간','H25':'21~25시간','H30':'26~30시간','H35':'31~35시간','HMAX':'제한 없음(풀타임)'};
+  const indNames = {'FOOD':'음식점·카페','RETAIL':'판매·유통','OFFICE':'단순 사무보조','TRANSLATE':'통번역 보조','EVENT':'행사·판촉','OTHER_IND':'아직 미정'};
+
+  const visa = answers.q1||'OTHER';
+  const stay = answers.q2||'LT3';
+  const enroll = answers.q3||'ENROLLED';
+  const grade = answers.q4||'GOOD';
+  const topik = answers.q5||'NONE';
+  const sem = answers.q6||'SEMESTER';
+  const hrs = answers.q7||'H10';
+  const ind = answers.q8||'OTHER_IND';
+
+  const isD4orVS = visa === 'D4' || visa === 'D2-VS';
+  const stayOk = isD4orVS ? stay === 'GT6' : true;
+  const enrollOk = enroll === 'ENROLLED';
+  const gradeOk = grade !== 'GPA_LOW';
+  const topikNum = {TOPIK5:5,TOPIK4:4,TOPIK3:3,TOPIK12:1,NONE:0}[topik]??0;
+  const minTopikMap = {'D2-UG-12':3,'D2-UG-34':4,'D2-GR':4,'D2-VS':4,'D4':0};
+  const minTopik = minTopikMap[visa]??99;
+  const topikOk = topikNum >= minTopik;
+  const maxH = r.maxHours;
+  const wantMap = {H10:10,H20:20,H25:25,H30:30,H35:35,HMAX:9999};
+  const wantNum = wantMap[hrs]||10;
+  const hoursOk = wantNum <= maxH;
+  const visaOk = visa !== 'OTHER';
+
+  function row(icon, label, value, ok, reason, cite) {
+    const color = ok ? '#166534' : '#991b1b';
+    const bg = ok ? '#f0fdf4' : '#fff5f5';
+    const border = ok ? '#86efac' : '#fca5a5';
+    const badge = ok ? '✅ 충족' : '❌ 미충족';
+    return `<div style="background:${bg};border:1px solid ${border};border-radius:10px;padding:12px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:0.82rem;font-weight:600;color:#374151">${icon} ${label}</span>
+        <span style="font-size:0.75rem;font-weight:700;color:${color};background:${ok?'#dcfce7':'#fee2e2'};border-radius:20px;padding:2px 10px">${badge}</span>
+      </div>
+      <div style="font-size:0.83rem;color:#374151;margin-bottom:${reason?'4px':'0'}"><strong>내 답변:</strong> ${value}</div>
+      ${reason ? `<div style="font-size:0.79rem;color:${color};margin-top:4px;line-height:1.5">→ ${reason}</div>` : ''}
+      ${cite ? `<div style="font-size:0.72rem;color:#9ca3af;margin-top:4px">출처: ${cite}</div>` : ''}
+    </div>`;
+  }
+
+  let html = `<div class="section" style="margin-bottom:12px">
+    <div class="section-title">📋 내 상황 항목별 검토</div>`;
+
+  html += row('🪪','비자 유형', visaNames[visa]||visa, visaOk,
+    visaOk ? null : 'D-2 또는 D-4 비자만 시간제취업 허가 신청이 가능합니다.',
+    '출입국관리법 제20조, 법무부 출입국외국인정책본부');
+
+  if (isD4orVS) {
+    html += row('📅','입국 기간', stayNames[stay]||stay, stayOk,
+      stayOk ? null : 'D-4·교환학생은 입국 후 6개월이 지나야 허가 신청이 가능합니다.',
+      '법무부 「외국인유학생 체류관리지침」');
+  }
+
+  html += row('🎓','학적 상태', enrollNames[enroll]||enroll, enrollOk,
+    enrollOk ? null : enroll === 'LEAVE' ? '휴학 중에는 재학생이 아니므로 허가 신청 불가입니다.' : '졸업예정·수료자는 허가 신청이 제한됩니다.',
+    '법무부 「외국인유학생 체류관리지침」');
+
+  if (enrollOk && visaOk && stayOk) {
+    html += row('📊','학점·출석', gradeNames[grade]||grade, gradeOk,
+      gradeOk ? null : '학점 2.0 미만 또는 출석률 70% 미만이면 학교 국제처에서 확인서 서명을 거부할 수 있습니다.',
+      '각 대학 국제처 실무 기준 (경희대·이화여대·가천대·건국대 공통)');
+
+    const topikMinLabel = minTopik === 0 ? '없음' : minTopik === 3 ? '3급 이상' : '4급 이상';
+    html += row('📖','TOPIK 등급', topikNames[topik]||topik, topikOk,
+      topikOk ? null : `이 비자·과정은 TOPIK ${topikMinLabel}이 필요합니다.`,
+      '법무부 「외국인유학생 체류관리지침」, HiKorea(hikorea.go.kr)');
+
+    const maxLabel = maxH === 9999 ? '무제한' : `주 ${maxH}시간`;
+    const semNote = sem === 'VACATION' && ['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)
+      ? '(방학 중 D-2 → 시간제한 없음)'
+      : visa === 'D4' ? '(D-4는 방학 중에도 주 20시간 고정)' : '';
+    html += row('⏰','근무시간', `희망: ${hoursNames[hrs]||hrs} / 허용: ${maxLabel} ${semNote}`, hoursOk,
+      hoursOk ? null : `현재 조건에서 허용 시간(${maxLabel})을 초과합니다.`,
+      '법무부 「외국인유학생 체류관리지침」 시간제취업 허용범위');
+  }
+
+  html += `</div>`;
+  el.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════
