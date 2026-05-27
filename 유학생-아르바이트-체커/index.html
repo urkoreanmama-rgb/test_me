@@ -593,15 +593,21 @@ function pick(el) {
   }
 }
 function next(step) {
+  // D-2 석박사는 Q2(체류기간) 건너뜀 — 6개월 조건 해당 없음
+  let nextStep = step + 1;
+  if (step === 1 && answers.q1 === 'D2-GR') nextStep = 3;
   document.getElementById(`step${step}`).classList.remove('active');
-  document.getElementById(`step${step + 1}`).classList.add('active');
-  updateProgress(step + 1);
+  document.getElementById(`step${nextStep}`).classList.add('active');
+  updateProgress(nextStep);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 function prev(step) {
+  // D-2 석박사가 Q3에서 뒤로 가면 Q1로 (Q2 건너뜀)
+  let prevStep = step - 1;
+  if (step === 3 && answers.q1 === 'D2-GR') prevStep = 1;
   document.getElementById(`step${step}`).classList.remove('active');
-  document.getElementById(`step${step - 1}`).classList.add('active');
-  updateProgress(step - 1);
+  document.getElementById(`step${prevStep}`).classList.add('active');
+  updateProgress(prevStep);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 function submit() {
