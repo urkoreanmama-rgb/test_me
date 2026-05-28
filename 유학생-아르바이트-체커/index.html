@@ -172,6 +172,15 @@ body{
 .day-check-input{display:none}
 .day-check-label{background:#f5f5f7;border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.82rem;cursor:pointer;transition:all 0.12s;color:var(--sub);user-select:none}
 .day-check-input:checked+.day-check-label{background:#f0f7ff;border-color:var(--accent);color:var(--accent);font-weight:600}
+/* ── Trait tags ── */
+.trait-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.trait-tag-input{display:none}
+.trait-tag-label{background:#f8f8fb;border:1.5px solid #e0e7ff;border-radius:20px;padding:8px 15px;font-size:0.83rem;cursor:pointer;transition:all 0.14s;color:var(--sub);user-select:none;display:inline-flex;align-items:center;gap:5px;line-height:1.2}
+.trait-tag-label:hover{border-color:#a5b4fc;background:#f0f2ff}
+.trait-tag-input:checked+.trait-tag-label{background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-color:var(--accent);color:var(--accent);font-weight:600;box-shadow:0 2px 0 #c7d2fe}
+.trait-tag-label.maxed{opacity:0.38;cursor:not-allowed;pointer-events:none}
+.trait-count-hint{font-size:0.76rem;color:var(--muted);margin-top:6px}
+.trait-count-hint span{font-weight:700;color:var(--accent)}
 .btn-submit-match{width:100%;padding:14px;border:none;border-radius:12px;font-size:0.97rem;font-weight:600;cursor:pointer;background:var(--grad);color:#fff;margin-top:8px;box-shadow:0 4px 0 var(--grad-shadow);transition:opacity 0.15s;letter-spacing:-0.01em}
 .btn-submit-match:hover{opacity:0.9}
 .btn-submit-match:active{transform:translateY(4px);box-shadow:0 0 0 var(--grad-shadow)}
@@ -456,10 +465,9 @@ body{
         <div class="banned-notice-note">⚠️ 이 목록은 완전하지 않으며 개별 상황에 따라 다를 수 있어요. 허가받지 않은 업종 종사 시 비자 취소·강제퇴거 가능 (출입국관리법 제46조, 제94조)</div>
       </div>
       <div class="options">
-        <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label">🍽️ 음식점·카페 (서빙, 주방 보조)</span></div>
-        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label">🏪 판매·유통 (마트, 편의점, 계산·진열)</span></div>
-        <div class="option" data-q="8" data-v="OFFICE" onclick="pick(this)"><span class="opt-label">📄 단순 사무보조 (복사, 정리, 데이터 입력)<span class="opt-hint opt-hint-no">실제 채용 공고가 적어 구하기 어렵습니다</span></span></div>
-        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">🗣️ 통번역 보조 (어학원·유학원 보조 업무)<span class="opt-hint opt-hint-no">전문 자격·경력 요구가 많아 구하기 어렵습니다</span></span></div>
+        <div class="option" data-q="8" data-v="RESTAURANT" onclick="pick(this)"><span class="opt-label">🍽️ 식당 (서빙·주방 보조)</span></div>
+        <div class="option" data-q="8" data-v="CAFE" onclick="pick(this)"><span class="opt-label">☕ 카페·음료 (바리스타 보조·서빙)</span></div>
+        <div class="option" data-q="8" data-v="RETAIL" onclick="pick(this)"><span class="opt-label">🏪 편의점·마트 (계산·진열)</span></div>
         <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">🎪 행사·판촉 스태프 (이벤트 보조)</span></div>
         <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">❓ 아직 정하지 않았음</span></div>
       </div>
@@ -952,7 +960,7 @@ function renderChecklist(r) {
   const topikNames = {'TOPIK5':'5급 이상','TOPIK4':'4급','TOPIK3':'3급','TOPIK12':'1~2급 또는 만료','NONE':'없음'};
   const semNames   = {'SEMESTER':'학기 중','VACATION':'방학 중'};
   const hoursNames = {'H10':'주 10시간 이하','H15':'주 11~15시간','H20':'주 16~20시간','H25':'주 21~25시간','H30':'주 26~30시간','H35':'주 31~35시간','HMAX':'제한 없이 풀타임'};
-  const indNames   = {'FOOD':'음식점·카페 (서빙·주방보조)','RETAIL':'판매·유통 (마트·편의점)','OFFICE':'단순 사무보조','TRANSLATE':'통번역 보조','EVENT':'행사·판촉 스태프','OTHER_IND':'아직 정하지 않았음'};
+  const indNames   = {'RESTAURANT':'식당 (서빙·주방보조)','CAFE':'카페·음료 (바리스타 보조·서빙)','FOOD':'음식점·카페 (서빙·주방보조)','RETAIL':'편의점·마트 (계산·진열)','OFFICE':'단순 사무보조','TRANSLATE':'통번역 보조','EVENT':'행사·판촉 스태프','OTHER_IND':'아직 정하지 않았음'};
 
   // 카운터 포함 row 함수 (hint: 통과 항목에도 표시하는 파란 정보 박스)
   let okCnt=0, warnCnt=0, noCnt=0;
@@ -1211,6 +1219,15 @@ function renderActions(r) {
       <a class="link-card" href="https://easylaw.go.kr/CSP/CnpClsMainBtr.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=7&cnpClsNo=1" target="_blank"><div><div class="lc-title">찾기쉬운 생활법령정보</div><div class="lc-sub">외국인 유학생 시간제취업 안내</div></div><span>→</span></a>
     </div>
     <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;font-style:italic">※ 출입국관리법 제20조 / 법무부 「외국인유학생 사증발급 및 체류관리지침」 / 2026년 5월 기준</p>
+  </div>
+
+  <div class="action-card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac">
+    <div class="action-title" style="color:#065f46">💡 사무보조·통번역 보조를 원하는 분께</div>
+    <p style="font-size:0.84rem;color:#166534;line-height:1.7;margin-bottom:0">
+      단순 사무보조, 통번역 보조 업무는 <strong>법적으로 시간제취업 허가 범위에 포함될 수 있어요.</strong><br>
+      다만, 실제로는 채용 공고 자체가 매우 적고 — 지원자 중 경력·자격증 보유자와 경쟁해야 하는 경우가 많아 <strong>취업 성공률이 낮은 편이에요.</strong><br><br>
+      식당·카페·편의점처럼 <strong>현장 바로 채용</strong>이 이루어지는 곳부터 경험을 쌓은 뒤, 사무보조나 통번역 보조를 목표로 하는 것을 추천드려요.
+    </p>
   </div>`;
 }
 
@@ -1285,7 +1302,7 @@ function renderMatchingForm(r) {
   if (r.status === 'no') { el.innerHTML = ''; return; }
 
   // 퀴즈에서 선택한 업종을 미리 선택해둠
-  const IND_KO = {FOOD:'식당·카페', RETAIL:'편의점·마트', OFFICE:'단순 사무보조', TRANSLATE:'통번역 보조', EVENT:'행사·판촉', OTHER_IND:'기타/미정'};
+  const IND_KO = {RESTAURANT:'식당', CAFE:'카페·음료', FOOD:'식당·카페', RETAIL:'편의점·마트', EVENT:'행사·판촉', OTHER_IND:'기타/미정'};
   const quizInd = answers.q8 || '';
   const indOptions = Object.entries(IND_KO).map(([v, label]) =>
     `<option value="${v}" ${v === quizInd ? 'selected' : ''}>${label}</option>`
@@ -1328,10 +1345,43 @@ function renderMatchingForm(r) {
           ${indOptions}
         </select>
       </div>
+      <div class="form-group">
+        <label class="form-label">나를 표현하는 키워드 <span style="font-size:0.75rem;color:var(--muted);font-weight:400">(최대 3개 선택)</span></label>
+        <div class="trait-tags" id="trait-container">
+          <input type="checkbox" class="trait-tag-input" id="tr1" onchange="toggleTrait(this)"><label for="tr1" class="trait-tag-label">😊 잘 웃어요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr2" onchange="toggleTrait(this)"><label for="tr2" class="trait-tag-label">⏰ 시간 약속 잘 지켜요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr3" onchange="toggleTrait(this)"><label for="tr3" class="trait-tag-label">🙌 성실하게 일해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr4" onchange="toggleTrait(this)"><label for="tr4" class="trait-tag-label">🔍 꼼꼼하게 일해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr5" onchange="toggleTrait(this)"><label for="tr5" class="trait-tag-label">💪 체력이 좋아요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr6" onchange="toggleTrait(this)"><label for="tr6" class="trait-tag-label">📖 새로운 걸 빨리 배워요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr7" onchange="toggleTrait(this)"><label for="tr7" class="trait-tag-label">🤝 손님 응대를 좋아해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr8" onchange="toggleTrait(this)"><label for="tr8" class="trait-tag-label">🗣️ 한국어로 소통 가능해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr9" onchange="toggleTrait(this)"><label for="tr9" class="trait-tag-label">🌟 책임감이 있어요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr10" onchange="toggleTrait(this)"><label for="tr10" class="trait-tag-label">🏃 바쁜 환경에서도 잘 해요</label>
+        </div>
+        <p class="trait-count-hint">선택됨: <span id="trait-count">0</span> / 3</p>
+      </div>
       <button class="btn-submit-match" onclick="submitMatching()">신청하기 →</button>
     </div>
     <div id="matching-result" style="display:none"></div>
   </div>`;
+}
+
+// ═══════════════════════════════════════════
+//  TRAIT TAG TOGGLE (최대 3개)
+// ═══════════════════════════════════════════
+function toggleTrait(cb) {
+  const all = [...document.querySelectorAll('.trait-tag-input')];
+  const checkedCount = all.filter(c => c.checked).length;
+  if (cb.checked && checkedCount > 3) { cb.checked = false; }
+  const newCount = all.filter(c => c.checked).length;
+  all.forEach(c => {
+    const lbl = c.nextElementSibling;
+    if (!c.checked && newCount >= 3) lbl.classList.add('maxed');
+    else lbl.classList.remove('maxed');
+  });
+  const counter = document.getElementById('trait-count');
+  if (counter) counter.textContent = newCount;
 }
 
 // ═══════════════════════════════════════════
@@ -1342,6 +1392,8 @@ function submitMatching() {
   const phone    = document.getElementById('mf-phone')?.value.trim();
   const city     = document.getElementById('mf-city')?.value.trim();
   const industry = document.getElementById('mf-industry')?.value.trim();
+  const traits   = [...document.querySelectorAll('.trait-tag-input:checked')]
+                     .map(c => c.nextElementSibling.textContent.trim()).join(', ');
 
   if (!name)     { alert('이름을 입력해주세요.'); return; }
   if (!phone)    { alert('전화번호를 입력해주세요.'); return; }
@@ -1358,8 +1410,7 @@ function submitMatching() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        name, phone,
-        city, industry,
+        name, phone, city, industry, traits,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         result_status: resultData?.status,
       }),
