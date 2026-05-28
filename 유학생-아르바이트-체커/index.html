@@ -328,10 +328,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
     <div class="step-card">
       <div class="q-number" data-i18n="q4num">질문 4</div>
       <div class="q-text" data-i18n="q4text">학점·출석 기준을 확인해주세요</div>
-      <div class="q-sub" data-i18n="q4sub">⚠️ 허가 신청 시 학교 국제처에서 성적증명서·출석확인서를 확인해요.<br>
+      <div class="q-sub" data-i18n="q4sub">⚠️ 기준 충족 여부는 학교 국제처(외국인학생 담당)에서 먼저 확인해요.<br>
         · D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상<br>
         · D-4 비자: 출석률 90% 이상<br>
-        <span style="font-size:0.78rem;color:#a16207">📌 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」(시간제취업 섹션) · 출입국관리법 제20조 · <a href="https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=6&cnpClsNo=1" target="_blank" style="color:#a16207;text-decoration:underline">찾기쉬운 생활법령정보</a></span></div>
+        <span style="font-size:0.78rem;color:#b45309">📋 제출 절차: 성적증명서·출석확인서를 국제처에 지참 → 담당자 확인서 서명 → HiKorea에 스캔 업로드<br>
+        📌 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」 · 출입국관리법 제20조 · <a href="https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=6&cnpClsNo=1" target="_blank" style="color:#a16207;text-decoration:underline">찾기쉬운 생활법령정보</a></span></div>
       <div class="options">
         <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">기준 충족 (학점 2.0+, 출석 70% 이상)</span></div>
         <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">기준 미달 (학점 부족 또는 출석 70% 미만)</span></div>
@@ -1126,30 +1127,31 @@ function renderActions(r) {
   el.innerHTML = `<div class="action-card">
     <div class="action-title">📝 시간제취업 허가 신청 절차</div>
     <ul class="action-steps">
-      <li><div>학교 국제처(외국인학생 담당) 방문<div class="action-step-detail">학교 자체 규정 확인 + 학교 확인서 발급 요청</div></div></li>
-      <li><div>알바할 업체 먼저 찾기<div class="action-step-detail">고용계약서 초안 + 사업자등록증 사본이 신청에 필요해요</div></div></li>
-      <li><div>HiKorea 온라인 신청 또는 출입국사무소 방문<div class="action-step-detail">hikorea.go.kr → 전자민원 → 유학생 시간제취업 허가 신청</div></div></li>
-      <li><div>허가 결과 대기 (보통 2~4주 소요)<div class="action-step-detail">허가되면 외국인등록증 뒷면에 취업 허가 사항이 기재돼요</div></div></li>
+      <li><div>알바할 업체 먼저 구하기<div class="action-step-detail">표준근로계약서(시급·근무시간 명시) + 업체 사업자등록증 사본을 고용주에게 받아두세요</div></div></li>
+      <li><div>학교 국제처(외국인학생 담당) 방문<div class="action-step-detail">성적증명서·재학증명서 지참 → 담당자가 「시간제취업 확인서」에 서명·날인 해줘요. 이 서명이 없으면 신청 불가예요</div></div></li>
+      <li><div>HiKorea에서 온라인 신청<div class="action-step-detail">hikorea.go.kr → 전자민원 → 유학생 시간제취업 허가. 모든 서류를 스캔해서 직접 업로드해요 (2025년 8월부터 방문 신청 폐지, 온라인만 가능)</div></div></li>
+      <li><div>허가 결과 대기 (보통 1~2주 소요)<div class="action-step-detail">결과는 HiKorea 또는 이메일로 통보돼요. 허가 전 근무 시작은 불법이에요</div></div></li>
       <li><div>허가 범위 안에서만 알바 시작<div class="action-step-detail">허가된 시간·업종을 초과하면 비자 취소·출국명령 등 불이익이 생겨요</div></div></li>
     </ul>
 
     <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
-      <div style="font-size:0.78rem;font-weight:700;color:var(--sub);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.04em">📂 필요 서류 (기본)</div>
+      <div style="font-size:0.78rem;font-weight:700;color:var(--sub);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.04em">📂 HiKorea에 업로드할 서류</div>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:7px">
-        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>여권 (원본 + 사본) + 외국인등록증</li>
-        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>재학증명서 (영문 발급 권장)</li>
+        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>통합신청서 (HiKorea에서 다운로드 후 작성)</li>
+        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>여권 + 외국인등록증 사본</li>
+        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>재학증명서</li>
         <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>성적증명서 (직전 학기)</li>
-        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>고용계약서 + 업체 사업자등록증 사본</li>
-        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>시간제취업 허가 신청서 (HiKorea에서 출력)</li>
+        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span><strong>시간제취업 확인서 (국제처 담당자 서명 필수)</strong></li>
+        <li style="display:flex;gap:10px;font-size:0.83rem;color:var(--sub);align-items:flex-start"><span style="color:var(--muted);flex-shrink:0">—</span>표준근로계약서 + 업체 사업자등록증 사본</li>
       </ul>
-      <p style="font-size:0.72rem;color:var(--muted);margin-top:8px">※ 출입국사무소마다 추가 서류를 요구할 수 있어요.</p>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:8px">※ 학교마다 요구 서류가 다를 수 있어요. 국제처에 먼저 확인하세요.</p>
     </div>
 
     <div class="action-links" style="margin-top:14px">
       <a class="link-card" href="https://www.hikorea.go.kr" target="_blank"><div><div class="lc-title">HiKorea</div><div class="lc-sub">유학생 시간제취업 허가 온라인 신청</div></div><span>→</span></a>
-      <a class="link-card" href="https://www.easylaw.go.kr" target="_blank"><div><div class="lc-title">찾기쉬운 생활법령정보</div><div class="lc-sub">외국인 아르바이트 관련 법령</div></div><span>→</span></a>
+      <a class="link-card" href="https://easylaw.go.kr/CSP/CnpClsMainBtr.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=7&cnpClsNo=1" target="_blank"><div><div class="lc-title">찾기쉬운 생활법령정보</div><div class="lc-sub">외국인 유학생 시간제취업 안내</div></div><span>→</span></a>
     </div>
-    <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;font-style:italic">※ 출입국관리법 제20조 / 법무부 「외국인유학생 체류관리지침」 / 2026년 5월 기준</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;font-style:italic">※ 출입국관리법 제20조 / 법무부 「외국인유학생 사증발급 및 체류관리지침」 / 2026년 5월 기준</p>
   </div>`;
 }
 
