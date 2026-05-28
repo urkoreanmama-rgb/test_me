@@ -1304,10 +1304,6 @@ function renderMatchingForm(r) {
         <input class="form-input" id="mf-phone" type="tel" placeholder="010-0000-0000">
       </div>
       <div class="form-group">
-        <label class="form-label">카카오 ID <span class="req">*</span></label>
-        <input class="form-input" id="mf-kakao" type="text" placeholder="kakao_id_example">
-      </div>
-      <div class="form-group">
         <label class="form-label">희망 지역 <span class="req">*</span></label>
         <select class="form-input" id="mf-city">
           <option value="">-- 지역 선택 --</option>
@@ -1344,13 +1340,11 @@ function renderMatchingForm(r) {
 function submitMatching() {
   const name     = document.getElementById('mf-name')?.value.trim();
   const phone    = document.getElementById('mf-phone')?.value.trim();
-  const kakao    = document.getElementById('mf-kakao')?.value.trim();
   const city     = document.getElementById('mf-city')?.value.trim();
   const industry = document.getElementById('mf-industry')?.value.trim();
 
   if (!name)     { alert('이름을 입력해주세요.'); return; }
   if (!phone)    { alert('전화번호를 입력해주세요.'); return; }
-  if (!kakao)    { alert('카카오 ID를 입력해주세요.'); return; }
   if (!city)     { alert('희망 지역을 선택해주세요.'); return; }
   if (!industry) { alert('희망 직종을 선택해주세요.'); return; }
 
@@ -1364,7 +1358,7 @@ function submitMatching() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        name, phone: `${phone} / 카카오: ${kakao}`,
+        name, phone,
         city, industry,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         result_status: resultData?.status,
@@ -1381,7 +1375,7 @@ function submitMatching() {
       <div class="match-success-title">신청 완료!</div>
       <div class="match-success-sub">
         <strong>${name}</strong>님, 감사합니다!<br>
-        <strong>${phone}</strong> 또는 카카오 ID <strong>${kakao}</strong>로 곧 연락드릴게요.
+        <strong>${phone}</strong>으로 곧 카카오톡 연락드릴게요.
       </div>
     </div>`;
 }
@@ -1392,10 +1386,8 @@ function submitMatching() {
 function submitPreRegister() {
   const name  = document.getElementById('pr-name')?.value.trim();
   const phone = document.getElementById('pr-phone')?.value.trim();
-  const kakao = document.getElementById('pr-kakao')?.value.trim();
   if (!name)  { alert('이름을 입력해주세요.'); return; }
   if (!phone) { alert('전화번호를 입력해주세요.'); return; }
-  if (!kakao) { alert('카카오 ID를 입력해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/pre_register`, {
@@ -1407,7 +1399,7 @@ function submitPreRegister() {
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify({
-        name, phone: `${phone} / 카카오: ${kakao}`,
+        name, phone,
         visa_type: resultData?.visa, topik_level: resultData?.topik,
         blocker: resultData?.reasonKeys?.join(','),
       }),
@@ -1422,7 +1414,7 @@ function submitPreRegister() {
       <div class="match-success-title">등록 완료!</div>
       <div class="match-success-sub">
         <strong>${name}</strong>님, 자격 요건이 갖춰지면<br>
-        <strong>${phone}</strong> 또는 카카오 ID <strong>${kakao}</strong>로 먼저 연락드릴게요.
+        <strong>${phone}</strong>으로 카카오톡 먼저 연락드릴게요.
       </div>
     </div>`;
 }
