@@ -293,6 +293,59 @@ body{
 .action-steps li::before{content:counter(step);background:var(--accent);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;margin-top:1px}
 .action-step-detail{font-size:0.76rem;color:var(--muted);margin-top:2px}
 .action-links{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+
+/* ── D-2 비교표 ── */
+.d2-compare-box{margin-top:14px;background:#f8f7ff;border:1.5px solid #c7d2fe;border-radius:12px;padding:14px;font-size:0.78rem}
+.d2-compare-title{font-weight:700;color:var(--accent);margin-bottom:10px;font-size:0.79rem}
+.d2-compare-table{width:100%;border-collapse:collapse}
+.d2-compare-table th{background:#eef2ff;color:var(--accent);font-size:0.71rem;padding:5px 6px;text-align:center;font-weight:700}
+.d2-compare-table th:first-child{text-align:left}
+.d2-compare-table td{padding:6px 6px;text-align:center;border-bottom:1px solid #e0e7ff;color:var(--text);font-size:0.77rem}
+.d2-compare-table tr:last-child td{border-bottom:none}
+.d2-compare-table td:first-child{font-weight:600;text-align:left;color:var(--accent)}
+.d2-compare-table .td-disabled{color:#9ca3af;font-style:italic}
+.d2-compare-table .td-best{font-weight:700;color:#059669}
+.d2-compare-note{margin-top:8px;color:var(--muted);font-size:0.73rem;line-height:1.5}
+
+/* ── Card News Carousel ── */
+.card-news-section{margin-bottom:16px}
+.card-news-header{font-size:0.8rem;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.card-news-hint{font-size:0.72rem;color:var(--muted);font-weight:400}
+.card-news-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.card-news-scroll::-webkit-scrollbar{display:none}
+.news-card{flex:0 0 100%;scroll-snap-align:start;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;box-sizing:border-box}
+.card-news-dots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.c-dot{width:7px;height:7px;border-radius:50%;background:#e0e7ff;transition:all 0.22s;cursor:pointer;border:none;padding:0}
+.c-dot.active{background:var(--accent);width:18px;border-radius:4px}
+.nc-card-num{font-size:0.68rem;color:var(--muted);margin-bottom:8px;font-weight:500}
+.nc-tag{display:inline-block;font-size:0.72rem;font-weight:700;border-radius:10px;padding:3px 10px;margin-bottom:10px}
+.nc-tag-ok{background:#dcfce7;color:#166534}
+.nc-tag-warn{background:#fef3c7;color:#92400e}
+.nc-tag-no{background:#fee2e2;color:#991b1b}
+.nc-tag-info{background:#eef2ff;color:#4338ca}
+.nc-title{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.3}
+.nc-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.82rem}
+.nc-row:last-child{border-bottom:none}
+.nc-row-key{color:var(--sub);font-weight:500;flex-shrink:0;margin-right:8px}
+.nc-row-val{color:var(--text);font-weight:700;text-align:right}
+.nc-accent{color:var(--accent)}
+.nc-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:0.82rem}
+.nc-step:last-child{margin-bottom:0}
+.nc-step-num{background:var(--accent);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.nc-step-body{color:var(--text);line-height:1.55}
+.nc-step-detail{font-size:0.75rem;color:var(--muted);margin-top:2px}
+.nc-nav{display:flex;justify-content:space-between;margin-top:14px;gap:8px}
+.nc-nav-btn{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:7px 14px;font-size:0.78rem;color:var(--accent);cursor:pointer;font-weight:600;transition:all 0.15s}
+.nc-nav-btn:hover:not(:disabled){background:var(--accent);color:white;border-color:var(--accent)}
+.nc-nav-btn:disabled{opacity:0.28;cursor:default}
+
+/* ── Share Button ── */
+.share-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:12px;padding:13px 16px;font-size:0.88rem;font-weight:700;color:#92400e;cursor:pointer;margin-top:12px;transition:all 0.15s}
+.share-btn:active{transform:scale(0.97)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e1b4b;color:#fff;padding:10px 20px;border-radius:30px;font-size:0.82rem;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -327,6 +380,25 @@ body{
         <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label">D-2 — 석사·박사과정 (대학원 유학비자)</span></div>
         <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환학생 / 방문연구생</span></div>
         <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-label">D-4 — 어학원·언어연수생</span></div>
+      </div>
+      <div class="d2-compare-box">
+        <div class="d2-compare-title">📊 D-2 비자 근무 가능 시간 비교 (학기 중)</div>
+        <table class="d2-compare-table">
+          <tr><th>D-2 구분</th><th>TOPIK 없음</th><th>4급</th><th>5급↑</th></tr>
+          <tr>
+            <td>석·박사과정</td>
+            <td>주 15h</td>
+            <td class="td-best">주 30h</td>
+            <td class="td-best">주 35h ⭐</td>
+          </tr>
+          <tr>
+            <td>교환·방문연구생</td>
+            <td class="td-disabled">신청 불가</td>
+            <td>주 25h</td>
+            <td class="td-best">주 30h</td>
+          </tr>
+        </table>
+        <p class="d2-compare-note">※ 방학 중 TOPIK 4급↑이면 두 유형 모두 근무시간 무제한 · D-4는 방학 중에도 주 20시간 고정</p>
       </div>
       <div style="margin-top:14px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-left:3px solid #16a34a;border-radius:10px;font-size:0.8rem;color:#14532d;line-height:1.7">
         <strong>📎 F계열 비자를 가지고 있다면?</strong><br>
@@ -498,6 +570,7 @@ body{
   <!-- ⑤ Result -->
   <div id="result">
     <div id="res-verdict"></div>
+    <div id="res-summary-cards"></div>
     <div id="res-disclaimer"></div>
     <div id="res-checklist"></div>
     <div id="res-actions"></div>
@@ -898,6 +971,176 @@ function computeResult() {
 }
 
 // ═══════════════════════════════════════════
+//  CARD NEWS CAROUSEL
+// ═══════════════════════════════════════════
+function renderSummaryCards(r) {
+  const el = document.getElementById('res-summary-cards');
+  if (!el) return;
+
+  const visa = answers.q1 || 'D2-GR';
+  const visaNames = {'D2-GR':'D-2 석·박사과정','D2-VS':'D-2 교환·방문연구생','D4':'D-4 어학연수생'};
+  const maxLabel = r.maxHours === 9999 ? '무제한' : `주 ${r.maxHours}시간`;
+  const statusTag = {
+    ok:   `<span class="nc-tag nc-tag-ok">✅ 알바 가능</span>`,
+    warn: `<span class="nc-tag nc-tag-warn">⚠️ 조건부 가능</span>`,
+    no:   `<span class="nc-tag nc-tag-no">❌ 현재 불가</span>`
+  }[r.status];
+  const topikDisplay = {'TOPIK5':'5급↑','TOPIK4':'4급','TOPIK3':'3급','TOPIK12':'1~2급','NONE':'없음'}[answers.q5] || '—';
+  const semDisplay = answers.q6 === 'VACATION' ? '방학 중' : '학기 중';
+
+  const card1 = `<div class="news-card">
+    <div class="nc-card-num">1 / 6</div>
+    ${statusTag}
+    <div class="nc-title">내 알바 체크 결과</div>
+    <div class="nc-row"><span class="nc-row-key">비자</span><span class="nc-row-val">${visaNames[visa]||visa}</span></div>
+    <div class="nc-row"><span class="nc-row-key">주당 최대 근무</span><span class="nc-row-val nc-accent">${maxLabel}</span></div>
+    <div class="nc-row"><span class="nc-row-key">TOPIK</span><span class="nc-row-val">${topikDisplay}</span></div>
+    <div class="nc-row"><span class="nc-row-key">학사 시기</span><span class="nc-row-val">${semDisplay}</span></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" disabled>← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(1)">다음 →</button>
+    </div>
+  </div>`;
+
+  const card2 = `<div class="news-card">
+    <div class="nc-card-num">2 / 6</div>
+    <span class="nc-tag nc-tag-info">📋 허가 신청</span>
+    <div class="nc-title">알바 시작 전 3단계</div>
+    <div class="nc-step"><span class="nc-step-num">1</span><div class="nc-step-body"><strong>학교 국제처 먼저 방문</strong><div class="nc-step-detail">알바 가능 여부 + 필요 서류 목록 확인</div></div></div>
+    <div class="nc-step"><span class="nc-step-num">2</span><div class="nc-step-body"><strong>HiKorea 온라인 신청</strong><div class="nc-step-detail">hikorea.go.kr → 시간제취업허가 신청 (허가 전 근무 = 불법)</div></div></div>
+    <div class="nc-step"><span class="nc-step-num">3</span><div class="nc-step-body"><strong>허가 후 근로계약서 작성</strong><div class="nc-step-detail">반드시 서면으로 — 구두 계약은 분쟁 시 증거 없음</div></div></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" onclick="scrollCard(0)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(2)">다음 →</button>
+    </div>
+  </div>`;
+
+  const card3 = `<div class="news-card">
+    <div class="nc-card-num">3 / 6</div>
+    <span class="nc-tag nc-tag-ok">💰 주휴수당</span>
+    <div class="nc-title">주 15시간 이상 일하면 하루치 더!</div>
+    <div class="nc-row"><span class="nc-row-key">조건</span><span class="nc-row-val">주 15h 이상 + 결근 없음</span></div>
+    <div class="nc-row"><span class="nc-row-key">2026 최저시급</span><span class="nc-row-val nc-accent">10,320원</span></div>
+    <div class="nc-row"><span class="nc-row-key">계산법</span><span class="nc-row-val">(주시간 ÷ 40) × 8h × 시급</span></div>
+    <div class="nc-row"><span class="nc-row-key">유학생 적용?</span><span class="nc-row-val">✅ 동일 적용</span></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" onclick="scrollCard(1)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(3)">다음 →</button>
+    </div>
+  </div>`;
+
+  const card4 = `<div class="news-card">
+    <div class="nc-card-num">4 / 6</div>
+    <span class="nc-tag nc-tag-info">🛡️ 4대보험</span>
+    <div class="nc-title">유학생 4대보험 요약</div>
+    <div class="nc-row"><span class="nc-row-key">산재보험</span><span class="nc-row-val">✅ 1일 근무도 100% 적용</span></div>
+    <div class="nc-row"><span class="nc-row-key">건강보험</span><span class="nc-row-val">✅ 이미 가입 (유학생 의무)</span></div>
+    <div class="nc-row"><span class="nc-row-key">국민연금</span><span class="nc-row-val">🔶 D-4 제외·협정국 면제</span></div>
+    <div class="nc-row"><span class="nc-row-key">고용보험</span><span class="nc-row-val">⚪ D-2·D-4 원칙 적용 제외</span></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" onclick="scrollCard(2)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(4)">다음 →</button>
+    </div>
+  </div>`;
+
+  const card5 = `<div class="news-card">
+    <div class="nc-card-num">5 / 6</div>
+    <span class="nc-tag nc-tag-warn">💸 세금</span>
+    <div class="nc-title">3.3%는 프리랜서 세율 — 주의!</div>
+    <div class="nc-row"><span class="nc-row-key">정규 원천징수</span><span class="nc-row-val">소득세 3.3%</span></div>
+    <div class="nc-row"><span class="nc-row-key">⚠️ 주의</span><span class="nc-row-val">근로자는 간이세액표 적용</span></div>
+    <div class="nc-row"><span class="nc-row-key">조세조약</span><span class="nc-row-val">중국·베트남·인도네시아·몽골·우즈베키스탄 등 비과세 가능</span></div>
+    <div class="nc-row"><span class="nc-row-key">환급</span><span class="nc-row-val">5월 홈택스 종합소득세 신고</span></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" onclick="scrollCard(3)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(5)">다음 →</button>
+    </div>
+  </div>`;
+
+  const card6 = `<div class="news-card">
+    <div class="nc-card-num">6 / 6</div>
+    <span class="nc-tag nc-tag-no">⚠️ 권리 침해 시</span>
+    <div class="nc-title">사장님이 안 해주면?</div>
+    <div class="nc-row"><span class="nc-row-key">📞 신고 전화</span><span class="nc-row-val">고용노동부 1350</span></div>
+    <div class="nc-row"><span class="nc-row-key">💻 온라인 신고</span><span class="nc-row-val">labor.moel.go.kr</span></div>
+    <div class="nc-row"><span class="nc-row-key">⚖️ 무료 법률</span><span class="nc-row-val">대한법률구조공단 132</span></div>
+    <div class="nc-row"><span class="nc-row-key">🔒 익명 처리?</span><span class="nc-row-val">✅ 비자 취소 불이익 없음</span></div>
+    <div class="nc-nav">
+      <button class="nc-nav-btn" onclick="scrollCard(4)">← 이전</button>
+      <button class="nc-nav-btn" disabled>다음 →</button>
+    </div>
+  </div>`;
+
+  el.innerHTML = `<div class="card-news-section">
+    <div class="card-news-header">
+      <span>📰 내 결과 카드뉴스 (6장)</span>
+      <span class="card-news-hint">← 밀거나 버튼으로 →</span>
+    </div>
+    <div class="card-news-scroll" id="card-news-scroll">
+      ${card1}${card2}${card3}${card4}${card5}${card6}
+    </div>
+    <div class="card-news-dots" id="card-news-dots">
+      ${[0,1,2,3,4,5].map(i=>`<button class="c-dot${i===0?' active':''}" onclick="scrollCard(${i})"></button>`).join('')}
+    </div>
+    <button class="share-btn" onclick="shareResult()">
+      💬 내 결과를 카카오톡으로 보내기
+    </button>
+  </div>`;
+
+  // 스크롤 → 도트 연동
+  const scroll = document.getElementById('card-news-scroll');
+  if (scroll) {
+    scroll.addEventListener('scroll', () => {
+      const idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+      document.querySelectorAll('.c-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+    }, {passive:true});
+  }
+}
+
+function scrollCard(idx) {
+  const scroll = document.getElementById('card-news-scroll');
+  if (!scroll) return;
+  scroll.scrollTo({left: idx * scroll.offsetWidth, behavior:'smooth'});
+}
+
+function shareResult() {
+  const r = resultData;
+  if (!r) return;
+  const visa = answers.q1 || '';
+  const visaNames = {'D2-GR':'D-2 석·박사과정','D2-VS':'D-2 교환·방문연구생','D4':'D-4 어학연수생'};
+  const maxLabel = r.maxHours === 9999 ? '무제한' : `주 ${r.maxHours}시간`;
+  const statusText = {ok:'✅ 알바 가능!', warn:'⚠️ 조건부 가능', no:'❌ 현재 불가'}[r.status];
+  const text = `🇰🇷 나도 한국에서 알바해도 될까?\n\n${statusText}\n비자: ${visaNames[visa]||visa}\n최대 근무: ${maxLabel}\n\n8가지 질문으로 즉시 확인:\nhttps://test-me-ecru.vercel.app/유학생-아르바이트-체커/index.html`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: '나도 한국에서 알바해도 될까? 🤔',
+      text: text,
+      url: 'https://test-me-ecru.vercel.app/유학생-아르바이트-체커/index.html'
+    }).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(text).then(()=>{
+      showToast('결과가 복사됐어요! 카카오톡에 붙여넣기 하세요 📋');
+    }).catch(()=>{
+      showToast('링크를 복사해서 카톡으로 보내세요!');
+    });
+  }
+}
+
+function showToast(msg) {
+  let t = document.getElementById('app-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'app-toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════
 //  RENDER RESULT
 // ═══════════════════════════════════════════
 function renderResult() {
@@ -938,6 +1181,9 @@ function renderResult() {
 
   // ── 2. Checklist ──
   renderChecklist(r);
+
+  // ── 2b. Card news summary ──
+  renderSummaryCards(r);
 
   // ── 3. Actions (permit steps, links) ──
   renderActions(r);
