@@ -2,16 +2,14 @@
   "outputDirectory": ".",
   "cleanUrls": false,
   "trailingSlash": false,
-  "redirects": [
+  "rewrites": [
     {
       "source": "/check",
-      "destination": "/유학생-아르바이트-체커/index.html",
-      "permanent": false
+      "destination": "/유학생-아르바이트-체커/index.html"
     },
     {
       "source": "/admin",
-      "destination": "/유학생-아르바이트-체커/admin.html",
-      "permanent": false
+      "destination": "/유학생-아르바이트-체커/admin.html"
     }
   ]
 }
