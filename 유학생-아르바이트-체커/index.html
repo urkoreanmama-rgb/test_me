@@ -77,6 +77,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
 .option.selected:active{transform:translateY(4px);box-shadow:0 0px 0 #0055b3;}
 .opt-label{font-size:0.92rem;line-height:1.4;font-weight:500;color:var(--text)}
 .option.selected .opt-label{color:var(--accent);font-weight:600}
+.opt-hint{display:block;font-size:0.76rem;margin-top:4px;font-weight:500;line-height:1.3}
+.opt-hint-ok{color:#15803d}
+.opt-hint-no{color:#dc2626}
+.option.selected .opt-hint-ok{color:#0d5f2a}
+.option.selected .opt-hint-no{color:#991b1b}
 .btn-row{display:flex;gap:10px;margin-top:16px}
 .btn{flex:1;padding:13px;border:none;border-radius:12px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:-0.01em}
 .btn-prev{background:#e5e5ea;color:var(--sub);border:none}
@@ -620,6 +625,7 @@ function next(step) {
   if (step === 1 && answers.q1 === 'D2-GR') nextStep = 3;
   document.getElementById(`step${step}`).classList.remove('active');
   document.getElementById(`step${nextStep}`).classList.add('active');
+  if (nextStep === 5) updateTopikOptions();
   updateProgress(nextStep);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -629,6 +635,7 @@ function prev(step) {
   if (step === 3 && answers.q1 === 'D2-GR') prevStep = 1;
   document.getElementById(`step${step}`).classList.remove('active');
   document.getElementById(`step${prevStep}`).classList.add('active');
+  if (prevStep === 5) updateTopikOptions();
   updateProgress(prevStep);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -655,20 +662,10 @@ function earlySubmit() {
   submit();
 }
 function nextStep7() {
-  const visa = answers.q1 || 'OTHER';
+  const visa  = answers.q1 || 'OTHER';
   const topik = answers.q5 || 'NONE';
-  const sem = answers.q6 || 'SEMESTER';
-
-  let maxH = 9999;
-  if (sem === 'SEMESTER') {
-    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) maxH = 30;
-    else if (visa === 'D4') maxH = 20;
-    else maxH = 10;
-  } else {
-    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) maxH = 9999;
-    else if (visa === 'D4') maxH = 20;
-    else maxH = 10;
-  }
+  const sem   = answers.q6 || 'SEMESTER';
+  const maxH  = calcMaxHours(visa, topik, sem);
 
   const wantMap = {H10:10,H20:20,H25:25,H30:30,H35:35,HMAX:9999};
   const wantNum = wantMap[answers.q7||'H10']||10;
@@ -693,6 +690,60 @@ function restart() {
   document.getElementById('step1').classList.add('active');
   updateProgress(1);
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ═══════════════════════════════════════════
+//  HOURS HELPER (TOPIK·비자·학기 통합 계산)
+// ═══════════════════════════════════════════
+function calcMaxHours(visa, topikVal, sem) {
+  const topikNum = {TOPIK5:5, TOPIK4:4, TOPIK3:3, TOPIK12:1, NONE:0}[topikVal] ?? 0;
+  if (sem === 'SEMESTER') {
+    if (visa === 'D2-GR')              return topikNum >= 5 ? 35 : topikNum >= 4 ? 30 : 15;
+    if (visa === 'D2-VS')              return topikNum >= 5 ? 30 : topikNum >= 4 ? 25 : 15;
+    if (visa === 'D4')                 return topikNum >= 5 ? 25 : topikNum >= 4 ? 20 : 15;
+    return 10;
+  } else { // vacation
+    if (['D2-GR','D2-VS'].includes(visa)) return topikNum >= 4 ? 9999 : 15;
+    if (visa === 'D4')                    return 20; // D-4는 방학도 동일
+    return 10;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  Q5 TOPIK 선택지에 가능 시간 동적 표시
+// ═══════════════════════════════════════════
+function updateTopikOptions() {
+  const visa = answers.q1 || 'D2-GR';
+  const minTopikMap = {'D2-GR':4, 'D2-VS':4, 'D4':0};
+  const minTopik = minTopikMap[visa] ?? 4;
+
+  // 학기 중 / 방학 중 최대시간 (TOPIK 레벨별)
+  const levels = [
+    {v:'TOPIK5', label:'TOPIK 5급 이상', num:5},
+    {v:'TOPIK4', label:'TOPIK 4급',      num:4},
+    {v:'TOPIK3', label:'TOPIK 3급',      num:3},
+    {v:'TOPIK12',label:'TOPIK 1~2급 또는 만료', num:1},
+    {v:'NONE',   label:'TOPIK 없음',     num:0},
+  ];
+
+  levels.forEach(({v, label, num}) => {
+    const el = document.querySelector(`.option[data-q="5"][data-v="${v}"] .opt-label`);
+    if (!el) return;
+
+    const allowed = num >= minTopik;
+    let hint = '';
+
+    if (!allowed) {
+      hint = `<span class="opt-hint opt-hint-no">❌ ${minTopik}급 이상 필요 — 허가 불가</span>`;
+    } else {
+      const semH   = calcMaxHours(visa, v, 'SEMESTER');
+      const vacH   = calcMaxHours(visa, v, 'VACATION');
+      const vacTxt = vacH === 9999 ? '방학 중 무제한' : `방학 중 주 ${vacH}시간`;
+      hint = `<span class="opt-hint opt-hint-ok">학기 중 주 최대 ${semH}시간 / ${vacTxt}</span>`;
+    }
+
+    el.innerHTML = `${label}${hint}`;
+  });
 }
 
 // ═══════════════════════════════════════════
@@ -741,25 +792,8 @@ function computeResult() {
   const minTopik = minTopikMap[visa] ?? 99;
   const topikOk  = topikNum >= minTopik;
 
-  // Allowed hours per week
-  let maxHours = 9999;
-  if (semester === 'SEMESTER') {
-    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) {
-      maxHours = 30;
-    } else if (visa === 'D4') {
-      maxHours = 20;
-    } else {
-      maxHours = 10;
-    }
-  } else {
-    if (['D2-UG-12','D2-UG-34','D2-GR','D2-VS'].includes(visa)) {
-      maxHours = 9999;
-    } else if (visa === 'D4') {
-      maxHours = 20;
-    } else {
-      maxHours = 10;
-    }
-  }
+  // Allowed hours per week (TOPIK 등급 반영)
+  const maxHours = calcMaxHours(visa, topik, semester);
 
   const wantMap = {H10:10, H20:20, H25:25, H30:30, H35:35, HMAX:9999};
   const wantNum = wantMap[hours] || 10;
