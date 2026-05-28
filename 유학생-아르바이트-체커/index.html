@@ -7,8 +7,8 @@
 
 <!-- Open Graph / KakaoTalk -->
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="나도 한국에서 알바해도 될까? 🤔 🤔"/>
-<meta property="og:description" content="8가지 질문으로 바로 확인해요. 유학생 아르바이트 합법 여부 · 무료 매칭 서비스"/>
+<meta property="og:title" content="나도 한국에서 알바해도 될까? 🤔"/>
+<meta property="og:description" content="8가지 질문으로 아르바이트 허가 가능성 즉시 확인 · D-2/D-4 유학생 전용"/>
 <meta property="og:image" content="https://test-me-ecru.vercel.app/유학생-아르바이트-체커/og-image.png"/>
 <meta property="og:url" content="https://test-me-ecru.vercel.app/유학생-아르바이트-체커/index.html"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -308,13 +308,10 @@ body{
         <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label">D-2 — 석사·박사과정 (대학원 유학비자)</span></div>
         <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환학생 / 방문연구생</span></div>
         <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-label">D-4 — 어학원·언어연수생</span></div>
-        <div class="opt-section-label opt-section-other">📎 기타 비자 — 별도 체류자격 기준 적용</div>
-        <div class="option" data-q="1" data-v="F6" onclick="pick(this)"><span class="opt-label">F-6 — 한국인 배우자 (결혼이민비자)</span></div>
-        <div class="option" data-q="1" data-v="F5" onclick="pick(this)"><span class="opt-label">F-5 — 영주권자</span></div>
-        <div class="option" data-q="1" data-v="F2" onclick="pick(this)"><span class="opt-label">F-2 — 거주비자 (장기거주 허가)</span></div>
-        <div class="option" data-q="1" data-v="F4" onclick="pick(this)"><span class="opt-label">F-4 — 재외동포비자 (한국계 외국인)</span></div>
-        <div class="option" data-q="1" data-v="F1" onclick="pick(this)"><span class="opt-label">F-1 — 방문동거 (부모·가족 따라 입국)</span></div>
-        <div class="option" data-q="1" data-v="F3" onclick="pick(this)"><span class="opt-label">F-3 — 동반비자 (배우자·자녀 동반)</span></div>
+        <div class="opt-section-label opt-section-other">📎 기타 비자 — 별도 기준 적용</div>
+        <div class="option" data-q="1" data-v="F4" onclick="pick(this)"><span class="opt-label">F-4 — 재외동포비자 (한국계 외국인)<span class="opt-hint opt-hint-ok">대부분 자유취업 · 단순노무 제외</span></span></div>
+        <div class="option" data-q="1" data-v="FREE" onclick="pick(this)"><span class="opt-label">F-2 / F-5 / F-6 — 거주·영주권·결혼이민 비자<span class="opt-hint opt-hint-ok">별도 허가 없이 자유롭게 취업 가능</span></span></div>
+        <div class="option" data-q="1" data-v="F1F3" onclick="pick(this)"><span class="opt-label">F-1 / F-3 — 방문동거·동반비자<span class="opt-hint opt-hint-no">원칙적으로 취업 불가 · 체류자격 변경 필요</span></span></div>
         <div class="option" data-q="1" data-v="OTHER" onclick="pick(this)"><span class="opt-label">❓ 기타 비자 (위에 해당 없음)</span></div>
       </div>
     </div>
@@ -563,6 +560,7 @@ ko: {
   rF4Note:'재외동포비자(F-4)로 대부분의 업종에서 자유롭게 일할 수 있어요. 단, 단순노무(건설일용직·단순서비스직 등)는 고용노동부 고시로 금지돼 있어요.',
   rNoF1:'F-1(방문동거) 비자는 원칙적으로 취업이 허용되지 않아요. 취업하려면 출입국사무소에서 체류자격 변경 또는 별도 활동 허가를 받아야 해요.',
   rNoF3:'F-3(동반) 비자는 원칙적으로 취업이 허용되지 않아요. 취업하려면 출입국사무소에서 체류자격 외 활동 허가를 별도로 받아야 해요.',
+  rNoF1F3:'F-1(방문동거)·F-3(동반) 비자는 원칙적으로 취업이 허용되지 않아요. 취업하려면 출입국사무소에서 체류자격 변경 또는 체류자격 외 활동 허가를 별도로 받아야 해요.',
   resOkFreeTitle:'자유롭게 알바 가능해요! 🎉',
   resOkFreeSub:'이 비자는 별도 허가 없이 대부분의 업종에서 일할 수 있어요.',
   resOkF4Title:'알바 가능해요! ✅',
@@ -650,9 +648,9 @@ function pick(el) {
   if (q === '1') {
     const v1 = answers.q1;
     // F-free 비자: 즉시 결과 (허가 불필요, 자유롭게 가능)
-    if (['F5','F6','F2','F4'].includes(v1)) { setTimeout(earlySubmit, 400); return; }
-    // F-1, F-3, 기타: 즉시 불가 결과
-    if (v1 === 'F1' || v1 === 'F3' || v1 === 'OTHER') { earlySubmit(); return; }
+    if (['F5','F6','F2','F4','FREE'].includes(v1)) { setTimeout(earlySubmit, 400); return; }
+    // F-1, F-3 통합 / 기타: 즉시 불가 결과
+    if (v1 === 'F1' || v1 === 'F3' || v1 === 'F1F3' || v1 === 'OTHER') { earlySubmit(); return; }
   } else if (q === '2') {
     if ((answers.q1 === 'D4' || answers.q1 === 'D2-VS') && (answers.q2 === 'LT3' || answers.q2 === '3TO6')) {
       earlySubmit(); return;
@@ -818,7 +816,7 @@ function computeResult() {
   const industry = answers.q8 || 'OTHER_IND';
 
   // F-series 비자 처리 (D-2 흐름과 완전히 분리)
-  if (['F5','F6','F2'].includes(visa)) {
+  if (['F5','F6','F2','FREE'].includes(visa)) {
     return { status:'ok', reasonKeys:['rFreeWork'], maxHours:9999,
       visa, topik:null, semester:null, industry, stay:null, freeVisa:true };
   }
@@ -826,12 +824,8 @@ function computeResult() {
     return { status:'ok', reasonKeys:['rF4Note'], maxHours:9999,
       visa, topik:null, semester:null, industry, stay:null, freeVisa:true, isF4:true };
   }
-  if (visa === 'F1') {
-    return { status:'no', reasonKeys:['rNoF1'], maxHours:0,
-      visa, topik:null, semester:null, industry, stay:null, freeVisa:false };
-  }
-  if (visa === 'F3') {
-    return { status:'no', reasonKeys:['rNoF3'], maxHours:0,
+  if (visa === 'F1' || visa === 'F3' || visa === 'F1F3') {
+    return { status:'no', reasonKeys:['rNoF1F3'], maxHours:0,
       visa, topik:null, semester:null, industry, stay:null, freeVisa:false };
   }
 
@@ -953,7 +947,7 @@ function renderChecklist(r) {
   const hrs    = answers.q7 || 'H10';
   const ind    = answers.q8 || 'OTHER_IND';
 
-  const visaNames  = {'D2-GR':'D-2 (석·박사과정)','D2-VS':'D-2 (교환학생·방문연구생)','F2':'F-2 (거주비자)','F4':'F-4 (재외동포)','F5':'F-5 (영주권)','F6':'F-6 (결혼이민)','F1':'F-1 (방문동거)','F3':'F-3 (동반비자)','OTHER':'기타 비자'};
+  const visaNames  = {'D2-GR':'D-2 (석·박사과정)','D2-VS':'D-2 (교환학생·방문연구생)','D4':'D-4 (어학연수)','FREE':'F-2/F-5/F-6 (거주·영주·결혼이민)','F4':'F-4 (재외동포)','F1F3':'F-1/F-3 (방문동거·동반비자)','F2':'F-2 (거주비자)','F5':'F-5 (영주권)','F6':'F-6 (결혼이민)','F1':'F-1 (방문동거)','F3':'F-3 (동반비자)','OTHER':'기타 비자'};
   const stayNames  = {'LT3':'3개월 미만','3TO6':'3~6개월','GT6':'6개월 이상'};
   const enrollNames= {'ENROLLED':'재학 중','LEAVE':'휴학 중','GRAD':'졸업예정/수료'};
   const gradeNames = {'GOOD':'기준 충족 (직전학기 C/2.0 이상)','GPA_LOW':'기준 미달','FIRST':'첫 학기 (성적 없음)'};
@@ -998,8 +992,9 @@ function renderChecklist(r) {
   if (r.freeVisa) {
     const isOk = r.status === 'ok';
     const freeReasons = {
-      'F1': 'F-1(방문동거) 비자는 원칙적으로 취업이 허용되지 않습니다. 취업하려면 출입국사무소에서 체류자격 변경 또는 별도 활동 허가를 받아야 합니다.',
-      'F3': 'F-3(동반) 비자는 원칙적으로 취업이 허용되지 않습니다. 출입국사무소에서 체류자격 외 활동 허가를 별도 신청해야 합니다.',
+      'F1':   'F-1(방문동거) 비자는 원칙적으로 취업이 허용되지 않습니다. 취업하려면 출입국사무소에서 체류자격 변경 또는 별도 활동 허가를 받아야 합니다.',
+      'F3':   'F-3(동반) 비자는 원칙적으로 취업이 허용되지 않습니다. 출입국사무소에서 체류자격 외 활동 허가를 별도 신청해야 합니다.',
+      'F1F3': 'F-1(방문동거)·F-3(동반) 비자는 원칙적으로 취업이 허용되지 않습니다. 취업하려면 출입국사무소에서 체류자격 변경 또는 체류자격 외 활동 허가를 별도로 받아야 합니다.',
     };
     rows += row('비자 유형', visaNames[visa]||visa, isOk ? 'ok' : 'no',
       freeReasons[visa] || null,
