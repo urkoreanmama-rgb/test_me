@@ -247,6 +247,16 @@ body{
 .checklist-summary{padding:11px 18px;font-size:0.76rem;color:var(--sub);border-top:1px solid #e0e7ff;background:linear-gradient(135deg,#eef2ff,#f5f3ff);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
 
 .action-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+
+/* ── Option section labels ── */
+.opt-section-label{font-size:0.71rem;font-weight:700;letter-spacing:0.06em;padding:10px 4px 4px;opacity:0.85;text-transform:uppercase}
+.opt-section-d2d4{color:var(--accent)}
+.opt-section-other{color:var(--muted)}
+
+/* ── Legal disclaimer ── */
+.legal-disclaimer{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-left:4px solid #f59e0b;border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.ld-title{font-size:0.8rem;font-weight:700;color:#78350f;margin-bottom:8px}
+.ld-body{font-size:0.81rem;color:#92400e;line-height:1.7}
 .action-title{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .action-steps{list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:step}
 .action-steps li{display:flex;gap:10px;align-items:flex-start;font-size:0.84rem;color:var(--text);counter-increment:step}
@@ -262,15 +272,16 @@ body{
 
   <!-- ② Hero -->
   <div class="hero">
-    <div class="badge">🇰🇷 <span data-i18n="badge">법무부 출입국 공식 기준 · 대학원생 맞춤</span></div>
+    <div class="badge">🇰🇷 <span data-i18n="badge">법무부·하이코리아 기준 참고 · D-2/D-4 유학생 시간제취업 안내</span></div>
     <h1 data-i18n="h1">나 한국에서 알바해도 될까? 🤔</h1>
-    <p data-i18n="subtitle">7가지 질문으로 합법 여부를 즉시 확인해요</p>
+    <p data-i18n="subtitle">8가지 질문으로 허가 가능성을 확인해요</p>
+    <p style="font-size:0.74rem;color:var(--muted);margin-top:8px;line-height:1.65">최종 허가 여부는 학교 국제처와 관할 출입국·외국인관서에서 확인해야 합니다</p>
   </div>
 
   <!-- ③ Progress -->
   <div class="progress-bar">
     <div class="prog-top">
-      <span id="prog-step">질문 1 / 7</span>
+      <span id="prog-step">질문 1 / 8</span>
       <span id="prog-pct">0%</span>
     </div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
@@ -281,10 +292,13 @@ body{
     <div class="step-card">
       <div class="q-number" data-i18n="q1num">질문 1</div>
       <div class="q-text" data-i18n="q1text">지금 어떤 비자로 한국에 있어요?</div>
-      <div class="q-sub" data-i18n="q1sub">여권 또는 외국인등록증의 체류자격을 확인하세요</div>
+      <div class="q-sub" data-i18n="q1sub">여권 또는 외국인등록증의 체류자격을 확인하세요<br><span style="font-size:0.78rem;color:var(--accent);font-weight:600">📌 이 체커는 D-2 유학생·D-4 어학연수생의 시간제취업 허가를 안내합니다</span></div>
       <div class="options">
-        <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label">D-2 — 석사·박사과정 (일반 유학비자)</span></div>
+        <div class="opt-section-label opt-section-d2d4">📚 유학 비자 — 이 체커 대상 (D-2/D-4)</div>
+        <div class="option" data-q="1" data-v="D2-GR" onclick="pick(this)"><span class="opt-label">D-2 — 석사·박사과정 (대학원 유학비자)</span></div>
         <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환학생 / 방문연구생</span></div>
+        <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-label">D-4 — 어학원·언어연수생</span></div>
+        <div class="opt-section-label opt-section-other">📎 기타 비자 — 별도 체류자격 기준 적용</div>
         <div class="option" data-q="1" data-v="F6" onclick="pick(this)"><span class="opt-label">F-6 — 한국인 배우자 (결혼이민비자)</span></div>
         <div class="option" data-q="1" data-v="F5" onclick="pick(this)"><span class="opt-label">F-5 — 영주권자</span></div>
         <div class="option" data-q="1" data-v="F2" onclick="pick(this)"><span class="opt-label">F-2 — 거주비자 (장기거주 허가)</span></div>
@@ -322,11 +336,11 @@ body{
     <div class="step-card">
       <div class="q-number" data-i18n="q3num">질문 3</div>
       <div class="q-text" data-i18n="q3text">현재 학적 상태는 무엇인가요?</div>
-      <div class="q-sub" data-i18n="q3sub">휴학·졸업예정자는 취업활동 허가 대상에서 제외됩니다</div>
+      <div class="q-sub" data-i18n="q3sub">⚠️ 휴학·졸업/수료 상태는 원칙적으로 시간제취업 허가가 제한됩니다.<br>단, 석·박사 수료 후 논문준비 중인 경우 예외 가능 — 학교 국제처·출입국(1345) 확인 필수</div>
       <div class="options">
         <div class="option" data-q="3" data-v="ENROLLED" onclick="pick(this)"><span class="opt-label" data-i18n="ENROLLED">재학 중</span></div>
         <div class="option" data-q="3" data-v="LEAVE" onclick="pick(this)"><span class="opt-label" data-i18n="LEAVE">휴학 중</span></div>
-        <div class="option" data-q="3" data-v="GRAD" onclick="pick(this)"><span class="opt-label" data-i18n="GRAD">졸업예정 (수료 포함)</span></div>
+        <div class="option" data-q="3" data-v="GRAD" onclick="pick(this)"><span class="opt-label" data-i18n="GRAD">졸업예정 / 수료 중 <span style="font-size:0.8em;opacity:0.75">(석박사 논문준비생은 예외 가능 — 확인 필요)</span></span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -341,13 +355,13 @@ body{
       <div class="q-number" data-i18n="q4num">질문 4</div>
       <div class="q-text" data-i18n="q4text">학점·출석 기준을 확인해주세요</div>
       <div class="q-sub" data-i18n="q4sub">⚠️ 기준 충족 여부는 학교 국제처(외국인학생 담당)에서 먼저 확인해요.<br>
-        · D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상<br>
-        · D-4 비자: 출석률 90% 이상<br>
-        <span style="font-size:0.78rem;color:#b45309">📋 제출 절차: 성적증명서·출석확인서를 국제처에 지참 → 담당자 확인서 서명 → HiKorea에 스캔 업로드<br>
+        · D-2 비자: 직전학기 평균 C학점/2.0 이상. 출석 기준은 학교마다 다를 수 있어요<br>
+        · D-4 비자: 출석률 90% 이상 (학교별 확인 필요)<br>
+        <span style="font-size:0.78rem;color:#b45309">📋 제출: 성적증명서·출석확인서를 국제처에 지참 → 확인서 서명 → HiKorea에 스캔 업로드<br>
         📌 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」 · 출입국관리법 제20조 · <a href="https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=6&cnpClsNo=1" target="_blank" style="color:#a16207;text-decoration:underline">찾기쉬운 생활법령정보</a></span></div>
       <div class="options">
-        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">기준 충족 (학점 2.0+, 출석 70% 이상)</span></div>
-        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">기준 미달 (학점 부족 또는 출석 70% 미만)</span></div>
+        <div class="option" data-q="4" data-v="GOOD" onclick="pick(this)"><span class="opt-label" data-i18n="GOOD">기준 충족 (직전학기 평균 C/2.0 이상)</span></div>
+        <div class="option" data-q="4" data-v="GPA_LOW" onclick="pick(this)"><span class="opt-label" data-i18n="GPA_LOW">기준 미달 (학점 2.0 미만 또는 출석 기준 미충족)</span></div>
         <div class="option" data-q="4" data-v="FIRST" onclick="pick(this)"><span class="opt-label" data-i18n="FIRST">첫 학기 (성적 없음) — 신청 가능해요</span></div>
       </div>
     </div>
@@ -367,7 +381,7 @@ body{
         <div class="option" data-q="5" data-v="TOPIK5" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK5">TOPIK 5급 이상</span></div>
         <div class="option" data-q="5" data-v="TOPIK4" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK4">TOPIK 4급</span></div>
         <div class="option" data-q="5" data-v="TOPIK3" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK3">TOPIK 3급</span></div>
-        <div class="option" data-q="5" data-v="TOPIK12" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK12">TOPIK 1~2급 또는 만료</span></div>
+        <div class="option" data-q="5" data-v="TOPIK12" onclick="pick(this)"><span class="opt-label" data-i18n="TOPIK12">TOPIK 1~2급 <span style="font-size:0.85em;opacity:0.8">(만료 여부는 학교·출입국 확인 필요)</span></span></div>
         <div class="option" data-q="5" data-v="NONE" onclick="pick(this)"><span class="opt-label" data-i18n="NONE">TOPIK 없음</span></div>
       </div>
     </div>
@@ -382,7 +396,7 @@ body{
     <div class="step-card">
       <div class="q-number" data-i18n="q6num">질문 6</div>
       <div class="q-text" data-i18n="q6text">지금은 학기 중인가요, 방학 중인가요?</div>
-      <div class="q-sub" data-i18n="q6sub">방학 중에는 근무 시간 제한이 완화됩니다</div>
+      <div class="q-sub" data-i18n="q6sub">⚠️ 한국어 기준(TOPIK) 충족 여부에 따라 방학·주말 허용시간이 달라집니다.<br>D-2(석박사·교환) TOPIK 4급↑: 방학 무제한 | TOPIK 미충족: 방학도 주 15시간 | D-4: 방학도 주 20시간 고정</div>
       <div class="options">
         <div class="option" data-q="6" data-v="SEMESTER" onclick="pick(this)"><span class="opt-label" data-i18n="SEMESTER">학기 중</span></div>
         <div class="option" data-q="6" data-v="VACATION" onclick="pick(this)"><span class="opt-label" data-i18n="VACATION">방학 중</span></div>
@@ -427,17 +441,18 @@ body{
       <div class="q-text" data-i18n="q8text">어떤 일을 하고 싶어요?</div>
       <div class="q-sub" data-i18n="q8sub">⚠️ 아래 금지 업종을 먼저 확인하고, 원하는 허용 업종을 선택하세요</div>
       <div class="banned-notice-box">
-        <div class="banned-notice-title">🚫 유학생이 절대 할 수 없는 업종 (법으로 금지)</div>
+        <div class="banned-notice-title">⚠️ D-2/D-4 유학생 시간제취업에서 제한되거나 허가가 어려운 업종</div>
+        <p style="font-size:0.78rem;color:#7f1d1d;margin-bottom:10px;line-height:1.55">아래 업종은 출입국 허가가 제한될 수 있습니다. 근무 전 반드시 학교 국제처와 출입국 1345에 확인하세요.</p>
         <ul class="banned-notice-list">
-          <li><strong>건설·공사 현장</strong> — 비자 무관 절대 금지 (출입국관리법 시행령)</li>
-          <li><strong>배달·택배</strong> (오토바이·자전거 라이더, 배달앱 라이더) — 특수형태근로, 법적 고용관계 없음</li>
-          <li><strong>대리운전·방문판매·선원</strong> 등 특수형태근로 전반</li>
-          <li><strong>외국어 강사·개인과외</strong> (영어키즈카페, 개인 회화과외, 영어캠프 강사) — E-2 비자 전용</li>
-          <li><strong>IT·개발·연구·컨설팅</strong> 등 지식산업 전문직 — E-7 비자 전용 (취업비자 필요)</li>
-          <li><strong>유흥·풍속 업소</strong> (주점, 단란주점, 마사지업소) — 외국인 전원 금지</li>
-          <li><strong>제조업·공장</strong> — 원칙적 금지. 단, TOPIK 4급 이상 보유 시 별도 허가 신청으로 예외 허용 가능 (건설업은 TOPIK 무관 절대 금지)<br><span style="font-size:0.76rem;color:#9b1c1c">※ 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」(법령이 아닌 행정 내부 지침) — 반드시 학교 국제처 또는 출입국사무소에 먼저 확인하세요</span></li>
+          <li><strong>건설·공사 현장</strong> — D-2/D-4 유학생 시간제취업에서는 금지 업종으로 안내됩니다</li>
+          <li><strong>제조업·공장</strong> — 원칙적 제한. TOPIK 4급 이상 + 별도 허가 신청 시 예외 가능. 반드시 학교 국제처·출입국 사전 확인<br><span style="font-size:0.76rem">※ 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」(행정 내부 지침)</span></li>
+          <li><strong>외국어교육·개인과외·키즈카페 강사</strong> — 제한 또는 별도 자격 필요. 직무 성격에 따라 출입국 사전 확인 필수</li>
+          <li><strong>배달·택배 라이더</strong> — 플랫폼 배달대행처럼 직접 고용계약이 불명확한 활동은 허가 불가</li>
+          <li><strong>파견·도급·특수형태근로</strong> — 대리운전·방문판매·선원 등 포함</li>
+          <li><strong>IT·전문직·지식산업 전문 업무</strong> — 별도 취업비자(E-7 등)가 필요한 전문직 업무</li>
+          <li><strong>유흥·풍속 업소</strong> — 주점, 단란주점, 마사지업소 등 외국인 취업 금지</li>
         </ul>
-        <div class="banned-notice-note">※ 위 업종에 종사하다 적발 시: 출국명령·강제퇴거·입국금지 처분 가능 (출입국관리법 제46조, 제94조)</div>
+        <div class="banned-notice-note">⚠️ 이 목록은 완전하지 않으며 개별 상황에 따라 다를 수 있어요. 허가받지 않은 업종 종사 시 비자 취소·강제퇴거 가능 (출입국관리법 제46조, 제94조)</div>
       </div>
       <div class="options">
         <div class="option" data-q="8" data-v="FOOD" onclick="pick(this)"><span class="opt-label">🍽️ 음식점·카페 (서빙, 주방 보조)</span></div>
@@ -457,6 +472,7 @@ body{
   <!-- ⑤ Result -->
   <div id="result">
     <div id="res-verdict"></div>
+    <div id="res-disclaimer"></div>
     <div id="res-checklist"></div>
     <div id="res-actions"></div>
     <div id="res-matching-form"></div>
@@ -481,26 +497,26 @@ if (IS_TEST) {
 const T = {
 
 ko: {
-  badge:'법무부 출입국 공식 기준 · 대학원생 맞춤',
+  badge:'법무부·하이코리아 기준 참고 · D-2/D-4 유학생 시간제취업 안내',
   h1:'나 한국에서 알바해도 될까? 🤔',
-  subtitle:'7가지 질문으로 합법 여부를 즉시 확인해요',
-  prog: s => `${s} / 7`, progResult:'결과 보기',
+  subtitle:'8가지 질문으로 허가 가능성을 확인해요',
+  prog: s => `${s} / 8`, progResult:'결과 보기',
   btnNext:'다음 →', btnPrev:'← 이전', btnSubmit:'결과 확인하기', btnRestart:'처음부터 다시 하기',
   q1num:'질문 1', q1text:'지금 어떤 비자로 한국에 있어요?', q1sub:'⚠️ 외국인등록증이나 여권에 적힌 비자 종류를 확인해보세요. 대학원(석·박사)이면 D-2 석·박사과정을 선택하세요.',
   q2num:'질문 2', q2text:'한국에 들어온 지 얼마나 됐어요?', q2sub:'⚠️ 교환학생·방문연구생은 입국 후 6개월이 지나야 허가 신청이 가능해요',
-  q3num:'질문 3', q3text:'지금 학교에 다니고 있어요?', q3sub:'⚠️ 휴학 중이거나 이번 학기에 졸업하는 분은 알바가 안 돼요',
-  q4num:'질문 4', q4text:'학점·출석 기준을 확인해주세요', q4sub:'⚠️ 허가 신청 시 학교 국제처에서 성적증명서·출석확인서를 확인해요.<br>· D-2 비자: 직전학기 학점 2.0 이상, 출석률 70% 이상<br>· D-4 비자: 출석률 90% 이상<br><span style="font-size:0.78rem;color:#a16207">📌 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」(시간제취업 섹션) · 출입국관리법 제20조 · <a href="https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=6&cnpClsNo=1" target="_blank" style="color:#a16207;text-decoration:underline">찾기쉬운 생활법령정보</a></span>',
+  q3num:'질문 3', q3text:'지금 학교에 다니고 있어요?', q3sub:'⚠️ 휴학·졸업/수료 상태는 원칙적으로 허가가 제한돼요. 단, 석박사 수료 후 논문준비생은 예외 가능 — 국제처·출입국(1345) 확인 필수',
+  q4num:'질문 4', q4text:'학점·출석 기준을 확인해주세요', q4sub:'⚠️ 기준 충족 여부는 학교 국제처에서 먼저 확인해요.<br>· D-2 비자: 직전학기 평균 C/2.0 이상. 출석 기준은 학교마다 다를 수 있어요<br>· D-4 비자: 출석률 90% 이상 (학교별 확인 필요)<br><span style="font-size:0.78rem;color:#a16207">📌 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」 · 출입국관리법 제20조 · <a href="https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=508&ccfNo=3&cciNo=6&cnpClsNo=1" target="_blank" style="color:#a16207;text-decoration:underline">찾기쉬운 생활법령정보</a></span>',
   q5num:'질문 5', q5text:'TOPIK(한국어 시험) 등급이 어떻게 돼요?', q5sub:'⚠️ 등급이 높을수록 더 많이 일할 수 있어요',
-  q6num:'질문 6', q6text:'지금 학기예요, 방학이에요?', q6sub:'⚠️ 방학 중 변화: D-2(석박사·학부) → 시간제한 없음(무제한) | D-4(어학연수) → 항상 주 20시간 고정 (방학에도 동일)',
+  q6num:'질문 6', q6text:'지금 학기예요, 방학이에요?', q6sub:'⚠️ TOPIK 충족 여부에 따라 방학 허용시간이 달라져요.<br>D-2(석박사·교환) TOPIK 4급↑: 방학 무제한 | TOPIK 미충족: 방학도 주 15시간 | D-4: 방학도 주 20시간 고정',
   q7num:'질문 7', q7text:'일주일에 몇 시간 일하고 싶어요?', q7sub:'⚠️ 비자와 TOPIK 등급에 따라 최대 시간이 달라요',
   q8num:'질문 8', q8text:'어떤 일을 하고 싶어요?', q8sub:'⚠️ 아래 금지 업종을 먼저 확인하고, 원하는 허용 업종을 선택하세요',
   'D2-UG-12':'대학교 1~2학년 (D-2 비자)', 'D2-UG-34':'대학교 3~4학년 (D-2 비자)',
   'D2-GR':'대학원생 — 석사·박사 (D-2 비자)', 'D2-VS':'교환학생·방문학생 (D-2 비자)',
   'D4':'어학원·기술 연수생 (D-4 비자)', 'OTHER':'그 외 비자 (C-3, F-1 등)',
   'LT3':'3개월이 안 됐어요', '3TO6':'3개월은 넘었지만 6개월은 안 됐어요', 'GT6':'6개월 이상 됐어요',
-  'ENROLLED':'지금 다니고 있어요 (재학 중)', 'LEAVE':'지금 휴학 중이에요', 'GRAD':'이번 학기에 졸업해요',
-  'GOOD':'기준 충족 (학점 2.0+, 출석 70% 이상)', 'GPA_LOW':'기준 미달 (학점 부족 또는 출석 70% 미만)', 'FIRST':'첫 학기 (성적 없음) — 신청 가능해요',
-  'TOPIK5':'5급 이상', 'TOPIK4':'4급', 'TOPIK3':'3급', 'TOPIK12':'1~2급 또는 만료됨', 'NONE':'없어요',
+  'ENROLLED':'지금 다니고 있어요 (재학 중)', 'LEAVE':'지금 휴학 중이에요', 'GRAD':'졸업예정 / 수료 중이에요',
+  'GOOD':'기준 충족 (직전학기 평균 C/2.0 이상)', 'GPA_LOW':'기준 미달 (학점 부족 또는 출석 기준 미충족)', 'FIRST':'첫 학기 (성적 없음) — 신청 가능해요',
+  'TOPIK5':'5급 이상', 'TOPIK4':'4급', 'TOPIK3':'3급', 'TOPIK12':'1~2급 (만료 시 학교·출입국 확인 필요)', 'NONE':'없어요',
   'SEMESTER':'학기 중이에요', 'VACATION':'방학이에요',
   'H10':'10시간 이하', 'H15':'11~15시간', 'H20':'16~20시간', 'H25':'21~25시간', 'H30':'26~30시간', 'H35':'31~35시간', 'HMAX':'제한 없이 풀타임으로 일하고 싶어요',
   'FOOD':'음식점·카페 (서빙, 주방 보조)', 'RETAIL':'편의점·마트 (계산, 진열)',
@@ -544,10 +560,11 @@ ko: {
   resOkF4Sub:'재외동포비자(F-4)로 대부분의 업종에서 취업 가능해요. 단순노무직은 제외됩니다.',
   rNoStay:'D-4 비자나 교환학생은 한국에 들어온 지 6개월이 지나야 알바를 할 수 있어요.',
   rNoLeave:'휴학 중에는 알바 허가가 안 나와요. 복학하고 나서 다시 신청해보세요.',
-  rNoGrad:'이번 학기에 졸업하는 상태에서는 알바 허가가 제한돼요.',
-  rNoConstruction:'건설·공사 현장 일은 유학생 비자로는 절대 안 돼요.',
+  rNoGrad:'졸업예정·수료 상태에서는 재학 요건이 충족되지 않아 허가 신청이 제한됩니다.',
+  rWarnGradThesis:'수료 후 논문준비 중인 경우, 예외적으로 시간제취업 허가가 가능할 수 있습니다. 반드시 학교 국제처와 관할 출입국·외국인관서(☎ 1345)에 개별 확인이 필요합니다.',
+  rNoConstruction:'건설·공사 현장은 D-2/D-4 유학생 시간제취업에서 금지 업종으로 안내되는 업종이에요.',
   rNoDelivery:'오토바이나 자전거 배달은 유학생이 할 수 없어요.',
-  rNoLangTeacher:'외국어 강사·개인과외·영어키즈카페는 유학생이 할 수 없어요. E-2 비자 소지자만 가능한 직종이에요.',
+  rNoLangTeacher:'외국어교육·개인과외·키즈카페 강사 등은 D-2/D-4 시간제취업에서 제한 또는 별도 자격이 필요한 업종이에요. 직무 성격에 따라 다를 수 있으므로 출입국(1345)에 사전 확인하세요.',
   rNoProfessional:'IT·개발·연구·컨설팅 등 지식산업 업무는 유학생이 할 수 없어요. 정식 취업(E-7 비자) 이후에만 가능해요.',
   rNoPlatform:'대리기사, 방문판매원, 선원, 택배기사 등 특수형태근로는 유학생 비자로는 할 수 없어요.',
   rNoEntertainment:'유흥·풍속 업소(주점, 단란주점, 마사지 등)는 모든 외국인에게 취업이 금지돼 있어요.',
@@ -605,7 +622,7 @@ function playClick() {
 //  NAVIGATION
 // ═══════════════════════════════════════════
 function updateProgress(step) {
-  const pct = Math.round((step / 7) * 100);
+  const pct = Math.round((step / 8) * 100);
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-pct').textContent = pct + '%';
   document.getElementById('prog-step').textContent = tf('prog', step);
@@ -632,7 +649,11 @@ function pick(el) {
       earlySubmit(); return;
     }
   } else if (q === '3') {
-    if (answers.q3 === 'LEAVE' || answers.q3 === 'GRAD') {
+    if (answers.q3 === 'LEAVE') {
+      setTimeout(earlySubmit, 600); return;
+    }
+    // D2-GR(석박사) + GRAD: 논문준비생 예외 가능 → 계속 진행(warn으로 처리)
+    if (answers.q3 === 'GRAD' && answers.q1 !== 'D2-GR') {
       setTimeout(earlySubmit, 600); return;
     }
   }
@@ -740,7 +761,7 @@ function updateTopikOptions() {
     {v:'TOPIK5', label:'TOPIK 5급 이상', num:5},
     {v:'TOPIK4', label:'TOPIK 4급',      num:4},
     {v:'TOPIK3', label:'TOPIK 3급',      num:3},
-    {v:'TOPIK12',label:'TOPIK 1~2급 또는 만료', num:1},
+    {v:'TOPIK12',label:'TOPIK 1~2급 (만료 여부 확인 필요)', num:1},
     {v:'NONE',   label:'TOPIK 없음',     num:0},
   ];
 
@@ -823,7 +844,7 @@ function computeResult() {
   // Allowed hours per week (TOPIK 등급 반영)
   const maxHours = calcMaxHours(visa, topik, semester);
 
-  const wantMap = {H10:10, H20:20, H25:25, H30:30, H35:35, HMAX:9999};
+  const wantMap = {H10:10, H15:15, H20:20, H25:25, H30:30, H35:35, HMAX:9999};
   const wantNum = wantMap[hours] || 10;
   const hoursOk = wantNum <= maxHours;
 
@@ -833,7 +854,12 @@ function computeResult() {
   } else if (!stayOk) {
     status = 'no'; reasonKeys.push('rNoStay');
   } else if (!enrollOk) {
-    status = 'no'; reasonKeys.push(enroll === 'LEAVE' ? 'rNoLeave' : 'rNoGrad');
+    if (enroll === 'GRAD' && visa === 'D2-GR') {
+      // 석박사 수료 후 논문준비생은 예외 가능 → warn
+      status = 'warn'; reasonKeys.push('rWarnGradThesis');
+    } else {
+      status = 'no'; reasonKeys.push(enroll === 'LEAVE' ? 'rNoLeave' : 'rNoGrad');
+    }
   } else if (industryBanned) {
     status = 'no';
     if (industry === 'CONSTRUCTION')  reasonKeys.push('rNoConstruction');
@@ -882,6 +908,16 @@ function renderResult() {
       <div class="verdict-sub">${subMap[r.status]}</div>`;
   }
 
+  // ── 1b. Legal disclaimer ──
+  const disclaimerEl = document.getElementById('res-disclaimer');
+  if (disclaimerEl) {
+    disclaimerEl.className = 'legal-disclaimer';
+    disclaimerEl.innerHTML = `
+      <div class="ld-title">⚖️ 이 결과는 사전 점검용 안내입니다 — 법률 자문이 아닙니다</div>
+      <div class="ld-body">유학생 시간제취업은 <strong>근무 시작 전 출입국 허가가 반드시 필요</strong>하며, 근무지 변경 시에도 신고가 필요합니다. 최종 허가 여부는 학교 국제처 및 관할 출입국·외국인관서(☎ 1345)에서 확인하세요.<br>
+      <span style="font-size:0.75rem;margin-top:6px;display:block;color:#78350f">📋 HiKorea 공식 구비서류: 근로계약서 · 유학생시간제취업 확인서 · 성적/출석증명서 · 한국어능력 증빙서류</span></div>`;
+  }
+
   // ── 2. Checklist ──
   renderChecklist(r);
 
@@ -910,8 +946,8 @@ function renderChecklist(r) {
 
   const visaNames  = {'D2-GR':'D-2 (석·박사과정)','D2-VS':'D-2 (교환학생·방문연구생)','F2':'F-2 (거주비자)','F4':'F-4 (재외동포)','F5':'F-5 (영주권)','F6':'F-6 (결혼이민)','F1':'F-1 (방문동거)','F3':'F-3 (동반비자)','OTHER':'기타 비자'};
   const stayNames  = {'LT3':'3개월 미만','3TO6':'3~6개월','GT6':'6개월 이상'};
-  const enrollNames= {'ENROLLED':'재학 중','LEAVE':'휴학 중','GRAD':'졸업예정'};
-  const gradeNames = {'GOOD':'기준 충족 (학점 2.0+, 출석 70%+)','GPA_LOW':'기준 미달','FIRST':'첫 학기 (성적 없음)'};
+  const enrollNames= {'ENROLLED':'재학 중','LEAVE':'휴학 중','GRAD':'졸업예정/수료'};
+  const gradeNames = {'GOOD':'기준 충족 (직전학기 C/2.0 이상)','GPA_LOW':'기준 미달','FIRST':'첫 학기 (성적 없음)'};
   const topikNames = {'TOPIK5':'5급 이상','TOPIK4':'4급','TOPIK3':'3급','TOPIK12':'1~2급 또는 만료','NONE':'없음'};
   const semNames   = {'SEMESTER':'학기 중','VACATION':'방학 중'};
   const hoursNames = {'H10':'주 10시간 이하','H15':'주 11~15시간','H20':'주 16~20시간','H25':'주 21~25시간','H30':'주 26~30시간','H35':'주 31~35시간','HMAX':'제한 없이 풀타임'};
@@ -1009,14 +1045,23 @@ function renderChecklist(r) {
   }
 
   // ③ 학적 상태
-  const enrollState  = enrollOk ? 'ok' : 'no';
-  const enrollReason = !enrollOk
-    ? (enroll==='LEAVE'
-        ? '휴학 중에는 재학생 신분이 아니므로 시간제취업 허가를 신청할 수 없습니다. 복학 후 다시 신청해야 합니다.'
-        : '졸업예정·수료 상태에서는 재학 요건이 충족되지 않아 허가 신청이 제한됩니다.')
-    : null;
-  rows += row('③ 학적 상태', enrollNames[enroll]||enroll, enrollState, enrollReason,
-    enrollReason ? '법무부 「외국인유학생 체류관리지침」 — 재학 중인 유학생에 한해 허가' : null);
+  let enrollState  = enrollOk ? 'ok' : 'no';
+  let enrollReason = null;
+  let enrollCite   = null;
+  if (!enrollOk) {
+    if (enroll === 'LEAVE') {
+      enrollReason = '휴학 중에는 재학생 신분이 아니므로 시간제취업 허가를 신청할 수 없습니다. 복학 후 다시 신청해야 합니다.';
+      enrollCite = '법무부 「외국인유학생 체류관리지침」 — 재학 중인 유학생에 한해 허가';
+    } else if (enroll === 'GRAD' && visa === 'D2-GR') {
+      enrollState  = 'warn';
+      enrollReason = '수료 후 논문준비 중인 경우 예외적으로 허가가 가능할 수 있습니다. 반드시 학교 국제처와 관할 출입국·외국인관서(☎ 1345)에 개별 확인이 필요합니다.';
+      enrollCite   = '법무부 「외국인유학생 체류관리지침」 — 석·박사 논문준비생 예외 규정 확인 필요';
+    } else {
+      enrollReason = '졸업예정·수료 상태에서는 재학 요건이 충족되지 않아 허가 신청이 제한됩니다.';
+      enrollCite = '법무부 「외국인유학생 체류관리지침」 — 재학 중인 유학생에 한해 허가';
+    }
+  }
+  rows += row('③ 학적 상태', enrollNames[enroll]||enroll, enrollState, enrollReason, enrollCite);
 
   // ④ 학점·출석 (재학 중이고 비자가 유효한 경우만)
   if (enrollOk && visa!=='OTHER') {
