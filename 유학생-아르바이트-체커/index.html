@@ -24,7 +24,12 @@
   --ok:#059669;--warn:#d97706;--no:#dc2626;
 }
 body{
-  background:linear-gradient(160deg,#eef2ff 0%,#f5f3ff 50%,#fdf4ff 100%);
+  background:
+    radial-gradient(ellipse at 10% 55%, rgba(180,212,248,0.72) 0%, transparent 52%),
+    radial-gradient(ellipse at 75% 95%, rgba(248,224,210,0.55) 0%, transparent 45%),
+    radial-gradient(ellipse at 65% 5%,  rgba(200,222,248,0.45) 0%, transparent 48%),
+    radial-gradient(ellipse at 95% 40%, rgba(245,240,255,0.35) 0%, transparent 40%),
+    #f2f6fb;
   background-attachment:fixed;
   color:var(--text);
   font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR','Segoe UI',sans-serif;
