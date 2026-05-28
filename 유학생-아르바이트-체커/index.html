@@ -294,18 +294,21 @@ body{
 .action-step-detail{font-size:0.76rem;color:var(--muted);margin-top:2px}
 .action-links{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 
-/* ── D-2 비교표 ── */
-.d2-compare-box{margin-top:14px;background:#f8f7ff;border:1.5px solid #c7d2fe;border-radius:12px;padding:14px;font-size:0.78rem}
-.d2-compare-title{font-weight:700;color:var(--accent);margin-bottom:10px;font-size:0.79rem}
+/* ── 비자 안내 통합 박스 ── */
+.visa-info-box{margin-top:14px;background:#f8f7ff;border:1.5px solid #c7d2fe;border-radius:14px;overflow:hidden;font-size:0.78rem}
+.visa-info-section{padding:14px}
+.visa-info-divider{height:1px;background:#e0e7ff}
+.visa-info-title{font-weight:700;color:var(--accent);margin-bottom:10px;font-size:0.8rem}
 .d2-compare-table{width:100%;border-collapse:collapse}
 .d2-compare-table th{background:#eef2ff;color:var(--accent);font-size:0.71rem;padding:5px 6px;text-align:center;font-weight:700}
 .d2-compare-table th:first-child{text-align:left}
-.d2-compare-table td{padding:6px 6px;text-align:center;border-bottom:1px solid #e0e7ff;color:var(--text);font-size:0.77rem}
+.d2-compare-table td{padding:7px 6px;text-align:center;border-bottom:1px solid #e0e7ff;color:var(--text);font-size:0.77rem}
 .d2-compare-table tr:last-child td{border-bottom:none}
 .d2-compare-table td:first-child{font-weight:600;text-align:left;color:var(--accent)}
-.d2-compare-table .td-disabled{color:#9ca3af;font-style:italic}
-.d2-compare-table .td-best{font-weight:700;color:#059669}
-.d2-compare-note{margin-top:8px;color:var(--muted);font-size:0.73rem;line-height:1.5}
+.d2-compare-table .td-no{color:#dc2626;font-weight:700}
+.d2-compare-table .td-best{font-weight:700;color:#4f46e5}
+.visa-info-note{margin-top:10px;background:#eef2ff;border-radius:8px;padding:9px 11px;color:#3730a3;font-size:0.76rem;font-weight:600;line-height:1.6}
+.visa-info-body{color:#374151;line-height:1.75;font-size:0.79rem}
 
 /* ── Card News Carousel ── */
 .card-news-section{margin-bottom:16px}
@@ -381,30 +384,38 @@ body{
         <div class="option" data-q="1" data-v="D2-VS" onclick="pick(this)"><span class="opt-label">D-2 — 교환학생 / 방문연구생</span></div>
         <div class="option" data-q="1" data-v="D4" onclick="pick(this)"><span class="opt-label">D-4 — 어학원·언어연수생</span></div>
       </div>
-      <div class="d2-compare-box">
-        <div class="d2-compare-title">📊 D-2 비자 근무 가능 시간 비교 (학기 중)</div>
-        <table class="d2-compare-table">
-          <tr><th>D-2 구분</th><th>TOPIK 없음</th><th>4급</th><th>5급↑</th></tr>
-          <tr>
-            <td>석·박사과정</td>
-            <td>주 15h</td>
-            <td class="td-best">주 30h</td>
-            <td class="td-best">주 35h ⭐</td>
-          </tr>
-          <tr>
-            <td>교환·방문연구생</td>
-            <td class="td-disabled">신청 불가</td>
-            <td>주 25h</td>
-            <td class="td-best">주 30h</td>
-          </tr>
-        </table>
-        <p class="d2-compare-note">※ 방학 중 TOPIK 4급↑이면 두 유형 모두 근무시간 무제한 · D-4는 방학 중에도 주 20시간 고정</p>
-      </div>
-      <div style="margin-top:14px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-left:3px solid #16a34a;border-radius:10px;font-size:0.8rem;color:#14532d;line-height:1.7">
-        <strong>📎 F계열 비자를 가지고 있다면?</strong><br>
-        F-2(거주) · F-4(재외동포) · F-5(영주) · F-6(결혼이민)은 별도 허가 없이 대부분의 업종에서 자유롭게 취업할 수 있어요.<br>
-        단, F-4는 단순노무(건설일용직·단순서비스직 등)는 불가합니다.<br>
-        F-1(방문동거) · F-3(동반비자)는 원칙적으로 취업이 허용되지 않습니다.
+      <div class="visa-info-box">
+        <!-- D-2 비교표 -->
+        <div class="visa-info-section">
+          <div class="visa-info-title">📊 D-2 비자 근무 가능 시간 비교 (학기 중)</div>
+          <table class="d2-compare-table">
+            <tr><th>D-2 구분</th><th>TOPIK 없음</th><th>4급</th><th>5급↑</th></tr>
+            <tr>
+              <td>석·박사과정</td>
+              <td>주 15h</td>
+              <td class="td-best">주 30h</td>
+              <td class="td-best">주 35h ★</td>
+            </tr>
+            <tr>
+              <td>교환·방문연구생</td>
+              <td class="td-no">✗ 신청 불가</td>
+              <td>주 25h</td>
+              <td class="td-best">주 30h</td>
+            </tr>
+          </table>
+          <div class="visa-info-note">📅 방학 중 + TOPIK 4급↑ → 석박사·교환 모두 근무시간 무제한 / D-4는 방학에도 주 20시간 고정</div>
+        </div>
+        <!-- 구분선 -->
+        <div class="visa-info-divider"></div>
+        <!-- F계열 비자 안내 -->
+        <div class="visa-info-section">
+          <div class="visa-info-title">📎 F계열 비자라면?</div>
+          <div class="visa-info-body">
+            <strong>자유취업 가능</strong> — F-2(거주) · F-4(재외동포) · F-5(영주) · F-6(결혼이민)<br>
+            <span style="font-size:0.75rem;color:#6b7280">단, F-4는 단순노무(건설일용직·단순서비스직)는 불가</span><br>
+            <strong>취업 불가</strong> — F-1(방문동거) · F-3(동반비자)
+          </div>
+        </div>
       </div>
     </div>
     <div class="btn-row">
