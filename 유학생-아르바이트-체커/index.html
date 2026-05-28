@@ -37,7 +37,8 @@ body{
 /* ── Hero ── */
 .hero{text-align:center;margin-bottom:32px}
 .badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1px solid #c7d2fe;border-radius:20px;padding:5px 14px;font-size:0.76rem;color:var(--accent);margin-bottom:16px;font-weight:600}
-.hero h1{font-size:1.8rem;font-weight:800;line-height:1.25;margin-bottom:8px;letter-spacing:-0.02em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1{font-size:1.8rem;font-weight:800;line-height:1.25;margin-bottom:8px;letter-spacing:-0.02em;color:var(--text)}
+.hero h1 .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero p{color:var(--sub);font-size:0.9rem;font-weight:400}
 
 /* ── Progress ── */
@@ -273,7 +274,7 @@ body{
   <!-- ② Hero -->
   <div class="hero">
     <div class="badge">🇰🇷 <span data-i18n="badge">법무부·하이코리아 기준 참고 · D-2/D-4 유학생 시간제취업 안내</span></div>
-    <h1 data-i18n="h1">나 한국에서 알바해도 될까? 🤔</h1>
+    <h1><span class="grad-text">나 한국에서 알바해도 될까?</span> 🤔</h1>
     <p data-i18n="subtitle">8가지 질문으로 허가 가능성을 확인해요</p>
     <p style="font-size:0.74rem;color:var(--muted);margin-top:8px;line-height:1.65">최종 허가 여부는 학교 국제처와 관할 출입국·외국인관서에서 확인해야 합니다</p>
   </div>
