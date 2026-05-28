@@ -637,7 +637,7 @@ ko: {
   'DELIVERY':'배달·택배 🚫', 'PLATFORM':'특수형태근로 🚫',
   'MANUFACTURE':'제조업·공장 🚫', 'CONSTRUCTION':'건설·공사 현장 🚫',
   'ENTERTAINMENT':'유흥·풍속 업소 🚫', 'OTHER_IND':'아직 정하지 않았음',
-  resOkTitle:'알바 가능해요! ✅', resWarnTitle:'조건부로 가능해요 ⚠️', resNoTitle:'지금은 알바가 안 돼요 ❌',
+  resOkTitle:'알바 가능해요!', resWarnTitle:'조건부로 가능해요 ⚠️', resNoTitle:'지금은 알바가 안 돼요 ❌',
   resOkSub:'지금 상황이면 합법적으로 알바할 수 있어요.', resWarnSub:'가능하긴 한데, 아래 주의사항을 꼭 읽어보세요.', resNoSub:'지금은 알바를 하면 안 돼요. 이유와 준비 방법을 알려드릴게요.',
   icVisaLabel:'비자', icHoursLabel:'주당 최대', icTopikLabel:'TOPIK', icSemLabel:'지금',
   maxHoursLabel: h => h === 9999 ? '무제한' : `주 ${h}시간까지`,
@@ -668,7 +668,7 @@ ko: {
   rNoF1F3:'F-1(방문동거)·F-3(동반) 비자는 원칙적으로 취업이 허용되지 않아요. 취업하려면 출입국사무소에서 체류자격 변경 또는 체류자격 외 활동 허가를 별도로 받아야 해요.',
   resOkFreeTitle:'자유롭게 알바 가능해요! 🎉',
   resOkFreeSub:'이 비자는 별도 허가 없이 대부분의 업종에서 일할 수 있어요.',
-  resOkF4Title:'알바 가능해요! ✅',
+  resOkF4Title:'알바 가능해요!',
   resOkF4Sub:'재외동포비자(F-4)로 대부분의 업종에서 취업 가능해요. 단순노무직은 제외됩니다.',
   rNoStay:'D-4 비자나 교환학생은 한국에 들어온 지 6개월이 지나야 알바를 할 수 있어요.',
   rNoLeave:'휴학 중에는 알바 허가가 안 나와요. 복학하고 나서 다시 신청해보세요.',
@@ -1159,9 +1159,9 @@ function renderResult() {
 
   // ── 1. Verdict card ──
   const verdictEl = document.getElementById('res-verdict');
-  const iconMap = {ok:'✅', warn:'⚠️', no:'❌'};
+  const iconMap = {ok:'', warn:'⚠️', no:'❌'};
   const titleMap = {
-    ok: r.freeVisa ? (r.isF4 ? '알바 가능해요! ✅' : '자유롭게 알바 가능해요! 🎉') : '알바 가능해요! ✅',
+    ok: r.freeVisa ? (r.isF4 ? '알바 가능해요!' : '자유롭게 알바 가능해요! 🎉') : '알바 가능해요!',
     warn: '조건부로 가능해요 ⚠️',
     no: '지금은 알바가 안 돼요 ❌'
   };
