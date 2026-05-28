@@ -1,79 +1,56 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f5f5f7"/>
-      <stop offset="100%" style="stop-color:#e8e8ed"/>
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
     </linearGradient>
-    <linearGradient id="acc" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#0071e3"/>
-      <stop offset="100%" style="stop-color:#147ce5"/>
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05"/>
     </linearGradient>
-    <filter id="shadow">
-      <feDropShadow dx="0" dy="4" stdDeviation="16" flood-color="#00000018"/>
-    </filter>
   </defs>
 
-  <!-- BG -->
+  <!-- Background -->
   <rect width="1200" height="630" fill="url(#bg)"/>
 
-  <!-- Decorative soft circles -->
-  <circle cx="1080" cy="80" r="220" fill="rgba(0,113,227,0.05)"/>
-  <circle cx="1130" cy="560" r="160" fill="rgba(0,113,227,0.04)"/>
-  <circle cx="60" cy="580" r="140" fill="rgba(0,113,227,0.03)"/>
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="80" r="200" fill="white" fill-opacity="0.05"/>
+  <circle cx="150" cy="550" r="180" fill="white" fill-opacity="0.05"/>
+  <circle cx="1100" cy="520" r="120" fill="white" fill-opacity="0.04"/>
 
-  <!-- Left accent bar -->
-  <rect x="80" y="148" width="6" height="120" rx="3" fill="url(#acc)"/>
+  <!-- Card background -->
+  <rect x="60" y="60" width="1080" height="510" rx="32" fill="url(#card-grad)" stroke="white" stroke-opacity="0.2" stroke-width="1.5"/>
 
-  <!-- Main title -->
-  <text x="110" y="215" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="62" font-weight="800" fill="#1d1d1f">나 한국에서 알바해도 될까? 🤔</text>
+  <!-- Badge -->
+  <rect x="100" y="110" width="340" height="48" rx="24" fill="white" fill-opacity="0.2"/>
+  <text x="120" y="142" font-family="Arial, sans-serif" font-size="26" fill="white">🇰🇷</text>
+  <text x="158" y="142" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="white" fill-opacity="0.95">D-2 / D-4 유학생 전용</text>
+
+  <!-- Main title line 1 -->
+  <text x="100" y="255" font-family="Arial, sans-serif" font-size="72" font-weight="900" fill="white" letter-spacing="-2">나도 한국에서</text>
+
+  <!-- Main title line 2 -->
+  <text x="100" y="345" font-family="Arial, sans-serif" font-size="72" font-weight="900" fill="white" letter-spacing="-2">알바해도 될까? 🤔</text>
+
+  <!-- Divider -->
+  <line x1="100" y1="375" x2="520" y2="375" stroke="white" stroke-opacity="0.3" stroke-width="2"/>
 
   <!-- Subtitle -->
-  <text x="110" y="262" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="28" fill="#6e6e73">유학생 아르바이트 합법 여부 즉시 확인</text>
+  <text x="100" y="418" font-family="Arial, sans-serif" font-size="30" fill="white" fill-opacity="0.85">8가지 질문으로 허가 가능성 즉시 확인</text>
 
-  <!-- Divider -->
-  <line x1="110" y1="292" x2="660" y2="292" stroke="#d2d2d7" stroke-width="1.5"/>
+  <!-- Footer note -->
+  <text x="100" y="520" font-family="Arial, sans-serif" font-size="20" fill="white" fill-opacity="0.55">법무부·하이코리아 기준 참고 · 최종 확인은 학교 국제처·출입국관서</text>
 
-  <!-- Step description -->
-  <text x="110" y="336" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="22" fill="#aeaeb2">8가지 질문 · 1분 이내 · 무료</text>
+  <!-- Right side decoration: check marks -->
+  <rect x="820" y="180" width="280" height="60" rx="14" fill="white" fill-opacity="0.12"/>
+  <text x="845" y="218" font-family="Arial, sans-serif" font-size="24" fill="white">✅ 비자 종류 확인</text>
 
-  <!-- Feature pills -->
-  <rect x="110" y="368" width="154" height="42" rx="21" fill="rgba(0,113,227,0.1)" stroke="#0071e3" stroke-width="1.2"/>
-  <text x="187" y="394" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="18" fill="#0071e3" text-anchor="middle">✅ 가능 여부 확인</text>
+  <rect x="820" y="258" width="280" height="60" rx="14" fill="white" fill-opacity="0.12"/>
+  <text x="845" y="296" font-family="Arial, sans-serif" font-size="24" fill="white">✅ 근무 가능 시간</text>
 
-  <rect x="278" y="368" width="148" height="42" rx="21" fill="rgba(52,199,89,0.1)" stroke="#34c759" stroke-width="1.2"/>
-  <text x="352" y="394" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="18" fill="#1a7a35" text-anchor="middle">🎁 무료 매칭</text>
+  <rect x="820" y="336" width="280" height="60" rx="14" fill="white" fill-opacity="0.12"/>
+  <text x="845" y="374" font-family="Arial, sans-serif" font-size="24" fill="white">✅ 즉시 결과 확인</text>
 
-  <rect x="440" y="368" width="168" height="42" rx="21" fill="rgba(255,149,0,0.1)" stroke="#ff9500" stroke-width="1.2"/>
-  <text x="524" y="394" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="18" fill="#994800" text-anchor="middle">📋 법무부 기준</text>
-
-  <!-- URL watermark -->
-  <text x="110" y="580" font-family="'Helvetica Neue',Arial,sans-serif" font-size="19" fill="#aeaeb2">test-me-ecru.vercel.app</text>
-
-  <!-- Right card: result mockup -->
-  <rect x="740" y="100" width="380" height="430" rx="22" fill="#ffffff" filter="url(#shadow)" stroke="#d2d2d7" stroke-width="1"/>
-
-  <!-- Card top accent -->
-  <rect x="740" y="100" width="380" height="5" rx="2.5" fill="url(#acc)"/>
-
-  <!-- Card content -->
-  <text x="930" y="210" font-family="sans-serif" font-size="64" text-anchor="middle">✅</text>
-  <text x="930" y="264" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="26" font-weight="700" fill="#1d1d1f" text-anchor="middle">알바 가능해요!</text>
-  <text x="930" y="296" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="17" fill="#6e6e73" text-anchor="middle">지금 상황에서 합법적으로 일할 수 있어요.</text>
-
-  <!-- Divider -->
-  <line x1="780" y1="320" x2="1080" y2="320" stroke="#d2d2d7" stroke-width="1"/>
-
-  <!-- Info pills inside card -->
-  <rect x="780" y="338" width="155" height="38" rx="10" fill="#f5f5f7" stroke="#d2d2d7" stroke-width="1"/>
-  <text x="857" y="362" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">D-2 학사과정</text>
-
-  <rect x="950" y="338" width="150" height="38" rx="10" fill="rgba(52,199,89,0.08)" stroke="#d2d2d7" stroke-width="1"/>
-  <text x="1025" y="362" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="14" fill="#1a7a35" text-anchor="middle">주 최대 30시간</text>
-
-  <rect x="780" y="390" width="320" height="38" rx="10" fill="#f5f5f7" stroke="#d2d2d7" stroke-width="1"/>
-  <text x="940" y="414" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">TOPIK 4급 · 학기 중</text>
-
-  <!-- Match CTA inside card -->
-  <rect x="780" y="450" width="320" height="50" rx="14" fill="#0071e3"/>
-  <text x="940" y="481" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="18" font-weight="600" fill="#ffffff" text-anchor="middle">🎁 무료 알바 매칭 신청하기</text>
+  <rect x="820" y="414" width="280" height="60" rx="14" fill="white" fill-opacity="0.12"/>
+  <text x="845" y="452" font-family="Arial, sans-serif" font-size="24" fill="white">✅ 완전 무료</text>
 </svg>
