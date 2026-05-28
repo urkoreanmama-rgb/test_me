@@ -422,7 +422,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD 
           <li><strong>외국어 강사·개인과외</strong> (영어키즈카페, 개인 회화과외, 영어캠프 강사) — E-2 비자 전용</li>
           <li><strong>IT·개발·연구·컨설팅</strong> 등 지식산업 전문직 — E-7 비자 전용 (취업비자 필요)</li>
           <li><strong>유흥·풍속 업소</strong> (주점, 단란주점, 마사지업소) — 외국인 전원 금지</li>
-          <li><strong>제조업·공장</strong> — 원칙적 금지, TOPIK 4급 이상 시 예외 허용</li>
+          <li><strong>제조업·공장</strong> — 원칙적 금지. 단, TOPIK 4급 이상 보유 시 별도 허가 신청으로 예외 허용 가능 (건설업은 TOPIK 무관 절대 금지)<br><span style="font-size:0.76rem;color:#9b1c1c">※ 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」(법령이 아닌 행정 내부 지침) — 반드시 학교 국제처 또는 출입국사무소에 먼저 확인하세요</span></li>
         </ul>
         <div class="banned-notice-note">※ 위 업종에 종사하다 적발 시: 출국명령·강제퇴거·입국금지 처분 가능 (출입국관리법 제46조, 제94조)</div>
       </div>
@@ -538,7 +538,7 @@ ko: {
   rNoProfessional:'IT·개발·연구·컨설팅 등 지식산업 업무는 유학생이 할 수 없어요. 정식 취업(E-7 비자) 이후에만 가능해요.',
   rNoPlatform:'대리기사, 방문판매원, 선원, 택배기사 등 특수형태근로는 유학생 비자로는 할 수 없어요.',
   rNoEntertainment:'유흥·풍속 업소(주점, 단란주점, 마사지 등)는 모든 외국인에게 취업이 금지돼 있어요.',
-  rNoManufacture:'제조업·공장 알바는 유학생 비자로는 허가가 나오지 않아요.',
+  rNoManufacture:'제조업·공장은 원칙적으로 금지 업종이에요. 단, TOPIK 4급 이상 보유 시 별도 허가 신청으로 예외 허용이 가능할 수 있어요. 대학원생(D-2)의 경우 적용 방식이 불명확하므로 학교 국제처 또는 관할 출입국사무소에 먼저 확인하세요. 근거: 법무부 「외국인유학생 사증발급 및 체류관리지침」',
   rWarnGrade:'학점이나 출석이 부족하면 허가가 거부될 수 있어요. 먼저 학교 외국인학생 담당 부서에 여쭤보세요.',
   rWarnHours: m => `지금 허용되는 최대 시간은 ${m}이에요. 그 안에서만 일해야 해요.`,
   rNoTopik:'알바를 하려면 먼저 TOPIK 시험에서 기준 등급을 받아야 해요.<br>(대학교 1~2학년: 3급 이상, 3~4학년·대학원·교환학생: 4급 이상)',
@@ -1234,7 +1234,7 @@ function renderMatchingForm(r) {
 
   el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
     <div class="section-title">🎁 알바 자리를 직접 연결해드릴까요?</div>
-    <p class="mf-desc">아래 정보를 남겨주세요. 담당자가 직접 연락해 <strong>무료로 자리를 연결</strong>해 드려요.</p>
+    <p class="mf-desc">아래에 정보를 남겨주세요. <strong>함께 아르바이트 업체를 찾아주고 합격에 도움</strong>을 드려요.</p>
     <div id="matching-form-fields">
       <div class="form-group">
         <label class="form-label">이름 <span class="req">*</span></label>
