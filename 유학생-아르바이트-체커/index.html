@@ -576,7 +576,7 @@ body{
         <div class="option" data-q="8" data-v="BEAUTY" onclick="pick(this)"><span class="opt-label">화장품·K뷰티 매장 (판매 보조) <span class="opt-hint opt-hint-ok">일반 판매보조 범주 허용</span></span></div>
         <div class="option" data-q="8" data-v="DUTYFREE" onclick="pick(this)"><span class="opt-label">면세점 (판매 보조) <span class="opt-hint opt-hint-ok">법무부 지침 명시 허용</span></span></div>
         <div class="option" data-q="8" data-v="TOURISM" onclick="pick(this)"><span class="opt-label">관광안내 보조 <span class="opt-hint opt-hint-ok">법무부 지침 명시 허용</span></span></div>
-        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">통역·번역 보조 <span class="opt-hint opt-hint-ok">법무부 지침 명시 허용</span></span></div>
+        <div class="option" data-q="8" data-v="TRANSLATE" onclick="pick(this)"><span class="opt-label">외국어 활용 판매·안내 (통역 포함) <span class="opt-hint opt-hint-ok">법무부 지침 명시 허용</span></span></div>
         <div class="option" data-q="8" data-v="EVENT" onclick="pick(this)"><span class="opt-label">행사·판촉 스태프 (이벤트 보조)</span></div>
         <div class="option" data-q="8" data-v="OTHER_IND" onclick="pick(this)"><span class="opt-label">아직 정하지 않았음</span></div>
       </div>
@@ -1249,7 +1249,7 @@ function renderKmomCta(r) {
         <li>업주가 직접 찾아와 채용 제안 (역제안 가능)</li>
         <li>쌍방 평가가 누적되어 다음 알바·취업의 신뢰 자산</li>
       </ul>
-      <a href="https://test-me-ecru.vercel.app/k-mom" target="_blank" rel="noopener" style="display:inline-block;background:#10b981;color:white;padding:0.7rem 1.4rem;border-radius:8px;font-size:0.9rem;font-weight:700;text-decoration:none;transition:background 0.15s">
+      <a href="https://k-mom-mu.vercel.app" target="_blank" rel="noopener" style="display:inline-block;background:#10b981;color:white;padding:0.7rem 1.4rem;border-radius:8px;font-size:0.9rem;font-weight:700;text-decoration:none;transition:background 0.15s">
         K-MOM 무료 가입 →
       </a>
     </div>
@@ -1279,7 +1279,7 @@ function renderChecklist(r) {
   const topikNames = {'TOPIK5':'5 ','TOPIK4':'4','TOPIK3':'3','TOPIK12':'1~2  ','NONE':''};
   const semNames   = {'SEMESTER':' ','VACATION':' '};
   const hoursNames = {'H10':' 10 ','H15':' 11~15','H20':' 16~20','H25':' 21~25','H30':' 26~30','H35':' 31~35','HMAX':'  '};
-  const indNames   = {'RESTAURANT':'식당 (서빙·주방보조)','CAFE':'카페·음료 (바리스타 보조·서빙)','FOOD':'음식점·카페 (서빙·주방보조)','RETAIL':'편의점·마트 (계산·진열)','BEAUTY':'화장품·K뷰티 매장 (판매 보조)','DUTYFREE':'면세점 (판매 보조)','TOURISM':'관광안내 보조','TRANSLATE':'통역·번역 보조','OFFICE':'단순 사무보조','EVENT':'행사·판촉 스태프','OTHER_IND':'아직 정하지 않았음'};
+  const indNames   = {'RESTAURANT':'식당 (서빙·주방보조)','CAFE':'카페·음료 (바리스타 보조·서빙)','FOOD':'음식점·카페 (서빙·주방보조)','RETAIL':'편의점·마트 (계산·진열)','BEAUTY':'화장품·K뷰티 매장 (판매 보조)','DUTYFREE':'면세점 (판매 보조)','TOURISM':'관광안내 보조','TRANSLATE':'외국어 활용 판매·안내 (통역 포함)','OFFICE':'단순 사무보조','EVENT':'행사·판촉 스태프','OTHER_IND':'아직 정하지 않았음'};
 
   //   row  (hint:      )
   let okCnt=0, warnCnt=0, noCnt=0;
@@ -1721,7 +1721,7 @@ function renderMatchingForm(r) {
   if (r.status === 'no') { el.innerHTML = ''; return; }
 
   //     
-  const IND_KO = {RESTAURANT:'식당', CAFE:'카페·음료', FOOD:'식당·카페', RETAIL:'편의점·마트', BEAUTY:'화장품·K뷰티', DUTYFREE:'면세점', TOURISM:'관광안내', TRANSLATE:'통역·번역', EVENT:'행사·판촉', OTHER_IND:'기타/미정'};
+  const IND_KO = {RESTAURANT:'식당', CAFE:'카페·음료', FOOD:'식당·카페', RETAIL:'편의점·마트', BEAUTY:'화장품·K뷰티', DUTYFREE:'면세점', TOURISM:'관광안내', TRANSLATE:'외국어 활용·안내', EVENT:'행사·판촉', OTHER_IND:'기타/미정'};
   const quizInd = answers.q8 || '';
   const indOptions = Object.entries(IND_KO).map(([v, label]) =>
     `<option value="${v}" ${v === quizInd ? 'selected' : ''}>${label}</option>`
