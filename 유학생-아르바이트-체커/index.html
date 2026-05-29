@@ -592,6 +592,7 @@ body{
     <div id="res-actions"></div>
     <div id="res-rights"></div>
     <div id="res-matching-form"></div>
+    <div id="res-kmom-cta"></div>
     <button class="btn-restart" onclick="restart()">   </button>
     <p class="saved-msg" id="saved-msg"></p>
   </div>
@@ -1207,8 +1208,48 @@ function renderResult() {
   //  4. Rights & Tax card 
   renderRightsCard(r);
 
-  //  5. Matching form 
+  //  5. Matching form
   renderMatchingForm(r);
+
+  //  6. K-MOM 신뢰 프로필 가입 CTA (가능/조건부 결과일 때만)
+  renderKmomCta(r);
+}
+
+// ═══════════════════════════════════════════
+//  K-MOM SIGNUP CTA (체커 → K-MOM 깔때기)
+// ═══════════════════════════════════════════
+function renderKmomCta(r) {
+  const el = document.getElementById('res-kmom-cta');
+  if (!el) return;
+  // 불가 결과면 CTA 안 보임
+  if (r.status === 'no') { el.innerHTML = ''; return; }
+
+  const isWarn = r.status === 'warn';
+  const headline = isWarn
+    ? '조건부 결과네요. K-MOM에서 신뢰 프로필을 만들어 보완하세요'
+    : '합법 채용 가능! 이제 K-MOM에서 신뢰 프로필을 만드세요';
+  const subline = isWarn
+    ? 'TOPIK 증빙·교수 추천서·학교 인증을 모으면 업주가 안심하고 뽑습니다.'
+    : '업주가 학생을 검색할 때 첫 번째로 보는 곳. 평가가 누적되면 경력이 됩니다.';
+
+  el.innerHTML = `
+    <div class="section" style="background:linear-gradient(135deg,#10b98115,#3b82f615);border:2px solid #10b98155;border-radius:14px;padding:1.5rem;margin-top:1rem">
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
+        <span style="background:#10b981;color:white;padding:0.2rem 0.6rem;border-radius:99px;font-size:0.7rem;font-weight:700">K-MOM · 무료</span>
+        <span style="font-size:0.7rem;color:var(--muted)">학생은 영원히 무료</span>
+      </div>
+      <div style="font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:0.4rem">${headline}</div>
+      <p style="font-size:0.88rem;color:var(--sub);line-height:1.5;margin:0 0 1rem">${subline}</p>
+      <ul style="font-size:0.85rem;color:var(--sub);line-height:1.7;padding-left:1.2rem;margin:0 0 1.2rem">
+        <li>비자·TOPIK·학교 인증 배지가 한 프로필에 모임</li>
+        <li>업주가 직접 찾아와 채용 제안 (역제안 가능)</li>
+        <li>쌍방 평가가 누적되어 다음 알바·취업의 신뢰 자산</li>
+      </ul>
+      <a href="https://test-me-ecru.vercel.app/k-mom" target="_blank" rel="noopener" style="display:inline-block;background:#10b981;color:white;padding:0.7rem 1.4rem;border-radius:8px;font-size:0.9rem;font-weight:700;text-decoration:none;transition:background 0.15s">
+        K-MOM 무료 가입 →
+      </a>
+    </div>
+  `;
 }
 
 // 
