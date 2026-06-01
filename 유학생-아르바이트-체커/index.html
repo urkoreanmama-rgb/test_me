@@ -641,7 +641,7 @@ ko: {
   'SEMESTER':'학기 중이에요', 'VACATION':'방학이에요',
   'H10':'10시간 이하', 'H15':'11~15시간', 'H20':'16~20시간', 'H25':'21~25시간', 'H30':'26~30시간', 'H35':'31~35시간', 'HMAX':'제한 없이 풀타임으로 일하고 싶어요',
   'FOOD':'음식점·카페 (서빙, 주방 보조)', 'RETAIL':'편의점·마트 (계산, 진열)',
-  'OFFICE':'단순 사무보조', 'TRANSLATE':'통번역 보조 (어학원·유학원)',
+  'OFFICE':'단순 사무보조', 'TRANSLATE':'외국어 활용 판매·안내 (통역 포함)',
   'EVENT':'행사·판촉 스태프',
   'LANG_TEACHER':'외국어 강사·과외 🚫', 'PROFESSIONAL':'IT·전문직·지식산업 🚫',
   'DELIVERY':'배달·택배 🚫', 'PLATFORM':'특수형태근로 🚫',
@@ -999,103 +999,103 @@ function renderSummaryCards(r) {
   if (!el) return;
 
   const visa = answers.q1 || 'D2-GR';
-  const visaNames = {'D2-GR':'D-2 ·','D2-VS':'D-2 ·','D4':'D-4 '};
-  const maxLabel = r.maxHours === 9999 ? '' : ` ${r.maxHours}`;
+  const visaNames = {'D2-GR':'D-2 석·박사과정','D2-VS':'D-2 교환·방문연구생','D4':'D-4 어학연수생'};
+  const maxLabel = r.maxHours === 9999 ? '무제한' : `주 ${r.maxHours}시간`;
   const statusTag = {
-    ok:   `<span class="nc-tag nc-tag-ok">  </span>`,
-    warn: `<span class="nc-tag nc-tag-warn">  </span>`,
-    no:   `<span class="nc-tag nc-tag-no">  </span>`
+    ok:   `<span class="nc-tag nc-tag-ok">알바 가능</span>`,
+    warn: `<span class="nc-tag nc-tag-warn">조건부 가능</span>`,
+    no:   `<span class="nc-tag nc-tag-no">현재 불가</span>`
   }[r.status];
-  const topikDisplay = {'TOPIK5':'5↑','TOPIK4':'4','TOPIK3':'3','TOPIK12':'1~2','NONE':''}[answers.q5] || '—';
-  const semDisplay = answers.q6 === 'VACATION' ? ' ' : ' ';
+  const topikDisplay = {'TOPIK5':'5급↑','TOPIK4':'4급','TOPIK3':'3급','TOPIK12':'1~2급','NONE':'없음'}[answers.q5] || '—';
+  const semDisplay = answers.q6 === 'VACATION' ? '방학 중' : '학기 중';
 
   const card1 = `<div class="news-card">
     <div class="nc-card-num">1 / 6</div>
     ${statusTag}
-    <div class="nc-title">   </div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val">${visaNames[visa]||visa}</span></div>
-    <div class="nc-row"><span class="nc-row-key">  </span><span class="nc-row-val nc-accent">${maxLabel}</span></div>
+    <div class="nc-title">내 알바 체크 결과</div>
+    <div class="nc-row"><span class="nc-row-key">비자</span><span class="nc-row-val">${visaNames[visa]||visa}</span></div>
+    <div class="nc-row"><span class="nc-row-key">주당 최대 근무</span><span class="nc-row-val nc-accent">${maxLabel}</span></div>
     <div class="nc-row"><span class="nc-row-key">TOPIK</span><span class="nc-row-val">${topikDisplay}</span></div>
-    <div class="nc-row"><span class="nc-row-key"> </span><span class="nc-row-val">${semDisplay}</span></div>
+    <div class="nc-row"><span class="nc-row-key">학사 시기</span><span class="nc-row-val">${semDisplay}</span></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" disabled>← </button>
-      <button class="nc-nav-btn" onclick="scrollCard(1)"> →</button>
+      <button class="nc-nav-btn" disabled>← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(1)">다음 →</button>
     </div>
   </div>`;
 
   const card2 = `<div class="news-card">
     <div class="nc-card-num">2 / 6</div>
-    <span class="nc-tag nc-tag-info">  </span>
-    <div class="nc-title">   3</div>
-    <div class="nc-step"><span class="nc-step-num">1</span><div class="nc-step-body"><strong>   </strong><div class="nc-step-detail">   +    </div></div></div>
-    <div class="nc-step"><span class="nc-step-num">2</span><div class="nc-step-body"><strong>HiKorea  </strong><div class="nc-step-detail">hikorea.go.kr →   (   = )</div></div></div>
-    <div class="nc-step"><span class="nc-step-num">3</span><div class="nc-step-body"><strong>   </strong><div class="nc-step-detail">  —      </div></div></div>
+    <span class="nc-tag nc-tag-info">허가 신청</span>
+    <div class="nc-title">알바 시작 전 3단계</div>
+    <div class="nc-step"><span class="nc-step-num">1</span><div class="nc-step-body"><strong>학교 국제처 먼저 방문</strong><div class="nc-step-detail">알바 가능 여부 + 필요 서류 목록 확인</div></div></div>
+    <div class="nc-step"><span class="nc-step-num">2</span><div class="nc-step-body"><strong>HiKorea 온라인 신청</strong><div class="nc-step-detail">hikorea.go.kr → 시간제취업허가 신청 (허가 전 근무 = 불법)</div></div></div>
+    <div class="nc-step"><span class="nc-step-num">3</span><div class="nc-step-body"><strong>허가 후 근로계약서 작성</strong><div class="nc-step-detail">반드시 서면으로 — 구두 계약은 분쟁 시 증거 없음</div></div></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" onclick="scrollCard(0)">← </button>
-      <button class="nc-nav-btn" onclick="scrollCard(2)"> →</button>
+      <button class="nc-nav-btn" onclick="scrollCard(0)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(2)">다음 →</button>
     </div>
   </div>`;
 
   const card3 = `<div class="news-card">
     <div class="nc-card-num">3 / 6</div>
-    <span class="nc-tag nc-tag-ok"> </span>
-    <div class="nc-title"> 15    !</div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val"> 15h  +  </span></div>
-    <div class="nc-row"><span class="nc-row-key">2026 </span><span class="nc-row-val nc-accent">10,320</span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val">( ÷ 40) × 8h × </span></div>
-    <div class="nc-row"><span class="nc-row-key"> ?</span><span class="nc-row-val">  </span></div>
+    <span class="nc-tag nc-tag-ok">주휴수당</span>
+    <div class="nc-title">주 15시간 이상 일하면 하루치 더!</div>
+    <div class="nc-row"><span class="nc-row-key">조건</span><span class="nc-row-val">주 15h 이상 + 결근 없음</span></div>
+    <div class="nc-row"><span class="nc-row-key">2026 최저시급</span><span class="nc-row-val nc-accent">10,320원</span></div>
+    <div class="nc-row"><span class="nc-row-key">계산법</span><span class="nc-row-val">(주시간 ÷ 40) × 8h × 시급</span></div>
+    <div class="nc-row"><span class="nc-row-key">유학생 적용?</span><span class="nc-row-val">동일 적용</span></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" onclick="scrollCard(1)">← </button>
-      <button class="nc-nav-btn" onclick="scrollCard(3)"> →</button>
+      <button class="nc-nav-btn" onclick="scrollCard(1)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(3)">다음 →</button>
     </div>
   </div>`;
 
   const card4 = `<div class="news-card">
     <div class="nc-card-num">4 / 6</div>
-    <span class="nc-tag nc-tag-info"> 4</span>
-    <div class="nc-title"> 4 </div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val"> 1  100% </span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val">   ( )</span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val"> D-4 · </span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val"> D-2·D-4   </span></div>
+    <span class="nc-tag nc-tag-info">4대보험</span>
+    <div class="nc-title">유학생 4대보험 요약</div>
+    <div class="nc-row"><span class="nc-row-key">산재보험</span><span class="nc-row-val">1일 근무도 100% 적용</span></div>
+    <div class="nc-row"><span class="nc-row-key">건강보험</span><span class="nc-row-val">이미 가입 (유학생 의무)</span></div>
+    <div class="nc-row"><span class="nc-row-key">국민연금</span><span class="nc-row-val">D-4 제외·협정국 면제</span></div>
+    <div class="nc-row"><span class="nc-row-key">고용보험</span><span class="nc-row-val">D-2·D-4 원칙 적용 제외</span></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" onclick="scrollCard(2)">← </button>
-      <button class="nc-nav-btn" onclick="scrollCard(4)"> →</button>
+      <button class="nc-nav-btn" onclick="scrollCard(2)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(4)">다음 →</button>
     </div>
   </div>`;
 
   const card5 = `<div class="news-card">
     <div class="nc-card-num">5 / 6</div>
-    <span class="nc-tag nc-tag-warn"> </span>
-    <div class="nc-title">3.3%   — !</div>
-    <div class="nc-row"><span class="nc-row-key"> </span><span class="nc-row-val"> 3.3%</span></div>
-    <div class="nc-row"><span class="nc-row-key"> </span><span class="nc-row-val">  </span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val">····   </span></div>
-    <div class="nc-row"><span class="nc-row-key"></span><span class="nc-row-val">5   </span></div>
+    <span class="nc-tag nc-tag-warn">세금</span>
+    <div class="nc-title">3.3%는 프리랜서 세율 — 주의!</div>
+    <div class="nc-row"><span class="nc-row-key">정규 원천징수</span><span class="nc-row-val">소득세 3.3%</span></div>
+    <div class="nc-row"><span class="nc-row-key">주의</span><span class="nc-row-val">근로자는 간이세액표 적용</span></div>
+    <div class="nc-row"><span class="nc-row-key">조세조약</span><span class="nc-row-val">중국·베트남·몽골·우즈베키스탄 등 비과세 가능</span></div>
+    <div class="nc-row"><span class="nc-row-key">환급</span><span class="nc-row-val">5월 홈택스 종합소득세 신고</span></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" onclick="scrollCard(3)">← </button>
-      <button class="nc-nav-btn" onclick="scrollCard(5)"> →</button>
+      <button class="nc-nav-btn" onclick="scrollCard(3)">← 이전</button>
+      <button class="nc-nav-btn" onclick="scrollCard(5)">다음 →</button>
     </div>
   </div>`;
 
   const card6 = `<div class="news-card">
     <div class="nc-card-num">6 / 6</div>
-    <span class="nc-tag nc-tag-no">   </span>
-    <div class="nc-title">  ?</div>
-    <div class="nc-row"><span class="nc-row-key">  </span><span class="nc-row-val"> 1350</span></div>
-    <div class="nc-row"><span class="nc-row-key">  </span><span class="nc-row-val">labor.moel.go.kr</span></div>
-    <div class="nc-row"><span class="nc-row-key">  </span><span class="nc-row-val"> 132</span></div>
-    <div class="nc-row"><span class="nc-row-key">  ?</span><span class="nc-row-val">    </span></div>
+    <span class="nc-tag nc-tag-no">권리 침해 시</span>
+    <div class="nc-title">사장님이 안 해주면?</div>
+    <div class="nc-row"><span class="nc-row-key">신고 전화</span><span class="nc-row-val">고용노동부 1350</span></div>
+    <div class="nc-row"><span class="nc-row-key">온라인 신고</span><span class="nc-row-val">labor.moel.go.kr</span></div>
+    <div class="nc-row"><span class="nc-row-key">무료 법률</span><span class="nc-row-val">대한법률구조공단 132</span></div>
+    <div class="nc-row"><span class="nc-row-key">익명 처리?</span><span class="nc-row-val">비자 취소 불이익 없음</span></div>
     <div class="nc-nav">
-      <button class="nc-nav-btn" onclick="scrollCard(4)">← </button>
-      <button class="nc-nav-btn" disabled> →</button>
+      <button class="nc-nav-btn" onclick="scrollCard(4)">← 이전</button>
+      <button class="nc-nav-btn" disabled>다음 →</button>
     </div>
   </div>`;
 
   el.innerHTML = `<div class="card-news-section">
     <div class="card-news-header">
-      <span>    (6)</span>
-      <span class="card-news-hint">←   →</span>
+      <span>내 결과 카드뉴스 (6장)</span>
+      <span class="card-news-hint">← 밀거나 버튼으로 →</span>
     </div>
     <div class="card-news-scroll" id="card-news-scroll">
       ${card1}${card2}${card3}${card4}${card5}${card6}
@@ -1104,7 +1104,7 @@ function renderSummaryCards(r) {
       ${[0,1,2,3,4,5].map(i=>`<button class="c-dot${i===0?' active':''}" onclick="scrollCard(${i})"></button>`).join('')}
     </div>
     <button class="share-btn" onclick="shareResult()">
-          
+      내 결과를 카카오톡으로 보내기
     </button>
   </div>`;
 
@@ -1171,16 +1171,16 @@ function renderResult() {
   const verdictEl = document.getElementById('res-verdict');
   const iconMap = {ok:'', warn:'', no:''};
   const titleMap = {
-    ok: r.freeVisa ? (r.isF4 ? ' !' : '  ! ') : ' !',
-    warn: '  ',
-    no: '    '
+    ok: r.freeVisa ? (r.isF4 ? '알바 가능해요!' : '자유롭게 알바 가능해요!') : '알바 가능해요!',
+    warn: '조건부로 가능해요',
+    no: '지금은 알바가 안 돼요'
   };
   const subMap = {
     ok: r.freeVisa
-      ? (r.isF4 ? '(F-4)     .' : '        .')
-      : '     .',
-    warn: '     .',
-    no: '    .   .'
+      ? (r.isF4 ? '재외동포비자(F-4)로 대부분의 업종에서 일할 수 있어요.' : '이 비자는 별도 허가 없이 자유롭게 일할 수 있어요.')
+      : '지금 상황이면 합법적으로 알바할 수 있어요.',
+    warn: '가능하긴 하지만 아래 주의사항을 꼭 확인하세요.',
+    no: '지금은 알바를 하면 안 돼요. 이유를 아래에서 확인하세요.'
   };
   if (verdictEl) {
     verdictEl.className = `verdict-card verdict-${r.status}`;
@@ -1195,9 +1195,9 @@ function renderResult() {
   if (disclaimerEl) {
     disclaimerEl.className = 'legal-disclaimer';
     disclaimerEl.innerHTML = `
-      <div class="ld-title">      —   </div>
-      <div class="ld-body">  <strong>      </strong>,     .        ·( 1345) .<br>
-      <span style="font-size:0.75rem;margin-top:6px;display:block;color:#78350f"> HiKorea  :  ·   · / ·  </span></div>`;
+      <div class="ld-title">이 결과는 사전 점검용 안내입니다 — 법률 자문이 아닙니다</div>
+      <div class="ld-body">유학생 시간제취업은 <strong>근무 시작 전 출입국 허가가 반드시 필요</strong>하며, 근무지 변경 시에도 신고가 필요합니다. 최종 허가 여부는 학교 국제처 및 관할 출입국·외국인관서(☎ 1345)에서 확인하세요.<br>
+      <span style="font-size:0.75rem;margin-top:6px;display:block;color:#78350f">HiKorea 공식 구비서류: 근로계약서 · 유학생시간제취업 확인서 · 성적/출석증명서 · 한국어능력 증빙서류</span></div>`;
   }
 
   //  2. Checklist 
