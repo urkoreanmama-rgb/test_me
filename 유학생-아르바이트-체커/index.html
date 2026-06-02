@@ -1843,59 +1843,62 @@ function renderMatchingForm(r) {
   ).join('');
 
   el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
-    <div class="section-title">    ?</div>
-    <p class="mf-desc">  . <strong>     </strong> .</p>
+    <div class="section-title">알바 자리를 직접 연결해드릴까요?</div>
+    <p class="mf-desc">아래에 정보를 남겨주세요. <strong>함께 아르바이트 업체를 찾아보고 합격에 도움</strong>을 드려요.</p>
     <div id="matching-form-fields">
       <div class="form-group">
-        <label class="form-label"> <span class="req">*</span></label>
-        <input class="form-input" id="mf-name" type="text" placeholder="">
+        <label class="form-label">이름 <span class="req">*</span></label>
+        <input class="form-input" id="mf-name" type="text" placeholder="홍길동">
       </div>
       <div class="form-group">
-        <label class="form-label"> <span class="req">*</span></label>
+        <label class="form-label">전화번호 <span class="req">*</span></label>
         <input class="form-input" id="mf-phone" type="tel" placeholder="010-0000-0000">
       </div>
       <div class="form-group">
-        <label class="form-label">  <span class="req">*</span></label>
-        <select class="form-input" id="mf-city">
-          <option value="">--   --</option>
-          <option value=""></option>
-          <option value="/"> / </option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
+        <label class="form-label">희망 지역 <span class="req">*</span></label>
+        <select class="form-input" id="mf-city" onchange="updateDistrict()">
+          <option value="">-- 지역 선택 --</option>
+          <option value="서울">서울</option>
+          <option value="경기">경기 / 인천</option>
+          <option value="부산">부산</option>
+          <option value="대구">대구</option>
+          <option value="대전">대전</option>
+          <option value="광주">광주</option>
+          <option value="울산">울산</option>
+          <option value="강원">강원</option>
+          <option value="충북">충북</option>
+          <option value="충남">충남</option>
+          <option value="전북">전북</option>
+          <option value="전남">전남</option>
+          <option value="경북">경북</option>
+          <option value="경남">경남</option>
+          <option value="제주">제주</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">  <span class="req">*</span></label>
+        <label class="form-label">희망 직종 <span class="req">*</span></label>
         <select class="form-input" id="mf-industry">
-          <option value="">--   --</option>
+          <option value="">-- 직종 선택 --</option>
           ${indOptions}
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">   <span style="font-size:0.75rem;color:var(--muted);font-weight:400">( 3 )</span></label>
+        <label class="form-label">나를 표현하는 키워드 <span style="font-size:0.75rem;color:var(--muted);font-weight:400">(최대 3개 선택)</span></label>
         <div class="trait-tags" id="trait-container">
-          <input type="checkbox" class="trait-tag-input" id="tr1" onchange="toggleTrait(this)"><label for="tr1" class="trait-tag-label">  </label>
-          <input type="checkbox" class="trait-tag-input" id="tr2" onchange="toggleTrait(this)"><label for="tr2" class="trait-tag-label">⏰    </label>
-          <input type="checkbox" class="trait-tag-input" id="tr3" onchange="toggleTrait(this)"><label for="tr3" class="trait-tag-label">  </label>
-          <input type="checkbox" class="trait-tag-input" id="tr4" onchange="toggleTrait(this)"><label for="tr4" class="trait-tag-label">  </label>
-          <input type="checkbox" class="trait-tag-input" id="tr5" onchange="toggleTrait(this)"><label for="tr5" class="trait-tag-label">  </label>
-          <input type="checkbox" class="trait-tag-input" id="tr6" onchange="toggleTrait(this)"><label for="tr6" class="trait-tag-label">    </label>
-          <input type="checkbox" class="trait-tag-input" id="tr7" onchange="toggleTrait(this)"><label for="tr7" class="trait-tag-label">   </label>
-          <input type="checkbox" class="trait-tag-input" id="tr8" onchange="toggleTrait(this)"><label for="tr8" class="trait-tag-label">   </label>
-          <input type="checkbox" class="trait-tag-input" id="tr9" onchange="toggleTrait(this)"><label for="tr9" class="trait-tag-label">  </label>
-          <input type="checkbox" class="trait-tag-input" id="tr10" onchange="toggleTrait(this)"><label for="tr10" class="trait-tag-label">    </label>
+          <input type="checkbox" class="trait-tag-input" id="tr1" onchange="toggleTrait(this)"><label for="tr1" class="trait-tag-label">잘 웃어요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr2" onchange="toggleTrait(this)"><label for="tr2" class="trait-tag-label">시간 약속 잘 지켜요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr3" onchange="toggleTrait(this)"><label for="tr3" class="trait-tag-label">성실하게 일해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr4" onchange="toggleTrait(this)"><label for="tr4" class="trait-tag-label">꼼꼼하게 일해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr5" onchange="toggleTrait(this)"><label for="tr5" class="trait-tag-label">체력이 좋아요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr6" onchange="toggleTrait(this)"><label for="tr6" class="trait-tag-label">새로운 걸 빨리 배워요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr7" onchange="toggleTrait(this)"><label for="tr7" class="trait-tag-label">손님 응대를 좋아해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr8" onchange="toggleTrait(this)"><label for="tr8" class="trait-tag-label">한국어로 소통 가능해요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr9" onchange="toggleTrait(this)"><label for="tr9" class="trait-tag-label">책임감이 있어요</label>
+          <input type="checkbox" class="trait-tag-input" id="tr10" onchange="toggleTrait(this)"><label for="tr10" class="trait-tag-label">바쁜 환경에서도 잘 해요</label>
         </div>
-        <p class="trait-count-hint">: <span id="trait-count">0</span> / 3</p>
+        <p class="trait-count-hint">선택됨: <span id="trait-count">0</span> / 3</p>
       </div>
-      <button class="btn-submit-match" onclick="submitMatching()"> →</button>
+      <button class="btn-submit-match" onclick="submitMatching()">신청하기 →</button>
     </div>
     <div id="matching-result" style="display:none"></div>
   </div>`;
@@ -1929,10 +1932,10 @@ function submitMatching() {
   const traits   = [...document.querySelectorAll('.trait-tag-input:checked')]
                      .map(c => c.nextElementSibling.textContent.trim()).join(', ');
 
-  if (!name)     { alert(' .'); return; }
-  if (!phone)    { alert(' .'); return; }
-  if (!city)     { alert('  .'); return; }
-  if (!industry) { alert('  .'); return; }
+  if (!name)     { alert('이름을 입력해주세요.'); return; }
+  if (!phone)    { alert('전화번호를 입력해주세요.'); return; }
+  if (!city)     { alert('희망 지역을 선택해주세요.'); return; }
+  if (!industry) { alert('희망 직종을 선택해주세요.'); return; }
 
   if (!IS_TEST && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('YOUR-PROJECT')) {
     fetch(`${SUPABASE_URL}/rest/v1/job_matching`, {
@@ -1956,11 +1959,11 @@ function submitMatching() {
   resultEl.style.display = 'block';
   resultEl.innerHTML = `
     <div class="match-success">
-      <div class="match-success-icon"></div>
-      <div class="match-success-title"> !</div>
+      <div class="match-success-icon">🎉</div>
+      <div class="match-success-title">신청 완료!</div>
       <div class="match-success-sub">
-        <strong>${name}</strong>, !<br>
-        <strong>${phone}</strong>   .
+        <strong>${name}</strong>님, 감사합니다!<br>
+        <strong>${phone}</strong>으로 곧 카카오톡 연락드릴게요.
       </div>
     </div>`;
 }
