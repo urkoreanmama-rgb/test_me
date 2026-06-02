@@ -273,17 +273,16 @@ body{
 /* ── Rights & Tax Card ── */
 .rights-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 .rights-card-title{font-size:0.83rem;font-weight:700;color:var(--text);padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--border)}
-/* 주휴수당·보험 안내 프롬프트 */
-.rights-prompt{text-align:center;padding:8px 4px 4px}
-.rights-prompt-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px}
-.rights-prompt-desc{font-size:0.88rem;color:var(--sub);line-height:1.6;margin-bottom:14px}
-.rights-prompt-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px}
-.rp-chip{background:#eef2ff;color:var(--accent);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:600;border:1px solid #c7d2fe}
-.rights-prompt-btns{display:flex;gap:10px;justify-content:center}
-.rp-btn-yes{background:var(--grad);color:#fff;border:none;border-radius:12px;padding:13px 28px;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 0 var(--grad-shadow);transition:transform 0.07s,box-shadow 0.07s}
-.rp-btn-yes:active{transform:translateY(4px);box-shadow:0 0px 0 var(--grad-shadow)}
-.rp-btn-no{background:transparent;color:var(--muted);border:1.5px solid #e0e7ff;border-radius:12px;padding:13px 20px;font-size:0.88rem;font-weight:500;cursor:pointer}
-.rp-btn-no:hover{background:#f5f5f5}
+/* 권리·세금 3개 토픽 버튼 */
+.rt-btn-group{display:flex;gap:8px}
+.rt-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:1.5px solid #e0e7ff;border-radius:14px;background:#fafbff;cursor:pointer;transition:all 0.18s;position:relative}
+.rt-btn:hover{border-color:var(--accent);background:#eef2ff}
+.rt-btn-active{border-color:var(--accent)!important;background:linear-gradient(135deg,#eef2ff,#f5f3ff)!important;box-shadow:0 2px 10px rgba(79,70,229,0.15)}
+.rt-btn-icon{font-size:1.5rem;line-height:1}
+.rt-btn-label{font-size:0.75rem;font-weight:700;color:var(--text);text-align:center;line-height:1.4}
+.rt-btn-active .rt-btn-label{color:var(--accent)}
+.rt-arrow{font-size:1rem;color:var(--muted);transition:transform 0.2s}
+.rt-btn-active .rt-arrow{color:var(--accent);transform:rotate(90deg)}
 .rights-section{margin-bottom:16px}
 .rights-section:last-child{margin-bottom:0}
 .rights-section-label{font-size:0.71rem;font-weight:700;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
@@ -1165,6 +1164,33 @@ function switchTab(idx) {
   if (bar) bar.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+function showRightsTopic(idx) {
+  // 버튼 활성화 표시
+  document.querySelectorAll('.rt-btn').forEach((b, i) => b.classList.toggle('rt-btn-active', i === idx));
+  // 패널 전환
+  document.querySelectorAll('.rt-panel').forEach((p, i) => p.style.display = i === idx ? 'block' : 'none');
+  // 상세 영역 표시 (처음 클릭 시)
+  const detail = document.getElementById('rt-detail');
+  if (detail) {
+    if (detail.style.display === 'none') {
+      detail.style.display = 'block';
+      detail.style.opacity = '0';
+      requestAnimationFrame(() => {
+        detail.style.transition = 'opacity 0.25s';
+        detail.style.opacity = '1';
+      });
+    }
+    // 이미 열려 있으면 패널만 전환 (애니메이션)
+    else {
+      detail.style.opacity = '0.4';
+      requestAnimationFrame(() => {
+        detail.style.transition = 'opacity 0.15s';
+        detail.style.opacity = '1';
+      });
+    }
+  }
+}
+
 function showRightsDetail() {
   const prompt = document.getElementById('rights-prompt');
   const detail = document.getElementById('rights-detail');
@@ -1671,29 +1697,34 @@ function renderRightsCard(r) {
   if (r.status === 'no' && !r.freeVisa) { el.innerHTML = ''; return; }
 
   el.innerHTML = `<div class="rights-card">
-    <!-- 질문 프롬프트 -->
-    <div class="rights-prompt" id="rights-prompt">
-      <div class="rights-prompt-title">알바 시작 전, 꼭 알아야 할 게 있어요</div>
-      <div class="rights-prompt-desc">유학생이 많이 놓치는 <strong>주휴수당</strong>과 <strong>4대보험</strong>,<br>세금 환급까지 — 간단히 안내해드릴까요?</div>
-      <div class="rights-prompt-chips">
-        <span class="rp-chip">주휴수당 계산법</span>
-        <span class="rp-chip">4대보험 적용 여부</span>
-        <span class="rp-chip">세금 환급 방법</span>
-        <span class="rp-chip">부당대우 신고</span>
-      </div>
-      <div class="rights-prompt-btns">
-        <button class="rp-btn-yes" onclick="showRightsDetail()">네, 알려주세요!</button>
-        <button class="rp-btn-no" onclick="hideRightsCard()">괜찮아요</button>
-      </div>
+    <div class="rights-card-title">알바 전에 꼭 알아두세요</div>
+    <p style="font-size:0.84rem;color:var(--sub);margin-bottom:14px;line-height:1.5">궁금한 항목을 눌러보세요</p>
+
+    <!-- 3개 토픽 버튼 -->
+    <div class="rt-btn-group">
+      <button class="rt-btn" id="rt-btn-0" onclick="showRightsTopic(0)">
+        <span class="rt-btn-icon">💰</span>
+        <span class="rt-btn-label">주휴수당<br>계산법</span>
+        <span class="rt-arrow">›</span>
+      </button>
+      <button class="rt-btn" id="rt-btn-1" onclick="showRightsTopic(1)">
+        <span class="rt-btn-icon">🛡</span>
+        <span class="rt-btn-label">4대보험<br>적용 여부</span>
+        <span class="rt-arrow">›</span>
+      </button>
+      <button class="rt-btn" id="rt-btn-2" onclick="showRightsTopic(2)">
+        <span class="rt-btn-icon">💸</span>
+        <span class="rt-btn-label">세금 환급<br>방법</span>
+        <span class="rt-arrow">›</span>
+      </button>
     </div>
 
-    <!-- 상세 내용 (처음엔 숨김) -->
-    <div class="rights-detail" id="rights-detail" style="display:none">
-      <div class="rights-card-title">알바하면서 알아야 할 권리와 세금</div>
+    <!-- 상세 내용 패널 (클릭 시 전환) -->
+    <div id="rt-detail" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
 
-      <!-- 주휴수당 -->
-      <div class="rights-section">
-        <div class="rights-section-label">주휴수당</div>
+      <!-- 패널 0: 주휴수당 -->
+      <div class="rt-panel" id="rt-panel-0">
+        <div class="rights-section-label" style="margin-bottom:12px">주휴수당이란?</div>
         <div class="rights-row">
           <span class="rights-row-key">조건</span>
           <span class="rights-row-val">주 15시간 이상 + 소정 근무일 개근 → 하루치 임금 추가 지급</span>
@@ -1701,17 +1732,20 @@ function renderRightsCard(r) {
         <div class="rights-row">
           <span class="rights-row-key">계산법</span>
           <span class="rights-row-val">(주 근무시간 ÷ 40) × 8시간 × 시급<br>
-            <span style="color:var(--muted);font-size:0.76rem">예: 주 20시간·시급 10,320원 → 주 41,280원 추가 (2026년 최저임금 기준)</span></span>
+            <span style="color:var(--muted);font-size:0.76rem">예: 주 20시간·시급 10,320원 → 주 41,280원 추가</span></span>
         </div>
         <div class="rights-row">
           <span class="rights-row-key">유학생</span>
-          <span class="rights-row-val">동일 적용 — 근로기준법 제55조, 제6조 (국적 무관)</span>
+          <span class="rights-row-val">국적 관계없이 동일 적용 (근로기준법 제55조, 제6조)</span>
+        </div>
+        <div class="rights-alert" style="margin-top:12px">
+          사장님이 안 줄 때 → <strong>고용노동부 1350</strong> 신고 (익명, 비자 불이익 없음)
         </div>
       </div>
 
-      <!-- 4대보험 -->
-      <div class="rights-section">
-        <div class="rights-section-label">4대보험</div>
+      <!-- 패널 1: 4대보험 -->
+      <div class="rt-panel" id="rt-panel-1" style="display:none">
+        <div class="rights-section-label" style="margin-bottom:12px">유학생 4대보험 적용 여부</div>
         <div class="ins-grid">
           <div class="ins-item">
             <div class="ins-item-name">산재보험</div>
@@ -1721,49 +1755,39 @@ function renderRightsCard(r) {
           <div class="ins-item">
             <div class="ins-item-name">건강보험</div>
             <div><span class="ins-badge ins-ok">이미 가입</span></div>
-            <div class="ins-desc">D-2 유학생은 의무가입·50% 경감. 월 60시간+ 근무 시 직장가입 전환 → 보험료 절반을 고용주가 부담</div>
+            <div class="ins-desc">D-2 유학생 의무가입·50% 경감. 월 60시간+ 시 직장가입 전환 → 보험료 절반을 고용주 부담</div>
           </div>
           <div class="ins-item">
             <div class="ins-item-name">국민연금</div>
             <div><span class="ins-badge ins-cond">조건부</span></div>
-            <div class="ins-desc">D-4 자동 제외. D-2는 사회보장협정 체결국(중국·베트남·몽골·인도네시아·우즈베크 등) 출신은 면제 가능 — 국민연금공단 1355 확인</div>
+            <div class="ins-desc">D-4 자동 제외. D-2는 사회보장협정 체결국(중국·베트남·몽골 등) 출신 면제 가능 — 1355 확인</div>
           </div>
           <div class="ins-item">
             <div class="ins-item-name">고용보험</div>
             <div><span class="ins-badge ins-no">원칙 제외</span></div>
-            <div class="ins-desc">D-2·D-4 유학생은 적용 제외 (고용보험법 시행령 제3조). 실업급여 혜택 없음</div>
+            <div class="ins-desc">D-2·D-4 유학생 적용 제외 (시행령 제3조). 실업급여 혜택 없음</div>
           </div>
         </div>
       </div>
 
-      <!-- 세금 -->
-      <div class="rights-section">
-        <div class="rights-section-label">세금</div>
+      <!-- 패널 2: 세금 환급 -->
+      <div class="rt-panel" id="rt-panel-2" style="display:none">
+        <div class="rights-section-label" style="margin-bottom:12px">세금 — 환급받는 방법</div>
         <div class="rights-row">
           <span class="rights-row-key">원천징수</span>
           <span class="rights-row-val">매월 급여에서 자동 공제. 월 소득 150만원 이하는 세금 거의 0원</span>
         </div>
         <div class="rights-row">
           <span class="rights-row-key">3.3% 주의</span>
-          <span class="rights-row-val">근로계약서 없이 프리랜서처럼 처리될 때 3.3% 공제. 실제 근로자라면 근로소득세 적용이 맞음 — 고용주에게 근로계약서 요청하세요</span>
+          <span class="rights-row-val">프리랜서 계약 시 3.3% 공제. 실제 근로자라면 근로소득세 적용이 맞음 — 근로계약서 요청하세요</span>
         </div>
         <div class="rights-row">
-          <span class="rights-row-key">조세조약 면제</span>
-          <span class="rights-row-val">중국·베트남·인도네시아·몽골·우즈베키스탄·미국·일본 등 주요 출신국은 한국과 조세조약 체결 — <strong>학생 조항</strong>으로 소득세 면제 신청 가능. 고용주에게 신청서 제출 필요</span>
+          <span class="rights-row-key">조세조약</span>
+          <span class="rights-row-val">중국·베트남·인도네시아·몽골·우즈베키스탄·미국·일본 등 — <strong>학생 조항</strong>으로 소득세 면제 신청 가능</span>
         </div>
         <div class="rights-row">
-          <span class="rights-row-key">세금 환급</span>
-          <span class="rights-row-val">다음 해 5월 종합소득세 신고 (홈택스, 외국인도 가능) → 과납 세금 돌려받을 수 있어요</span>
-        </div>
-      </div>
-
-      <!-- 권리 침해 시 -->
-      <div class="rights-section" style="margin-bottom:0">
-        <div class="rights-section-label">사장님이 주휴수당·4대보험을 안 해줄 때</div>
-        <div class="rights-alert">
-          <strong>고용노동부 1350</strong> — 전화 또는 <a href="https://labor.moel.go.kr" target="_blank" style="color:#991b1b;text-decoration:underline">labor.moel.go.kr</a> 온라인 신고 (익명 처리 가능)<br>
-          신고해도 비자 취소 등 불이익 없어요. 외국인도 동일하게 보호받아요.<br>
-          무료 법률 지원: <strong>대한법률구조공단 132</strong>
+          <span class="rights-row-key">환급 방법</span>
+          <span class="rights-row-val">다음 해 5월, 홈택스에서 종합소득세 신고 → 과납 세금 돌려받을 수 있어요 (외국인도 가능)</span>
         </div>
       </div>
     </div>
