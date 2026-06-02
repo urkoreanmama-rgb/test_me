@@ -144,9 +144,11 @@ body{
 .btn-restart:hover{background:#c7d2fe}
 .saved-msg{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:10px}
 /* ── 결과 탭 바 ── */
-.res-tab-bar{display:flex;background:#fff;border:1px solid #e0e7ff;border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;position:sticky;top:8px;z-index:20;box-shadow:0 2px 12px rgba(79,70,229,0.10)}
-.res-tab{flex:1;padding:11px 4px;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;color:var(--muted);background:transparent;transition:all 0.2s;letter-spacing:-0.01em}
-.res-tab.active{background:var(--grad);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,0.22)}
+.res-tab-bar{display:flex;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border:1px solid #e0e7ff;border-radius:16px;padding:6px;gap:6px;margin-bottom:16px;position:sticky;top:8px;z-index:20;box-shadow:0 4px 16px rgba(79,70,229,0.10)}
+.res-tab{flex:1;padding:11px 4px;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--muted);background:#f1f5f9;box-shadow:0 4px 0 #cbd5e1;transform:translateY(0);transition:transform 0.07s ease,box-shadow 0.07s ease,background 0.15s;letter-spacing:-0.01em}
+.res-tab:active{transform:translateY(4px);box-shadow:0 0px 0 #cbd5e1}
+.res-tab.active{background:var(--grad);color:#fff;box-shadow:0 4px 0 var(--grad-shadow);text-shadow:0 1px 2px rgba(0,0,0,0.15)}
+.res-tab.active:active{transform:translateY(4px);box-shadow:0 0px 0 var(--grad-shadow)}
 .res-tab-panel{animation:fadeIn 0.25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .tab-next-btn{width:100%;margin-top:16px;padding:13px;border:1.5px solid var(--accent);border-radius:12px;font-size:0.9rem;font-weight:600;color:var(--accent);background:#f5f7ff;cursor:pointer;transition:all 0.15s}
@@ -321,7 +323,7 @@ body{
 .action-steps{list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:step}
 .action-steps li{display:flex;gap:10px;align-items:flex-start;font-size:0.84rem;color:var(--text);counter-increment:step}
 .action-steps li::before{content:counter(step);background:var(--accent);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.action-step-detail{font-size:0.76rem;color:var(--muted);margin-top:2px}
+.action-step-detail{font-size:0.78rem;color:#4b5563;margin-top:3px;line-height:1.55}
 .action-links{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 
 /* ── 비자 안내 통합 박스 ── */
@@ -1329,40 +1331,11 @@ function renderResult() {
 }
 
 // ═══════════════════════════════════════════
-//  K-MOM SIGNUP CTA (체커 → K-MOM 깔때기)
+//  K-MOM CTA — 매칭폼과 통합했으므로 비움
 // ═══════════════════════════════════════════
 function renderKmomCta(r) {
   const el = document.getElementById('res-kmom-cta');
-  if (!el) return;
-  // 불가 결과면 CTA 안 보임
-  if (r.status === 'no') { el.innerHTML = ''; return; }
-
-  const isWarn = r.status === 'warn';
-  const headline = isWarn
-    ? '조건부 결과네요. K-MOM에서 신뢰 프로필을 만들어 보완하세요'
-    : '합법 채용 가능! 이제 K-MOM에서 신뢰 프로필을 만드세요';
-  const subline = isWarn
-    ? 'TOPIK 증빙·교수 추천서·학교 인증을 모으면 업주가 안심하고 뽑습니다.'
-    : '업주가 학생을 검색할 때 첫 번째로 보는 곳. 평가가 누적되면 경력이 됩니다.';
-
-  el.innerHTML = `
-    <div class="section" style="background:linear-gradient(135deg,#10b98115,#3b82f615);border:2px solid #10b98155;border-radius:14px;padding:1.5rem;margin-top:1rem">
-      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
-        <span style="background:#10b981;color:white;padding:0.2rem 0.6rem;border-radius:99px;font-size:0.7rem;font-weight:700">K-MOM · 무료</span>
-        <span style="font-size:0.7rem;color:var(--muted)">학생은 영원히 무료</span>
-      </div>
-      <div style="font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:0.4rem">${headline}</div>
-      <p style="font-size:0.88rem;color:var(--sub);line-height:1.5;margin:0 0 1rem">${subline}</p>
-      <ul style="font-size:0.85rem;color:var(--sub);line-height:1.7;padding-left:1.2rem;margin:0 0 1.2rem">
-        <li>비자·TOPIK·학교 인증 배지가 한 프로필에 모임</li>
-        <li>업주가 직접 찾아와 채용 제안 (역제안 가능)</li>
-        <li>쌍방 평가가 누적되어 다음 알바·취업의 신뢰 자산</li>
-      </ul>
-      <a href="https://k-mom-mu.vercel.app" target="_blank" rel="noopener" style="display:inline-block;background:#10b981;color:white;padding:0.7rem 1.4rem;border-radius:8px;font-size:0.9rem;font-weight:700;text-decoration:none;transition:background 0.15s">
-        K-MOM 무료 가입 →
-      </a>
-    </div>
-  `;
+  if (el) el.innerHTML = '';
 }
 
 // 
@@ -1917,8 +1890,17 @@ function renderMatchingForm(r) {
   ).join('');
 
   el.innerHTML = `<div class="section matching-form-card" id="matching-form-section">
-    <div class="section-title">알바 자리를 직접 연결해드릴까요?</div>
-    <p class="mf-desc">아래에 정보를 남겨주세요. <strong>함께 아르바이트 업체를 찾아보고 합격에 도움</strong>을 드려요.</p>
+    <!-- K-MOM 헤더 -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="background:#10b981;color:#fff;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700">K-MOM · 학생 무료</span>
+    </div>
+    <div style="font-size:1.0rem;font-weight:800;color:var(--text);margin-bottom:6px">내 신뢰 프로필 만들고 알바 연결받기</div>
+    <p class="mf-desc" style="margin-bottom:16px">정보를 등록하면 <strong>업주가 직접 채용 제안</strong>을 보내고, 허가 절차도 함께 도와드려요. 학생은 영원히 무료예요.</p>
+    <ul style="font-size:0.81rem;color:var(--sub);line-height:1.75;padding-left:1.1rem;margin-bottom:18px">
+      <li>비자·TOPIK·학교 인증 배지가 프로필에 자동 등록</li>
+      <li>업주가 내 프로필을 보고 먼저 연락 (역제안)</li>
+      <li>알바 평가가 쌓여 다음 취업의 신뢰 자산이 됨</li>
+    </ul>
     <div id="matching-form-fields">
       <div class="form-group">
         <label class="form-label">이름 <span class="req">*</span></label>
@@ -1972,7 +1954,7 @@ function renderMatchingForm(r) {
         </div>
         <p class="trait-count-hint">선택됨: <span id="trait-count">0</span> / 3</p>
       </div>
-      <button class="btn-submit-match" onclick="submitMatching()">신청하기 →</button>
+      <button class="btn-submit-match" onclick="submitMatching()">K-MOM 신뢰 프로필 등록하기 →</button>
     </div>
     <div id="matching-result" style="display:none"></div>
   </div>`;
