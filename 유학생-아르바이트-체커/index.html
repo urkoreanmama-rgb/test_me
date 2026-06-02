@@ -140,10 +140,17 @@ body{
 .law-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:0.82rem;color:var(--sub);line-height:1.7}
 .law-box strong{color:var(--text);font-weight:600}
 .law-note{font-size:0.76rem;color:var(--muted);margin-top:8px;font-style:italic}
-.btn-restart{width:100%;padding:14px;border:none;border-radius:12px;font-size:0.97rem;font-weight:600;cursor:pointer;background:var(--grad);color:#fff;margin-top:4px;transition:opacity 0.15s;box-shadow:0 4px 0 var(--grad-shadow);letter-spacing:-0.01em}
-.btn-restart:hover{opacity:0.9}
-.btn-restart:active{transform:translateY(4px);box-shadow:0 0 0 var(--grad-shadow)}
+.btn-restart{width:100%;padding:14px;border:none;border-radius:12px;font-size:0.97rem;font-weight:600;cursor:pointer;background:#e0e7ff;color:var(--accent);margin-top:20px;transition:opacity 0.15s;letter-spacing:-0.01em}
+.btn-restart:hover{background:#c7d2fe}
 .saved-msg{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:10px}
+/* ── 결과 탭 바 ── */
+.res-tab-bar{display:flex;background:#fff;border:1px solid #e0e7ff;border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;position:sticky;top:8px;z-index:20;box-shadow:0 2px 12px rgba(79,70,229,0.10)}
+.res-tab{flex:1;padding:11px 4px;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;color:var(--muted);background:transparent;transition:all 0.2s;letter-spacing:-0.01em}
+.res-tab.active{background:var(--grad);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,0.22)}
+.res-tab-panel{animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tab-next-btn{width:100%;margin-top:16px;padding:13px;border:1.5px solid var(--accent);border-radius:12px;font-size:0.9rem;font-weight:600;color:var(--accent);background:#f5f7ff;cursor:pointer;transition:all 0.15s}
+.tab-next-btn:hover{background:#eef2ff}
 
 /* ── Next Steps ── */
 .section.next-steps-card{background:var(--card)}
@@ -600,15 +607,36 @@ body{
 
   <!-- ⑤ Result -->
   <div id="result">
-    <div id="res-verdict"></div>
-    <div id="res-summary-cards"></div>
-    <div id="res-disclaimer"></div>
-    <div id="res-checklist"></div>
-    <div id="res-actions"></div>
-    <div id="res-rights"></div>
-    <div id="res-matching-form"></div>
-    <div id="res-kmom-cta"></div>
-    <button class="btn-restart" onclick="restart()">   </button>
+    <!-- 탭 바 -->
+    <div class="res-tab-bar">
+      <button class="res-tab active" onclick="switchTab(0)">내 결과</button>
+      <button class="res-tab" onclick="switchTab(1)">신청 절차</button>
+      <button class="res-tab" onclick="switchTab(2)">권리·세금</button>
+    </div>
+
+    <!-- 탭 1: 내 결과 -->
+    <div class="res-tab-panel" id="tab-panel-0">
+      <div id="res-verdict"></div>
+      <div id="res-disclaimer"></div>
+      <div id="res-checklist"></div>
+      <button class="tab-next-btn" onclick="switchTab(1)">신청 절차 보기 →</button>
+    </div>
+
+    <!-- 탭 2: 신청 절차 -->
+    <div class="res-tab-panel" id="tab-panel-1" style="display:none">
+      <div id="res-summary-cards"></div>
+      <div id="res-actions"></div>
+      <button class="tab-next-btn" onclick="switchTab(2)">권리·세금 정보 보기 →</button>
+    </div>
+
+    <!-- 탭 3: 권리·세금 -->
+    <div class="res-tab-panel" id="tab-panel-2" style="display:none">
+      <div id="res-rights"></div>
+      <div id="res-matching-form"></div>
+      <div id="res-kmom-cta"></div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">처음부터 다시하기</button>
     <p class="saved-msg" id="saved-msg"></p>
   </div>
 
@@ -1129,6 +1157,14 @@ function renderSummaryCards(r) {
   }
 }
 
+function switchTab(idx) {
+  document.querySelectorAll('.res-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.res-tab-panel').forEach((p,i) => p.style.display = i===idx ? 'block' : 'none');
+  // 탭 바 위치로 부드럽게 스크롤
+  const bar = document.querySelector('.res-tab-bar');
+  if (bar) bar.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function showRightsDetail() {
   const prompt = document.getElementById('rights-prompt');
   const detail = document.getElementById('rights-detail');
@@ -1203,7 +1239,10 @@ function showToast(msg) {
 function renderResult() {
   const r = resultData;
 
-  //  1. Verdict card 
+  // 탭 초기화 — 항상 첫 번째 탭(내 결과)부터 시작
+  switchTab(0);
+
+  //  1. Verdict card
   const verdictEl = document.getElementById('res-verdict');
   const iconMap = {ok:'', warn:'', no:''};
   const titleMap = {
