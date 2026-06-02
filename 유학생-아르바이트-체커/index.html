@@ -1678,8 +1678,6 @@ async function saveToSupabase(r) {
 function renderRightsCard(r) {
   const el = document.getElementById('res-rights');
   if (!el) return;
-  //   F-1/F-3       
-  if (r.status === 'no' && !r.freeVisa) { el.innerHTML = ''; return; }
 
   el.innerHTML = `<div class="rights-card">
     <div class="rights-card-title">알바 전에 꼭 알아두세요</div>
