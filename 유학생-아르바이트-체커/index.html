@@ -144,11 +144,12 @@ body{
 .btn-restart:hover{background:#c7d2fe}
 .saved-msg{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:10px}
 /* ── 결과 탭 바 ── */
-.res-tab-bar{display:flex;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border:1px solid #e0e7ff;border-radius:16px;padding:6px;gap:6px;margin-bottom:16px;position:sticky;top:8px;z-index:20;box-shadow:0 4px 16px rgba(79,70,229,0.10)}
-.res-tab{flex:1;padding:11px 4px;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--muted);background:#f1f5f9;box-shadow:0 4px 0 #cbd5e1;transform:translateY(0);transition:transform 0.07s ease,box-shadow 0.07s ease,background 0.15s;letter-spacing:-0.01em}
-.res-tab:active{transform:translateY(4px);box-shadow:0 0px 0 #cbd5e1}
-.res-tab.active{background:var(--grad);color:#fff;box-shadow:0 4px 0 var(--grad-shadow);text-shadow:0 1px 2px rgba(0,0,0,0.15)}
-.res-tab.active:active{transform:translateY(4px);box-shadow:0 0px 0 var(--grad-shadow)}
+.res-tab-bar{display:flex;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border:1px solid #dde3f0;border-radius:16px;padding:6px;gap:6px;margin-bottom:16px;position:sticky;top:8px;z-index:20;box-shadow:0 4px 16px rgba(79,70,229,0.10)}
+.res-tab{flex:1;padding:12px 4px;border:1.5px solid #c7d2fe;border-bottom:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;color:#6b7280;background:linear-gradient(180deg,#f8faff 0%,#eaefff 100%);box-shadow:0 6px 0 #a5b4fc,inset 0 1px 0 rgba(255,255,255,0.8);transform:translateY(0);transition:transform 0.07s ease,box-shadow 0.07s ease;letter-spacing:-0.01em}
+.res-tab:hover{background:linear-gradient(180deg,#f0f4ff 0%,#dde5ff 100%)}
+.res-tab:active{transform:translateY(6px);box-shadow:0 0px 0 #a5b4fc;border-bottom:1.5px solid #c7d2fe}
+.res-tab.active{background:linear-gradient(180deg,#6366f1 0%,#4f46e5 100%);color:#fff;border-color:#4338ca;border-bottom:none;box-shadow:0 6px 0 #3730a3,inset 0 1px 0 rgba(255,255,255,0.2);text-shadow:0 1px 2px rgba(0,0,0,0.2)}
+.res-tab.active:active{transform:translateY(6px);box-shadow:0 0px 0 #3730a3;border-bottom:1.5px solid #4338ca}
 .res-tab-panel{animation:fadeIn 0.25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .tab-next-btn{width:100%;margin-top:16px;padding:13px;border:1.5px solid var(--accent);border-radius:12px;font-size:0.9rem;font-weight:600;color:var(--accent);background:#f5f7ff;cursor:pointer;transition:all 0.15s}
@@ -377,6 +378,8 @@ body{
 /* ── Share Button ── */
 .share-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:12px;padding:13px 16px;font-size:0.88rem;font-weight:700;color:#92400e;cursor:pointer;margin-top:12px;transition:all 0.15s}
 .share-btn:active{transform:scale(0.97)}
+.share-btn-bottom{margin-top:24px;padding:15px 16px;font-size:0.95rem;border:2px solid #fbbf24;box-shadow:0 5px 0 #d97706;transform:translateY(0);transition:transform 0.07s,box-shadow 0.07s}
+.share-btn-bottom:active{transform:translateY(5px);box-shadow:0 0px 0 #d97706}
 
 /* ── Toast ── */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e1b4b;color:#fff;padding:10px 20px;border-radius:30px;font-size:0.82rem;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
@@ -645,6 +648,10 @@ body{
       <div id="res-kmom-cta"></div>
     </div>
 
+    <!-- 공유 버튼 — 항상 맨 아래 고정 -->
+    <button class="share-btn share-btn-bottom" onclick="shareResult()">
+      내 결과를 카카오톡으로 보내기
+    </button>
     <button class="btn-restart" onclick="restart()">처음부터 다시하기</button>
     <p class="saved-msg" id="saved-msg"></p>
   </div>
@@ -1151,9 +1158,6 @@ function renderSummaryCards(r) {
     <div class="card-news-dots" id="card-news-dots">
       ${[0,1,2,3,4,5].map(i=>`<button class="c-dot${i===0?' active':''}" onclick="scrollCard(${i})"></button>`).join('')}
     </div>
-    <button class="share-btn" onclick="shareResult()">
-      내 결과를 카카오톡으로 보내기
-    </button>
   </div>`;
 
   //  →  
