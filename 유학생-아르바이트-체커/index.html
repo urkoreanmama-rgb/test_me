@@ -273,6 +273,14 @@ body{
 /* ── Rights & Tax Card ── */
 .rights-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 .rights-card-title{font-size:0.83rem;font-weight:700;color:var(--text);padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+/* 4대보험 상세 세로 레이아웃 */
+.ins-detail-item{border:1px solid #e0e7ff;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.ins-detail-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#f8f9ff}
+.ins-detail-name{font-size:0.9rem;font-weight:700;color:var(--text)}
+.ins-detail-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.ins-detail-body p{font-size:0.84rem;color:var(--sub);line-height:1.6;margin:0 0 4px}
+.ins-detail-row{display:flex;gap:10px;font-size:0.82rem;line-height:1.5}
+.ins-detail-key{color:var(--muted);font-weight:600;flex-shrink:0;min-width:72px}
 /* 권리·세금 3개 토픽 버튼 */
 .rt-btn-group{display:flex;gap:8px}
 .rt-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:1.5px solid #e0e7ff;border-radius:14px;background:#fafbff;cursor:pointer;transition:all 0.18s;position:relative}
@@ -1745,27 +1753,93 @@ function renderRightsCard(r) {
 
       <!-- 패널 1: 4대보험 -->
       <div class="rt-panel" id="rt-panel-1" style="display:none">
-        <div class="rights-section-label" style="margin-bottom:12px">유학생 4대보험 적용 여부</div>
-        <div class="ins-grid">
-          <div class="ins-item">
-            <div class="ins-item-name">산재보험</div>
-            <div><span class="ins-badge ins-ok">무조건 적용</span></div>
-            <div class="ins-desc">업무 중 부상·질병 보상. 고용주 100% 부담. 단 1일 알바도 적용</div>
+        <div class="rights-section-label" style="margin-bottom:14px">유학생 4대보험 — 항목별 상세 안내</div>
+
+        <!-- 건강보험 -->
+        <div class="ins-detail-item">
+          <div class="ins-detail-head">
+            <span class="ins-detail-name">건강보험</span>
+            <span class="ins-badge ins-ok">자동 가입됨</span>
           </div>
-          <div class="ins-item">
-            <div class="ins-item-name">건강보험</div>
-            <div><span class="ins-badge ins-ok">이미 가입</span></div>
-            <div class="ins-desc">D-2 유학생 의무가입·50% 경감. 월 60시간+ 시 직장가입 전환 → 보험료 절반을 고용주 부담</div>
+          <div class="ins-detail-body">
+            <p>D-2·D-4 유학생은 <strong>입학과 동시에 국민건강보험 지역가입자로 자동 등록</strong>돼요. 별도로 신청할 필요가 없어요.</p>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">보험료 할인</span>
+              <span>유학생 50% 경감 자동 적용 (2019년부터 의무화)</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">알바 시작 후</span>
+              <span>월 60시간 이상 근무하면 <strong>직장가입자</strong>로 전환돼요. 이때부터 보험료의 절반을 고용주가 부담해줘요</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">월 60시간 미만</span>
+              <span>지역가입자 유지 — 보험료 변동 없음, 할인도 그대로</span>
+            </div>
           </div>
-          <div class="ins-item">
-            <div class="ins-item-name">국민연금</div>
-            <div><span class="ins-badge ins-cond">조건부</span></div>
-            <div class="ins-desc">D-4 자동 제외. D-2는 사회보장협정 체결국(중국·베트남·몽골 등) 출신 면제 가능 — 1355 확인</div>
+        </div>
+
+        <!-- 산재보험 -->
+        <div class="ins-detail-item">
+          <div class="ins-detail-head">
+            <span class="ins-detail-name">산재보험</span>
+            <span class="ins-badge ins-ok">무조건 적용</span>
           </div>
-          <div class="ins-item">
-            <div class="ins-item-name">고용보험</div>
-            <div><span class="ins-badge ins-no">원칙 제외</span></div>
-            <div class="ins-desc">D-2·D-4 유학생 적용 제외 (시행령 제3조). 실업급여 혜택 없음</div>
+          <div class="ins-detail-body">
+            <p>알바 중 다치거나 아프면 무조건 보호받아요. <strong>고용주가 100% 부담</strong>하므로 근로자는 보험료를 내지 않아요.</p>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">적용 시점</span>
+              <span>단 하루만 일해도 즉시 적용. 근로계약서 없어도 사실상 근로관계면 보호됨</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">보장 내용</span>
+              <span>치료비 전액, 일 못 하는 기간의 휴업급여(평균임금 70%), 장해 시 장해급여</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">신청 방법</span>
+              <span>사고 발생 즉시 고용주에게 알리고 근로복지공단(1588-0075)에 신고</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 국민연금 -->
+        <div class="ins-detail-item">
+          <div class="ins-detail-head">
+            <span class="ins-detail-name">국민연금</span>
+            <span class="ins-badge ins-cond">조건부</span>
+          </div>
+          <div class="ins-detail-body">
+            <p>D-4 어학연수생은 자동 제외예요. D-2 유학생은 원칙적으로 적용되지만, 출신 국가에 따라 면제받을 수 있어요.</p>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">D-4 어학연수</span>
+              <span>법령상 적용 제외 — 납부 의무 없음</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">D-2 유학생</span>
+              <span>원칙 적용이지만 <strong>사회보장협정 체결국 출신</strong>이면 본국 연금에 이미 가입됐다는 증명서 제출 시 면제 가능</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">면제 가능 국가</span>
+              <span>중국, 베트남, 몽골, 인도네시아, 우즈베키스탄, 필리핀 등 다수 (국민연금공단 1355 확인)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 고용보험 -->
+        <div class="ins-detail-item" style="margin-bottom:0">
+          <div class="ins-detail-head">
+            <span class="ins-detail-name">고용보험</span>
+            <span class="ins-badge ins-no">적용 제외</span>
+          </div>
+          <div class="ins-detail-body">
+            <p>D-2·D-4 유학생은 <strong>고용보험 적용에서 제외</strong>돼요 (고용보험법 시행령 제3조).</p>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">의미</span>
+              <span>실업급여, 육아휴직급여 등 고용보험 혜택을 받을 수 없어요</span>
+            </div>
+            <div class="ins-detail-row">
+              <span class="ins-detail-key">보험료</span>
+              <span>내지 않아도 돼요 — 적용 제외이므로 공제도 없음</span>
+            </div>
           </div>
         </div>
       </div>
