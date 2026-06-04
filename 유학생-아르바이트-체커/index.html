@@ -686,12 +686,7 @@ body{
 <script src="config.js"></script>
 <script>
 const IS_TEST = new URLSearchParams(location.search).has('test');
-if (IS_TEST) {
-  const banner = document.createElement('div');
-  banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff9500;color:#fff;text-align:center;font-size:0.82rem;font-weight:700;padding:6px;letter-spacing:0.03em';
-  banner.textContent = '🧪 테스트 모드 — 응답이 저장되지 않아요';
-  document.body.prepend(banner);
-}
+// 테스트 모드 배너 제거됨
 // ═══════════════════════════════════════════
 //  TRANSLATIONS
 // ═══════════════════════════════════════════
