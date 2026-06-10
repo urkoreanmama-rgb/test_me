@@ -2083,6 +2083,27 @@ function submitMatching() {
         <strong>${name}</strong>님, 감사합니다!<br>
         <strong>${phone}</strong>으로 곧 카카오톡 연락드릴게요.
       </div>
+    </div>
+
+    <div style="margin-top:20px;background:linear-gradient(135deg,#10b98115,#3b82f615);border:2px solid #10b98155;border-radius:14px;padding:20px;text-align:center">
+      <div style="font-size:1rem;font-weight:700;color:#10b981;margin-bottom:8px">
+        🚀 K-MOM에서 더 많은 기회를 만나보세요
+      </div>
+      <p style="font-size:0.85rem;color:#475569;line-height:1.6;margin:0 0 16px">
+        K-MOM에 가입하시면 본인 신뢰 프로필을 만들고,<br>
+        업주가 직접 보내는 채용 제안을 받아볼 수 있어요.<br>
+        <strong style="color:#10b981">학생은 영원히 무료</strong>입니다.
+      </p>
+      <a href="https://k-mom-mu.vercel.app/signup?role=student" target="_blank" rel="noopener"
+         style="display:inline-block;background:#10b981;color:#fff;padding:12px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;text-decoration:none">
+        K-MOM 무료 가입하러 가기 →
+      </a>
+      <div style="margin-top:12px">
+        <a href="https://k-mom-mu.vercel.app" target="_blank" rel="noopener"
+           style="font-size:0.78rem;color:#64748b;text-decoration:underline">
+          또는 홈페이지 둘러보기
+        </a>
+      </div>
     </div>`;
 }
 
@@ -2116,11 +2137,33 @@ function submitPreRegister() {
   document.getElementById('pr-result').style.display = 'block';
   document.getElementById('pr-result').innerHTML = `
     <div class="match-success">
-      <div class="match-success-icon"></div>
-      <div class="match-success-title"> !</div>
+      <div class="match-success-icon">🎉</div>
+      <div class="match-success-title">사전 등록 완료!</div>
       <div class="match-success-sub">
-        <strong>${name}</strong>,   <br>
-        <strong>${phone}</strong>   .
+        <strong>${name}</strong>님, 감사합니다!<br>
+        <strong>${phone}</strong>으로 알바 가능 시점에 연락드릴게요.
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:linear-gradient(135deg,#10b98115,#3b82f615);border:2px solid #10b98155;border-radius:14px;padding:20px;text-align:center">
+      <div style="font-size:1rem;font-weight:700;color:#10b981;margin-bottom:8px">
+        💡 지금 미리 프로필 만들어두면 더 빨라요
+      </div>
+      <p style="font-size:0.85rem;color:#475569;line-height:1.6;margin:0 0 16px">
+        K-MOM에 가입해 신뢰 프로필을 만들어두면,<br>
+        합법 알바 가능 시점이 되었을 때<br>
+        업주들의 채용 제안을 바로 받을 수 있어요.<br>
+        <strong style="color:#10b981">학생은 영원히 무료</strong>입니다.
+      </p>
+      <a href="https://k-mom-mu.vercel.app/signup?role=student" target="_blank" rel="noopener"
+         style="display:inline-block;background:#10b981;color:#fff;padding:12px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;text-decoration:none">
+        K-MOM 무료 가입하러 가기 →
+      </a>
+      <div style="margin-top:12px">
+        <a href="https://k-mom-mu.vercel.app" target="_blank" rel="noopener"
+           style="font-size:0.78rem;color:#64748b;text-decoration:underline">
+          또는 홈페이지 둘러보기
+        </a>
       </div>
     </div>`;
 }
