@@ -40,6 +40,23 @@
   --text:   var(--ink);
 
   --r: 14px;
+
+  /* ── Design System v1.0 (산업안전 오렌지) ── */
+  --orange:         #FF6B35;
+  --orange-dark:    #E85520;
+  --orange-light:   #FFF0EB;
+  --orange-border:  #FFD4C2;
+  --bg-page:        #F5F5F7;
+  --bg-card:        #FFFFFF;
+  --text-primary:   #1D1D1F;
+  --text-secondary: #3A3A3C;
+  --text-muted:     #8E8E93;
+  --text-hint:      #C7C7CC;
+  --radius-sm:      10px;
+  --radius-md:      14px;
+  --radius-lg:      18px;
+  --radius-pill:    999px;
+  --transition-tap: 0.1s ease;
 }
 
 /* ─── Reset ─── */
@@ -253,24 +270,29 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── 표현 카드 (Day 표현 학습) ── */
 .expr-card{
-  background:linear-gradient(145deg,#0284C7,#0EA5E9);
-  border-radius:var(--r);padding:28px 20px;color:#fff;
+  background:linear-gradient(145deg,var(--orange),#FF8F65);
+  border-radius:var(--radius-lg);padding:28px 20px;color:#fff;
   text-align:center;cursor:pointer;margin-bottom:14px;
-  box-shadow:0 4px 20px rgba(2,132,199,.3);
+  box-shadow:0 4px 20px rgba(255,107,53,.3);
   transition:transform .1s;
 }
 .expr-card:active{transform:scale(.98)}
-.expr-emoji{font-size:80px;line-height:1;margin-bottom:12px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
-.expr-ko{font-size:26px;font-weight:900;margin-bottom:6px;letter-spacing:-.3px}
+.expr-emoji{font-size:80px;line-height:1;margin-bottom:12px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.2))}
+.expr-ko{font-size:28px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
 .expr-rom{font-size:13px;opacity:.75;margin-bottom:8px;letter-spacing:.3px}
-.expr-uz{font-size:15px;font-weight:600;opacity:.9;margin-bottom:6px}
-.expr-sit{font-size:11px;opacity:.7;font-style:italic;line-height:1.5}
-.expr-tts-row{display:flex;gap:10px;margin-bottom:14px}
-.expr-tts-btn{flex:1;padding:11px;border:2px solid var(--blue-m);background:var(--blue-l);
-  color:var(--blue-m);border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;
-  transition:all .15s}
-.expr-tts-btn:active{background:var(--blue-m);color:#fff}
-.expr-nav{display:flex;justify-content:space-between;gap:10px}
+.expr-uz{font-size:15px;font-weight:600;opacity:.92;margin-bottom:6px}
+.expr-sit{font-size:11px;opacity:.72;font-style:italic;line-height:1.5}
+.expr-tts-row{display:flex;gap:8px;margin-bottom:12px}
+.expr-tts-btn{
+  flex:1;padding:11px;
+  border:2px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.15);
+  color:#fff;border-radius:var(--radius-sm);cursor:pointer;
+  font-size:13px;font-weight:700;
+  transition:all .15s;backdrop-filter:blur(4px);
+}
+.expr-tts-btn:active{background:rgba(255,255,255,.3);transform:scale(.97)}
+.expr-nav{display:flex;justify-content:space-between;gap:8px}
 .expr-nav .btn{flex:1}
 
 /* ── Sentence Overview (Step 0) ── */
@@ -464,15 +486,24 @@ body.in-lesson #mainHdr{display:none!important}
 .qtag{font-size:10px;font-weight:700;color:var(--blue-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .qq{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.4;color:var(--ink)}
 .qsub{font-size:11px;color:var(--muted);margin-bottom:15px}
-.qopts{display:flex;flex-direction:column;gap:7px}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .qopt{
-  padding:12px 13px;border-radius:9px;border:1.5px solid var(--border);
-  cursor:pointer;font-size:13px;transition:all .2s;text-align:left;background:var(--card)
+  padding:13px 8px;
+  border-radius:var(--radius-sm);
+  border:1px solid #C7C7CC;
+  background:var(--bg-card,#fff);
+  font-size:14px;font-weight:500;
+  color:var(--text-primary,#1D1D1F);
+  text-align:center;cursor:pointer;
+  transition:border-color .15s,background .15s,transform .1s;
+  -webkit-tap-highlight-color:transparent;
+  display:block;width:100%;
 }
-.qopt:hover{border-color:var(--blue-m);background:var(--blue-l)}
-.qopt.ok{border-color:var(--green);background:var(--green-l);color:#0369A1;font-weight:700}
-.qopt.no{border-color:var(--red);background:var(--red-l);color:var(--red-d)}
-.qopt.off{cursor:not-allowed}
+.qopt:hover{border-color:var(--orange);background:#FFF8F5}
+.qopt:active{transform:scale(0.96)}
+.qopt.ok{border-color:#34C759!important;background:#F0FFF4!important;color:#1A7F37!important}
+.qopt.no{border-color:#FF3B30!important;background:#FFF0EF!important;color:#C0392B!important}
+.qopt.off{opacity:.55;cursor:default}
 .qfb{margin-top:10px;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:600;display:none}
 .qfb.ok{background:var(--green-l);color:#0369A1;border:1.5px solid var(--green)}
 .qfb.no{background:var(--red-l);color:var(--red-d);border:1.5px solid var(--red)}
@@ -2073,7 +2104,7 @@ const STRINGS = {
     lsn_sp_goal:'뜻 고르기',lsn_sp_instr:'소리를 듣고 뜻을 고르세요',
     lsn_sp_next:'다음 →',lsn_sp_done_msg:'문장 연습 완료!',
     lsn_sp_follow:'소리를 듣고 따라 말해보세요',lsn_sp_repeat:'따라 말하기',
-    lsn_sp_done_btn:'완료 →',lsn_play:'▶ 발음 듣기',lsn_today_words:'오늘의 단어',
+    lsn_sp_done_btn:'완료 →',lsn_play:'▶ 발음 듣기',lsn_slow:'🐢 천천히',lsn_next_expr:'다음 →',lsn_prev_expr:'← 이전',lsn_today_words:'오늘의 단어',
     lsn_fc_know:'알아요',lsn_fc_again:'다시',
     lsn_next_sb:'문장 만들기 →',lsn_sb_title:'문장 만들기',lsn_sb_hint:'단어를 순서대로 탭하세요',lsn_sb_check:'확인',lsn_sb_clear:'지우기',
     lsn_final_title:'종합 테스트',lsn_final_sub:'오늘 배운 내용을 확인해요',lsn_final_done:'종합 테스트 완료!',lsn_final_pass:'완벽해요! 🏆',lsn_final_fail:'다시 해봐요 💪',lsn_final_retry:'다시 →',lsn_final_next:'결과 보기 →',lsn_final_q:'문제',lsn_next_home:'홈으로 →',
@@ -2109,7 +2140,7 @@ const STRINGS = {
     lsn_sp_goal:"Ma'no tanlash",lsn_sp_instr:"Gapni tinglang va ma'nosini toping",
     lsn_sp_next:"Keyingi →",lsn_sp_done_msg:"Gap mashqi tugadi!",
     lsn_sp_follow:"Gapni tinglang va takrorlang",lsn_sp_repeat:"Takrorlash",
-    lsn_sp_done_btn:"Tugadi →",lsn_play:"▶ Tinglash",lsn_today_words:"Bugungi so'zlar",
+    lsn_sp_done_btn:"Tugadi →",lsn_play:"▶ Tinglash",lsn_slow:'🐢 Sekinroq',lsn_next_expr:"Keyingi →",lsn_prev_expr:'← Oldingi',lsn_today_words:"Bugungi so'zlar",
     lsn_fc_know:"Bilaman",lsn_fc_again:"Qayta",
     lsn_next_sb:"Gap tuzing →",lsn_sb_title:"Gap tuzing",lsn_sb_hint:"So'zlarni tartib bilan bosing",lsn_sb_check:"Tekshirish",lsn_sb_clear:"Tozalash",
     lsn_final_title:"Yakuniy test",lsn_final_sub:"Bugun o'rganganlaringizni tekshiramiz",lsn_final_done:"Yakuniy test tugadi!",lsn_final_pass:"Ajoyib! 🏆",lsn_final_fail:"Qayta urinib ko'ring 💪",lsn_final_retry:"Qayta →",lsn_final_next:"Natija →",lsn_final_q:"Savol",lsn_next_home:"Bosh sahifa →",
@@ -2145,7 +2176,7 @@ const STRINGS = {
     lsn_sp_goal:'Chọn nghĩa',lsn_sp_instr:'Nghe và tìm nghĩa câu',
     lsn_sp_next:'Tiếp theo →',lsn_sp_done_msg:'Hoàn thành luyện câu!',
     lsn_sp_follow:'Nghe và nhắc lại',lsn_sp_repeat:'Nhắc lại',
-    lsn_sp_done_btn:'Xong →',lsn_play:'▶ Nghe phát âm',lsn_today_words:'Từ hôm nay',
+    lsn_sp_done_btn:'Xong →',lsn_play:'▶ Nghe phát âm',lsn_slow:'🐢 Chậm hơn',lsn_next_expr:'Tiếp →',lsn_prev_expr:'← Trước',lsn_today_words:'Từ hôm nay',
     lsn_fc_know:'Biết rồi',lsn_fc_again:'Thử lại',
     lsn_next_sb:'Xây câu →',lsn_sb_title:'Xây câu',lsn_sb_hint:'Chọn từ theo thứ tự',lsn_sb_check:'Kiểm tra',lsn_sb_clear:'Xóa',
     lsn_final_title:'Kiểm tra tổng hợp',lsn_final_sub:'Ôn lại tất cả những gì đã học hôm nay',lsn_final_done:'Kiểm tra tổng hợp xong!',lsn_final_pass:'Tuyệt vời! 🏆',lsn_final_fail:'Thử lại nhé 💪',lsn_final_retry:'Thử lại →',lsn_final_next:'Xem kết quả →',lsn_final_q:'Câu',lsn_next_home:'Trang chủ →',
@@ -2181,7 +2212,7 @@ const STRINGS = {
     lsn_sp_goal:'अर्थ छान्नुस्',lsn_sp_instr:'सुन्नुस् र अर्थ पत्ता लगाउनुस्',
     lsn_sp_next:'अर्को →',lsn_sp_done_msg:'वाक्य अभ्यास सकियो!',
     lsn_sp_follow:'सुन्नुस् र दोहोर्याउनुस्',lsn_sp_repeat:'दोहोर्याउनुस्',
-    lsn_sp_done_btn:'सकियो →',lsn_play:'▶ उच्चारण सुन्नुस्',lsn_today_words:'आजका शब्द',
+    lsn_sp_done_btn:'सकियो →',lsn_play:'▶ उच्चारण सुन्नुस्',lsn_slow:'🐢 बिस्तारै',lsn_next_expr:'अर्को →',lsn_prev_expr:'← अघि',lsn_today_words:'आजका शब्द',
     lsn_fc_know:'थाहा छ',lsn_fc_again:'फेरि',
     lsn_next_sb:'वाक्य बनाउनुस् →',lsn_sb_title:'वाक्य बनाउनुस्',lsn_sb_hint:'शब्दहरू क्रमशः थिच्नुस्',lsn_sb_check:'जाँच',lsn_sb_clear:'मेटाउनुस्',
     lsn_final_title:'समग्र परीक्षा',lsn_final_sub:'आज सिकेको सबै कुरा जाँच्नुस्',lsn_final_done:'समग्र परीक्षा सकियो!',lsn_final_pass:'उत्कृष्ट! 🏆',lsn_final_fail:'फेरि प्रयास गर्नुस् 💪',lsn_final_retry:'फेरि →',lsn_final_next:'नतिजा →',lsn_final_q:'प्रश्न',lsn_next_home:'गृहपृष्ठ →',
@@ -2217,7 +2248,7 @@ const STRINGS = {
     lsn_sp_goal:'Мағына таңдау',lsn_sp_instr:'Тыңдап, мағынасын табыңыз',
     lsn_sp_next:'Келесі →',lsn_sp_done_msg:'Сөйлем жаттығуы бітті!',
     lsn_sp_follow:'Тыңдап, қайталаңыз',lsn_sp_repeat:'Қайталау',
-    lsn_sp_done_btn:'Бітті →',lsn_play:'▶ Айтылуды тыңдау',lsn_today_words:'Бүгінгі сөздер',
+    lsn_sp_done_btn:'Бітті →',lsn_play:'▶ Айтылуды тыңдау',lsn_slow:'🐢 Баяу',lsn_next_expr:'Келесі →',lsn_prev_expr:'← Алдыңғы',lsn_today_words:'Бүгінгі сөздер',
     lsn_fc_know:'Білемін',lsn_fc_again:'Қайта',
     lsn_next_sb:'Сөйлем жасаңыз →',lsn_sb_title:'Сөйлем жасаңыз',lsn_sb_hint:'Сөздерді ретімен басыңыз',lsn_sb_check:'Тексеру',lsn_sb_clear:'Жою',
     lsn_final_title:'Жалпы тест',lsn_final_sub:'Бүгін үйренгеннің барлығын тексеріңіз',lsn_final_done:'Жалпы тест аяқталды!',lsn_final_pass:'Тамаша! 🏆',lsn_final_fail:'Қайта уринып көріңіз 💪',lsn_final_retry:'Қайта →',lsn_final_next:'Нәтиже →',lsn_final_q:'Сұрақ',lsn_next_home:'Басты бет →',
@@ -2253,7 +2284,7 @@ const STRINGS = {
     lsn_sp_goal:"Hili signifikadu",lsn_sp_instr:"Rona no hetan signifikadu fraze",
     lsn_sp_next:"Tuir mai →",lsn_sp_done_msg:"Prátika fraze remata!",
     lsn_sp_follow:"Rona no repete",lsn_sp_repeat:"Repete",
-    lsn_sp_done_btn:"Remata →",lsn_play:"▶ Rona pronunsiasaun",lsn_today_words:"Liafuan ohin",
+    lsn_sp_done_btn:"Remata →",lsn_play:"▶ Rona pronunsiasaun",lsn_slow:'🐢 Neineik',lsn_next_expr:'Tuir mai →',lsn_prev_expr:'← Antes',lsn_today_words:"Liafuan ohin",
     lsn_fc_know:"Hatene",lsn_fc_again:"Fali",
     lsn_next_sb:"Halo fraze →",lsn_sb_title:"Halo fraze",lsn_sb_hint:"Klik liafuan tuir ordem",lsn_sb_check:"Verifika",lsn_sb_clear:"Hamoos",
     lsn_final_title:"Teste final",lsn_final_sub:"Verifika hotu ne'ebé aprende ohin",lsn_final_done:"Teste final remata!",lsn_final_pass:"Ekselente! 🏆",lsn_final_fail:"Koko fali 💪",lsn_final_retry:"Fali →",lsn_final_next:"Rezultadu →",lsn_final_q:"Pergunta",lsn_next_home:"Pájina inísiu →",
@@ -2289,7 +2320,7 @@ const STRINGS = {
     lsn_sp_goal:'Выбор значения',lsn_sp_instr:'Слушайте и найдите значение',
     lsn_sp_next:'Далее →',lsn_sp_done_msg:'Практика предложения завершена!',
     lsn_sp_follow:'Слушайте и повторяйте',lsn_sp_repeat:'Повторение',
-    lsn_sp_done_btn:'Завершено →',lsn_play:'▶ Слушать произношение',lsn_today_words:'Слова дня',
+    lsn_sp_done_btn:'Завершено →',lsn_play:'▶ Слушать произношение',lsn_slow:'🐢 Медленно',lsn_next_expr:'Далее →',lsn_prev_expr:'← Назад',lsn_today_words:'Слова дня',
     lsn_fc_know:'Знаю',lsn_fc_again:'Снова',
     lsn_next_sb:'Составьте предложение →',lsn_sb_title:'Составьте предложение',lsn_sb_hint:'Нажимайте слова по порядку',lsn_sb_check:'Проверить',lsn_sb_clear:'Очистить',
     lsn_final_title:'Итоговый тест',lsn_final_sub:'Проверьте всё, что узнали сегодня',lsn_final_done:'Итоговый тест завершён!',lsn_final_pass:'Отлично! 🏆',lsn_final_fail:'Попробуйте ещё раз 💪',lsn_final_retry:'Ещё раз →',lsn_final_next:'Результат →',lsn_final_q:'Вопрос',lsn_next_home:'На главную →',
@@ -2325,7 +2356,7 @@ const STRINGS = {
     lsn_sp_goal:'Choose meaning',lsn_sp_instr:'Listen and find the meaning',
     lsn_sp_next:'Next →',lsn_sp_done_msg:'Sentence practice done!',
     lsn_sp_follow:'Listen and repeat',lsn_sp_repeat:'Repeat',
-    lsn_sp_done_btn:'Done →',lsn_play:'▶ Listen to pronunciation',lsn_today_words:"Today's words",
+    lsn_sp_done_btn:'Done →',lsn_play:'▶ Listen to pronunciation',lsn_slow:'🐢 Slowly',lsn_next_expr:'Next →',lsn_prev_expr:'← Prev',lsn_today_words:"Today's words",
     lsn_fc_know:'I know',lsn_fc_again:'Again',
     lsn_next_sb:'Build sentence →',lsn_sb_title:'Build sentence',lsn_sb_hint:'Tap words in order',lsn_sb_check:'Check',lsn_sb_clear:'Clear',
     lsn_final_title:'Final test',lsn_final_sub:"Review everything you learned today",lsn_final_done:'Final test done!',lsn_final_pass:'Excellent! 🏆',lsn_final_fail:'Try again 💪',lsn_final_retry:'Retry →',lsn_final_next:'See results →',lsn_final_q:'Question',lsn_next_home:'Go home →',
@@ -3020,16 +3051,16 @@ function rSentView(d,el,uz){
         ▶ ${t('lsn_play')}
       </button>
       <button class="expr-tts-btn" onclick="sayBtnSlow('sv-slow',${jq(w.ko)})">
-        🐢 천천히
+        ${t('lsn_slow')}
       </button>
     </div>
 
     <div class="expr-nav">
       ${idx>0
-        ? `<button class="btn gray" onclick="ST._sv.idx=${idx-1};renderLesson()">← ${t('lsn_fc_again')}</button>`
+        ? `<button class="btn gray" onclick="ST._sv.idx=${idx-1};renderLesson()">${t('lsn_prev_expr')}</button>`
         : `<div></div>`}
       ${idx<totalW-1
-        ? `<button class="btn red" onclick="ST._sv.idx=${idx+1};renderLesson()">다음 →</button>`
+        ? `<button class="btn red" onclick="ST._sv.idx=${idx+1};renderLesson()">${t('lsn_next_expr')}</button>`
         : `<button class="btn red" data-adv onclick="next()">${t('lsn_next_fc')}</button>`}
     </div>`;
 }
@@ -3279,8 +3310,15 @@ function rSentPractice(d,el,uz){
   const sent=d.sentence||{ko:'',uz:''};
   if(!ST._sp||ST._sp.day!==d.day){
     // 3가지 활동 순서로
+    // 다른 날 문장에서 4개 보기 확보
     const others=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz).map(c=>c.sentence.uz);
-    const distractors=shuffle(others).slice(0,3);
+    let distractors=shuffle(others).slice(0,3);
+    // 4개 미만이면 단어 뜻으로 채움
+    if(distractors.length<3){
+      const wordFallback=CUR.filter(c=>c.day!==d.day).flatMap(c=>(c.words||[]).map(w=>w.uz.split('—')[0].trim()));
+      const extra=shuffle(wordFallback).slice(0,3-distractors.length);
+      distractors=[...distractors,...extra];
+    }
     const uzOpts=shuffle([sent.uz,...distractors]).slice(0,4);
     ST._sp={day:d.day, phase:0, uzOpts, uzAns:uzOpts.indexOf(sent.uz), done:false};
   }
@@ -3460,9 +3498,15 @@ function rFinalTest(d,el,uz){
     // Word meaning questions: hear/see Korean → pick native meaning
     words.forEach(w=>{
       const others=shuffle(words.filter(x=>x.ko!==w.ko));
-      const distractors=others.slice(0,3).map(x=>x.uz.split('—')[0].trim());
+      let distractors=others.slice(0,3).map(x=>x.uz.split('—')[0].trim());
       const correctAns=w.uz.split('—')[0].trim();
-      if(distractors.length>=2){
+      if(distractors.length>=1){
+        // 4개 미만이면 전체 단어에서 채움
+        if(distractors.length<3){
+          const allWords=CUR.flatMap(d2=>d2.day!==d.day?(d2.words||[]):[]).map(w=>w.uz.split('—')[0].trim());
+          const extra=shuffle(allWords.filter(x=>x!==correctAns&&!distractors.includes(x))).slice(0,3-distractors.length);
+          distractors=[...distractors,...extra];
+        }
         const opts=shuffle([correctAns,...distractors]).slice(0,4);
         qs.push({type:'word',q:w.ko,qSub:'['+w.rom+']',opts,ans:opts.indexOf(correctAns)});
       }
