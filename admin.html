@@ -209,6 +209,79 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
     <!-- 전체 현황 -->
     <div class="page on" id="pgOverview">
+      <!-- MVP 시연 모드 카드 -->
+      <div id="mvpCard" style="
+        background:#FFFFFF;
+        border:1px solid #E2E2E7;
+        border-radius:18px;
+        padding:22px;
+        margin-bottom:24px;
+        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      ">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span style="background:#FF6B35;color:#fff;font-size:11px;font-weight:700;
+            padding:4px 10px;border-radius:20px;letter-spacing:.3px">MVP 시연 모드</span>
+        </div>
+        <h2 style="font-size:18px;font-weight:700;color:#1D1D1F;margin-bottom:4px">
+          어떤 입장에서 볼까요?
+        </h2>
+        <p style="font-size:13px;color:#8E8E93;margin-bottom:20px">
+          버튼을 누르면 해당 화면으로 이동해요
+        </p>
+
+        <!-- 버튼 1: 근로자 -->
+        <button onclick="window.open('education.html','_blank')" style="
+          display:flex;align-items:center;gap:14px;
+          width:100%;padding:16px 20px;border-radius:14px;
+          background:#FF6B35;border:none;cursor:pointer;
+          margin-bottom:10px;text-align:left;
+          transition:transform .1s ease, opacity .1s ease;
+        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
+           onmouseup="this.style.transform='';this.style.opacity=''"
+           onmouseleave="this.style.transform='';this.style.opacity=''">
+          <span style="font-size:32px;flex-shrink:0">👷</span>
+          <div>
+            <div style="font-size:15px;font-weight:500;color:#fff">근로자 입장으로 보기</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">Sardor씨가 한국어를 배우는 화면</div>
+          </div>
+        </button>
+
+        <!-- 버튼 2: 업주 -->
+        <button onclick="window.open('employer.html','_blank')" style="
+          display:flex;align-items:center;gap:14px;
+          width:100%;padding:16px 20px;border-radius:14px;
+          background:#fff;border:1px solid #FF6B35;cursor:pointer;
+          margin-bottom:10px;text-align:left;
+          transition:transform .1s ease, opacity .1s ease;
+        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
+           onmouseup="this.style.transform='';this.style.opacity=''"
+           onmouseleave="this.style.transform='';this.style.opacity=''">
+          <span style="font-size:32px;flex-shrink:0">🏭</span>
+          <div>
+            <div style="font-size:15px;font-weight:500;color:#FF6B35">업주 입장으로 보기</div>
+            <div style="font-size:12px;color:#8E8E93;margin-top:2px">공장 사장님이 직원 현황을 보는 화면</div>
+          </div>
+        </button>
+
+        <!-- 버튼 3: 관리자 -->
+        <button onclick="window.open('admin_dashboard.html','_blank')" style="
+          display:flex;align-items:center;gap:14px;
+          width:100%;padding:16px 20px;border-radius:14px;
+          background:#F5F5F7;border:1px solid #C7C7CC;cursor:pointer;
+          margin-bottom:0;text-align:left;
+          transition:transform .1s ease, opacity .1s ease;
+        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
+           onmouseup="this.style.transform='';this.style.opacity=''"
+           onmouseleave="this.style.transform='';this.style.opacity=''">
+          <span style="font-size:32px;flex-shrink:0">🛠️</span>
+          <div>
+            <div style="font-size:15px;font-weight:500;color:#3A3A3C">플랫폼 관리자 보기</div>
+            <div style="font-size:12px;color:#8E8E93;margin-top:2px">전체 업체·수강생·매출을 관리하는 화면</div>
+          </div>
+        </button>
+
+        <hr style="border:none;border-top:1px solid #E2E2E7;margin:20px 0 0">
+      </div>
       <div class="kpi-grid" id="kpiGrid"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div class="section">
