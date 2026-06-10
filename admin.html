@@ -134,6 +134,10 @@ tr:hover td{background:rgba(255,255,255,.02)}
 }
 #certDoc{display:none}
 
+/* ── Small button ── */
+.btn-sm{padding:5px 12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600}
+.btn-sm:hover{background:rgba(255,255,255,.1)}
+
 /* ── Responsive ── */
 @media(max-width:900px){
   #sidebar{width:200px}
@@ -176,6 +180,10 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="sb-item" onclick="nav('users')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       직원 관리
+    </div>
+    <div class="sb-item" onclick="nav('companies')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      업체 관리
     </div>
     <div class="sb-item" onclick="nav('scores')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -238,12 +246,53 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="section">
         <div class="section-hdr">
           <h3>직원 목록</h3>
-          <span id="userCount" style="font-size:11px;color:var(--muted)"></span>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span id="userCount" style="font-size:11px;color:var(--muted)"></span>
+            <button class="btn-sm" onclick="downloadUsersCSV()">📥 CSV 다운로드</button>
+          </div>
         </div>
         <div class="tbl-wrap">
           <table>
             <thead><tr><th>이름</th><th>아이디</th><th>언어</th><th>진행률</th><th>완료일수</th><th>총점</th><th>최근접속</th><th>상태</th></tr></thead>
             <tbody id="usersTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 업체 관리 -->
+    <div class="page" id="pgCompanies">
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)" id="companyKpiGrid"></div>
+      <div class="section">
+        <div class="section-hdr">
+          <h3>업체별 학습 현황</h3>
+          <button class="btn-sm" onclick="downloadCompanyExcel()">📥 엑셀 다운로드</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>업체명</th><th>업체코드</th><th>소속 직원</th><th>평균 진도율</th><th>평균 퀴즈점수</th><th>이수자 수</th><th>등록일</th></tr></thead>
+            <tbody id="companyTbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-hdr"><h3>업체 코드 등록</h3></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+          <div>
+            <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">업체명</label>
+            <input type="text" id="newCompanyName" placeholder="예: 한국전자 안산공장" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;width:200px">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">담당자명</label>
+            <input type="text" id="newCompanyContact" placeholder="예: 김안전" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;width:160px">
+          </div>
+          <button onclick="createCompanyCode()" style="background:var(--accent);color:#fff;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">코드 생성</button>
+        </div>
+        <div id="newCodeResult" style="margin-top:12px;font-size:13px;color:var(--green)"></div>
+        <div class="tbl-wrap" style="margin-top:16px">
+          <table>
+            <thead><tr><th>업체명</th><th>업체코드</th><th>담당자</th><th>생성일</th><th>소속 직원수</th></tr></thead>
+            <tbody id="companyCodeTbody"></tbody>
           </table>
         </div>
       </div>
@@ -259,6 +308,14 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="section">
         <div class="section-hdr"><h3>단원별 퀴즈 점수 분포</h3></div>
         <div id="scoreDistDiv"></div>
+      </div>
+      <div class="section" style="margin-top:16px">
+        <div class="section-hdr"><h3>Day별 완료율</h3></div>
+        <div id="dayCompletionChart" style="padding:8px 0"></div>
+      </div>
+      <div class="section" style="margin-top:16px">
+        <div class="section-hdr"><h3>국적별 분포</h3></div>
+        <div id="nationalityChart" style="padding:8px 0"></div>
       </div>
       <div class="section">
         <div class="section-hdr"><h3>세션 기록</h3></div>
@@ -322,18 +379,19 @@ function logout(){
 }
 
 // ── Nav ──
-const PAGE_TITLES = {overview:'전체 현황',users:'직원 관리',scores:'퀴즈 점수 통계',cert:'이수 확인증 발급'};
+const PAGE_TITLES = {overview:'전체 현황',users:'직원 관리',companies:'업체 관리',scores:'퀴즈 점수 통계',cert:'이수 확인증 발급'};
 function nav(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('on'));
   document.getElementById('pg'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on');
   const items = document.querySelectorAll('.sb-item');
-  const idx = {overview:0,users:1,scores:2,cert:3};
+  const idx = {overview:0,users:1,companies:2,scores:3,cert:4};
   items[idx[id]].classList.add('on');
   document.getElementById('pageTitle').textContent = PAGE_TITLES[id]||id;
   if(id==='overview') renderOverview();
   if(id==='users') renderUsers();
-  if(id==='scores') renderScores();
+  if(id==='companies') renderCompanies();
+  if(id==='scores'){ renderScores(); renderDayCompletionChart(); renderNationalityChart(); }
   if(id==='cert') renderCertList();
 }
 
@@ -522,7 +580,11 @@ function renderCertList(){
   sel.innerHTML='<option value="">학습자 선택...</option>'+
     users.map(u=>{
       const p=pct(u.username);
-      return `<option value="${u.username}">${u.name||u.username} (${p}% 완료)</option>`;
+      const sess=getSessions(u.username);
+      const avgSc=sess.length?Math.round(sess.reduce((a,s)=>a+(s.score||0),0)/sess.length):0;
+      const meets=p>=80&&avgSc>=80;
+      const suffix=meets?'✅ 이수완료':'⚠️ 미달';
+      return `<option value="${u.username}">${u.name||u.username} (진도 ${p}% · 퀴즈 ${avgSc}점) — ${suffix}</option>`;
     }).join('');
 }
 
@@ -545,7 +607,15 @@ function renderCertPreview(){
   const certNo=`SKE-${issueDate.replace(/-/g,'')}-${uid.slice(-6).toUpperCase()}`;
   const langName=LANG_NAMES[user.lang]||user.lang||'—';
 
+  const studyMinutes = doneDays * 5;
+
+  // Condition warning shown in preview (not printed)
+  const conditionBadge = passed
+    ? `<div style="margin-bottom:16px;padding:10px 16px;border-radius:8px;background:rgba(34,197,94,.1);border:1px solid #86efac;color:#15803d;font-size:12px;font-weight:600">✅ 이수 조건 충족 — 진도율 ${pctVal}% · 퀴즈 평균 ${avgScore}점</div>`
+    : `<div style="margin-bottom:16px;padding:10px 16px;border-radius:8px;background:rgba(239,68,68,.08);border:1px solid #fca5a5;color:#dc2626;font-size:12px;font-weight:600">⚠️ 이수 조건 미달 — 진도율 ${pctVal}% · 퀴즈 평균 ${avgScore}점 (이수 기준: 진도율 80% 이상 + 퀴즈 평균 80점 이상)</div>`;
+
   const html=`
+  ${conditionBadge}
   <div style="font-family:'Malgun Gothic',sans-serif;max-width:680px;margin:0 auto;background:#fff;
     border:2px solid #2d3748;padding:48px;color:#1a202c;position:relative">
     <div style="text-align:center;border-bottom:3px double #6366f1;padding-bottom:24px;margin-bottom:24px">
@@ -566,8 +636,10 @@ function renderCertPreview(){
         <tr><td style="padding:6px 0;color:#555;width:40%">교육 과정</td><td style="font-weight:600">Safety Korean — 산업 현장 안전 한국어</td></tr>
         <tr><td style="padding:6px 0;color:#555">총 학습 단원</td><td style="font-weight:600">${TOTAL_DAYS}개 단원</td></tr>
         <tr><td style="padding:6px 0;color:#555">이수 단원</td><td style="font-weight:600">${doneDays}개 단원 (${pctVal}%)</td></tr>
+        <tr><td style="padding:6px 0;color:#555">총 학습시간</td><td style="font-weight:600">${doneDays}일 × 5분 = ${studyMinutes}분</td></tr>
         <tr><td style="padding:6px 0;color:#555">평균 퀴즈 점수</td><td style="font-weight:600">${avgScore}점 / 100점</td></tr>
-        <tr><td style="padding:6px 0;color:#555">발급 일자</td><td style="font-weight:600">${issueDate}</td></tr>
+        <tr><td style="padding:6px 0;color:#555">이수 기준</td><td style="font-weight:600">진도율 80% 이상 · 퀴즈 평균 80점 이상</td></tr>
+        <tr><td style="padding:6px 0;color:#555">이수 일자</td><td style="font-weight:600">${issueDate}</td></tr>
         <tr><td style="padding:6px 0;color:#555">확인증 번호</td><td style="font-weight:600;font-family:monospace;font-size:11px">${certNo}</td></tr>
       </table>
     </div>
@@ -595,8 +667,10 @@ function renderCertPreview(){
       </div>
     </div>
   </div>`;
+  // For print, strip the condition badge (it's a preview-only element)
+  const printHtml = html.replace(conditionBadge,'');
   prev.innerHTML=html;
-  document.getElementById('certPrintInner').innerHTML=html;
+  document.getElementById('certPrintInner').innerHTML=printHtml;
 }
 
 function printCert(){
@@ -605,6 +679,193 @@ function printCert(){
   if(!uid){ alert('학습자를 선택해주세요'); return; }
   document.getElementById('certDoc').style.display='block';
   setTimeout(()=>{ window.print(); document.getElementById('certDoc').style.display='none'; },300);
+}
+
+// ── Company Management ──
+function getCompanyCodes() {
+  try { return JSON.parse(localStorage.getItem('sk_companies') || '[]'); } catch { return []; }
+}
+function saveCompanyCodes(arr) {
+  localStorage.setItem('sk_companies', JSON.stringify(arr));
+}
+
+function createCompanyCode() {
+  const name = document.getElementById('newCompanyName').value.trim();
+  const contact = document.getElementById('newCompanyContact').value.trim();
+  if (!name) { alert('업체명을 입력하세요'); return; }
+  const code = 'BIZ-' + Math.random().toString(36).substr(2,6).toUpperCase();
+  const companies = getCompanyCodes();
+  companies.push({ name, contact, code, createdAt: new Date().toISOString() });
+  saveCompanyCodes(companies);
+  document.getElementById('newCodeResult').innerHTML = `✅ 생성 완료! 업체코드: <strong style="color:var(--cyan);font-size:16px">${code}</strong> — 직원들에게 공유하세요.`;
+  document.getElementById('newCompanyName').value = '';
+  document.getElementById('newCompanyContact').value = '';
+  renderCompanies();
+}
+
+function renderCompanies() {
+  const users = getUsers();
+  const companies = getCompanyCodes();
+
+  // KPI
+  const kpi = document.getElementById('companyKpiGrid');
+  if (kpi) {
+    kpi.innerHTML = `
+      <div class="kpi accent"><div class="label">등록 업체 수</div><div class="val">${companies.length}</div><div class="sub">개</div></div>
+      <div class="kpi green"><div class="label">소속 직원 수</div><div class="val">${users.filter(u=>u.company).length}</div><div class="sub">명</div></div>
+      <div class="kpi yellow"><div class="label">이수 완료자</div><div class="val">${users.filter(u=>{const d=getProgressPct(u);return d>=80;}).length}</div><div class="sub">명</div></div>
+    `;
+  }
+
+  // Company stats table
+  const tbody = document.getElementById('companyTbody');
+  if (!tbody) return;
+  if (companies.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">등록된 업체가 없습니다</td></tr>';
+  } else {
+    tbody.innerHTML = companies.map(c => {
+      const companyUsers = users.filter(u => u.company === c.code || u.company === c.name);
+      const avgPct = companyUsers.length ? Math.round(companyUsers.reduce((s,u)=>s+getProgressPct(u),0)/companyUsers.length) : 0;
+      const avgScore = companyUsers.length ? Math.round(companyUsers.reduce((s,u)=>s+getAvgQuizScore(u),0)/companyUsers.length) : 0;
+      const passCount = companyUsers.filter(u=>getProgressPct(u)>=80).length;
+      return `<tr>
+        <td><strong>${c.name}</strong></td>
+        <td><code style="color:var(--cyan);background:rgba(34,211,238,.08);padding:2px 6px;border-radius:4px">${c.code}</code></td>
+        <td>${companyUsers.length}명</td>
+        <td><div class="bar-wrap" style="width:80px;display:inline-block;vertical-align:middle;margin-right:6px"><div class="bar-fill" style="width:${avgPct}%"></div></div>${avgPct}%</td>
+        <td>${avgScore}점</td>
+        <td><span class="badge ${passCount>0?'green':'gray'}">${passCount}명</span></td>
+        <td style="color:var(--muted)">${new Date(c.createdAt).toLocaleDateString('ko-KR')}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Code list table
+  const codeTbody = document.getElementById('companyCodeTbody');
+  if (codeTbody) {
+    if (companies.length === 0) {
+      codeTbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:16px">생성된 코드가 없습니다</td></tr>';
+    } else {
+      codeTbody.innerHTML = companies.map(c => {
+        const cnt = users.filter(u=>u.company===c.code||u.company===c.name).length;
+        return `<tr>
+          <td>${c.name}</td>
+          <td><code style="color:var(--cyan)">${c.code}</code></td>
+          <td>${c.contact||'—'}</td>
+          <td style="color:var(--muted)">${new Date(c.createdAt).toLocaleDateString('ko-KR')}</td>
+          <td>${cnt}명</td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
+
+function getProgressPct(u) {
+  try {
+    const done = JSON.parse(localStorage.getItem('sk_done_' + u.username) || '[]');
+    return Math.round(done.length / TOTAL_DAYS * 100);
+  } catch { return 0; }
+}
+
+function getAvgQuizScore(u) {
+  try {
+    const sessions = JSON.parse(localStorage.getItem('sk_sess_' + u.username) || '[]');
+    if (!sessions.length) return 0;
+    const withScore = sessions.filter(s=>s.score!=null);
+    if (!withScore.length) return 0;
+    return Math.round(withScore.reduce((s,x)=>s+x.score,0)/withScore.length);
+  } catch { return 0; }
+}
+
+// ── CSV Downloads ──
+function downloadUsersCSV() {
+  const users = getUsers();
+  const rows = [['이름','아이디','언어','진도율(%)','퀴즈평균','완료일수','최근접속','이수여부','업체코드']];
+  users.forEach(u => {
+    const p = getProgressPct(u);
+    const score = getAvgQuizScore(u);
+    const done = getDone(u.username).length;
+    const sess = getSessions(u.username);
+    const last = sess.slice(-1)[0]?.date?.slice(0,10)||'—';
+    rows.push([
+      u.name||'—', u.username||'—', u.lang||'—',
+      p, score, done,
+      last,
+      (p>=80 && score>=80) ? '이수완료' : '진행중',
+      u.company||'—'
+    ]);
+  });
+  const csv = rows.map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url;
+  a.download = 'safety_korean_학습현황_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function downloadCompanyExcel() {
+  const users = getUsers();
+  const companies = getCompanyCodes();
+  const rows = [['업체명','업체코드','소속직원수','평균진도율(%)','평균퀴즈점수','이수자수']];
+  companies.forEach(c => {
+    const cu = users.filter(u=>u.company===c.code||u.company===c.name);
+    const avgPct = cu.length ? Math.round(cu.reduce((s,u)=>s+getProgressPct(u),0)/cu.length) : 0;
+    const avgScore = cu.length ? Math.round(cu.reduce((s,u)=>s+getAvgQuizScore(u),0)/cu.length) : 0;
+    const pass = cu.filter(u=>getProgressPct(u)>=80).length;
+    rows.push([c.name, c.code, cu.length, avgPct, avgScore, pass]);
+  });
+  const csv = rows.map(r => r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url;
+  a.download = 'safety_korean_업체현황_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Day Completion & Nationality Charts ──
+function renderDayCompletionChart() {
+  const el = document.getElementById('dayCompletionChart');
+  if (!el) return;
+  const users = getUsers();
+  const total = users.length || 1;
+  const bars = Array.from({length:TOTAL_DAYS},(_,i)=>{
+    const day = i+1;
+    const count = users.filter(u=>{
+      try { return getDone(u.username).includes(day); } catch { return false; }
+    }).length;
+    const pct = Math.round(count/total*100);
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px">
+      <span style="width:44px;color:var(--muted);flex-shrink:0">Day ${day}</span>
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:3px;height:14px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:3px;transition:.4s"></div>
+      </div>
+      <span style="width:36px;text-align:right;color:var(--text)">${pct}%</span>
+      <span style="width:30px;text-align:right;color:var(--muted)">${count}명</span>
+    </div>`;
+  }).join('');
+  el.innerHTML = bars;
+}
+
+function renderNationalityChart() {
+  const el = document.getElementById('nationalityChart');
+  if (!el) return;
+  const users = getUsers();
+  const langMap = {};
+  users.forEach(u => { const l=u.lang||'기타'; langMap[l]=(langMap[l]||0)+1; });
+  const total = users.length || 1;
+  const colors = ['var(--accent)','var(--cyan)','var(--green)','var(--yellow)','#F97316','#EC4899','#8B5CF6','#14B8A6'];
+  const entries = Object.entries(langMap).sort((a,b)=>b[1]-a[1]);
+  el.innerHTML = entries.map(([lang,cnt],i) => {
+    const p = Math.round(cnt/total*100);
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px">
+      <span style="width:70px;color:var(--muted);flex-shrink:0">${LANG_NAMES[lang]||lang}</span>
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:3px;height:14px;overflow:hidden">
+        <div style="height:100%;width:${p}%;background:${colors[i%colors.length]};border-radius:3px"></div>
+      </div>
+      <span style="width:30px;text-align:right;color:var(--text)">${p}%</span>
+      <span style="width:24px;text-align:right;color:var(--muted)">${cnt}</span>
+    </div>`;
+  }).join('') || '<div style="color:var(--muted);padding:12px">데이터 없음</div>';
 }
 
 // ── Init ──
