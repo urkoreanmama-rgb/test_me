@@ -1,5 +1,5 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v4'; // 2026-06-11 캐시 강제 갱신
+const CACHE = 'sk-v5'; // 2026-06-11 디자인시스템(오렌지) + 다국어 지시어 적용
 const ASSETS = ['./education.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {

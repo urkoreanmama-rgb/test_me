@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0EA5E9">
+<meta name="theme-color" content="#FF6B35">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="안전 한국어">
@@ -16,24 +16,24 @@
   --ink:    #071828;   /* slate-900  — headings / primary text */
   --ink-m:  #334155;   /* slate-700  — body text */
   --muted:  #64748B;   /* slate-500  — captions / hints */
-  --border: #E2E8F0;   /* slate-200  — dividers */
-  --bg:     #F1F5F9;   /* slate-100  — page background */
+  --border: #E2E2E7;   /* design system — card border */
+  --bg:     #F5F5F7;   /* design system — page background */
   --card:   #FFFFFF;   /* cards */
 
   /* ── Brand Blue (primary interactive) ── */
-  --blue:   #0284C7;   /* sky-600  — brand primary */
-  --blue-m: #0EA5E9;   /* blue-600  — buttons, links, active */
-  --blue-d: #0284C7;   /* blue-700  — hover */
-  --blue-l: #E0F2FE;   /* blue-100  — light bg accent */
+  --blue:   #E85520;   /* sky-600  — brand primary */
+  --blue-m: #FF6B35;   /* blue-600  — buttons, links, active */
+  --blue-d: #E85520;   /* blue-700  — hover */
+  --blue-l: #FFF0EB;   /* blue-100  — light bg accent */
 
   /* ── Status / Semantic ── */
-  --green:  #0284C7;   /* sky-600 — success / pass */
-  --green-l:#E0F2FE;   /* sky-100 */
-  --orange: #D97706;   /* amber-600   — caution */
-  --orange-l:#FEF3C7;
-  --red:    #DC2626;   /* red-600     — danger / alert */
-  --red-d:  #B91C1C;
-  --red-l:  #FEE2E2;
+  --green:  #34C759;   /* design system — 정답 / 합격 */
+  --green-l:#E6F8EC;   /* light green */
+  --orange: #FF6B35;   /* 산업안전 오렌지 (caution도 동일 계열) */
+  --orange-l:#FFF0EB;
+  --red:    #FF3B30;   /* design system — 오답 / 위험 */
+  --red-d:  #E0301F;
+  --red-l:  #FFEAE8;
   --yellow: #F59E0B;   /* amber-500   — stars / points */
 
   /* ── Alias kept for compatibility ── */
@@ -61,14 +61,14 @@
 
 /* ─── Reset ─── */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif;
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif;
   background:var(--bg);color:var(--ink);min-height:100vh;max-width:540px;margin:0 auto}
 
 /* ─── Header (dark, sleek) ─── */
-.hdr{background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 60%,#38BDF8 100%);color:#fff;padding:13px 16px;
+.hdr{background:linear-gradient(135deg,#E85520 0%,#FF6B35 60%,#FF9466 100%);color:#fff;padding:13px 16px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:200;
-  box-shadow:0 1px 0 rgba(255,255,255,.15),0 4px 20px rgba(2,132,199,.35)}
+  box-shadow:0 1px 0 rgba(255,255,255,.15),0 4px 20px rgba(232,85,32,.35)}
 .hdr-title{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
 .hdr-sub{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:2px;letter-spacing:.3px}
 .lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
@@ -84,12 +84,12 @@ body.in-lesson #mainHdr{display:none!important}
 /* ═══ HOME ═══ */
 .home{padding:16px}
 .hero{
-  background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 60%,#38BDF8 100%);
+  background:linear-gradient(135deg,#E85520 0%,#FF6B35 60%,#FF9466 100%);
   border-radius:var(--r);padding:24px 20px;color:#fff;text-align:center;margin-bottom:14px;
   box-shadow:0 4px 24px rgba(4,15,28,.3);position:relative;overflow:hidden
 }
 .hero::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 70% 0%,rgba(14,165,233,.35),transparent 65%);
+  background:radial-gradient(ellipse at 70% 0%,rgba(255,107,53,.35),transparent 65%);
   pointer-events:none}
 .hero .e{font-size:44px;margin-bottom:8px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
 .hero h2{font-size:19px;font-weight:800;margin-bottom:5px;letter-spacing:-.3px}
@@ -98,7 +98,7 @@ body.in-lesson #mainHdr{display:none!important}
 /* ── 언어선택 첫화면 ── */
 #homeLangPanel{
   min-height:calc(100vh - 64px);
-  background:linear-gradient(160deg,#0284C7 0%,#0EA5E9 55%,#38BDF8 100%);
+  background:linear-gradient(160deg,#E85520 0%,#FF6B35 55%,#FF9466 100%);
   display:flex;align-items:center;justify-content:center;
   padding:36px 24px 48px;
 }
@@ -110,14 +110,14 @@ body.in-lesson #mainHdr{display:none!important}
 .hlp-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:0}
 .hlp-btn{
   background:rgba(255,255,255,.95);border:2.5px solid transparent;border-radius:16px;
-  padding:16px 12px;font-size:14px;font-weight:700;color:#0369A1;cursor:pointer;
+  padding:16px 12px;font-size:14px;font-weight:700;color:#C7430F;cursor:pointer;
   display:flex;align-items:center;gap:9px;transition:all .15s;text-align:left;
   box-shadow:0 2px 10px rgba(0,0,0,.1);
 }
 .hlp-btn:active{transform:scale(.95);}
-.hlp-btn.on{border-color:#38BDF8;box-shadow:0 0 0 3px rgba(56,189,248,.5),0 2px 10px rgba(0,0,0,.1);}
+.hlp-btn.on{border-color:#FF9466;box-shadow:0 0 0 3px rgba(255,148,102,.5),0 2px 10px rgba(0,0,0,.1);}
 .hlp-flag{font-size:24px;flex-shrink:0}
-.hlp-name{font-size:14px;font-weight:800;color:#0369A1;line-height:1.2}
+.hlp-name{font-size:14px;font-weight:800;color:#C7430F;line-height:1.2}
 #homeDayPanel{display:none}
 
 /* Goal badge */
@@ -142,7 +142,7 @@ body.in-lesson #mainHdr{display:none!important}
 .dc.done::before{background:var(--green)}
 .dc.open::before{background:var(--blue-m)}
 .dc:hover:not(.locked){transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(14,165,233,.12);border-color:var(--blue-m)}
+  box-shadow:0 8px 24px rgba(255,107,53,.12);border-color:var(--blue-m)}
 .dc.locked{opacity:.45;cursor:not-allowed}
 .dc .dnum{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
   letter-spacing:.5px;margin-bottom:2px}
@@ -157,7 +157,7 @@ body.in-lesson #mainHdr{display:none!important}
 .prog-card h3{font-size:11px;color:var(--muted);margin-bottom:8px;
   text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 .pbar{background:var(--border);border-radius:10px;height:8px;overflow:hidden;margin-bottom:5px}
-.pfill{height:100%;background:linear-gradient(90deg,#0284C7,#38BDF8);
+.pfill{height:100%;background:linear-gradient(90deg,#E85520,#FF9466);
   border-radius:10px;transition:width .5s}
 .ptxt{font-size:11px;color:var(--muted);text-align:right}
 
@@ -195,10 +195,10 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── Goal ── */
 .goal-box{
-  background:linear-gradient(135deg,#F8FAFF,#EFF6FF);
-  border:1.5px solid #BFDBFE;border-radius:var(--r);
+  background:linear-gradient(135deg,#FFFAF8,#FFF6F2);
+  border:1.5px solid #FFD4C2;border-radius:var(--r);
   padding:20px;text-align:center;margin-bottom:12px;
-  box-shadow:0 2px 12px rgba(14,165,233,.08)
+  box-shadow:0 2px 12px rgba(255,107,53,.08)
 }
 .goal-box .g-label{font-size:10px;font-weight:700;color:var(--blue-m);
   text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
@@ -212,7 +212,7 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── Listen ── */
 .listen-box{
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%);
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%);
   color:#fff;border-radius:var(--r);padding:18px;margin-bottom:12px;
   box-shadow:0 4px 20px rgba(4,15,28,.25)
 }
@@ -237,7 +237,7 @@ body.in-lesson #mainHdr{display:none!important}
   border-radius:12px;padding:9px 13px;font-size:13px;line-height:1.55;
 }
 .bubble-row.right .bubble-text{
-  background:rgba(14,165,233,.3);border-color:rgba(14,165,233,.4)
+  background:rgba(255,107,53,.3);border-color:rgba(255,107,53,.4)
 }
 .bubble-uz{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;font-style:italic;padding-left:2px}
 
@@ -250,10 +250,10 @@ body.in-lesson #mainHdr{display:none!important}
   cursor:pointer;transition:all .2s;
   box-shadow:0 1px 3px rgba(0,0,0,.05)
 }
-.word-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(14,165,233,.12)}
+.word-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(255,107,53,.12)}
 .word-card.playing{border-color:var(--blue-m);background:var(--blue-l)}
 .wc-left{
-  background:linear-gradient(160deg,#0284C7,#38BDF8);color:#fff;
+  background:linear-gradient(160deg,#E85520,#FF9466);color:#fff;
   padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-width:64px;
 }
@@ -307,7 +307,7 @@ body.in-lesson #mainHdr{display:none!important}
   padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;
   box-shadow:0 1px 4px rgba(0,0,0,.05);transition:all .2s;cursor:pointer;
 }
-.sent-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(14,165,233,.12)}
+.sent-card:hover{border-color:var(--blue-m);box-shadow:0 4px 16px rgba(255,107,53,.12)}
 .sent-card:active{transform:scale(.99)}
 .sent-num{
   width:26px;height:26px;border-radius:7px;
@@ -323,15 +323,15 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── Sentence Overview (Step 0) hero header ── */
 .sent-intro-hero{
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%);
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%);
   border-radius:var(--r);padding:12px 16px 10px;margin-bottom:10px;
   position:relative;overflow:hidden;
   box-shadow:0 4px 24px rgba(4,15,28,.35)
 }
 .sent-intro-hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 80% 10%,rgba(14,165,233,.22),transparent 55%),
-             radial-gradient(ellipse at 10% 85%,rgba(56,189,248,.12),transparent 50%);
+  background:radial-gradient(ellipse at 80% 10%,rgba(255,107,53,.22),transparent 55%),
+             radial-gradient(ellipse at 10% 85%,rgba(255,148,102,.12),transparent 50%);
 }
 .sent-intro-hero>*{position:relative;z-index:1}
 .sih-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
@@ -341,15 +341,15 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── Sentence Study (Steps 1-3) ── */
 .sent-study-box{
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%);
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%);
   border-radius:var(--r);padding:20px;margin-bottom:14px;
   position:relative;overflow:hidden;
   box-shadow:0 4px 24px rgba(4,15,28,.35)
 }
 .sent-study-box::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 75% 20%,rgba(14,165,233,.22),transparent 58%),
-             radial-gradient(ellipse at 15% 80%,rgba(56,189,248,.14),transparent 52%);
+  background:radial-gradient(ellipse at 75% 20%,rgba(255,107,53,.22),transparent 58%),
+             radial-gradient(ellipse at 15% 80%,rgba(255,148,102,.14),transparent 52%);
 }
 .sent-study-box>*{position:relative;z-index:1}
 .ssb-badge{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);
@@ -369,8 +369,8 @@ body.in-lesson #mainHdr{display:none!important}
 .fc-card{width:100%;min-height:190px;position:relative;transform-style:preserve-3d;transition:transform .45s ease;cursor:pointer;border-radius:var(--r)}
 .fc-card.flipped{transform:rotateY(180deg)}
 .fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.fc-front{background:linear-gradient(145deg,#0284C7,#0EA5E9);color:#fff;box-shadow:0 4px 20px rgba(2,132,199,.3)}
-.fc-back{background:var(--card);border:2px solid var(--blue-m);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(2,132,199,.15)}
+.fc-front{background:linear-gradient(145deg,#E85520,#FF6B35);color:#fff;box-shadow:0 4px 20px rgba(232,85,32,.3)}
+.fc-back{background:var(--card);border:2px solid var(--blue-m);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(232,85,32,.15)}
 .fc-emoji{font-size:40px;margin-bottom:8px}
 .fc-ko{font-size:30px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px}
 .fc-syl{font-size:12px;opacity:.65;margin-bottom:2px}
@@ -383,7 +383,7 @@ body.in-lesson #mainHdr{display:none!important}
 .fc-prog{text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .fc-btns{display:flex;gap:10px;justify-content:center;margin-top:14px}
 .fc-btn-again{flex:1;background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
-.fc-btn-know{flex:1;background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
+.fc-btn-know{flex:1;background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
 
 /* ── Matching Game (Step 2) ── */
 .match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -393,7 +393,7 @@ body.in-lesson #mainHdr{display:none!important}
 .match-item{padding:13px 10px;border-radius:10px;text-align:center;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.3}
 .match-item.uz{font-size:12px;color:var(--ink-m);font-weight:600}
 .match-item.selected{border-color:var(--blue-m);background:var(--blue-l);color:var(--blue-d);transform:scale(1.03)}
-.match-item.correct{border-color:#0EA5E9;background:#E0F2FE;color:#0369A1;pointer-events:none}
+.match-item.correct{border-color:#FF6B35;background:#FFF0EB;color:#C7430F;pointer-events:none}
 .match-item.wrong{border-color:var(--red);background:#FEE2E2;animation:mshake .3s}
 .match-item.matched{visibility:hidden;pointer-events:none}
 @keyframes mshake{0%,100%{transform:translateX(0)}30%{transform:translateX(-7px)}70%{transform:translateX(7px)}}
@@ -405,7 +405,7 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* ── Pattern Drill ── */
 .pattern-box{
-  background:#F8FAFF;border:1.5px solid #BFDBFE;border-radius:var(--r);
+  background:#FFFAF8;border:1.5px solid #FFD4C2;border-radius:var(--r);
   padding:14px;margin-bottom:12px
 }
 .pat-label{font-size:10px;font-weight:700;color:var(--blue-m);
@@ -423,7 +423,7 @@ body.in-lesson #mainHdr{display:none!important}
   justify-content:space-between;transition:all .2s;font-size:14px;
   box-shadow:0 1px 3px rgba(0,0,0,.04)
 }
-.drill-item:hover{border-color:var(--blue-m);background:var(--blue-l);box-shadow:0 3px 12px rgba(14,165,233,.1)}
+.drill-item:hover{border-color:var(--blue-m);background:var(--blue-l);box-shadow:0 3px 12px rgba(255,107,53,.1)}
 .drill-item.playing{border-color:var(--blue-m);background:var(--blue-l)}
 .drill-item .di-full{font-weight:700;color:var(--ink)}
 .drill-item .di-uz{font-size:12px;color:var(--muted)}
@@ -437,7 +437,7 @@ body.in-lesson #mainHdr{display:none!important}
   box-shadow:0 1px 4px rgba(0,0,0,.06)
 }
 .speak-situation{
-  background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;
+  background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;
   border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;
   margin-bottom:14px;text-align:left
 }
@@ -453,15 +453,15 @@ body.in-lesson #mainHdr{display:none!important}
   width:100%;padding:13px;background:var(--blue-m);color:#fff;
   border:none;border-radius:11px;font-size:14px;font-weight:700;
   cursor:pointer;margin-bottom:8px;transition:all .2s;
-  box-shadow:0 4px 14px rgba(14,165,233,.3)
+  box-shadow:0 4px 14px rgba(255,107,53,.3)
 }
 .btn-hear:hover{background:var(--blue-d);transform:translateY(-1px)}
 .speak-tip{font-size:11px;color:var(--muted);line-height:1.6}
 .btn-mic{display:flex;align-items:center;justify-content:center;gap:7px;
-  width:100%;padding:13px;background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;
+  width:100%;padding:13px;background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;
   border:none;border-radius:11px;font-size:14px;font-weight:700;
   cursor:pointer;margin-bottom:8px;transition:all .2s}
-.btn-mic:hover{background:rgba(2,132,199,.15)}
+.btn-mic:hover{background:rgba(232,85,32,.15)}
 .btn-mic.recording{background:var(--red);animation:pulse .8s ease infinite alternate}
 @keyframes pulse{from{opacity:1}to{opacity:.65}}
 .mic-result{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;border:1.5px solid}
@@ -475,7 +475,7 @@ body.in-lesson #mainHdr{display:none!important}
   display:flex;align-items:center;gap:10px;margin:0 16px 12px;font-size:12px}
 .visa-banner.red{background:var(--red-l);border:1.5px solid #FCA5A5;color:var(--red-d)}
 .visa-banner.orange{background:var(--orange-l);border:1.5px solid #FCD34D;color:#92400e}
-.visa-banner.blue{background:var(--blue-l);border:1.5px solid #93C5FD;color:var(--blue-d)}
+.visa-banner.blue{background:var(--blue-l);border:1.5px solid #FFB494;color:var(--blue-d)}
 
 /* ── Quiz ── */
 .qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
@@ -505,7 +505,7 @@ body.in-lesson #mainHdr{display:none!important}
 .qopt.no{border-color:#FF3B30!important;background:#FFF0EF!important;color:#C0392B!important}
 .qopt.off{opacity:.55;cursor:default}
 .qfb{margin-top:10px;padding:9px 13px;border-radius:9px;font-size:13px;font-weight:600;display:none}
-.qfb.ok{background:var(--green-l);color:#0369A1;border:1.5px solid var(--green)}
+.qfb.ok{background:var(--green-l);color:#C7430F;border:1.5px solid var(--green)}
 .qfb.no{background:var(--red-l);color:var(--red-d);border:1.5px solid var(--red)}
 
 /* ── Result ── */
@@ -515,16 +515,20 @@ body.in-lesson #mainHdr{display:none!important}
 .rscore.g{color:var(--green)}.rscore.m{color:var(--orange)}.rscore.b{color:var(--red)}
 .rmsg{font-size:17px;font-weight:700;margin-bottom:5px;color:var(--ink)}
 .rsub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.rpass{background:var(--green-l);border:1.5px solid #7DD3FC;border-radius:10px;
-  padding:11px;font-size:12px;color:#0369A1;margin-bottom:16px}
+.rpass{background:var(--green-l);border:1.5px solid #FFB494;border-radius:10px;
+  padding:11px;font-size:12px;color:#C7430F;margin-bottom:16px}
 
 /* Buttons */
-.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;
-  cursor:pointer;transition:all .2s;margin-top:2px}
-.btn.red{background:var(--blue-m);color:#fff;box-shadow:0 4px 14px rgba(14,165,233,.3)}
-.btn.red:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(14,165,233,.35)}
-.btn.gray{background:var(--bg);color:var(--ink-m);border:1.5px solid var(--border)}
-.btn.gray:hover{background:var(--border)}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-size:14px;font-weight:800;
+  cursor:pointer;transition:transform .1s ease,background .2s;margin-top:2px}
+.btn.red{background:var(--orange);color:#fff;box-shadow:none}
+.btn.red:hover{background:var(--orange-dark)}
+.btn:active{transform:scale(.97)}
+.btn.gray{background:#F5F5F7;color:var(--ink-m);border:1px solid #C7C7CC}
+.btn.gray:hover{background:#ECECEF}
+/* Design system — 옵션/탭 인터랙션 (cursor:pointer + scale 탭) */
+.gopt,.qopt,.lang-opt,.hlp-btn,.gmode-card,.expr-tts-btn,.auth-tab,.lang-chip,.opt{cursor:pointer}
+.gopt:active,.qopt:active,.gmode-card:active,.expr-tts-btn:active,.hlp-btn:active,.lang-opt:active,.opt:active{transform:scale(.97)}
 
 .info{background:var(--blue-l);border-left:3px solid var(--blue-m);border-radius:0 8px 8px 0;
   padding:9px 13px;font-size:12px;line-height:1.6;margin-bottom:12px;color:var(--ink-m)}
@@ -532,7 +536,7 @@ body.in-lesson #mainHdr{display:none!important}
 /* ═══ AUTH SCREEN ═══ */
 .auth-wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
   padding:24px 20px;
-  background:linear-gradient(160deg,#0284C7 0%,#0EA5E9 55%,#38BDF8 100%)}
+  background:linear-gradient(160deg,#E85520 0%,#FF6B35 55%,#FF9466 100%)}
 .auth-logo{text-align:center;margin-bottom:28px}
 .auth-logo .al-icon{font-size:52px;margin-bottom:10px;
   filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
@@ -548,7 +552,7 @@ body.in-lesson #mainHdr{display:none!important}
 .auth-tab{flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid var(--border);
   font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
   text-align:center;transition:all .2s;white-space:pre-wrap;line-height:1.3}
-.auth-tab.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
+.auth-tab.on{background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;border-color:#E85520}
 .auth-form label{display:block;font-size:10px;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:14px}
 .auth-form label:first-child{margin-top:0}
@@ -557,12 +561,12 @@ body.in-lesson #mainHdr{display:none!important}
   font-size:14px;font-family:inherit;color:var(--ink);background:#fff;
   transition:border-color .2s;-webkit-appearance:none}
 .auth-form input:focus,.auth-form select:focus{outline:none;border-color:var(--blue-m);
-  box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+  box-shadow:0 0 0 3px rgba(255,107,53,.12)}
 .auth-form .field-hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
 .auth-form .lang-pick{display:flex;gap:8px;margin-top:0}
 .auth-form .lang-pick button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;
   font-size:14px;cursor:pointer;background:#fff;transition:all .2s;font-weight:600;color:var(--ink)}
-.auth-form .lang-pick button.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
+.auth-form .lang-pick button.on{background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;border-color:#E85520}
 .notif-row{display:flex;align-items:center;justify-content:space-between;
   margin-top:14px;padding:10px 12px;background:var(--bg);border-radius:10px}
 .notif-row label{font-size:13px;font-weight:600;color:var(--ink);margin:0}
@@ -582,7 +586,7 @@ body.in-lesson #mainHdr{display:none!important}
 /* ═══ PROFILE SCREEN ═══ */
 .prof{padding:14px 16px}
 .prof-hero{
-  background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 100%);
+  background:linear-gradient(135deg,#E85520 0%,#FF6B35 100%);
   border-radius:var(--r);padding:20px;color:#fff;margin-bottom:14px;
   box-shadow:0 4px 20px rgba(4,15,28,.25)
 }
@@ -611,8 +615,8 @@ body.in-lesson #mainHdr{display:none!important}
 .wk-label span:last-child{color:var(--muted)}
 .wk-bar{background:var(--border);border-radius:6px;height:7px;overflow:hidden}
 .wk-fill{height:100%;border-radius:6px;transition:width .5s}
-.wk-fill.w1{background:linear-gradient(90deg,#0284C7,#38BDF8)}
-.wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),#7DD3FC)}
+.wk-fill.w1{background:linear-gradient(90deg,#E85520,#FF9466)}
+.wk-fill.w2{background:linear-gradient(90deg,var(--blue-m),#FFB494)}
 
 .session-list{background:var(--card);border-radius:var(--r);padding:14px;
   border:1.5px solid var(--border);margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
@@ -624,12 +628,12 @@ body.in-lesson #mainHdr{display:none!important}
 .sess-day{font-size:13px;font-weight:700;color:var(--ink)}
 .sess-date{font-size:11px;color:var(--muted);margin-top:1px}
 .sess-score{font-size:13px;font-weight:700;padding:3px 9px;border-radius:10px}
-.sess-score.good{background:var(--green-l);color:#0369A1}
+.sess-score.good{background:var(--green-l);color:#C7430F}
 .sess-score.mid{background:var(--orange-l);color:#92400E}
 .sess-score.low{background:var(--red-l);color:var(--red-d)}
 
 .notif-banner{
-  background:var(--blue-l);border:1.5px solid #93C5FD;
+  background:var(--blue-l);border:1.5px solid #FFB494;
   border-radius:10px;padding:11px 14px;
   display:flex;align-items:center;gap:10px;
   margin-bottom:14px;font-size:12px;cursor:pointer;color:var(--ink-m)
@@ -647,7 +651,7 @@ body.in-lesson #mainHdr{display:none!important}
 .lang-chip{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);
   font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
   transition:all .2s;white-space:nowrap}
-.lang-chip.on{background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;border-color:#0284C7}
+.lang-chip.on{background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;border-color:#E85520}
 .lang-chip:hover:not(.on){border-color:var(--blue-m);color:var(--blue-m)}
 
 .lang-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
@@ -669,7 +673,7 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* install banner */
 .install-banner{
-  background:linear-gradient(135deg,#0284C7,#0EA5E9);color:#fff;padding:10px 14px;
+  background:linear-gradient(135deg,#E85520,#FF6B35);color:#fff;padding:10px 14px;
   display:flex;align-items:center;gap:10px;font-size:12px;
   position:sticky;bottom:0;z-index:100
 }
@@ -699,7 +703,7 @@ body.in-lesson #mainHdr{display:none!important}
   text-shadow:0 2px 8px rgba(0,0,0,.25);
   animation:starPop 1.4s cubic-bezier(.25,.46,.45,.94) forwards}
 .pts-chip{display:inline-flex;align-items:center;gap:5px;
-  background:linear-gradient(135deg,#0284C7,#0EA5E9);border-radius:20px;padding:4px 11px;
+  background:linear-gradient(135deg,#E85520,#FF6B35);border-radius:20px;padding:4px 11px;
   font-size:12px;font-weight:800;color:#fff;
   box-shadow:0 2px 8px rgba(4,15,28,.25)}
 .rank-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
@@ -715,11 +719,11 @@ body.in-lesson #mainHdr{display:none!important}
   display:flex;align-items:center;justify-content:center;
   border:1.5px solid var(--border);background:var(--bg)}
 .stamp.earned{border-color:var(--blue-m);background:var(--blue-l);
-  box-shadow:0 2px 8px rgba(14,165,233,.2)}
+  box-shadow:0 2px 8px rgba(255,107,53,.2)}
 
 /* ═══ GAME SCREEN ═══ */
 .game-hero{
-  background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 100%);
+  background:linear-gradient(135deg,#E85520 0%,#FF6B35 100%);
   border-radius:var(--r);padding:18px;color:#fff;text-align:center;margin:16px 16px 4px;
   box-shadow:0 4px 20px rgba(4,15,28,.25)
 }
@@ -733,7 +737,7 @@ body.in-lesson #mainHdr{display:none!important}
   display:flex;flex-direction:column;align-items:center;gap:6px;
   box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .gmode-card:hover{border-color:var(--blue-m);transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(14,165,233,.12)}
+  box-shadow:0 8px 24px rgba(255,107,53,.12)}
 .gmode-card .gmc-icon{font-size:30px}
 .gmode-card .gmc-name{font-size:12px;font-weight:800;color:var(--ink);line-height:1.3}
 .gmode-card .gmc-desc{font-size:10px;color:var(--muted);line-height:1.4}
@@ -746,12 +750,12 @@ body.in-lesson #mainHdr{display:none!important}
 .gpbar-wrap{margin-bottom:14px}
 .gpbar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px}
 .gpbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-.gpbar-fill{height:100%;background:linear-gradient(90deg,var(--blue-m),#7DD3FC);border-radius:3px;transition:width .4s}
+.gpbar-fill{height:100%;background:linear-gradient(90deg,var(--blue-m),#FFB494);border-radius:3px;transition:width .4s}
 
 .gq-card{border-radius:var(--r);padding:22px 16px;
   text-align:center;margin-bottom:14px;min-height:150px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%);color:#fff;
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%);color:#fff;
   box-shadow:0 4px 20px rgba(4,15,28,.25)}
 .gq-mode-badge{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);
   text-transform:uppercase;letter-spacing:.5px}
@@ -771,7 +775,7 @@ body.in-lesson #mainHdr{display:none!important}
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-height:70px;gap:4px;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .gopt:hover:not(.off){border-color:var(--blue-m);background:var(--blue-l);transform:scale(1.02)}
-.gopt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#0369A1}
+.gopt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#C7430F}
 .gopt.no{border-color:var(--red)!important;background:var(--red-l)!important;color:var(--red-d)}
 .gopt.off{cursor:not-allowed}
 .gopt .go-e{font-size:40px;display:block}
@@ -780,7 +784,7 @@ body.in-lesson #mainHdr{display:none!important}
 
 .gq-fb{display:none;border-radius:10px;padding:11px 14px;text-align:center;
   font-size:13px;font-weight:700;margin-bottom:8px;border:1.5px solid}
-.gq-fb.ok{background:var(--green-l);color:#0369A1;border-color:var(--green)}
+.gq-fb.ok{background:var(--green-l);color:#C7430F;border-color:var(--green)}
 .gq-fb.no{background:var(--red-l);color:var(--red-d);border-color:var(--red)}
 
 .gr-card{background:var(--card);border-radius:var(--r);padding:28px 18px;text-align:center;
@@ -806,23 +810,23 @@ body.in-lesson #mainHdr{display:none!important}
 .act-score{font-size:12px;color:var(--green);font-weight:700}
 .act-play-wrap{
   text-align:center;padding:22px 0 14px;
-  background:linear-gradient(145deg,#0284C7,#0EA5E9);
+  background:linear-gradient(145deg,#E85520,#FF6B35);
   border-radius:var(--r);margin-bottom:14px;position:relative;overflow:hidden;
 }
 .act-play-wrap::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 30%,rgba(14,165,233,.25),transparent 65%);
+  background:radial-gradient(ellipse at 50% 30%,rgba(255,107,53,.25),transparent 65%);
   pointer-events:none;
 }
 .act-play-btn{
   width:68px;height:68px;border-radius:50%;
-  background:linear-gradient(135deg,#0EA5E9,#0284C7);
+  background:linear-gradient(135deg,#FF6B35,#E85520);
   border:3px solid rgba(255,255,255,.2);color:#fff;font-size:26px;
-  cursor:pointer;box-shadow:0 4px 20px rgba(14,165,233,.45);
+  cursor:pointer;box-shadow:0 4px 20px rgba(255,107,53,.45);
   transition:all .2s;display:inline-flex;align-items:center;justify-content:center;
   position:relative;z-index:1;
 }
-.act-play-btn:hover{transform:scale(1.07);box-shadow:0 6px 28px rgba(14,165,233,.55)}
+.act-play-btn:hover{transform:scale(1.07);box-shadow:0 6px 28px rgba(255,107,53,.55)}
 .act-play-btn:disabled{opacity:.65;transform:none}
 .act-instruct{font-size:12px;color:rgba(255,255,255,.55);margin-top:10px;position:relative;z-index:1}
 .act-target-box{
@@ -840,7 +844,7 @@ body.in-lesson #mainHdr{display:none!important}
   box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:3px
 }
 .act-opt:hover:not([disabled]){border-color:var(--blue-m);background:var(--blue-l)}
-.act-opt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#0369A1}
+.act-opt.ok{border-color:var(--green)!important;background:var(--green-l)!important;color:#C7430F}
 .act-opt.no{border-color:var(--red)!important;background:var(--red-l)!important}
 .act-opt[disabled]{cursor:not-allowed}
 .act-opt-ko{font-size:15px;font-weight:800;color:var(--ink)}
@@ -849,15 +853,15 @@ body.in-lesson #mainHdr{display:none!important}
 .act-opt-row{display:flex;align-items:center;gap:10px}
 .act-opt-playbtn{
   width:38px;height:38px;border-radius:50%;border:none;flex-shrink:0;
-  background:linear-gradient(135deg,#0EA5E9,#0284C7);
+  background:linear-gradient(135deg,#FF6B35,#E85520);
   color:#fff;cursor:pointer;font-size:15px;
-  box-shadow:0 2px 8px rgba(14,165,233,.3);transition:all .2s;
+  box-shadow:0 2px 8px rgba(255,107,53,.3);transition:all .2s;
   display:flex;align-items:center;justify-content:center;
 }
 .act-opt-playbtn:hover{transform:scale(1.08)}
 .act-fb{display:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:700;
   margin-bottom:4px;border:1.5px solid}
-.act-fb.ok{display:block;background:var(--green-l);color:#0369A1;border-color:var(--green)}
+.act-fb.ok{display:block;background:var(--green-l);color:#C7430F;border-color:var(--green)}
 .act-fb.no{display:block;background:var(--red-l);color:var(--red-d);border-color:var(--red)}
 .act-complete{text-align:center;padding:28px 18px;background:var(--card);
   border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:14px;
@@ -867,7 +871,7 @@ body.in-lesson #mainHdr{display:none!important}
 .act-complete-sub{font-size:12px;color:var(--muted)}
 
 /* ── Sentence Builder (Duolingo-style) ── */
-.sb-ref{background:linear-gradient(145deg,#0284C7,#0EA5E9);color:#fff;border-radius:var(--r);
+.sb-ref{background:linear-gradient(145deg,#E85520,#FF6B35);color:#fff;border-radius:var(--r);
   padding:16px 18px;text-align:center;margin-bottom:14px}
 .sb-ref-label{font-size:10px;font-weight:700;opacity:.6;margin-bottom:5px;letter-spacing:.5px}
 .sb-ref-text{font-size:17px;font-weight:800;line-height:1.45}
@@ -881,7 +885,7 @@ body.in-lesson #mainHdr{display:none!important}
   transition:all .15s;user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.07)}
 .sb-word:hover{border-color:var(--blue-m);color:var(--blue-m);transform:translateY(-1px)}
 .sb-word.picked{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue-d);opacity:.4;cursor:default}
-.sb-word.answer-tile{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#93C5FD;
+.sb-word.answer-tile{background:linear-gradient(135deg,#FFF6F2,#FFE6DB);border-color:#FFB494;
   color:#1E40AF;font-weight:800;cursor:pointer}
 .sb-word.answer-tile:hover{border-color:var(--blue-m);background:var(--blue-l)}
 .sb-fb{text-align:center;font-size:14px;font-weight:700;padding:8px;border-radius:8px;
@@ -895,19 +899,19 @@ body.in-lesson #mainHdr{display:none!important}
    AI-ERA DESIGN OVERRIDES
 ═══════════════════════════════════════ */
 :root{
-  --blue-m:#0EA5E9; --blue-d:#0284C7; --blue-l:#E0F2FE;
-  --blue:#0284C7; --cyan:#38BDF8;
+  --blue-m:#FF6B35; --blue-d:#E85520; --blue-l:#FFF0EB;
+  --blue:#E85520; --cyan:#FF9466;
 }
 
 /* Gradient mesh hero */
 .hero{
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%)!important;
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%)!important;
   box-shadow:0 8px 48px rgba(4,15,28,.5);position:relative;overflow:hidden;
 }
 .hero::before{
   content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(ellipse at 12% 60%,rgba(14,165,233,.28),transparent 55%),
-             radial-gradient(ellipse at 85% 15%,rgba(56,189,248,.18),transparent 50%);
+  background:radial-gradient(ellipse at 12% 60%,rgba(255,107,53,.28),transparent 55%),
+             radial-gradient(ellipse at 85% 15%,rgba(255,148,102,.18),transparent 50%);
 }
 .hero .e,.hero h2,.hero p{position:relative;z-index:1}
 
@@ -919,120 +923,122 @@ body.in-lesson #mainHdr{display:none!important}
 
 /* Auth gradient */
 .auth-wrap{
-  background:linear-gradient(180deg,#38BDF8 0%,#0EA5E9 35%,#0284C7 70%,#0369A1 100%)!important;
+  background:linear-gradient(180deg,#FF9466 0%,#FF6B35 35%,#E85520 70%,#C7430F 100%)!important;
 }
 
 /* Listen box */
 .listen-box{
-  background:linear-gradient(145deg,#0284C7 0%,#0EA5E9 100%)!important;
+  background:linear-gradient(145deg,#E85520 0%,#FF6B35 100%)!important;
   position:relative;overflow:hidden;
 }
 .listen-box::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 80% 20%,rgba(14,165,233,.2),transparent 60%),
-             radial-gradient(ellipse at 20% 80%,rgba(56,189,248,.12),transparent 55%);
+  background:radial-gradient(ellipse at 80% 20%,rgba(255,107,53,.2),transparent 60%),
+             radial-gradient(ellipse at 20% 80%,rgba(255,148,102,.12),transparent 55%);
 }
 .listen-box>*{position:relative;z-index:1}
 
-/* Gradient buttons */
+/* Design system — flat buttons (no gradient / no shadow / no 3D) */
 .btn.red{
-  background:linear-gradient(135deg,#0EA5E9 0%,#0284C7 100%)!important;
-  box-shadow:0 4px 22px rgba(14,165,233,.38)!important;
+  background:#FF6B35!important;
+  box-shadow:none!important;
 }
 .btn.red:hover{
-  background:linear-gradient(135deg,#0284C7 0%,#38BDF8 100%)!important;
-  box-shadow:0 6px 30px rgba(14,165,233,.48)!important;transform:translateY(-1px);
+  background:#E85520!important;
+  box-shadow:none!important;transform:none;
 }
+.btn.red:active{transform:scale(.97)!important;}
 .btn-hear{
-  background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;
-  box-shadow:0 4px 20px rgba(14,165,233,.32)!important;
+  background:#FF6B35!important;
+  box-shadow:none!important;
 }
-.btn-hear:hover{background:linear-gradient(135deg,#0284C7,#38BDF8)!important;}
-.wc-play{background:linear-gradient(160deg,#0EA5E9,#0284C7)!important;}
-.wc-left{background:linear-gradient(160deg,#0284C7,#0EA5E9)!important;}
+.btn-hear:hover{background:#E85520!important;transform:none;}
+.btn-hear:active{transform:scale(.97)!important;}
+.wc-play{background:#FF6B35!important;}
+.wc-left{background:linear-gradient(160deg,#E85520,#FF6B35)!important;}
 
 /* Step indicators */
-.sdot.cur{background:#0EA5E9!important;}
-.step-name{background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;}
+.sdot.cur{background:#FF6B35!important;}
+.step-name{background:linear-gradient(135deg,#FF6B35,#E85520)!important;}
 
 /* Auth tabs active */
 .auth-tab.on{
-  background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;
-  border-color:#0EA5E9!important;color:#fff!important;
+  background:linear-gradient(135deg,#FF6B35,#E85520)!important;
+  border-color:#FF6B35!important;color:#fff!important;
 }
 
 /* Lang chips */
-.lang-chip.on{background:#0284C7!important;border-color:#0284C7!important;}
-.lang-opt.on{border-color:#0EA5E9!important;background:#E0F2FE!important;}
-.lang-opt:hover{border-color:#0EA5E9!important;background:#E0F2FE!important;}
+.lang-chip.on{background:#E85520!important;border-color:#E85520!important;}
+.lang-opt.on{border-color:#FF6B35!important;background:#FFF0EB!important;}
+.lang-opt:hover{border-color:#FF6B35!important;background:#FFF0EB!important;}
 
 /* Stat */
-.stat-val{color:#0EA5E9!important;}
-.rank-row.me{background:#E0F2FE!important;border-color:#0EA5E9!important;}
-.rank-pts{color:#0EA5E9!important;}
-.pts-chip{background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;color:#fff!important;}
-.stamp.earned{border-color:#0EA5E9!important;background:#E0F2FE!important;}
+.stat-val{color:#FF6B35!important;}
+.rank-row.me{background:#FFF0EB!important;border-color:#FF6B35!important;}
+.rank-pts{color:#FF6B35!important;}
+.pts-chip{background:linear-gradient(135deg,#FF6B35,#E85520)!important;color:#fff!important;}
+.stamp.earned{border-color:#FF6B35!important;background:#FFF0EB!important;}
 
 /* Progress bars */
-.pfill{background:linear-gradient(90deg,#0284C7,#38BDF8)!important;}
-.gpbar-fill{background:linear-gradient(90deg,#0EA5E9,#38BDF8)!important;}
-.wk-fill.w2{background:linear-gradient(90deg,#0EA5E9,#38BDF8)!important;}
+.pfill{background:linear-gradient(90deg,#E85520,#FF9466)!important;}
+.gpbar-fill{background:linear-gradient(90deg,#FF6B35,#FF9466)!important;}
+.wk-fill.w2{background:linear-gradient(90deg,#FF6B35,#FF9466)!important;}
 
 /* drill/quiz hover */
-.drill-item:hover,.drill-item.playing{border-color:#0EA5E9!important;background:#E0F2FE!important;}
-.qopt:hover{border-color:#0EA5E9!important;background:#E0F2FE!important;}
-.gopt:hover:not(.off){border-color:#0EA5E9!important;background:#E0F2FE!important;}
-.word-card:hover{border-color:#0EA5E9!important;box-shadow:0 4px 18px rgba(14,165,233,.14)!important;}
-.word-card.playing{border-color:#0EA5E9!important;background:#E0F2FE!important;}
-.dc.open::before{background:linear-gradient(180deg,#0EA5E9,#0284C7)!important;}
+.drill-item:hover,.drill-item.playing{border-color:#FF6B35!important;background:#FFF0EB!important;}
+.qopt:hover{border-color:#FF6B35!important;background:#FFF0EB!important;}
+.gopt:hover:not(.off){border-color:#FF6B35!important;background:#FFF0EB!important;}
+.word-card:hover{border-color:#FF6B35!important;box-shadow:0 4px 18px rgba(255,107,53,.14)!important;}
+.word-card.playing{border-color:#FF6B35!important;background:#FFF0EB!important;}
+.dc.open::before{background:linear-gradient(180deg,#FF6B35,#E85520)!important;}
 
 /* profile/game hero */
 .prof-hero,.game-hero,.gq-card,.speak-situation{
-  background:linear-gradient(145deg,#0284C7,#0EA5E9)!important;
+  background:linear-gradient(145deg,#E85520,#FF6B35)!important;
   position:relative;overflow:hidden;
 }
 .prof-hero::before,.game-hero::before,.gq-card::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 80% 20%,rgba(14,165,233,.25),transparent 60%),
-             radial-gradient(ellipse at 20% 80%,rgba(56,189,248,.15),transparent 55%);
+  background:radial-gradient(ellipse at 80% 20%,rgba(255,107,53,.25),transparent 60%),
+             radial-gradient(ellipse at 20% 80%,rgba(255,148,102,.15),transparent 55%);
 }
 .prof-hero>*,.game-hero>*,.gq-card>*{position:relative;z-index:1}
 
 /* goal box */
 .goal-box{
-  background:linear-gradient(135deg,#F8F9FF,#E0F2FE)!important;
-  border-color:#BAE6FD!important;
+  background:linear-gradient(135deg,#FFFAF8,#FFF0EB)!important;
+  border-color:#FFD4C2!important;
 }
-.goal-box .g-label{color:#0EA5E9!important;}
-.goal-box .g-level{background:#0EA5E9!important;}
+.goal-box .g-label{color:#FF6B35!important;}
+.goal-box .g-level{background:#FF6B35!important;}
 
 /* pattern box */
-.pattern-box{background:#F8F9FF!important;border-color:#BAE6FD!important;}
-.pat-label{color:#0EA5E9!important;}
-.pat-blank{border-bottom-color:#0EA5E9!important;color:#0EA5E9!important;}
+.pattern-box{background:#FFFAF8!important;border-color:#FFD4C2!important;}
+.pat-label{color:#FF6B35!important;}
+.pat-blank{border-bottom-color:#FF6B35!important;color:#FF6B35!important;}
 
 /* info box */
-.info{background:#E0F2FE!important;border-left-color:#0EA5E9!important;}
+.info{background:#FFF0EB!important;border-left-color:#FF6B35!important;}
 
 /* input focus */
 .auth-form input:focus,.auth-form select:focus{
-  border-color:#0EA5E9!important;
-  box-shadow:0 0 0 3px rgba(14,165,233,.15)!important;
+  border-color:#FF6B35!important;
+  box-shadow:0 0 0 3px rgba(255,107,53,.15)!important;
 }
-.auth-form .lang-pick button.on{background:#0284C7!important;border-color:#0284C7!important;}
+.auth-form .lang-pick button.on{background:#E85520!important;border-color:#E85520!important;}
 
 /* toggle */
-.toggle input:checked+.toggle-slider{background:#0EA5E9!important;}
+.toggle input:checked+.toggle-slider{background:#FF6B35!important;}
 
 /* install banner */
-.install-banner{background:#0284C7!important;}
-.install-banner .ib-btn{background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;}
+.install-banner{background:#E85520!important;}
+.install-banner .ib-btn{background:linear-gradient(135deg,#FF6B35,#E85520)!important;}
 
 /* wave bars */
-.wbar{background:#0EA5E9!important;}
+.wbar{background:#FF6B35!important;}
 
 /* gmode top border */
-.gmode-card.m1{border-top-color:#0EA5E9!important;}
+.gmode-card.m1{border-top-color:#FF6B35!important;}
 
 /* ── 이모티콘 제거 ── */
 .e{display:none!important}          /* 히어로 이모티콘 */
@@ -1044,19 +1050,19 @@ body.in-lesson #mainHdr{display:none!important}
 .gmc-icon{display:none!important}   /* 게임모드 아이콘 */
 .bubble-avatar{display:none!important} /* 대화 아바타 */
 .stamp{font-size:0!important}       /* 스탬프 이모티콘 숨김 */
-.stamp.earned::after{content:'✓';font-size:18px;color:#0EA5E9;font-weight:800}
+.stamp.earned::after{content:'✓';font-size:18px;color:#FF6B35;font-weight:800}
 .rank-medal{display:none!important}
 .star-burst{display:none!important}
 
 /* notification btn */
-.notif-banner .nb-btn{background:linear-gradient(135deg,#0EA5E9,#0284C7)!important;}
+.notif-banner .nb-btn{background:linear-gradient(135deg,#FF6B35,#E85520)!important;}
 
 /* back button hover */
-.back:hover{background:#E0F2FE!important;border-color:#0EA5E9!important;color:#0EA5E9!important;}
+.back:hover{background:#FFF0EB!important;border-color:#FF6B35!important;color:#FF6B35!important;}
 
 /* dc hover */
-.dc:hover:not(.locked){border-color:#0EA5E9!important;box-shadow:0 8px 28px rgba(14,165,233,.14)!important;}
-.dc:hover:not(.locked) .dgoal{color:#0EA5E9!important;}
+.dc:hover:not(.locked){border-color:#FF6B35!important;box-shadow:0 8px 28px rgba(255,107,53,.14)!important;}
+.dc:hover:not(.locked) .dgoal{color:#FF6B35!important;}
 
 /* ═══════════════════════════════════════
    DESKTOP SIDEBAR (hidden on mobile)
@@ -1064,12 +1070,12 @@ body.in-lesson #mainHdr{display:none!important}
 #dsb{display:none}
 
 @media(min-width:768px){
-  body{max-width:100%;background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 55%,#38BDF8 100%);min-height:100vh}
+  body{max-width:100%;background:linear-gradient(135deg,#E85520 0%,#FF6B35 55%,#FF9466 100%);min-height:100vh}
 
   #dsb{
     display:flex;flex-direction:column;
     width:240px;min-height:100vh;
-    background:linear-gradient(180deg,#023E8A 0%,#0369A1 50%,#0284C7 100%);
+    background:linear-gradient(180deg,#023E8A 0%,#C7430F 50%,#E85520 100%);
     border-right:1px solid rgba(255,255,255,.12);
     position:fixed;left:0;top:0;bottom:0;z-index:400;
     overflow-y:auto;
@@ -1081,7 +1087,7 @@ body.in-lesson #mainHdr{display:none!important}
   .dsb-logo-icon{font-size:26px;margin-bottom:9px}
   .dsb-logo-title{
     font-size:15px;font-weight:800;letter-spacing:-.3px;
-    background:linear-gradient(90deg,#38BDF8,#38BDF8);
+    background:linear-gradient(90deg,#FF9466,#FF9466);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   }
   .dsb-logo-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:3px;letter-spacing:.3px}
@@ -1102,9 +1108,9 @@ body.in-lesson #mainHdr{display:none!important}
   }
   .dsb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.88);}
   .dsb-item.on{
-    background:rgba(14,165,233,.14);
-    border-color:rgba(14,165,233,.28);
-    color:#38BDF8;
+    background:rgba(255,107,53,.14);
+    border-color:rgba(255,107,53,.28);
+    color:#FF9466;
   }
   .dsb-item-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
 
@@ -1134,7 +1140,7 @@ body.in-lesson #mainHdr{display:none!important}
   #appMain{
     margin-left:240px;
     flex:1;display:flex;flex-direction:column;align-items:stretch;
-    background:linear-gradient(160deg,#E0F2FE 0%,#BAE6FD 50%,#F0F9FF 100%);
+    background:linear-gradient(160deg,#FFF0EB 0%,#FFD4C2 50%,#FFF6F2 100%);
     min-height:100vh;
   }
   #appMain>.scr.on{width:100%;}
@@ -1142,7 +1148,7 @@ body.in-lesson #mainHdr{display:none!important}
   /* 2열 레슨 레이아웃 */
   .lesson-2col{display:grid!important;grid-template-columns:290px 1fr;flex:1;overflow:hidden}
   .lesson-ref{
-    padding:14px 16px;border-right:1px solid rgba(2,132,199,.18);
+    padding:14px 16px;border-right:1px solid rgba(232,85,32,.18);
     overflow-y:auto;
     background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(224,242,254,.85) 100%);
     backdrop-filter:blur(8px);
@@ -1184,8 +1190,8 @@ body.in-lesson #mainHdr{display:none!important}
   }
   .auth-logo::before{
     content:'';position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse at 20% 30%,rgba(14,165,233,.4),transparent 55%),
-               radial-gradient(ellipse at 80% 75%,rgba(56,189,248,.25),transparent 50%);
+    background:radial-gradient(ellipse at 20% 30%,rgba(255,107,53,.4),transparent 55%),
+               radial-gradient(ellipse at 80% 75%,rgba(255,148,102,.25),transparent 50%);
   }
   .auth-logo>*{position:relative;z-index:1}
   .auth-logo .al-icon{font-size:72px!important;margin-bottom:16px!important}
@@ -1201,9 +1207,9 @@ body.in-lesson #mainHdr{display:none!important}
   }
   .auth-logo .al-feat-icon{
     width:36px;height:36px;border-radius:8px;
-    background:rgba(14,165,233,.3);display:flex;align-items:center;
+    background:rgba(255,107,53,.3);display:flex;align-items:center;
     justify-content:center;font-size:16px;flex-shrink:0;
-    color:#7DD3FC;font-weight:800;
+    color:#FFB494;font-weight:800;
   }
   .auth-logo .al-feat-text{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
   .auth-logo .al-feat-text strong{color:#fff;display:block;font-size:13px;margin-bottom:1px}
@@ -1227,7 +1233,7 @@ body.in-lesson #mainHdr{display:none!important}
   /* Lesson header — sky-blue gradient on PC */
   .lhdr{
     padding:12px 28px;
-    background:linear-gradient(135deg,#0284C7 0%,#0EA5E9 60%,#38BDF8 100%);
+    background:linear-gradient(135deg,#E85520 0%,#FF6B35 60%,#FF9466 100%);
     border-bottom:none;
   }
   .lhdr-info h2{color:#fff!important}
@@ -1235,15 +1241,15 @@ body.in-lesson #mainHdr{display:none!important}
   .back{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff}
   .back:hover{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5)}
   /* Step bar on PC */
-  .sbar{padding:7px 28px;background:rgba(2,132,199,.12)}
+  .sbar{padding:7px 28px;background:rgba(232,85,32,.12)}
   .sdot{background:rgba(255,255,255,.35)}
-  .sdot.done{background:#0EA5E9}
-  .sdot.cur{background:#fff;box-shadow:0 0 0 2px #0EA5E9}
+  .sdot.done{background:#FF6B35}
+  .sdot.cur{background:#fff;box-shadow:0 0 0 2px #FF6B35}
   /* Lesson footer */
-  .lsn-footer{background:rgba(240,249,255,.95);border-top:1px solid rgba(2,132,199,.2)}
+  .lsn-footer{background:rgba(240,249,255,.95);border-top:1px solid rgba(232,85,32,.2)}
   /* Home screen */
   .home{background:transparent}
-  #lessonScr{height:100vh;background:linear-gradient(160deg,#E0F2FE 0%,#BAE6FD 50%,#F0F9FF 100%)}
+  #lessonScr{height:100vh;background:linear-gradient(160deg,#FFF0EB 0%,#FFD4C2 50%,#FFF6F2 100%)}
   .prof{padding:24px 32px}
   .gq-wrap{padding:16px 28px}
   .game-btn-row{padding:0 28px 24px}
@@ -1491,19 +1497,19 @@ body.in-lesson #mainHdr{display:none!important}
       <div class="ptxt" id="pt">0 / 7</div>
     </div>
 
-    <div class="slabel">🛠️ 실용 한국어 (언제든 학습)</div>
+    <div class="slabel" data-i18n="prac_label">🛠️ 실용 한국어 (언제든 학습)</div>
     <div class="day-grid" id="practicalGrid" style="margin-bottom:14px"></div>
 
-    <div class="slabel">단어 게임</div>
-    <div style="background:linear-gradient(135deg,#0284C7,#0EA5E9);border-radius:var(--r);
+    <div class="slabel" data-i18n="g_title">단어 게임</div>
+    <div style="background:linear-gradient(135deg,#E85520,#FF6B35);border-radius:var(--r);
       padding:16px;color:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;
       margin-bottom:14px;transition:opacity .2s" onclick="goGame()" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
       <div style="font-size:44px;flex-shrink:0">🃏</div>
       <div>
-        <div style="font-size:14px;font-weight:800;margin-bottom:4px">단어 카드 게임으로 연습!</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="g_promo_title">단어 카드 게임으로 연습!</div>
         <div style="font-size:11px;opacity:.8;line-height:1.5">
-          그림+소리 · 그림+한국어 · 자국어+한국어 · 멀티모달<br>
-          <span style="opacity:.65">4가지 교육학 기반 게임 모드</span>
+          <span data-i18n="g_promo_modes">그림+소리 · 그림+한국어 · 자국어+한국어 · 멀티모달</span><br>
+          <span style="opacity:.65" data-i18n="g_promo_sub">4가지 교육학 기반 게임 모드</span>
         </div>
       </div>
       <div style="margin-left:auto;font-size:20px;flex-shrink:0">▶</div>
@@ -1517,7 +1523,7 @@ body.in-lesson #mainHdr{display:none!important}
   <div class="lhdr">
     <button class="back" onclick="goHome()">←</button>
     <div class="lhdr-info">
-      <h2>나의 학습 현황</h2>
+      <h2 data-i18n="lbl_profile">나의 학습 현황</h2>
       <p id="profSubtitle"></p>
     </div>
   </div>
@@ -1529,8 +1535,8 @@ body.in-lesson #mainHdr{display:none!important}
   <div class="lhdr">
     <button class="back" onclick="goHome()">←</button>
     <div class="lhdr-info">
-      <h2 id="gameScrTitle">단어 게임</h2>
-      <p id="gameScrSub">단어를 재미있게 연습해봐요</p>
+      <h2 id="gameScrTitle" data-i18n="g_title">단어 게임</h2>
+      <p id="gameScrSub" data-i18n="g_pick_mode">단어를 재미있게 연습해봐요</p>
     </div>
   </div>
   <div id="gameContent"></div>
@@ -2077,6 +2083,15 @@ const LANG_META = {
   en:  {flag:'🇺🇸', native:'English',  label:'English'},
 };
 
+// ── 현재 노출할 언어 (화이트리스트) ──────────────────────────
+// 데이터(LANG_META·STRINGS)는 모두 유지하고, 선택 화면에 보이는 언어만 제한한다.
+// 다른 언어를 다시 켤 때: 아래 배열에 코드만 추가하면 됨 (vi, ne, kk, ru, en).
+// 우즈벡어(uz)를 기준으로 나머지 언어 개발 완료 후 순차 노출 예정.
+const ENABLED_LANGS = ['ko','uz','tet'];
+function langEntries(){
+  return Object.entries(LANG_META).filter(([code])=>ENABLED_LANGS.includes(code));
+}
+
 const STRINGS = {
   ko:{
     tab_login:'로그인', tab_ind:'개인\n가입', tab_co:'업체\n직원',
@@ -2111,6 +2126,48 @@ const STRINGS = {
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
+    // ── 근로자 UI 지시어 (자국어 표시용) ──
+    home_progress:'{done} / {total} 완료 ({pct}%)',
+    home_streak_on:'🔥 {n}일 연속 학습 중!', home_streak_start:'✨ 좋은 시작이에요!', home_streak_back:'💪 오늘 다시 시작해요!',
+    visa_word:'비자', visa_expiry:'만료일',
+    visa_expired:'비자가 만료됐어요! 즉시 출입국사무소를 방문하세요',
+    visa_renew_now:'비자 만료 D-{n} — 즉시 갱신 신청하세요!',
+    visa_renew_prep:'비자 만료 D-{n} — 갱신 준비를 시작하세요',
+    quiz_tag_sent:'문장', quiz_tag_vocab:'어휘', quiz_tag_blank:'빈칸', quiz_fill_q:'빈칸에 알맞은 단어는?',
+    lsn_today_sent:'📝 오늘의 문장', lsn_translation:'📝 번역',
+    res_msg_excellent:'훌륭해요! 현장에서 써봐요! 🎉', res_msg_good:'잘 했어요! 👍', res_msg_retry:'다시 한번 해봐요 💪',
+    res_correct_unit:'정답', res_pass:'합격 ✅', res_fail:'다시 도전해봐요',
+    res_pts_earned:'⭐ +{n}점 획득!', res_pts_total:'총 {n}점', res_learned_today:'오늘 배운 문장',
+    g_title:'단어 게임', g_pick_mode:'게임 모드를 선택하세요', g_card_title:'단어 카드 게임',
+    g_intro:'배운 단어 {n}개 중 10개를 골라 연습해요', g_intro2:'4가지 모드로 실력을 키워요',
+    g_m1_name:'그림 + 소리', g_m1_desc:'소리를 듣고 그림을 골라요',
+    g_m2_name:'그림 + 한국어', g_m2_desc:'그림을 보고 한국어 단어를 골라요',
+    g_m3_name:'자국어 + 한국어', g_m3_desc:'자국어를 보고 한국어를 골라요',
+    g_m4_name:'멀티모달', g_m4_desc:'자국어 + 소리로 한국어를 골라요',
+    g_badge1:'소리를 듣고 그림을 고르세요', g_badge2:'그림을 보고 한국어를 고르세요',
+    g_badge3:'자국어를 보고 한국어를 고르세요', g_badge4:'자국어를 보고 소리를 들어봐요',
+    g_listen:'소리 듣기', g_listen_hint:'버튼을 눌러 소리를 들은 후 그림을 선택하세요', g_replay:'다시 듣기',
+    g_q:'문제', g_pts:'점', g_correct:'정답!', g_answer:'정답:',
+    g_result_title:'게임 결과', g_again_same:'같은 모드로 다시', g_pick_other:'다른 모드 선택', g_home:'홈으로',
+    g_grade_excellent:'우수', g_grade_good:'양호', g_grade_keep:'계속',
+    g_msg_excellent:'훌륭해요! 현장에서 써봐요!', g_msg_good:'잘 했어요! 조금 더 연습해요 👍', g_msg_keep:'다시 한번 도전해봐요 💪',
+    g_result_sub:'{score} / {total} 정답 · {mode} 모드',
+    g_promo_title:'단어 카드 게임으로 연습!', g_promo_modes:'그림+소리 · 그림+한국어 · 자국어+한국어 · 멀티모달', g_promo_sub:'4가지 교육학 기반 게임 모드', prac_label:'🛠️ 실용 한국어',
+    prof_learner:'학습자', prof_emp:'업체 직원', prof_ind:'개인', prof_streak_lbl:'연속 학습일',
+    prof_streak0:'오늘 첫 수업을 들어봐요!', prof_streak_low:'잘 하고 있어요! 계속해요 💪', prof_streak_high:'대단해요! {n}일 연속 공부 중!',
+    prof_stat_done:'완료한 수업', prof_stat_avg:'평균 퀴즈 점수',
+    prof_week_title:'주차별 진행률', prof_week1:'1주차 — 기초 안전 한국어', prof_week2:'2주차 — 화재·화학·응급처치', prof_week3:'3주차 — 작업 지시·병원 한국어',
+    prof_badge_title:'성취 뱃지', prof_badge_first:'첫 수업 완료', prof_badge_w1:'1주일 완성', prof_badge_w2:'2주일 완성',
+    prof_badge_streak:'{n}일 연속', prof_badge_streak7:'7일 연속!', prof_badge_avg90:'평균 90% 이상', prof_badge_none:'수업을 완료하면 뱃지를 받아요!',
+    prof_recent_title:'📅 최근 학습 기록', prof_no_sessions:'아직 완료한 수업이 없어요', prof_sec:'초',
+    prof_visa_title:'🪪 비자 현황', prof_visa_expired:'만료됨 — 즉시 출입국사무소 방문',
+    prof_visa_d_now:'D-{n} — 즉시 갱신 신청하세요!', prof_visa_d_prep:'D-{n} — 갱신 준비를 시작하세요', prof_visa_d_ok:'D-{n} — 여유 있어요 (90일 전부터 신청 가능)',
+    prof_visa_tip:'💡 E-9 비자 연장 신청: 만료 3개월 전부터 가능', prof_visa_call:'📞 외국인 종합안내: 1345',
+    prof_logout:'🚪 로그아웃', prof_admin_note:'학습 기록은 관리자 대시보드에서 확인 가능합니다',
+    prof_notif:'📲 매일 {time} 카카오/문자 알림 예정',
+    lb_co_rank:'{code} 직원 랭킹', lb_ind_rank:'개인 학습자 랭킹', lb_subtitle:'포인트 기준 상위 5명',
+    lb_me:'나', lb_days_done:'{n}일 완료', lb_my_rank:'나의 현재 순위: {n}위 ({pts}점)', lb_pts:'점', lb_no_data:'아직 학습 데이터가 없어요', lb_national:'동종업계 전국 랭킹 — Coming Soon',
+    logout_confirm:'로그아웃 할까요? 학습 기록은 유지됩니다.',
     steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','완료'],
     step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','완료!'],
   },
@@ -2147,6 +2204,48 @@ const STRINGS = {
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
     lbl_progress:'Mening progressim',
     lbl_profile:"Mening o'quv holatim",
+    // ── Ishchi UI ko'rsatmalari ──
+    home_progress:'{done} / {total} tugadi ({pct}%)',
+    home_streak_on:'🔥 {n} kun ketma-ket!', home_streak_start:'✨ Yaxshi boshlash!', home_streak_back:'💪 Bugun qaytadan boshlang!',
+    visa_word:'Viza', visa_expiry:'Tugash sanasi',
+    visa_expired:'Viza muddati tugadi! Darhol migratsiya idorasiga boring',
+    visa_renew_now:'Viza tugashiga D-{n} — darhol yangilang!',
+    visa_renew_prep:'Viza tugashiga D-{n} — yangilashga tayyorlaning',
+    quiz_tag_sent:'Gap', quiz_tag_vocab:"So'z", quiz_tag_blank:"Bo'sh joy", quiz_fill_q:"Bo'sh joyga mos so'z qaysi?",
+    lsn_today_sent:'📝 Bugungi gap', lsn_translation:'📝 Tarjima',
+    res_msg_excellent:"Ajoyib! Ish joyida qo'llang! 🎉", res_msg_good:'Yaxshi! 👍', res_msg_retry:"Qayta urinib ko'ring 💪",
+    res_correct_unit:"to'g'ri", res_pass:"O'tdi ✅", res_fail:"Qayta urinib ko'ring",
+    res_pts_earned:'⭐ +{n} ball!', res_pts_total:'Jami {n} ball', res_learned_today:'Bugungi gap',
+    g_title:"So'z o'yini", g_pick_mode:"O'yin rejimini tanlang", g_card_title:"So'z kartochka o'yini",
+    g_intro:"O'rgangan {n} so'zdan 10 tasini mashq qiling", g_intro2:"4 xil rejimda mahorat oshiring",
+    g_m1_name:'Rasm + Ovoz', g_m1_desc:'Ovozni tinglab rasmni tanlang',
+    g_m2_name:'Rasm + Koreyscha', g_m2_desc:"Rasmga qarab koreyscha so'zni tanlang",
+    g_m3_name:'Ona tili + Koreyscha', g_m3_desc:'Ona tiliga qarab koreyschani tanlang',
+    g_m4_name:'Multimodal', g_m4_desc:'Ona tili + ovoz orqali koreyschani tanlang',
+    g_badge1:'Ovozni tinglab rasmni tanlang', g_badge2:'Rasmga qarab koreyschani tanlang',
+    g_badge3:'Ona tiliga qarab koreyschani tanlang', g_badge4:'Ona tiliga qarab ovozni tinglang',
+    g_listen:'Ovozni tinglash', g_listen_hint:'Tugmani bosib ovozni tinglagach rasmni tanlang', g_replay:'Qayta tinglash',
+    g_q:'Savol', g_pts:'ball', g_correct:"To'g'ri!", g_answer:"To'g'ri javob:",
+    g_result_title:"O'yin natijasi", g_again_same:'Shu rejimda qayta', g_pick_other:'Boshqa rejim', g_home:'Bosh sahifa',
+    g_grade_excellent:"A'lo", g_grade_good:'Yaxshi', g_grade_keep:'Davom',
+    g_msg_excellent:"Ajoyib! Ish joyida qo'llang!", g_msg_good:'Yaxshi! Yana mashq qiling 👍', g_msg_keep:"Qayta urinib ko'ring 💪",
+    g_result_sub:"{score} / {total} to'g'ri · {mode}",
+    g_promo_title:"So'z kartochka o'yini bilan mashq!", g_promo_modes:'Rasm+Ovoz · Rasm+Koreyscha · Ona tili+Koreyscha · Multimodal', g_promo_sub:"4 ta pedagogik o'yin rejimi", prac_label:'🛠️ Amaliy koreyscha',
+    prof_learner:"O'quvchi", prof_emp:'Korxona xodimi', prof_ind:'Shaxsiy', prof_streak_lbl:'Ketma-ket kun',
+    prof_streak0:'Bugun birinchi darsni boshlang!', prof_streak_low:'Yaxshi! Davom eting 💪', prof_streak_high:"Zo'r! {n} kun ketma-ket!",
+    prof_stat_done:'Tugatilgan dars', prof_stat_avg:"O'rtacha test bali",
+    prof_week_title:'Haftalik progress', prof_week1:'1-hafta — Asosiy xavfsizlik', prof_week2:"2-hafta — Yong'in·kimyo·ilk yordam", prof_week3:"3-hafta — Ish ko'rsatmasi·shifoxona",
+    prof_badge_title:'Yutuq nishonlari', prof_badge_first:'Birinchi dars', prof_badge_w1:'1 hafta tugadi', prof_badge_w2:'2 hafta tugadi',
+    prof_badge_streak:'{n} kun ketma-ket', prof_badge_streak7:'7 kun ketma-ket!', prof_badge_avg90:"O'rtacha 90%+", prof_badge_none:'Darsni tugatib nishon oling!',
+    prof_recent_title:"📅 So'nggi o'quv yozuvlari", prof_no_sessions:"Hali tugatilgan dars yo'q", prof_sec:'soniya',
+    prof_visa_title:'🪪 Viza holati', prof_visa_expired:'Tugadi — darhol migratsiyaga boring',
+    prof_visa_d_now:'D-{n} — darhol yangilang!', prof_visa_d_prep:'D-{n} — yangilashga tayyorlaning', prof_visa_d_ok:'D-{n} — vaqt bor (90 kun oldin)',
+    prof_visa_tip:'💡 E-9 vizani uzaytirish: tugashidan 3 oy oldin', prof_visa_call:"📞 Chet elliklar ma'lumoti: 1345",
+    prof_logout:'🚪 Chiqish', prof_admin_note:"O'quv yozuvlari administrator panelida ko'rinadi",
+    prof_notif:'📲 Har kuni {time} da Kakao/SMS eslatma',
+    lb_co_rank:'{code} xodimlar reytingi', lb_ind_rank:'Shaxsiy reyting', lb_subtitle:"Ball bo'yicha top 5",
+    lb_me:'Men', lb_days_done:'{n} kun tugadi', lb_my_rank:"Mening o'rnim: {n} ({pts} ball)", lb_pts:'ball', lb_no_data:"Hali ma'lumot yo'q", lb_national:"Soha bo'yicha milliy reyting — Tez orada",
+    logout_confirm:"Chiqasizmi? O'quv yozuvlari saqlanadi.",
     steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Yakuniy test","Tugadi"],
     step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap tuzing","Gap mashqi","Test savollari","Barcha takrorlash","Tugadi!"],
   },
@@ -2291,6 +2390,48 @@ const STRINGS = {
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
     lbl_progress:"Ha'u-nia progresu",
     lbl_profile:"Ha'u-nia situasaun aprendizajen",
+    // ── Instrusaun UI ba trabalhadór ──
+    home_progress:'{done} / {total} remata ({pct}%)',
+    home_streak_on:'🔥 Loron {n} tuir-tuir!', home_streak_start:"✨ Hahú di'ak!", home_streak_back:'💪 Ohin hahú fali!',
+    visa_word:'Viza', visa_expiry:'Data remata',
+    visa_expired:'Viza remata ona! Bá kedas servisu imigrasaun',
+    visa_renew_now:'Viza remata iha D-{n} — renova kedas!',
+    visa_renew_prep:'Viza remata iha D-{n} — prepara renovasaun',
+    quiz_tag_sent:'Fraze', quiz_tag_vocab:'Liafuan', quiz_tag_blank:'Espasu', quiz_fill_q:"Liafuan ne'ebé loos ba espasu?",
+    lsn_today_sent:'📝 Fraze ohin', lsn_translation:'📝 Tradusaun',
+    res_msg_excellent:"Di'ak loos! Uza iha servisu! 🎉", res_msg_good:"Di'ak! 👍", res_msg_retry:'Koko fali 💪',
+    res_correct_unit:'loos', res_pass:'Pasa ✅', res_fail:'Koko fali',
+    res_pts_earned:'⭐ +{n} pontu!', res_pts_total:'Total {n} pontu', res_learned_today:'Fraze ohin',
+    g_title:'Jogu liafuan', g_pick_mode:'Hili modu jogu', g_card_title:'Jogu kartaun liafuan',
+    g_intro:'Hili 10 husi liafuan {n} hodi prátika', g_intro2:"Hadi'a matenek ho modu 4",
+    g_m1_name:'Imajen + Lian', g_m1_desc:'Rona lian, hili imajen',
+    g_m2_name:'Imajen + Korea', g_m2_desc:'Haree imajen, hili liafuan Korea',
+    g_m3_name:'Lian rasik + Korea', g_m3_desc:'Haree lian rasik, hili Korea',
+    g_m4_name:'Multimodal', g_m4_desc:'Lian rasik + lian hodi hili Korea',
+    g_badge1:'Rona lian, hili imajen', g_badge2:'Haree imajen, hili Korea',
+    g_badge3:'Haree lian rasik, hili Korea', g_badge4:'Haree lian rasik, rona lian',
+    g_listen:'Rona lian', g_listen_hint:'Hanehan butaun, rona tiha hili imajen', g_replay:'Rona fali',
+    g_q:'Pergunta', g_pts:'pontu', g_correct:'Los!', g_answer:'Resposta loos:',
+    g_result_title:'Rezultadu jogu', g_again_same:'Modu hanesan fali', g_pick_other:'Hili modu seluk', g_home:'Pájina inísiu',
+    g_grade_excellent:"Di'ak loos", g_grade_good:"Di'ak", g_grade_keep:'Kontinua',
+    g_msg_excellent:"Di'ak loos! Uza iha servisu!", g_msg_good:"Di'ak! Prátika tan 👍", g_msg_keep:'Koko fali 💪',
+    g_result_sub:'{score} / {total} loos · {mode}',
+    g_promo_title:'Prátika ho jogu kartaun!', g_promo_modes:'Imajen+Lian · Imajen+Korea · Lian rasik+Korea · Multimodal', g_promo_sub:'Modu jogu 4 bazeia pedagojia', prac_label:'🛠️ Korea prátiku',
+    prof_learner:'Estudante', prof_emp:'Empregadu kompañia', prof_ind:'Individuál', prof_streak_lbl:'Loron tuir-tuir',
+    prof_streak0:'Ohin hahú aula primeiru!', prof_streak_low:"Di'ak! Kontinua 💪", prof_streak_high:"Di'ak loos! Loron {n} tuir-tuir!",
+    prof_stat_done:'Aula remata', prof_stat_avg:'Média teste',
+    prof_week_title:'Progresu semanál', prof_week1:'Semana 1 — Korea seguransa', prof_week2:'Semana 2 — Ahi·kímiku·sokoru', prof_week3:'Semana 3 — Servisu·ospitál',
+    prof_badge_title:'Distintivu susesu', prof_badge_first:'Aula primeiru remata', prof_badge_w1:'Semana 1 remata', prof_badge_w2:'Semana 2 remata',
+    prof_badge_streak:'Loron {n} tuir-tuir', prof_badge_streak7:'Loron 7 tuir-tuir!', prof_badge_avg90:'Média 90%+', prof_badge_none:'Remata aula hodi simu distintivu!',
+    prof_recent_title:'📅 Rejistu aprende foin lalais', prof_no_sessions:'Seidauk iha aula remata', prof_sec:'segundu',
+    prof_visa_title:'🪪 Situasaun viza', prof_visa_expired:'Remata — bá kedas imigrasaun',
+    prof_visa_d_now:'D-{n} — renova kedas!', prof_visa_d_prep:'D-{n} — prepara renovasaun', prof_visa_d_ok:'D-{n} — iha tempu (loron 90 antes)',
+    prof_visa_tip:'💡 Estende viza E-9: fulan 3 antes remata', prof_visa_call:'📞 Informasaun ba estranjeiru: 1345',
+    prof_logout:'🚪 Sai', prof_admin_note:'Rejistu aprende bele haree iha painel administradór',
+    prof_notif:'📲 Loron-loron {time} lembransa Kakao/SMS',
+    lb_co_rank:'Ranking empregadu {code}', lb_ind_rank:'Ranking individuál', lb_subtitle:'Top 5 tuir pontu',
+    lb_me:"Ha'u", lb_days_done:'Loron {n} remata', lb_my_rank:"Ha'u-nia pozisaun: {n} ({pts} pontu)", lb_pts:'pontu', lb_no_data:'Seidauk iha dadus', lb_national:'Ranking nasionál — Mai lalais',
+    logout_confirm:'Sai? Rejistu aprende sei kontinua.',
     steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Teste final','Remata'],
     step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Hili liafuan','Prátika','Teste','Revizaun','Remata!'],
   },
@@ -2371,6 +2512,8 @@ const STRINGS = {
 const UILANG_KEY = 'sk_uilang';
 function getUILang(){ return localStorage.getItem(UILANG_KEY)||'ko'; }
 function t(key){ return (STRINGS[getUILang()]||STRINGS.ko)[key]||STRINGS.ko[key]||key; }
+// 치환형 번역 — t() 결과의 {key} 토큰을 vars 값으로 치환
+function tf(key, vars){ let s=t(key); for(const k in (vars||{})) s=s.split('{'+k+'}').join(vars[k]); return s; }
 
 // 품사 자국어 번역
 const POS_MAP = {
@@ -2424,7 +2567,7 @@ function applyLang(){
 function renderLangChips(){
   const cur = getUILang();
   // 인증화면 소형 칩
-  const chipsHtml = Object.entries(LANG_META).map(([code,m])=>
+  const chipsHtml = langEntries().map(([code,m])=>
     `<button class="lang-chip${code===cur?' on':''}" onclick="setUILang('${code}')">
       ${m.flag} ${m.native}
     </button>`
@@ -2433,7 +2576,7 @@ function renderLangChips(){
   if(auth) auth.innerHTML = chipsHtml;
   // 홈 첫화면 대형 언어 버튼
   const grid = document.getElementById('homeLangGrid');
-  if(grid) grid.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+  if(grid) grid.innerHTML = langEntries().map(([code,m])=>
     `<button class="hlp-btn${code===cur?' on':''}" onclick="selectHomeLang('${code}')">
       <span class="hlp-flag">${m.flag}</span>
       <span class="hlp-name">${m.native}</span>
@@ -2458,7 +2601,7 @@ function renderLangGrid(){
   const cur = getUILang();
   const grid = document.getElementById('langGrid');
   if(!grid) return;
-  grid.innerHTML = Object.entries(LANG_META).map(([code,m])=>
+  grid.innerHTML = langEntries().map(([code,m])=>
     `<div class="lang-opt${code===cur?' on':''}" onclick="setUILang('${code}');closeLangModal()">
       <div class="lang-opt-flag">${m.flag}</div>
       <div class="lang-opt-info">
@@ -2839,15 +2982,15 @@ function renderVisaBanner(){
   const cls=days<=30?'red':days<=90?'orange':'blue';
   const icon=days<=30?'🚨':days<=90?'⚠️':'📋';
   const msg=days<=0
-    ?'비자가 만료됐어요! 즉시 출입국사무소 방문 필요'
+    ?t('visa_expired')
     :days<=30
-      ?`비자 만료 D-${days} — 즉시 갱신 신청하세요!`
-      :`비자 만료 D-${days} — 갱신 준비를 시작하세요 (90일 전 권장)`;
+      ?tf('visa_renew_now',{n:days})
+      :tf('visa_renew_prep',{n:days});
   const el=document.createElement('div');
   el.id='visaBannerHome';
   el.className=`visa-banner ${cls}`;
   el.innerHTML=`<span style="font-size:18px">${icon}</span>
-    <div><strong>${u.visaType||'비자'} 만료일: ${u.visaExpiry}</strong><br>${msg}</div>`;
+    <div><strong>${u.visaType||t('visa_word')} ${t('visa_expiry')}: ${u.visaExpiry}</strong><br>${msg}</div>`;
   const heroDiv=home.querySelector('.hero');
   if(heroDiv) heroDiv.insertAdjacentElement('afterend',el);
 }
@@ -2872,7 +3015,7 @@ function renderHome(){
   });
   const pct = Math.round(ST.done.length/CUR.length*100);
   document.getElementById('pf').style.width=pct+'%';
-  document.getElementById('pt').textContent=`${ST.done.length} / ${CUR.length} 완료 (${pct}%)`;
+  document.getElementById('pt').textContent=tf('home_progress',{done:ST.done.length,total:CUR.length,pct});
 
   // 실용 한국어 섹션 렌더
   const pg = document.getElementById('practicalGrid');
@@ -2901,9 +3044,9 @@ function renderHome(){
     let oldStreakEl = heroEl.querySelector('.hero-streak-msg');
     if(oldStreakEl) oldStreakEl.remove();
     let streakMsg = '';
-    if(streak >= 3) streakMsg = `🔥 ${streak}일 연속 학습 중!`;
-    else if(streak === 1) streakMsg = '✨ 좋은 시작이에요! / Yaxshi boshlash!';
-    else if(streak === 0) streakMsg = '💪 오늘 다시 시작해요! / Bugun qaytadan boshlang!';
+    if(streak >= 3) streakMsg = tf('home_streak_on',{n:streak});
+    else if(streak === 1) streakMsg = t('home_streak_start');
+    else if(streak === 0) streakMsg = t('home_streak_back');
     if(streakMsg){
       const sm = document.createElement('div');
       sm.className = 'hero-streak-msg';
@@ -3089,12 +3232,12 @@ function rFlashcard(d,el,uz){
   const prog=`${fc.idx+1}/${fc.items.length}`;
   const tipText = t('lsn_fc_tip');
   const frontHTML = isSent
-    ? `<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:8px">📝 오늘의 문장</div>
+    ? `<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:8px">${t('lsn_today_sent')}</div>
        <div style="font-size:20px;font-weight:900;line-height:1.45;letter-spacing:-.3px">${w.ko}</div>`
     : `<div style="font-size:26px;font-weight:900;letter-spacing:1px">${w.ko}</div>
        <div style="font-size:13px;opacity:.8;margin-top:4px">[${w.rom}]</div>`;
   const backHTML = isSent
-    ? `<div style="font-size:11px;font-weight:700;color:var(--blue-m);margin-bottom:8px">📝 번역</div>
+    ? `<div style="font-size:11px;font-weight:700;color:var(--blue-m);margin-bottom:8px">${t('lsn_translation')}</div>
        <div style="font-size:17px;font-weight:800;color:var(--ink);line-height:1.5">${w.uz}</div>`
     : `<div style="font-size:10px;font-weight:700;color:var(--blue-m);margin-bottom:6px">${posT(w.pos)}</div>
        <div style="font-size:20px;font-weight:800;color:var(--ink);line-height:1.4">${w.uz}</div>
@@ -3204,7 +3347,7 @@ window.matchSelUz=function(koOfUz){
     const ue=document.getElementById('mu-'+koOfUz.replace(/\//g,'-'));
     [ke,ue].forEach(e=>{if(e){e.classList.add('correct');setTimeout(()=>renderLesson(),350);}});
     const fb=document.getElementById('match-fb');
-    if(fb){fb.textContent=t('lsn_match_ok');fb.style.color='#0284C7';}
+    if(fb){fb.textContent=t('lsn_match_ok');fb.style.color='#E85520';}
   } else {
     m.errors++;
     m.selKo=null;
@@ -3355,7 +3498,7 @@ function rSentPractice(d,el,uz){
     // Phase 1: 문장 읽고 따라 말하기 (재생 → 완료)
     el.innerHTML=`
       <div style="text-align:right;font-size:11px;color:var(--muted);font-weight:700;padding:2px 0 4px">2/2</div>
-      <div style="background:linear-gradient(145deg,#0284C7,#0EA5E9);border-radius:var(--r);
+      <div style="background:linear-gradient(145deg,#E85520,#FF6B35);border-radius:var(--r);
         padding:20px;color:#fff;text-align:center;margin-bottom:16px">
         <div style="font-size:22px;font-weight:900;margin-bottom:6px">${sent.ko}</div>
         <div style="font-size:13px;opacity:.85">${sent.uz||''}</div>
@@ -3591,7 +3734,7 @@ function rQuiz(d,el,uz){
       <span class="qscore">${ST.quizScore}✅</span>
     </div>
     <div class="qcard">
-      <div class="qtag">${q.tag||'어휘'}</div>
+      <div class="qtag">${({'문장':t('quiz_tag_sent'),'어휘':t('quiz_tag_vocab'),'빈칸':t('quiz_tag_blank')})[q.tag]||t('quiz_tag_vocab')}</div>
       <div class="qq" style="white-space:pre-line">${uz?(q.qu||q.q):(q.q||q.qu)}</div>
       ${isFb ? `
       <div class="qfb-wrap">
@@ -3665,8 +3808,7 @@ function rResult(d,el,uz){
     const firstTime = !ST.isPractical && ST.done.filter(x=>x===d.day).length<=1;
     addPoints(pts, firstTime ? '첫 이수' : '재이수');
   }
-  const msgKo=pct>=80?'훌륭해요! 현장에서 써봐요! 🎉':pct>=60?'잘 했어요! 👍':'다시 한번 해봐요 💪';
-  const msgUz=pct>=80?'Ajoyib! Ish joyida qo\'llang! 🎉':pct>=60?'Yaxshi! 👍':'Qayta urinib ko\'ring 💪';
+  const msg=pct>=80?t('res_msg_excellent'):pct>=60?t('res_msg_good'):t('res_msg_retry');
 
   // 오늘의 문장 보여주기
   const sent=d.sentence||{ko:'',uz:''};
@@ -3675,15 +3817,15 @@ function rResult(d,el,uz){
     <div class="rcard">
       <div style="font-size:48px">${e}</div>
       <div class="rscore ${cls}">${pct}%</div>
-      <div class="rmsg">${uz?msgUz:msgKo}</div>
-      <div class="rsub">${ST.quizScore} / ${tot} 정답 · ${pass?(uz?"O'tdi ✅":'합격 ✅'):(uz?'Qayta urinib ko\'ring':'다시 도전해봐요')}</div>
+      <div class="rmsg">${msg}</div>
+      <div class="rsub">${ST.quizScore} / ${tot} ${t('res_correct_unit')} · ${pass?t('res_pass'):t('res_fail')}</div>
       ${pass?`<div style="margin:10px 0 4px">
-        <span class="pts-chip">⭐ +${pct>=80?30:20}점 획득!</span>
-        <span style="font-size:12px;color:var(--muted);margin-left:6px">총 ${getPoints()}점</span>
+        <span class="pts-chip">${tf('res_pts_earned',{n:pct>=80?30:20})}</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:6px">${tf('res_pts_total',{n:getPoints()})}</span>
       </div>`:''}
       ${pass&&sent.ko?`
       <div class="rpass">
-        <strong>오늘 배운 문장 / Bugungi gap:</strong><br>
+        <strong>${t('res_learned_today')}:</strong><br>
         ▸ ${sent.ko}<br>
         <span style="color:var(--muted);font-size:12px">▸ ${sent.uz||''}</span>
       </div>
@@ -3865,7 +4007,7 @@ function checkPwStrength(inputId, barId, hintId){
   else if(score===1){ color='var(--red)'; msg='⚠️ 약한 비밀번호 — 숫자와 영문을 함께 써주세요'; }
   else if(score===2){ color='var(--orange)'; msg='👍 보통 — 기호를 추가하면 더 안전해요'; }
   else if(score===3){ color='var(--green)'; msg='✅ 강함 — 안전한 비밀번호예요'; }
-  else { color='#0EA5E9'; msg='🛡️ 매우 강함!'; }
+  else { color='#FF6B35'; msg='🛡️ 매우 강함!'; }
   bar.style.width=(score/4*100)+'%'; bar.style.background=color;
   hint.textContent=msg; hint.style.color=score>=2?color:'var(--muted)';
 }
@@ -4092,6 +4234,9 @@ function goProfile(){
 
 // ── 회사 내 리더보드 빌더
 function buildLeaderboardHTML(user){
+  // 리더보드 숨김 — 다른 학습자 이름이 한꺼번에 노출되지 않도록 비활성화.
+  // 다시 켜려면 아래 줄을 삭제하세요.
+  return '';
   if(!user) return '';
   const allUsers = getAllUsers();
 
@@ -4099,10 +4244,10 @@ function buildLeaderboardHTML(user){
   let peers, groupLabel;
   if(user.type==='company' && user.companyCode){
     peers = allUsers.filter(u=>u.companyCode===user.companyCode);
-    groupLabel = `${user.companyCode} 직원 랭킹`;
+    groupLabel = tf('lb_co_rank',{code:user.companyCode});
   } else {
     peers = allUsers.filter(u=>u.type==='individual');
-    groupLabel = '개인 학습자 랭킹';
+    groupLabel = t('lb_ind_rank');
   }
 
   // 각 peer 포인트 계산
@@ -4117,34 +4262,34 @@ function buildLeaderboardHTML(user){
   const top5 = ranked.slice(0,5);
   const myRank = ranked.findIndex(r=>r.isMe)+1;
 
-  const medals = ['1위','2위','3위','4위','5위'];
+  const medals = ['🥇','🥈','🥉','4','5'];
   const rowsHTML = top5.map((r,i)=>`
     <div class="rank-row${r.isMe?' me':''}">
       <span style="font-size:18px;width:28px;text-align:center">${medals[i]||i+1}</span>
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-          ${r.isMe?'👉 나 ('+r.name+')':r.name}
+          ${r.isMe?'👉 '+t('lb_me')+' ('+r.name+')':r.name}
         </div>
-        <div style="font-size:10px;color:var(--muted)">${r.done}일 완료</div>
+        <div style="font-size:10px;color:var(--muted)">${tf('lb_days_done',{n:r.done})}</div>
       </div>
-      <span class="pts-chip">⭐ ${r.pts}점</span>
+      <span class="pts-chip">⭐ ${r.pts}${t('lb_pts')}</span>
     </div>
   `).join('');
 
   const myRankBadge = myRank>5
     ? `<div style="font-size:11px;color:var(--muted);padding:8px 0 0;text-align:center">
-         나의 현재 순위: <strong>${myRank}위</strong> (${ranked.find(r=>r.isMe)?.pts||0}점)
+         ${tf('lb_my_rank',{n:myRank,pts:ranked.find(r=>r.isMe)?.pts||0})}
        </div>` : '';
 
   return `
   <div style="background:var(--card);border-radius:var(--r);padding:14px;border:1px solid var(--border);margin-bottom:14px">
     <h3 style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">${groupLabel}</h3>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">포인트 기준 상위 5명 · 동점 시 완료 수업 수 우선</div>
-    ${top5.length?rowsHTML:'<div style="font-size:12px;color:var(--muted);padding:8px 0">아직 학습 데이터가 없어요</div>'}
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${t('lb_subtitle')}</div>
+    ${top5.length?rowsHTML:`<div style="font-size:12px;color:var(--muted);padding:8px 0">${t('lb_no_data')}</div>`}
     ${myRankBadge}
     <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
       font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px">
-      <span>동종업계 전국 랭킹 — <strong>Coming Soon</strong></span>
+      <span>${t('lb_national')}</span>
     </div>
   </div>`;
 }
@@ -4168,13 +4313,13 @@ function renderProfile(){
 
   // 프로필 서브타이틀
   const sub = user?.type==='company'
-    ? `${user.companyCode} · ${user.employeeNum||'직원'}`
+    ? `${user.companyCode} · ${user.employeeNum||t('prof_emp')}`
     : user?.phone||'';
   document.getElementById('profSubtitle').textContent = sub;
 
   // 알람 시간 표시
   const notifStr = user?.notifTime
-    ? `📲 매일 ${user.notifTime} 카카오/문자 알림 예정`
+    ? tf('prof_notif',{time:user.notifTime})
     : '';
 
   // 비자 D-day 카드
@@ -4183,23 +4328,23 @@ function renderProfile(){
   if(user?.visaExpiry){
     const dCls = visaDays<=0?'red':visaDays<=30?'red':visaDays<=90?'orange':'blue';
     const dIcon = visaDays<=30?'🚨':visaDays<=90?'⚠️':'✅';
-    const dMsg = visaDays<=0?'만료됨 — 즉시 출입국사무소 방문'
-      :visaDays<=30?`D-${visaDays} — 즉시 갱신 신청하세요!`
-      :visaDays<=90?`D-${visaDays} — 갱신 준비를 시작하세요`
-      :`D-${visaDays} — 여유 있어요 (90일 전부터 신청 가능)`;
+    const dMsg = visaDays<=0?t('prof_visa_expired')
+      :visaDays<=30?tf('prof_visa_d_now',{n:visaDays})
+      :visaDays<=90?tf('prof_visa_d_prep',{n:visaDays})
+      :tf('prof_visa_d_ok',{n:visaDays});
     visaCardHTML = `
     <div style="background:var(--card);border-radius:var(--r);padding:14px;border:1px solid var(--border);margin-bottom:14px">
-      <h3 style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">🪪 비자 현황</h3>
+      <h3 style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">${t('prof_visa_title')}</h3>
       <div class="visa-banner ${dCls}" style="margin:0;border-radius:10px">
         <span style="font-size:22px">${dIcon}</span>
         <div>
-          <div style="font-weight:800;font-size:13px">${user.visaType||'비자'} · 만료일 ${user.visaExpiry}</div>
+          <div style="font-weight:800;font-size:13px">${user.visaType||t('visa_word')} · ${t('visa_expiry')} ${user.visaExpiry}</div>
           <div style="font-size:12px;margin-top:2px">${dMsg}</div>
         </div>
       </div>
       <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6">
-        💡 E-9 비자 연장 신청: 만료 3개월 전부터 가능<br>
-        📞 출입국·외국인청 외국인 종합안내: <strong>1345</strong>
+        ${t('prof_visa_tip')}<br>
+        ${t('prof_visa_call')}
       </div>
     </div>`;
   }
@@ -4211,38 +4356,38 @@ function renderProfile(){
     return `<div class="sess-item">
       <div>
         <div class="sess-day">${d?d.icon:''} Day ${s.day}: ${d?d.titleKo:''}</div>
-        <div class="sess-date">${s.date} · ${s.duration}초</div>
+        <div class="sess-date">${s.date} · ${s.duration}${t('prof_sec')}</div>
       </div>
       <div class="sess-score ${cls}">${s.pct}%</div>
     </div>`;
-  }).join('') || '<div style="font-size:12px;color:var(--muted);padding:8px 0">아직 완료한 수업이 없어요</div>';
+  }).join('') || `<div style="font-size:12px;color:var(--muted);padding:8px 0">${t('prof_no_sessions')}</div>`;
 
   // 성취 뱃지
   const badges = [];
-  if(done.length>=1) badges.push({e:'🌱',label:'첫 수업 완료'});
-  if(done.length>=7) badges.push({e:'',label:'1주일 완성'});
-  if(done.length>=14) badges.push({e:'',label:'2주일 완성'});
-  if(streak>=3) badges.push({e:'🔥',label:`${streak}일 연속`});
-  if(streak>=7) badges.push({e:'⚡',label:'7일 연속!'});
-  if(avgPct>=90) badges.push({e:'🌟',label:'평균 90% 이상'});
+  if(done.length>=1) badges.push({e:'🌱',label:t('prof_badge_first')});
+  if(done.length>=7) badges.push({e:'',label:t('prof_badge_w1')});
+  if(done.length>=14) badges.push({e:'',label:t('prof_badge_w2')});
+  if(streak>=3) badges.push({e:'🔥',label:tf('prof_badge_streak',{n:streak})});
+  if(streak>=7) badges.push({e:'⚡',label:t('prof_badge_streak7')});
+  if(avgPct>=90) badges.push({e:'🌟',label:t('prof_badge_avg90')});
   const badgeHTML = badges.length
     ? badges.map(b=>`<span style="display:inline-flex;align-items:center;gap:4px;
         background:var(--bg);border:1px solid var(--border);border-radius:20px;
         padding:5px 12px;font-size:12px;font-weight:700;margin:3px">
         ${b.e} ${b.label}</span>`).join('')
-    : '<span style="font-size:12px;color:var(--muted)">수업을 완료하면 뱃지를 받아요!</span>';
+    : `<span style="font-size:12px;color:var(--muted)">${t('prof_badge_none')}</span>`;
 
   document.getElementById('profContent').innerHTML = `
     <div class="prof-hero">
-      <div class="prof-name">${user?.name||'학습자'}</div>
-      <div class="prof-meta">${user?.type==='company'?'업체 직원':'개인'} · ${user?.phone||''}</div>
+      <div class="prof-name">${user?.name||t('prof_learner')}</div>
+      <div class="prof-meta">${user?.type==='company'?t('prof_emp'):t('prof_ind')} · ${user?.phone||''}</div>
       <div class="streak-row">
         <div class="streak-badge">
           <div class="streak-num">🔥 ${streak}</div>
-          <div class="streak-lbl">연속 학습일</div>
+          <div class="streak-lbl">${t('prof_streak_lbl')}</div>
         </div>
         <div class="streak-msg">
-          ${streak===0?'오늘 첫 수업을 들어봐요!':streak<3?'잘 하고 있어요! 계속해요 💪':`대단해요! ${streak}일 연속 공부 중! +1`}<br>
+          ${streak===0?t('prof_streak0'):streak<3?t('prof_streak_low'):tf('prof_streak_high',{n:streak})}<br>
           <small style="opacity:.7">${notifStr}</small>
         </div>
       </div>
@@ -4251,39 +4396,39 @@ function renderProfile(){
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-val">${done.length}<span style="font-size:16px;color:var(--muted)">/${total}</span></div>
-        <div class="stat-lbl">완료한 수업</div>
+        <div class="stat-lbl">${t('prof_stat_done')}</div>
       </div>
       <div class="stat-card">
         <div class="stat-val" style="color:${avgPct>=80?'var(--green)':avgPct>=60?'var(--orange)':'var(--red)'}">${avgPct}%</div>
-        <div class="stat-lbl">평균 퀴즈 점수</div>
+        <div class="stat-lbl">${t('prof_stat_avg')}</div>
       </div>
     </div>
 
     <div class="week-prog">
-      <h3>주차별 진행률</h3>
+      <h3>${t('prof_week_title')}</h3>
       <div class="wk-row">
-        <div class="wk-label"><span>Week 1 — 기초 안전 한국어</span><span>${w1done}/7</span></div>
+        <div class="wk-label"><span>${t('prof_week1')}</span><span>${w1done}/7</span></div>
         <div class="wk-bar"><div class="wk-fill w1" style="width:${Math.round(w1done/7*100)}%"></div></div>
       </div>
       <div class="wk-row" style="margin-top:10px">
-        <div class="wk-label"><span>Week 2 — 화재·화학·응급처치</span><span>${w2done}/7</span></div>
+        <div class="wk-label"><span>${t('prof_week2')}</span><span>${w2done}/7</span></div>
         <div class="wk-bar"><div class="wk-fill w2" style="width:${Math.round(w2done/7*100)}%"></div></div>
       </div>
       <div class="wk-row" style="margin-top:10px">
-        <div class="wk-label"><span>Week 3 — 작업 지시 · 병원 한국어</span><span>${w3done}/7</span></div>
+        <div class="wk-label"><span>${t('prof_week3')}</span><span>${w3done}/7</span></div>
         <div class="wk-bar"><div class="wk-fill w2" style="width:${Math.round(w3done/7*100)}%;background:linear-gradient(90deg,var(--orange),#f7c59f)"></div></div>
       </div>
     </div>
 
     <div class="week-prog" style="margin-bottom:14px">
-      <h3>성취 뱃지</h3>
+      <h3>${t('prof_badge_title')}</h3>
       <div style="margin-top:2px">${badgeHTML}</div>
     </div>
 
     ${visaCardHTML}
 
     <div class="session-list">
-      <h3>📅 최근 학습 기록</h3>
+      <h3>${t('prof_recent_title')}</h3>
       ${recentHTML}
     </div>
 
@@ -4291,18 +4436,17 @@ function renderProfile(){
 
     <div style="padding:4px 0 8px">
       <button class="btn gray" onclick="confirmLogout()" style="font-size:13px">
-        🚪 로그아웃 / Chiqish
+        ${t('prof_logout')}
       </button>
     </div>
     <div style="font-size:10px;color:var(--muted);text-align:center;padding:8px 0 16px;line-height:1.7">
-      학습 기록은 관리자 대시보드에서 확인 가능합니다<br>
-      O'quv yozuvlarini administrator panelida ko'rish mumkin
+      ${t('prof_admin_note')}
     </div>
   `;
 }
 
 function confirmLogout(){
-  if(confirm('로그아웃 할까요? 학습 기록은 유지됩니다.\nChiqasizmi? O\'quv yozuvlari saqlanadi.')){ doLogout(); }
+  if(confirm(t('logout_confirm'))){ doLogout(); }
 }
 function doLogout(){
   localStorage.removeItem(U_KEY);
@@ -4369,42 +4513,43 @@ function goGame(){
 }
 
 function renderGameMenu(){
-  document.getElementById('gameScrTitle').textContent='단어 게임';
-  document.getElementById('gameScrSub').textContent='게임 모드를 선택하세요';
+  document.getElementById('gameScrTitle').textContent=t('g_title');
+  document.getElementById('gameScrSub').textContent=t('g_pick_mode');
   const all = buildGameWords();
   document.getElementById('gameContent').innerHTML=`
     <div class="game-hero">
       <div class="gh-e">🃏</div>
-      <h3>단어 카드 게임</h3>
-      <p>배운 단어 ${all.length}개 중 10개를 골라 연습해요<br>
-      언어교육학 기반 4가지 모드로 실력을 키워요</p>
+      <h3>${t('g_card_title')}</h3>
+      <p>${tf('g_intro',{n:all.length})}<br>
+      ${t('g_intro2')}</p>
     </div>
     <div class="game-mode-grid">
       ${GAME_MODES.map(m=>`
         <div class="gmode-card m${m.id}" onclick="startGameMode(${m.id})">
           <div class="gmc-icon">${m.icon}</div>
-          <div class="gmc-name">${m.name}</div>
-          <div class="gmc-desc">${m.desc}</div>
+          <div class="gmc-name">${t('g_m'+m.id+'_name')}</div>
+          <div class="gmc-desc">${t('g_m'+m.id+'_desc')}</div>
         </div>
       `).join('')}
     </div>
+    ${getUILang()==='ko'?`
     <div style="padding:0 16px 20px">
-      <div style="background:#E8F4FD;border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--blue);line-height:1.7">
+      <div style="background:#FFF0EB;border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--blue);line-height:1.7">
         💡 <strong>교수법 안내</strong><br>
         1️⃣ <strong>그림+소리</strong> — 소리→이미지 연결 (TPR 전신반응법)<br>
         2️⃣ <strong>그림+한국어</strong> — 시각→어휘 연결 (직접법)<br>
         3️⃣ <strong>자국어+한국어</strong> — 번역 기반 어휘 확인<br>
         4️⃣ <strong>멀티모달</strong> — 시각+청각 통합 입력 (최고 효과)
       </div>
-    </div>
+    </div>`:''}
   `;
 }
 
 function startGameMode(mode){
   GS.mode=mode; GS.qs=buildGameQs(mode); GS.qIdx=0; GS.score=0; GS.answered=false;
   const m = GAME_MODES.find(x=>x.id===mode);
-  document.getElementById('gameScrTitle').textContent=`${m.icon} ${m.name}`;
-  document.getElementById('gameScrSub').textContent=`10문제 · ${m.desc}`;
+  document.getElementById('gameScrTitle').textContent=`${m.icon} ${t('g_m'+m.id+'_name')}`;
+  document.getElementById('gameScrSub').textContent=`10 ${t('g_q')} · ${t('g_m'+m.id+'_desc')}`;
   renderGameQ();
 }
 
@@ -4421,30 +4566,30 @@ function renderGameQ(){
   if(m === 1){
     // Mode 1: audio prompt — show ??? emoji until user plays/answers
     promptHTML = `
-      <div class="gq-mode-badge">소리를 듣고 그림을 고르세요</div>
+      <div class="gq-mode-badge">${t('g_badge1')}</div>
       <div class="gq-emoji" id="gq-mystery">❓</div>
-      <button class="gq-play-btn" onclick="playGameWord()">소리 듣기</button>
-      <div style="font-size:11px;opacity:.65">버튼을 눌러 소리를 들은 후 그림을 선택하세요</div>
+      <button class="gq-play-btn" onclick="playGameWord()">${t('g_listen')}</button>
+      <div style="font-size:11px;opacity:.65">${t('g_listen_hint')}</div>
     `;
   } else if(m === 2){
     // Mode 2: show emoji → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">그림을 보고 한국어를 고르세요</div>
+      <div class="gq-mode-badge">${t('g_badge2')}</div>
       <div class="gq-emoji">${w.e}</div>
     `;
   } else if(m === 3){
     // Mode 3: show native word → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">자국어를 보고 한국어를 고르세요</div>
+      <div class="gq-mode-badge">${t('g_badge3')}</div>
       <div class="gq-text">${w.uz}</div>
       <div class="gq-sub">[${w.rom}]</div>
     `;
   } else {
     // Mode 4: native word + auto-play audio → pick Korean
     promptHTML = `
-      <div class="gq-mode-badge">자국어를 보고 소리를 들어봐요</div>
+      <div class="gq-mode-badge">${t('g_badge4')}</div>
       <div class="gq-text">${w.uz}</div>
-      <button class="gq-play-btn" id="gq-replay-btn" onclick="playGameWord()">다시 듣기</button>
+      <button class="gq-play-btn" id="gq-replay-btn" onclick="playGameWord()">${t('g_replay')}</button>
     `;
   }
 
@@ -4467,8 +4612,8 @@ function renderGameQ(){
     <div class="gq-wrap">
       <div class="gpbar-wrap">
         <div class="gpbar-top">
-          <span>문제 ${GS.qIdx+1} / ${total}</span>
-          <span style="color:var(--green);font-weight:700">✅ ${GS.score}점</span>
+          <span>${t('g_q')} ${GS.qIdx+1} / ${total}</span>
+          <span style="color:var(--green);font-weight:700">✅ ${GS.score}${t('g_pts')}</span>
         </div>
         <div class="gpbar"><div class="gpbar-fill" style="width:${GS.qIdx/total*100}%"></div></div>
       </div>
@@ -4531,8 +4676,8 @@ function ansGame(chosenIdx){
     fb.className=`gq-fb ${ok?'ok':'no'}`;
     const koWord = q.optType==='emoji' ? q.opts[correct].ko : q.opts[correct];
     fb.innerHTML = ok
-      ? `✅ 정답! <strong>${koWord}</strong> — ${q.word.uz}`
-      : `❌ 정답: <strong>${koWord}</strong> (${q.word.uz})`;
+      ? `✅ ${t('g_correct')} <strong>${koWord}</strong> — ${q.word.uz}`
+      : `❌ ${t('g_answer')} <strong>${koWord}</strong> (${q.word.uz})`;
     fb.style.display='block';
   }
 
@@ -4547,32 +4692,33 @@ function showGameResult(){
   const total = GS.qs.length;
   const pct = Math.round(GS.score/total*100);
   const cls = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--red)';
-  const e = pct>=80?'우수':pct>=60?'양호':'계속';
-  const msg = pct>=80?'훌륭해요! 현장에서 써봐요! +1':pct>=60?'잘 했어요! 조금 더 연습해요 👍':'다시 한번 도전해봐요 💪';
+  const e = pct>=80?t('g_grade_excellent'):pct>=60?t('g_grade_good'):t('g_grade_keep');
+  const msg = pct>=80?t('g_msg_excellent'):pct>=60?t('g_msg_good'):t('g_msg_keep');
   const m = GAME_MODES.find(x=>x.id===GS.mode);
+  const mName = t('g_m'+m.id+'_name');
 
-  document.getElementById('gameScrTitle').textContent='게임 결과';
-  document.getElementById('gameScrSub').textContent=`${m.icon} ${m.name}`;
+  document.getElementById('gameScrTitle').textContent=t('g_result_title');
+  document.getElementById('gameScrSub').textContent=`${m.icon} ${mName}`;
 
   document.getElementById('gameContent').innerHTML=`
     <div class="gr-card">
       <div class="gr-emoji">${e}</div>
       <div class="gr-score" style="color:${cls}">${pct}%</div>
       <div class="gr-msg">${msg}</div>
-      <div class="gr-sub">${GS.score} / ${total} 정답 · ${m.name} 모드</div>
+      <div class="gr-sub">${tf('g_result_sub',{score:GS.score,total,mode:mName})}</div>
 
       <div class="gr-mode-chips">
         ${GAME_MODES.map(gm=>`
           <div class="gr-chip ${gm.id===GS.mode?'active':''}">
-            ${gm.icon} ${gm.name}${gm.id===GS.mode?' ✓':''}
+            ${gm.icon} ${t('g_m'+gm.id+'_name')}${gm.id===GS.mode?' ✓':''}
           </div>
         `).join('')}
       </div>
     </div>
     <div class="game-btn-row">
-      <button class="btn red" onclick="startGameMode(${GS.mode})">같은 모드로 다시</button>
-      <button class="btn gray" onclick="renderGameMenu()">다른 모드 선택</button>
-      <button class="btn gray" onclick="goHome()">홈으로</button>
+      <button class="btn red" onclick="startGameMode(${GS.mode})">${t('g_again_same')}</button>
+      <button class="btn gray" onclick="renderGameMenu()">${t('g_pick_other')}</button>
+      <button class="btn gray" onclick="goHome()">${t('g_home')}</button>
     </div>
   `;
 }
