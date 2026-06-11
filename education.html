@@ -2168,6 +2168,10 @@ const STRINGS = {
     lb_co_rank:'{code} 직원 랭킹', lb_ind_rank:'개인 학습자 랭킹', lb_subtitle:'포인트 기준 상위 5명',
     lb_me:'나', lb_days_done:'{n}일 완료', lb_my_rank:'나의 현재 순위: {n}위 ({pts}점)', lb_pts:'점', lb_no_data:'아직 학습 데이터가 없어요', lb_national:'동종업계 전국 랭킹 — Coming Soon',
     logout_confirm:'로그아웃 할까요? 학습 기록은 유지됩니다.',
+    uid_hint:'영문 소문자, 숫자, _ 만 사용 가능 / 4–20자', uid_invalid:'❌ 영문 소문자, 숫자, _만 사용 가능해요', uid_short:'⚠️ 4자 이상 입력해주세요 (현재 {n}자)', uid_taken:'❌ 이미 사용 중인 아이디예요', uid_ok:'✅ 사용 가능한 아이디예요',
+    pw_hint:'8자 이상, 영문+숫자 필수 / 기호 포함 시 더 안전해요', pw_weak:'⚠️ 약한 비밀번호 — 숫자와 영문을 함께 써주세요', pw_mid:'👍 보통 — 기호를 추가하면 더 안전해요', pw_strong:'✅ 강함 — 안전한 비밀번호예요', pw_vstrong:'🛡️ 매우 강함!',
+    uid_rule:'아이디는 영문 소문자, 숫자, _만 사용하고 4–20자로 입력해주세요.', uid_taken_alert:'이미 사용 중인 아이디예요. 다른 아이디를 입력해주세요.', pw_rule:'비밀번호는 8자 이상, 영문+숫자를 모두 포함해야 해요.', pw_mismatch:'비밀번호가 일치하지 않아요. 다시 확인해주세요.',
+    rec_need_both:'이름과 핸드폰 번호를 모두 입력해주세요.', rec_not_found:'❌ 일치하는 계정을 찾지 못했어요.<br>이름과 번호를 다시 확인해주세요.', rec_found:'찾은 계정', rec_pw_label:'비밀번호', rec_no_pw:'(설정 안됨 — 재가입 필요)',
     steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','완료'],
     step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','완료!'],
   },
@@ -2246,6 +2250,10 @@ const STRINGS = {
     lb_co_rank:'{code} xodimlar reytingi', lb_ind_rank:'Shaxsiy reyting', lb_subtitle:"Ball bo'yicha top 5",
     lb_me:'Men', lb_days_done:'{n} kun tugadi', lb_my_rank:"Mening o'rnim: {n} ({pts} ball)", lb_pts:'ball', lb_no_data:"Hali ma'lumot yo'q", lb_national:"Soha bo'yicha milliy reyting — Tez orada",
     logout_confirm:"Chiqasizmi? O'quv yozuvlari saqlanadi.",
+    uid_hint:"Faqat kichik lotin harf, raqam, _ / 4–20 belgi", uid_invalid:"❌ Faqat kichik lotin harf, raqam, _ mumkin", uid_short:"⚠️ Kamida 4 belgi kiriting (hozir {n})", uid_taken:"❌ Bu login band", uid_ok:"✅ Login mavjud",
+    pw_hint:"Kamida 8 belgi, harf+raqam shart / belgi qo'shsangiz xavfsizroq", pw_weak:"⚠️ Zaif parol — harf va raqamni birga ishlating", pw_mid:"👍 O'rtacha — belgi qo'shing", pw_strong:"✅ Kuchli — xavfsiz parol", pw_vstrong:"🛡️ Juda kuchli!",
+    uid_rule:"Login faqat kichik lotin harf, raqam, _ va 4–20 belgi bo'lsin.", uid_taken_alert:"Bu login band. Boshqa login kiriting.", pw_rule:"Parol kamida 8 belgi, harf+raqam bo'lishi shart.", pw_mismatch:"Parollar mos kelmadi. Qayta tekshiring.",
+    rec_need_both:"Ism va telefon raqamini kiriting.", rec_not_found:"❌ Mos hisob topilmadi.<br>Ism va raqamni qayta tekshiring.", rec_found:"Topilgan hisob", rec_pw_label:"Parol", rec_no_pw:"(o'rnatilmagan — qayta ro'yxatdan o'ting)",
     steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Yakuniy test","Tugadi"],
     step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap tuzing","Gap mashqi","Test savollari","Barcha takrorlash","Tugadi!"],
   },
@@ -2432,6 +2440,10 @@ const STRINGS = {
     lb_co_rank:'Ranking empregadu {code}', lb_ind_rank:'Ranking individuál', lb_subtitle:'Top 5 tuir pontu',
     lb_me:"Ha'u", lb_days_done:'Loron {n} remata', lb_my_rank:"Ha'u-nia pozisaun: {n} ({pts} pontu)", lb_pts:'pontu', lb_no_data:'Seidauk iha dadus', lb_national:'Ranking nasionál — Mai lalais',
     logout_confirm:'Sai? Rejistu aprende sei kontinua.',
+    uid_hint:"Letra ki'ik, númeru, _ deit / 4–20 karakter", uid_invalid:"❌ Letra ki'ik, númeru, _ deit", uid_short:"⚠️ Hatama karakter 4+ (agora {n})", uid_taken:"❌ Naran ne'e uza ona", uid_ok:"✅ Naran bele uza",
+    pw_hint:"Karakter 8+, letra+númeru obrigatóriu / aumenta símbolu seguru liu", pw_weak:"⚠️ Liafuan-passe fraku — uza letra ho númeru", pw_mid:"👍 Klaru — aumenta símbolu", pw_strong:"✅ Forte — liafuan-passe seguru", pw_vstrong:"🛡️ Forte tebes!",
+    uid_rule:"Naran utilizadór uza letra ki'ik, númeru, _ no 4–20 karakter.", uid_taken_alert:"Naran ne'e uza ona. Hatama naran seluk.", pw_rule:"Liafuan-passe presiza karakter 8+, letra+númeru.", pw_mismatch:"Liafuan-passe la hanesan. Verifika fali.",
+    rec_need_both:"Hatama naran no númeru telefone.", rec_not_found:"❌ La hetan konta ne'ebé hanesan.<br>Verifika naran no númeru.", rec_found:"Konta hetan", rec_pw_label:"Liafuan-passe", rec_no_pw:"(la konfigura — rejistu fali)",
     steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Teste final','Remata'],
     step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Hili liafuan','Prátika','Teste','Revizaun','Remata!'],
   },
@@ -3985,12 +3997,12 @@ function isValidPw(v){ return v.length>=8 && /[a-zA-Z]/.test(v) && /[0-9]/.test(
 function checkUidAvail(inputId, statusId){
   const val = document.getElementById(inputId).value.trim();
   const el = document.getElementById(statusId);
-  if(!val){ el.style.color='var(--muted)'; el.textContent='영문 소문자, 숫자, _ 만 사용 가능 / 4–20자'; return; }
-  if(!/^[a-z0-9_]+$/.test(val)){ el.style.color='var(--red)'; el.textContent='❌ 영문 소문자, 숫자, _만 사용 가능해요'; return; }
-  if(val.length<4){ el.style.color='var(--orange)'; el.textContent='⚠️ 4자 이상 입력해주세요 (현재 '+val.length+'자)'; return; }
+  if(!val){ el.style.color='var(--muted)'; el.textContent=t('uid_hint'); return; }
+  if(!/^[a-z0-9_]+$/.test(val)){ el.style.color='var(--red)'; el.textContent=t('uid_invalid'); return; }
+  if(val.length<4){ el.style.color='var(--orange)'; el.textContent=tf('uid_short',{n:val.length}); return; }
   const taken = getAllUsers().some(u=>u.username===val);
-  if(taken){ el.style.color='var(--red)'; el.textContent='❌ 이미 사용 중인 아이디예요'; }
-  else { el.style.color='var(--green)'; el.textContent='✅ 사용 가능한 아이디예요'; }
+  if(taken){ el.style.color='var(--red)'; el.textContent=t('uid_taken'); }
+  else { el.style.color='var(--green)'; el.textContent=t('uid_ok'); }
 }
 
 // ── 실시간 비밀번호 강도 바
@@ -4003,11 +4015,11 @@ function checkPwStrength(inputId, barId, hintId){
   if(/[a-zA-Z]/.test(val)&&/[0-9]/.test(val)) score++;
   if(/[^a-zA-Z0-9]/.test(val)) score++;
   if(val.length>=16) score++;
-  if(score===0||val.length<4){ color='var(--border)'; msg='8자 이상, 영문+숫자 필수 / 기호 포함 시 더 안전해요'; }
-  else if(score===1){ color='var(--red)'; msg='⚠️ 약한 비밀번호 — 숫자와 영문을 함께 써주세요'; }
-  else if(score===2){ color='var(--orange)'; msg='👍 보통 — 기호를 추가하면 더 안전해요'; }
-  else if(score===3){ color='var(--green)'; msg='✅ 강함 — 안전한 비밀번호예요'; }
-  else { color='#FF6B35'; msg='🛡️ 매우 강함!'; }
+  if(score===0||val.length<4){ color='var(--border)'; msg=t('pw_hint'); }
+  else if(score===1){ color='var(--red)'; msg=t('pw_weak'); }
+  else if(score===2){ color='var(--orange)'; msg=t('pw_mid'); }
+  else if(score===3){ color='var(--green)'; msg=t('pw_strong'); }
+  else { color='#FF6B35'; msg=t('pw_vstrong'); }
   bar.style.width=(score/4*100)+'%'; bar.style.background=color;
   hint.textContent=msg; hint.style.color=score>=2?color:'var(--muted)';
 }
@@ -4025,16 +4037,16 @@ function doRecovery(){
   const name=document.getElementById('rec-name').value.trim();
   const phone=document.getElementById('rec-phone').value.trim();
   const res=document.getElementById('rec-result');
-  if(!name||!phone){ res.innerHTML='<span style="color:var(--red)">이름과 핸드폰 번호를 모두 입력해주세요.</span>'; return; }
+  if(!name||!phone){ res.innerHTML=`<span style="color:var(--red)">${t('rec_need_both')}</span>`; return; }
   const found=getAllUsers().filter(u=>u.name===name&&u.phone===phone);
-  if(!found.length){ res.innerHTML='<span style="color:var(--red)">❌ 일치하는 계정을 찾지 못했어요.<br>이름과 번호를 다시 확인해주세요.</span>'; return; }
+  if(!found.length){ res.innerHTML=`<span style="color:var(--red)">${t('rec_not_found')}</span>`; return; }
   res.innerHTML=found.map(u=>`
     <div style="background:var(--green-l);border:1px solid var(--green);border-radius:10px;padding:12px;margin-top:6px;text-align:left">
-      <div style="font-size:12px;color:var(--muted);margin-bottom:4px">찾은 계정</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${t('rec_found')}</div>
       <div style="font-size:16px;font-weight:800;letter-spacing:1px">🔑 ${u.username}</div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px">
-        ${u.type==='company'?u.companyCode:'개인'} ·
-        비밀번호: <strong>${u.password||'(설정 안됨 — 재가입 필요)'}</strong>
+        ${u.type==='company'?u.companyCode:t('prof_ind')} ·
+        ${t('rec_pw_label')}: <strong>${u.password||t('rec_no_pw')}</strong>
       </div>
     </div>
   `).join('');
@@ -4055,10 +4067,10 @@ function doSignup(){
     const visaExpiry = document.getElementById('ind-visa-expiry').value;
     if(!name){ alert(t('err_name')); return; }
     if(!phone){ alert(t('err_phone')); return; }
-    if(!isValidUid(uid)){ alert('아이디는 영문 소문자, 숫자, _만 사용하고 4–20자로 입력해주세요.'); return; }
-    if(getAllUsers().some(u=>u.username===uid)){ alert('이미 사용 중인 아이디예요. 다른 아이디를 입력해주세요.'); return; }
-    if(!isValidPw(pw)){ alert('비밀번호는 8자 이상, 영문+숫자를 모두 포함해야 해요.'); return; }
-    if(pw!==pw2){ alert('비밀번호가 일치하지 않아요. 다시 확인해주세요.'); return; }
+    if(!isValidUid(uid)){ alert(t('uid_rule')); return; }
+    if(getAllUsers().some(u=>u.username===uid)){ alert(t('uid_taken_alert')); return; }
+    if(!isValidPw(pw)){ alert(t('pw_rule')); return; }
+    if(pw!==pw2){ alert(t('pw_mismatch')); return; }
     user = { id:genId(), username:uid, password:pw,
       name, phone, lang:_authLang, type:'individual',
       companyCode:null, companyName:null, employeeNum:null,
@@ -4078,10 +4090,10 @@ function doSignup(){
     if(!code){ alert(t('err_code')); return; }
     if(!name){ alert(t('err_name')); return; }
     if(!phone){ alert(t('err_phone')); return; }
-    if(!isValidUid(uid)){ alert('아이디는 영문 소문자, 숫자, _만 사용하고 4–20자로 입력해주세요.'); return; }
-    if(getAllUsers().some(u=>u.username===uid)){ alert('이미 사용 중인 아이디예요. 다른 아이디를 입력해주세요.'); return; }
-    if(!isValidPw(pw)){ alert('비밀번호는 8자 이상, 영문+숫자를 모두 포함해야 해요.'); return; }
-    if(pw!==pw2){ alert('비밀번호가 일치하지 않아요. 다시 확인해주세요.'); return; }
+    if(!isValidUid(uid)){ alert(t('uid_rule')); return; }
+    if(getAllUsers().some(u=>u.username===uid)){ alert(t('uid_taken_alert')); return; }
+    if(!isValidPw(pw)){ alert(t('pw_rule')); return; }
+    if(pw!==pw2){ alert(t('pw_mismatch')); return; }
     user = { id:genId(), username:uid, password:pw,
       name, phone, lang:_authLang2, type:'company',
       companyCode:code, companyName:null, employeeNum:num||null,
