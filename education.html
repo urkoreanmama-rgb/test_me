@@ -1612,21 +1612,21 @@ const CUR = [
 {
   day:1, icon:'👋', level:'A1',
   ncs:{code:'06010103',label:'안전교육·훈련'},
-  titleKo:'출근·인사', titleUz:'Ishga kelish · Salomlashish',
-  situation:'공장에서 하루를 시작할 때', situation_uz:'Zavodda kunni boshlashda',
-  sentence:{ko:'안녕하세요, 잘 부탁드립니다.', uz:"Salom, yaxshi munosabatda bo'ling."},
+  titleKo:'출근·인사', titleUz:'Ishga kelish · Salomlashish', titleTet:'Tama serbisu · Kumprimentu',
+  situation:'공장에서 하루를 시작할 때', situation_uz:'Zavodda kunni boshlashda', situation_tet:"Bainhira hahú loron iha fabrika",
+  sentence:{ko:'안녕하세요, 잘 부탁드립니다.', uz:"Salom, yaxshi munosabatda bo'ling.", tet:"Olá, hau husu ajuda di'ak."},
   words:[
-    {ko:'안녕하세요', rom:'annyeonghaseyo', pos:'인사말', uz:'Salom (rasmiy)', ex:'안녕하세요!', e:'🌅', situation:'아침에 동료나 상사를 만났을 때', situation_uz:"Ertalab hamkasb yoki rahbarni ko'rganda"},
-    {ko:'다녀왔습니다', rom:'danyeowatsseumnida', pos:'인사말', uz:'Qaytib keldim', ex:'다녀왔습니다!', e:'🚶', situation:'외출 후 돌아왔을 때', situation_uz:'Tashqariga chiqqandan qaytganda'},
-    {ko:'수고하세요', rom:'sugohaseyo', pos:'인사말', uz:"Zo'r ishlang / Mehnat qiling", ex:'수고하세요!', e:'💪', situation:'일하고 있는 동료에게', situation_uz:'Ishlab turgan hamkasbga'},
-    {ko:'잘 부탁드립니다', rom:'jal butakdeurimnida', pos:'인사말', uz:"Yaxshi munosabatda bo'ling", ex:'잘 부탁드립니다.', e:'🤝', situation:'처음 만나는 사람이나 새 일을 시작할 때', situation_uz:"Yangi odam bilan tanishganda yoki yangi ish boshlaganda"},
-    {ko:'먼저 가겠습니다', rom:'meonjeo gagetseumnida', pos:'인사말', uz:'Men oldin ketaman', ex:'먼저 가겠습니다!', e:'🏠', situation:'퇴근할 때 남아있는 동료에게', situation_uz:"Ishdan ketayotganda qolgan hamkasbga"},
+    {ko:'안녕하세요', rom:'annyeonghaseyo', pos:'인사말', uz:'Salom (rasmiy)', tet:'Olá (formál)', ex:'안녕하세요!', e:'🌅', situation:'아침에 동료나 상사를 만났을 때', situation_uz:"Ertalab hamkasb yoki rahbarni ko'rganda", situation_tet:"Dadeer hasoru kolega ka xefe"},
+    {ko:'다녀왔습니다', rom:'danyeowatsseumnida', pos:'인사말', uz:'Qaytib keldim', tet:'Hau fila mai ona', ex:'다녀왔습니다!', e:'🚶', situation:'외출 후 돌아왔을 때', situation_uz:'Tashqariga chiqqandan qaytganda', situation_tet:"Bainhira fila husi sai liu"},
+    {ko:'수고하세요', rom:'sugohaseyo', pos:'인사말', uz:"Zo'r ishlang / Mehnat qiling", tet:"Serbisu di'ak", ex:'수고하세요!', e:'💪', situation:'일하고 있는 동료에게', situation_uz:'Ishlab turgan hamkasbga', situation_tet:"Ba kolega ne'ebé serbisu hela"},
+    {ko:'잘 부탁드립니다', rom:'jal butakdeurimnida', pos:'인사말', uz:"Yaxshi munosabatda bo'ling", tet:"Hau husu ajuda di'ak", ex:'잘 부탁드립니다.', e:'🤝', situation:'처음 만나는 사람이나 새 일을 시작할 때', situation_uz:"Yangi odam bilan tanishganda yoki yangi ish boshlaganda", situation_tet:"Hasoru ema foun ka hahú serbisu foun"},
+    {ko:'먼저 가겠습니다', rom:'meonjeo gagetseumnida', pos:'인사말', uz:'Men oldin ketaman', tet:'Hau ba uluk', ex:'먼저 가겠습니다!', e:'🏠', situation:'퇴근할 때 남아있는 동료에게', situation_uz:"Ishdan ketayotganda qolgan hamkasbga", situation_tet:"Bainhira fila uma, ba kolega ne'ebé hela"},
   ],
   quiz:[
-    {tag:'상황', type:'mc', q:'아침에 상사를 만났을 때 하는 말은?', qu:"Ertalab rahbarni ko'rganda nima deysiz?", opts:['Salom','Rahmat','Kechirasiz','Bilmadim'], ans:0, explanation_uz:"Ertalabki salom 'annyeonghaseyo'"},
-    {tag:'상황', type:'mc', q:'퇴근할 때 남은 동료에게 하는 말은?', qu:"Ishdan ketayotganda qolgan hamkasbga nima deysiz?", opts:['Iltimos yordam bering','Men oldin ketaman','Qaytib keldim',"Zo'r ishlang"], ans:1, explanation_uz:"Oldin ketayotganda 'meonjeo gagetseumnida' deyiladi"},
-    {tag:'상황', type:'mc', q:'새로운 팀에 합류했을 때 하는 말은?', qu:"Yangi jamoaga qo'shilganda nima deysiz?", opts:['Men oldin ketaman','Qaytib keldim',"Yaxshi munosabatda bo'ling","Zo'r ishlang"], ans:2, explanation_uz:"Yangi tanishganda 'jal butakdeurimnida' deyiladi"},
-    {tag:'빈칸', type:'fb', q:"일하는 동료에게: '____하세요'", qu:"Ishlab turgan hamkasbga: '____haseyo'", answer_ko:'수고', answer_uz:'sugo', hint_ko:'열심히 일한다는 뜻이에요', hint_uz:"Qattiq ishlayapti degan ma'no"},
+    {tag:'상황', type:'mc', q:'아침에 상사를 만났을 때 하는 말은?', qu:"Ertalab rahbarni ko'rganda nima deysiz?", qu_tet:"Dadeer hasoru xefe, ita dehan saida?", opts:['Salom','Rahmat','Kechirasiz','Bilmadim'], opts_tet:['Olá','Obrigadu','Deskulpa','La hatene'], ans:0, explanation_uz:"Ertalabki salom 'annyeonghaseyo'"},
+    {tag:'상황', type:'mc', q:'퇴근할 때 남은 동료에게 하는 말은?', qu:"Ishdan ketayotganda qolgan hamkasbga nima deysiz?", qu_tet:"Bainhira fila uma, ba kolega ne'ebé hela, ita dehan saida?", opts:['Iltimos yordam bering','Men oldin ketaman','Qaytib keldim',"Zo'r ishlang"], opts_tet:["Favór ajuda hau","Hau ba uluk","Hau fila mai ona","Serbisu di'ak"], ans:1, explanation_uz:"Oldin ketayotganda 'meonjeo gagetseumnida' deyiladi"},
+    {tag:'상황', type:'mc', q:'새로운 팀에 합류했을 때 하는 말은?', qu:"Yangi jamoaga qo'shilganda nima deysiz?", qu_tet:"Bainhira tama ba ekipa foun, ita dehan saida?", opts:['Men oldin ketaman','Qaytib keldim',"Yaxshi munosabatda bo'ling","Zo'r ishlang"], opts_tet:["Hau ba uluk","Hau fila mai ona","Hau husu ajuda di'ak","Serbisu di'ak"], ans:2, explanation_uz:"Yangi tanishganda 'jal butakdeurimnida' deyiladi"},
+    {tag:'빈칸', type:'fb', q:"일하는 동료에게: '____하세요'", qu:"Ishlab turgan hamkasbga: '____haseyo'", qu_tet:"Ba kolega ne'ebé serbisu hela: '____haseyo'", answer_ko:'수고', answer_uz:'sugo', hint_ko:'열심히 일한다는 뜻이에요', hint_uz:"Qattiq ishlayapti degan ma'no", hint_tet:"Katak serbisu makaas"},
   ]
 },
 
@@ -2526,6 +2526,25 @@ function getUILang(){ return localStorage.getItem(UILANG_KEY)||'ko'; }
 function t(key){ return (STRINGS[getUILang()]||STRINGS.ko)[key]||STRINGS.ko[key]||key; }
 // 치환형 번역 — t() 결과의 {key} 토큰을 vars 값으로 치환
 function tf(key, vars){ let s=t(key); for(const k in (vars||{})) s=s.split('{'+k+'}').join(vars[k]); return s; }
+// ── 커리큘럼 콘텐츠 다국어 ──────────────────────────────
+// 현재 UI 언어의 콘텐츠를 우즈벡(.uz) 슬롯에 채운 복사본 반환. 해당 언어 데이터가
+// 없으면 우즈벡어로 자동 폴백. ko/uz는 원본 그대로(기존 렌더가 .ko/.uz를 그대로 읽음).
+// → tet 등 새 언어는 titleTet/situation_tet/sentence.tet/word.tet/qu_tet/opts_tet/hint_tet 필드만 채우면 됨.
+function _capL(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function L10n(d){
+  if(!d) return d;
+  const L=getUILang();
+  if(L==='ko'||L==='uz') return d;
+  const cap=_capL(L), nd={...d};
+  if(d['title'+cap]) nd.titleUz=d['title'+cap];
+  if(d['sub'+cap]) nd.subUz=d['sub'+cap];
+  if(d['situation_'+L]) nd.situation_uz=d['situation_'+L];
+  if(d.sentence){ nd.sentence={...d.sentence}; if(d.sentence[L]) nd.sentence.uz=d.sentence[L]; }
+  if(Array.isArray(d.words)) nd.words=d.words.map(w=>{ const nw={...w}; if(w[L])nw.uz=w[L]; if(w['situation_'+L])nw.situation_uz=w['situation_'+L]; return nw; });
+  if(Array.isArray(d.quiz)) nd.quiz=d.quiz.map(q=>{ const nq={...q}; if(q['qu_'+L])nq.qu=q['qu_'+L]; if(q['opts_'+L])nq.opts=q['opts_'+L]; if(q['hint_'+L])nq.hint_uz=q['hint_'+L]; if(q['explanation_'+L])nq.explanation_uz=q['explanation_'+L]; return nq; });
+  return nd;
+}
+function curL(){ return CUR.map(L10n); }
 
 // 품사 자국어 번역
 const POS_MAP = {
@@ -3011,6 +3030,7 @@ function renderHome(){
   const g = document.getElementById('dayGrid');
   g.innerHTML='';
   CUR.forEach((d,i)=>{
+    d = L10n(d);
     const done = ST.done.includes(d.day);
     const locked = i>0 && !ST.done.includes(CUR[i-1].day) && !done;
     const el = document.createElement('div');
@@ -3114,7 +3134,7 @@ function next(){ST.step++;renderLesson();}
 
 function renderLesson(){
   const CUR_SRC = ST.isPractical ? PRACTICAL_CUR : CUR;
-  const d = CUR_SRC[ST.dayIdx], s = ST.step;
+  const d = L10n(CUR_SRC[ST.dayIdx]), s = ST.step;
   const uz = ST.lang==='uz';
   document.getElementById('lTitle').textContent=`Day ${d.day}: ${uz?d.titleUz:d.titleKo}`;
   document.getElementById('lSub').textContent=uz?(d.subUz||d.sentence?.uz||''):(d.subKo||d.sentence?.ko||'');
@@ -3466,11 +3486,11 @@ function rSentPractice(d,el,uz){
   if(!ST._sp||ST._sp.day!==d.day){
     // 3가지 활동 순서로
     // 다른 날 문장에서 4개 보기 확보
-    const others=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz).map(c=>c.sentence.uz);
+    const others=curL().filter(c=>c.day!==d.day&&c.sentence?.uz).map(c=>c.sentence.uz);
     let distractors=shuffle(others).slice(0,3);
     // 4개 미만이면 단어 뜻으로 채움
     if(distractors.length<3){
-      const wordFallback=CUR.filter(c=>c.day!==d.day).flatMap(c=>(c.words||[]).map(w=>w.uz.split('—')[0].trim()));
+      const wordFallback=curL().filter(c=>c.day!==d.day).flatMap(c=>(c.words||[]).map(w=>w.uz.split('—')[0].trim()));
       const extra=shuffle(wordFallback).slice(0,3-distractors.length);
       distractors=[...distractors,...extra];
     }
@@ -3615,7 +3635,7 @@ function buildQuizAll(d){
   const sent=d.sentence||{ko:'',uz:''};
   // 자동 문장 문제 1: "이 문장의 뜻은?"
   if(sent.ko && sent.uz){
-    const others=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz&&c.sentence.uz!==sent.uz)
+    const others=curL().filter(c=>c.day!==d.day&&c.sentence?.uz&&c.sentence.uz!==sent.uz)
                     .map(c=>c.sentence.uz);
     const distractors=shuffle(others).slice(0,3);
     if(distractors.length>=2){
@@ -3630,7 +3650,7 @@ function buildQuizAll(d){
   const noun=d.words?.find(w=>w.pos==='명사'||w.pos?.includes('명사'));
   if(noun && sent.ko.includes(noun.ko)){
     const blank=sent.ko.replace(noun.ko,'___');
-    const dists=shuffle(CUR.filter(c=>c.day!==d.day).flatMap(c=>c.words||[])
+    const dists=shuffle(curL().filter(c=>c.day!==d.day).flatMap(c=>c.words||[])
                           .filter(w=>w.ko!==noun.ko).map(w=>w.ko)).slice(0,3);
     if(dists.length>=2){
       const opts=shuffle([noun.ko,...dists]).slice(0,4);
@@ -3658,7 +3678,7 @@ function rFinalTest(d,el,uz){
       if(distractors.length>=1){
         // 4개 미만이면 전체 단어에서 채움
         if(distractors.length<3){
-          const allWords=CUR.flatMap(d2=>d2.day!==d.day?(d2.words||[]):[]).map(w=>w.uz.split('—')[0].trim());
+          const allWords=curL().flatMap(d2=>d2.day!==d.day?(d2.words||[]):[]).map(w=>w.uz.split('—')[0].trim());
           const extra=shuffle(allWords.filter(x=>x!==correctAns&&!distractors.includes(x))).slice(0,3-distractors.length);
           distractors=[...distractors,...extra];
         }
@@ -3668,7 +3688,7 @@ function rFinalTest(d,el,uz){
     });
     // Sentence meaning question
     if(sent.ko&&sent.uz){
-      const otherSents=CUR.filter(c=>c.day!==d.day&&c.sentence?.uz)
+      const otherSents=curL().filter(c=>c.day!==d.day&&c.sentence?.uz)
                           .map(c=>c.sentence.uz.split('—')[0].trim());
       const distractors=shuffle(otherSents).slice(0,3);
       if(distractors.length>=1){
@@ -4492,7 +4512,7 @@ const GAME_MODES = [
 const GS = { mode:null, qs:[], qIdx:0, score:0, answered:false };
 
 function buildGameWords(){
-  return CUR.flatMap(d => d.words.map(w => ({...w, day:d.day, dayIcon:d.icon})));
+  return CUR.flatMap(d => L10n(d).words.map(w => ({...w, day:d.day, dayIcon:d.icon})));
 }
 
 function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
