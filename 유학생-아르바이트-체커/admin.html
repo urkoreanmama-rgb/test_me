@@ -84,26 +84,42 @@
     }
 
     /* ── Summary Cards ── */
-    .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; margin-bottom: 0.5rem; }
+    .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
     @media (max-width: 1100px) { .summary-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 640px)  { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
     .s-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 1.1rem 1.2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      background: #fff; border: 1px solid #e8e8ed; border-radius: 14px;
+      padding: 1.1rem 1.2rem; cursor: pointer; user-select: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
     }
-    .s-card.ok   { border-top: 3px solid var(--ok); }
-    .s-card.warn { border-top: 3px solid var(--warn); }
-    .s-card.no   { border-top: 3px solid var(--no); }
-    .s-card.match { border-top: 3px solid #007aff; }
-    .s-card.pre   { border-top: 3px solid #5856d6; }
-    .s-label { font-size: 0.72rem; color: var(--sub); font-weight: 600; margin-bottom: 0.4rem; }
-    .s-val { font-size: 2rem; font-weight: 700; line-height: 1; color: var(--text); }
-    .s-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
-    .c-ok   { color: #28a745; }
-    .c-warn { color: #e07000; }
-    .c-no   { color: var(--no); }
-    .c-match { color: #007aff; }
-    .c-pre   { color: #5856d6; }
+    .s-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.09); transform: translateY(-2px); border-color: #d0d0d8; }
+    .s-card.s-active { border-color: #1d1d1f; box-shadow: 0 0 0 1.5px #1d1d1f, 0 4px 18px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    .s-card.ok, .s-card.warn, .s-card.no, .s-card.match, .s-card.pre { border-top: none; }
+    .s-label { font-size: 0.72rem; color: #86868b; font-weight: 600; margin-bottom: 0.4rem; letter-spacing: 0.01em; }
+    .s-val { font-size: 2rem; font-weight: 700; line-height: 1; color: #1d1d1f; }
+    .s-sub { font-size: 0.7rem; color: #aeaeb2; margin-top: 0.3rem; }
+    .c-ok, .c-warn, .c-no, .c-match, .c-pre { color: #1d1d1f; }
+
+    /* ── 필터 패널 ── */
+    .fp-panel { background: #fff; border: 1px solid #e8e8ed; border-radius: 14px; margin-bottom: 1.2rem; overflow: hidden; }
+    .fp-header { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.2rem; border-bottom: 1px solid #f2f2f7; }
+    .fp-title { font-size: 0.88rem; font-weight: 700; color: #1d1d1f; }
+    .fp-close { background: none; border: none; color: #86868b; font-size: 0.78rem; cursor: pointer; padding: 4px 10px; border-radius: 8px; }
+    .fp-close:hover { background: #f2f2f7; color: #1d1d1f; }
+    .fp-row { display: flex; align-items: center; gap: 0.7rem; padding: 0.65rem 1.2rem; border-top: 1px solid #f5f5f7; flex-wrap: wrap; }
+    .fp-row:hover { background: #fafafa; }
+    .fp-name { font-weight: 600; font-size: 0.85rem; color: #1d1d1f; min-width: 64px; }
+    .fp-phone { font-size: 0.8rem; color: #3a3a3c; min-width: 110px; }
+    .fp-date { font-size: 0.72rem; color: #aeaeb2; white-space: nowrap; margin-left: auto; }
+    .fp-tags { display: flex; flex-wrap: wrap; gap: 0.28rem; flex: 1; }
+    .fp-tag { background: #f2f2f7; border-radius: 6px; padding: 2px 9px; font-size: 0.71rem; color: #3a3a3c; }
+    .fp-tag-warn { background: #fff3e0; color: #8a5000; }
+    .fp-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; white-space: nowrap; }
+    .fp-ok   { background: #f0fdf4; color: #166534; }
+    .fp-warn { background: #fffbeb; color: #854d0e; }
+    .fp-no   { background: #fef2f2; color: #991b1b; }
+    .fp-empty { text-align: center; padding: 2rem; color: #aeaeb2; font-size: 0.85rem; }
 
     /* ── Banner ── */
     .banner-warn {
@@ -571,13 +587,14 @@
     <!-- ④ 탭: 응답 분석 -->
     <div id="tab-analytics" class="tab-panel">
       <div class="summary-grid">
-        <div class="s-card"><div class="s-label">전체 응답</div><div class="s-val" id="s-total">0</div><div class="s-sub">누적 응답 수</div></div>
-        <div class="s-card ok"><div class="s-label">알바 가능</div><div class="s-val c-ok" id="s-ok">0</div><div class="s-sub" id="s-ok-pct">-</div></div>
-        <div class="s-card warn"><div class="s-label">조건부 가능</div><div class="s-val c-warn" id="s-warn">0</div><div class="s-sub" id="s-warn-pct">-</div></div>
-        <div class="s-card no"><div class="s-label">현재 불가</div><div class="s-val c-no" id="s-no">0</div><div class="s-sub" id="s-no-pct">-</div></div>
-        <div class="s-card match"><div class="s-label">매칭 신청</div><div class="s-val c-match" id="s-match">0</div><div class="s-sub">자리 연결 대기</div></div>
-        <div class="s-card pre"><div class="s-label">예비 등록</div><div class="s-val c-pre" id="s-pre">0</div><div class="s-sub">자격 갖추면 연락</div></div>
+        <div class="s-card" data-f="all"   onclick="filterCards('all')"><div class="s-label">전체 응답</div><div class="s-val" id="s-total">0</div><div class="s-sub">누적 응답 수</div></div>
+        <div class="s-card ok"   data-f="ok"   onclick="filterCards('ok')"><div class="s-label">알바 가능</div><div class="s-val c-ok" id="s-ok">0</div><div class="s-sub" id="s-ok-pct">-</div></div>
+        <div class="s-card warn" data-f="warn" onclick="filterCards('warn')"><div class="s-label">조건부 가능</div><div class="s-val c-warn" id="s-warn">0</div><div class="s-sub" id="s-warn-pct">-</div></div>
+        <div class="s-card no"   data-f="no"   onclick="filterCards('no')"><div class="s-label">현재 불가</div><div class="s-val c-no" id="s-no">0</div><div class="s-sub" id="s-no-pct">-</div></div>
+        <div class="s-card match" data-f="match" onclick="filterCards('match')"><div class="s-label">매칭 신청</div><div class="s-val c-match" id="s-match">0</div><div class="s-sub">자리 연결 대기</div></div>
+        <div class="s-card pre"   data-f="pre"   onclick="filterCards('pre')"><div class="s-label">예비 등록</div><div class="s-val c-pre" id="s-pre">0</div><div class="s-sub">자격 갖추면 연락</div></div>
       </div>
+      <div id="fp" class="fp-panel" style="display:none"></div>
       <div class="section-label">🚫 불가 사유 분석</div>
       <div class="blocker-grid">
         <div class="card-box">
@@ -740,6 +757,109 @@ async function loadData() {
 
 // ── 공통 ──
 function count(field, val) { return allData.filter(d => d[field] === val).length; }
+
+// ── 카드 필터 ──
+let activeFilter = null;
+function filterCards(type) {
+  if (activeFilter === type) {
+    activeFilter = null;
+    document.querySelectorAll('.s-card').forEach(c => c.classList.remove('s-active'));
+    document.getElementById('fp').style.display = 'none';
+    return;
+  }
+  activeFilter = type;
+  document.querySelectorAll('.s-card').forEach(c => c.classList.remove('s-active'));
+  const card = document.querySelector(`.s-card[data-f="${type}"]`);
+  if (card) card.classList.add('s-active');
+  renderFP(type);
+}
+
+function renderFP(type) {
+  const fp = document.getElementById('fp');
+  fp.style.display = 'block';
+
+  let title, rows = [];
+
+  if (type === 'all') {
+    title = `전체 응답 ${allData.length}건`;
+    rows = allData.map(fpSubmRow);
+  } else if (type === 'ok') {
+    const items = allData.filter(d => d.result_status === 'ok');
+    title = `알바 가능 ${items.length}명`;
+    rows = items.map(fpSubmRow);
+  } else if (type === 'warn') {
+    const items = allData.filter(d => d.result_status === 'warn');
+    title = `조건부 가능 ${items.length}명`;
+    rows = items.map(fpSubmRow);
+  } else if (type === 'no') {
+    const items = allData.filter(d => d.result_status === 'no');
+    title = `현재 불가 ${items.length}명`;
+    rows = items.map(fpSubmRow);
+  } else if (type === 'match') {
+    title = `매칭 신청 ${matchData.length}명`;
+    rows = matchData.map(fpMatchRow);
+  } else if (type === 'pre') {
+    title = `예비 등록 ${preData.length}명`;
+    rows = preData.map(fpPreRow);
+  }
+
+  fp.innerHTML = `
+    <div class="fp-header">
+      <span class="fp-title">${title}</span>
+      <button class="fp-close" onclick="filterCards('${type}')">닫기 ✕</button>
+    </div>
+    ${rows.length ? rows.join('') : '<div class="fp-empty">항목이 없어요.</div>'}
+  `;
+  fp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function fpSubmRow(d) {
+  const badge = d.result_status === 'ok'
+    ? `<span class="fp-badge fp-ok">가능</span>`
+    : d.result_status === 'warn'
+    ? `<span class="fp-badge fp-warn">조건부</span>`
+    : `<span class="fp-badge fp-no">불가</span>`;
+  const tags = [
+    VISA[d.visa_type] || d.visa_type,
+    TOPIK[d.topik_level] || d.topik_level,
+    SEM[d.semester] || d.semester,
+    IND[d.industry] || d.industry,
+  ].filter(Boolean).map(t => `<span class="fp-tag">${t}</span>`).join('');
+  const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
+  const blockerHtml = blockerKeys.map(k =>
+    `<span class="fp-tag fp-tag-warn">${BLOCKER_KEYS[k] || k}</span>`
+  ).join('');
+  return `<div class="fp-row">${badge}<div class="fp-tags">${tags}${blockerHtml}</div><span class="fp-date">${fmtDate(d.created_at)}</span></div>`;
+}
+
+function fpMatchRow(d) {
+  const tags = [d.city, IND[d.industry]||d.industry, VISA[d.visa_type]||d.visa_type, TOPIK[d.topik_level]||d.topik_level]
+    .filter(Boolean).map(t => `<span class="fp-tag">${t}</span>`).join('');
+  const st = d.status || '대기중';
+  const stCls = STATUS_CLS[st] || 'st-wait';
+  return `<div class="fp-row">
+    <span class="fp-name">${d.name || '-'}</span>
+    <span class="fp-phone">${d.phone || ''}</span>
+    <div class="fp-tags">${tags}</div>
+    <span class="ci-status ${stCls}" style="font-size:0.68rem">${STATUS_EMOJI[st]||''} ${st}</span>
+    <span class="fp-date">${fmtDate(d.created_at)}</span>
+  </div>`;
+}
+
+function fpPreRow(d) {
+  const blockerKeys = (d.blocker || '').split(',').filter(Boolean);
+  const blockerHtml = blockerKeys.map(k =>
+    `<span class="fp-tag fp-tag-warn">${BLOCKER_KEYS[k] || k}</span>`
+  ).join('');
+  const tags = [VISA[d.visa_type]||d.visa_type, TOPIK[d.topik_level]||d.topik_level]
+    .filter(Boolean).map(t => `<span class="fp-tag">${t}</span>`).join('');
+  return `<div class="fp-row">
+    <span class="fp-name">${d.name || '-'}</span>
+    <span class="fp-phone">${d.phone || ''}</span>
+    <div class="fp-tags">${tags}${blockerHtml}</div>
+    <span class="fp-date">${fmtDate(d.created_at)}</span>
+  </div>`;
+}
 function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
 const fmtDate = s => {
   if (!s) return '-';
