@@ -1,0 +1,173 @@
+# 동티모르어(Tetum) 번역 검수 시트
+
+> 원어민 검토용. 한국어 원문 → Tetum 번역 대조표. **⚠️ = 안전 핵심 용어**(우선 검토).
+> 수정할 항목은 줄 끝에 `← 수정안: ...` 형태로 적어주세요.
+
+## 1. 일자 제목 (20개)
+
+- **Day 1** `출근·인사` → Tama serbisu · Kumprimentu
+- **Day 2** `작업 지시 받기` → Simu instrusaun serbisu
+- **Day 3** `안전 장비 착용` → Uza ekipamentu seguransa
+- **Day 4** `위험 신호·경고` → Sinál perigu no avizu
+- **Day 5** `도움 요청하기` → Husu ajuda
+- **Day 6** `기계·도구 이름` → Naran makina no sasán
+- **Day 7** `작업 위치·방향` → Fatin serbisu no diresaun
+- **Day 8** `시간·일정 표현` → Espresaun tempu no oráriu
+- **Day 9** `사고·응급 대처` → Lida ho asidente · emerjénsia
+- **Day 10** `급여·근무 관련` → Saláriu no kondisaun serbisu
+- **Day 11** `병원·아픔 표현` → Espresaun ospitál no moras
+- **Day 12** `식당·휴게실` → Kantina no kuartu deskansa
+- **Day 13** `품질·검사 표현` → Espresaun kualidade no inspesaun
+- **Day 14** `동료와 소통` → Komunika ho kolega
+- **Day 15** `상사에게 보고` → Relatóriu ba xefe
+- **Day 16** `행정·서류 관련` → Administrasaun no dokumentu
+- **Day 17** `한국 직장 문화` → Kultura serbisu Korea
+- **Day 18** `날씨·환경 안전` → Seguransa tempu no ambiente
+- **Day 19** `퇴근·휴가·결근` → Sai serbisu, feriadu no la mai
+- **Day 20** `종합 복습` → Revizaun jerál
+
+## 2. 오늘의 문장 (일자별)
+
+- Day 1: `안녕하세요, 잘 부탁드립니다.` → Olá, hau husu ajuda di'ak.
+- Day 2: `알겠습니다. 다시 말씀해 주세요.` → Hau komprende. Favór hatete fali.
+- Day 3: `안전모 쓰세요. 장갑 끼세요.` → Uza kapacete. Uza luva.
+- Day 4: `위험해요! 조심하세요!` → Perigu! Kuidadu!
+- Day 5: `도와주세요! 어떻게 해요?` → Ajuda hau! Halo oinsá?
+- Day 6: `기계 고장났어요. 전원 꺼주세요.` → Makina aat ona. Favór desliga korrente.
+- Day 7: `여기요. 저쪽으로 가세요.` → Iha ne'e. Bá sorin neba.
+- Day 8: `몇 시에 시작해요? 쉬는 시간이에요.` → Tuku hira mak hahú? Tempu deskansa.
+- Day 9: `다쳤어요! 119 불러주세요!` → Kanek ona! Bolu 119!
+- Day 10: `월급이 언제예요? 계약서 보여주세요.` → Saláriu fulan bainhira? Hatudu kontratu.
+- Day 11: `머리가 아파요. 약 주세요.` → Hau-nia ulun moras. Fó aimoruk.
+- Day 12: `밥 먹으러 가요. 잘 먹었습니다.` → Bá han etu. Obrigadu ba hahán.
+- Day 13: `이거 불량이에요. 다시 확인해 주세요.` → Ne'e aat. Favór verifika fali.
+- Day 14: `같이 해요. 거의 다 됐어요.` → Halo hamutuk. Besik hotu ona.
+- Day 15: `다 완료했습니다. 문제가 생겼습니다.` → Hau remata hotu. Problema mosu.
+- Day 16: `어디에 서명해요? 복사해 주세요.` → Asina iha ne'ebé? Favór kopia.
+- Day 17: `죄송합니다. 노력하겠습니다.` → Deskulpa. Hau sei esforsa.
+- Day 18: `미끄러워요, 조심하세요. 환기 시켜주세요.` → Nakduk, kuidadu. Favór dada anin.
+- Day 19: `내일 못 와요. 몸이 안 좋아요.` → Aban la bele mai. Hau-nia isin la di'ak.
+- Day 20: `저는 할 수 있어요! 안전하게 일해요.` → Hau bele halo! Serbisu ho seguransa.
+
+## 3. 단어·표현 (120개)
+
+- `안녕하세요, 잘 부탁드립니다.` → Olá, hau husu ajuda di'ak.
+- `안녕하세요` → Olá (formál)
+- `다녀왔습니다` → Hau fila mai ona
+- `수고하세요` → Serbisu di'ak
+- `잘 부탁드립니다` → Hau husu ajuda di'ak
+- `먼저 가겠습니다` → Hau ba uluk
+- `알겠습니다. 다시 말씀해 주세요.` → Hau komprende. Favór hatete fali.
+- `알겠습니다` → Hau komprende / Di'ak
+- `다시 말씀해 주세요` → Favór hatete fali
+- `천천히 말씀해 주세요` → Favór koalia neineik
+- `이것을 하면 됩니까?` → Hau halo ne'e los ka lae?
+- `몇 개 만들까요?` → Halo hira?
+- ⚠️ `안전모 쓰세요. 장갑 끼세요.` → Uza kapacete. Uza luva.
+- ⚠️ `안전모 쓰세요` → Uza kapacete seguransa
+- ⚠️ `안전화 신으세요` → Uza sapatu seguransa
+- ⚠️ `장갑 끼세요` → Uza luva
+- ⚠️ `보호 안경 쓰세요` → Uza okulus protetór
+- ⚠️ `마스크 착용하세요` → Uza máskara
+- ⚠️ `위험해요! 조심하세요!` → Perigu! Kuidadu!
+- ⚠️ `위험해요!` → Perigu!
+- ⚠️ `조심하세요!` → Kuidadu!
+- ⚠️ `멈추세요!` → Para!
+- ⚠️ `불이야!` → Ahi!
+- `여기 들어오지 마세요` → Labele tama iha ne'e
+- `도와주세요! 어떻게 해요?` → Ajuda hau! Halo oinsá?
+- `도와주세요` → Ajuda hau
+- `모르겠어요` → Hau la hatene
+- `어떻게 해요?` → Halo oinsá?
+- `보여주세요` → Hatudu mai hau
+- `잠깐만요` → Hein uitoan
+- `기계 고장났어요. 전원 꺼주세요.` → Makina aat ona. Favór desliga korrente.
+- `기계 고장났어요` → Makina aat ona
+- `전원 꺼주세요` → Favór desliga korrente
+- `이 버튼 누르세요` → Hanehan botaun ne'e
+- `드라이버 주세요` → Fó mai xave-fenda
+- ⚠️ `조심해서 만지세요` → Kaer ho kuidadu
+- `여기요. 저쪽으로 가세요.` → Iha ne'e. Bá sorin neba.
+- `여기요` → Iha ne'e
+- `저쪽으로 가세요` → Bá sorin neba
+- `위에 있어요` → Iha leten
+- ⚠️ `조심, 발 아래요` → Kuidadu, iha ain okos
+- `몇 층이에요?` → Andar hira?
+- `몇 시에 시작해요? 쉬는 시간이에요.` → Tuku hira mak hahú? Tempu deskansa.
+- `몇 시에 시작해요?` → Tuku hira mak hahú?
+- `쉬는 시간이에요` → Tempu deskansa
+- `야근 있어요?` → Iha serbisu kalan?
+- `오늘 끝났어요` → Ohin remata ona
+- `내일 몇 시예요?` → Aban tuku hira?
+- ⚠️ `다쳤어요! 119 불러주세요!` → Kanek ona! Bolu 119!
+- ⚠️ `다쳤어요!` → Kanek ona!
+- ⚠️ `119 불러주세요` → Bolu 119
+- ⚠️ `병원에 가야 해요` → Tenke bá ospitál
+- `여기가 아파요` → Iha ne'e moras
+- ⚠️ `안전 담당자 불러주세요` → Bolu responsável seguransa
+- `월급이 언제예요? 계약서 보여주세요.` → Saláriu fulan bainhira? Hatudu kontratu.
+- `월급이 언제예요?` → Saláriu fulan bainhira?
+- `잔업 수당 있어요?` → Iha pagamentu serbisu tan?
+- `휴가 신청하고 싶어요` → Hau hakarak husu feriadu
+- `계약서 보여주세요` → Hatudu kontratu
+- `이것 설명해 주세요` → Favór esplika ne'e
+- `머리가 아파요. 약 주세요.` → Hau-nia ulun moras. Fó aimoruk.
+- `머리가 아파요` → Hau-nia ulun moras
+- `열이 나요` → Hau isin manas
+- ⚠️ `손을 다쳤어요` → Hau-nia liman kanek
+- `약 주세요` → Fó aimoruk
+- `오늘 쉬어야 해요` → Ohin tenke deskansa
+- `밥 먹으러 가요. 잘 먹었습니다.` → Bá han etu. Obrigadu ba hahán.
+- `밥 먹으러 가요` → Bá han etu
+- `이거 뭐예요?` → Ne'e saida?
+- `맛있어요` → Gostu loos
+- `물 주세요` → Fó bee
+- `잘 먹었습니다` → Obrigadu ba hahán
+- `이거 불량이에요. 다시 확인해 주세요.` → Ne'e aat. Favór verifika fali.
+- `이거 불량이에요` → Ne'e aat / defeitu
+- `다시 확인해 주세요` → Favór verifika fali
+- `기준에 맞아요?` → Tuir padraun ka lae?
+- `이쪽으로 분류하세요` → Klasifika ba sorin ne'e
+- `합격이에요` → Pasa ona
+- `같이 해요. 거의 다 됐어요.` → Halo hamutuk. Besik hotu ona.
+- `같이 해요` → Halo hamutuk
+- `제가 할게요` → Hau sei halo
+- `잠깐 도와줄 수 있어요?` → Bele ajuda uitoan ka lae?
+- `거의 다 됐어요` → Besik hotu ona
+- `수고했어요` → Serbisu di'ak ona
+- `다 완료했습니다. 문제가 생겼습니다.` → Hau remata hotu. Problema mosu.
+- `다 완료했습니다` → Hau remata hotu
+- `문제가 생겼습니다` → Problema mosu
+- `얼마나 더 걸려요?` → Presiza tempu hira tan?
+- `확인해 주시겠어요?` → Bele verifika ka lae?
+- `내일까지 가능합니다` → Bele to'o aban
+- `어디에 서명해요? 복사해 주세요.` → Asina iha ne'ebé? Favór kopia.
+- `어디에 서명해요?` → Asina iha ne'ebé?
+- `도장 찍어야 해요?` → Tenke karimbu ka lae?
+- `복사해 주세요` → Favór kopia
+- `제출 기한이 언제예요?` → Prazu entrega bainhira?
+- `여기 맞아요?` → Iha ne'e los ka lae?
+- `죄송합니다. 노력하겠습니다.` → Deskulpa. Hau sei esforsa.
+- `네, 알겠습니다` → Sin, hau komprende
+- `죄송합니다` → Deskulpa
+- `감사합니다` → Obrigadu
+- `제 실수예요` → Ne'e hau-nia sala
+- `노력하겠습니다` → Hau sei esforsa
+- ⚠️ `미끄러워요, 조심하세요. 환기 시켜주세요.` → Nakduk, kuidadu. Favór dada anin.
+- `너무 더워요` → Manas tebes
+- ⚠️ `열사병 조심하세요` → Kuidadu insolasaun
+- ⚠️ `미끄러워요, 조심하세요` → Nakduk, kuidadu
+- `환기 시켜주세요` → Favór dada anin
+- `물 마셔야 해요` → Tenke hemu bee
+- `내일 못 와요. 몸이 안 좋아요.` → Aban la bele mai. Hau-nia isin la di'ak.
+- `오늘 일찍 가도 돼요?` → Ohin bele sai sedu ka lae?
+- `내일 못 와요` → Aban la bele mai
+- `며칠 쉬어도 돼요?` → Bele deskansa loron balu ka lae?
+- `몸이 안 좋아요` → Hau-nia isin la di'ak
+- `내일부터 다시 일해요` → Aban hahú serbisu fali
+- ⚠️ `저는 할 수 있어요! 안전하게 일해요.` → Hau bele halo! Serbisu ho seguransa.
+- `저는 할 수 있어요!` → Hau bele halo!
+- `한국어 공부 열심히 할게요` → Hau sei estuda Koreanu ho makaas
+- `잘 부탁드립니다` → Hau husu ajuda di'ak
+- ⚠️ `안전하게 일해요` → Serbisu ho seguransa
+- `함께 잘 해봐요` → Mai ita halo di'ak hamutuk
