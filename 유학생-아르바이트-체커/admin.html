@@ -462,6 +462,10 @@
     <div id="no-config-banner" style="display:none" class="banner-warn">
       ⚠️ <span><strong>Supabase 미연결</strong> — config.js에 실제 URL과 키를 입력하면 실시간 데이터가 표시돼요.</span>
     </div>
+    <!-- 테이블 미생성 배너 -->
+    <div id="no-table-banner" style="display:none" class="banner-warn">
+      ⚠️ <span><strong>Supabase 테이블 설정 필요</strong> — config.js 안의 SQL을 Supabase SQL Editor에서 실행해주세요. (<span id="no-table-detail"></span>)</span>
+    </div>
 
     <!-- 3D 네비게이션 -->
     <div class="nav-grid">
@@ -612,8 +616,9 @@
             </thead>
             <tbody id="table-body"></tbody>
           </table>
+        </div>
       </div>
-    </div>
+    </div><!-- /tab-analytics -->
 
   </div><!-- /dashboard -->
 </main>
@@ -685,6 +690,7 @@ let sb = null; // 전역 Supabase 클라이언트
 async function loadData() {
   document.getElementById('loading-area').style.display = 'block';
   document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('no-table-banner').style.display = 'none';
   try {
     if (!sb) sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const [r1, r2, r3, r4, r5] = await Promise.all([
@@ -694,9 +700,25 @@ async function loadData() {
       sb.from('employer_profiles').select('*').order('created_at', { ascending: false }).limit(200),
       sb.from('student_profiles').select('*').limit(500),
     ]);
-    if (r1.error) throw r1.error;
-    if (r2.error) console.warn('job_matching:', r2.error.message);
-    if (r3.error) console.warn('pre_register:', r3.error.message);
+
+    // 테이블 미생성 감지 — alert 대신 배너로 안내
+    const missingTables = [
+      r1.error && 'submissions',
+      r2.error && 'job_matching',
+      r3.error && 'pre_register',
+      r4.error && 'employer_profiles',
+      r5.error && 'student_profiles',
+    ].filter(Boolean);
+
+    if (missingTables.length) {
+      const banner = document.getElementById('no-table-banner');
+      document.getElementById('no-table-detail').textContent =
+        '없는 테이블: ' + missingTables.join(', ');
+      banner.style.display = 'flex';
+      // submissions 자체가 없으면 모든 데이터가 없으므로 경고만 하고 계속
+      console.warn('Supabase 테이블 오류:', missingTables.join(', '));
+    }
+
     allData      = r1.data || [];
     matchData    = r2.data || [];
     preData      = r3.data || [];
@@ -707,7 +729,10 @@ async function loadData() {
     renderAll();
     document.getElementById('updated-at').textContent = '업데이트 ' + new Date().toLocaleTimeString('ko-KR');
   } catch(e) {
-    alert('데이터 로드 실패: ' + e.message);
+    console.error('데이터 로드 실패:', e);
+    const banner = document.getElementById('no-table-banner');
+    document.getElementById('no-table-detail').textContent = e.message;
+    banner.style.display = 'flex';
   }
   document.getElementById('loading-area').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
