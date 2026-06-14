@@ -1,6 +1,6 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v5'; // 2026-06-11 디자인시스템(오렌지) + 다국어 지시어 적용
-const ASSETS = ['./education.html', './manifest.json', './icon.svg'];
+const CACHE = 'sk-v6'; // 동티모르어 콘텐츠 + Supabase 동기화 레이어
+const ASSETS = ['./education.html', './manifest.json', './icon.svg', './sk-supabase.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

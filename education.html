@@ -1597,6 +1597,8 @@ body.in-lesson #mainHdr{display:none!important}
   </div>
 </div>
 
+<!-- Supabase 동기화 (설정 없으면 비활성 — 앱은 localStorage로 동작) -->
+<script src="./sk-supabase.js"></script>
 <script>
 // ══════════════════════════════════════════════════
 // CURRICULUM — 언어교육 기반 설계
@@ -4123,6 +4125,7 @@ function doSignup(){
   const users = getAllUsers();
   users.push(user);
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  window.SKSync && SKSync.upsertUser(user);
   localStorage.setItem(U_KEY, JSON.stringify(user));
   loadUserProgress(user);
   enterApp(user);
@@ -4137,6 +4140,7 @@ function loadUserProgress(user){
 function saveDone(){
   const u=getUser(); if(!u) return;
   localStorage.setItem(doneKey(u.id), JSON.stringify(ST.done));
+  window.SKSync && SKSync.saveProgress(u.id, ST.done, getPoints(), getStreak());
 }
 
 function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
@@ -4228,6 +4232,7 @@ function sessionEnd(dayNum, score, total){
   if(sessions.length>200) sessions.splice(200);
   localStorage.setItem(sessKey(u.id), JSON.stringify(sessions));
   updateStreak();
+  if(window.SKSync){ SKSync.saveSession(sessions[0]); SKSync.saveProgress(u.id, ST.done, getPoints(), getStreak()); }
 }
 
 function updateStreak(){
