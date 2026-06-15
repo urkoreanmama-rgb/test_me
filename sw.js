@@ -1,9 +1,13 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v6'; // 동티모르어 콘텐츠 + Supabase 동기화 레이어
+const CACHE = 'sk-v7'; // 네트워크 우선 전환 (옛 캐시에 갇히는 문제 해결)
 const ASSETS = ['./education.html', './manifest.json', './icon.svg', './sk-supabase.js'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // 개별 캐시(실패 무시) — 자산 하나가 실패해도 설치가 깨지지 않음
+  e.waitUntil(
+    caches.open(CACHE).then(c => Promise.all(ASSETS.map(a => c.add(a).catch(()=>{}))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', e => {
@@ -13,9 +17,17 @@ self.addEventListener('activate', e => {
   );
 });
 
+// 네트워크 우선: 온라인이면 항상 최신을 받고, 실패(오프라인) 시에만 캐시 사용
 self.addEventListener('fetch', e => {
+  if(e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request).then(res => {
+      if(res && res.ok && new URL(e.request.url).origin === location.origin){
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
+      }
+      return res;
+    }).catch(() => caches.match(e.request))
   );
 });
 
