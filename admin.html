@@ -138,6 +138,17 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .btn-sm{padding:5px 12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600}
 .btn-sm:hover{background:rgba(255,255,255,.1)}
 
+/* ── 시연 모드 ── */
+.sb-item.demo-nav{background:rgba(255,107,53,.12);color:var(--accent);font-weight:700;margin-bottom:8px}
+.sb-item.demo-nav.on{background:var(--accent);color:#fff}
+.sb-item.demo-nav:hover{background:rgba(255,107,53,.22);color:var(--accent)}
+.demo-role{display:flex;align-items:center;gap:14px;width:100%;padding:16px 20px;border-radius:14px;
+  cursor:pointer;margin-bottom:12px;text-align:left;transition:transform .1s ease,opacity .1s ease}
+.demo-role:active{transform:scale(.97);opacity:.9}
+.demo-role .dr-ico{font-size:32px;flex-shrink:0}
+.demo-role .dr-t{font-size:16px;font-weight:600;color:var(--text)}
+.demo-role .dr-s{font-size:12px;color:var(--muted);margin-top:2px}
+
 /* ── Responsive ── */
 @media(max-width:900px){
   #sidebar{width:200px}
@@ -173,23 +184,27 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <p>관리자 대시보드</p>
   </div>
   <div class="sb-nav">
-    <div class="sb-item on" onclick="nav('overview')">
+    <div class="sb-item demo-nav" data-page="demo" onclick="nav('demo')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      🎬 시연 모드
+    </div>
+    <div class="sb-item on" data-page="overview" onclick="nav('overview')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       전체 현황
     </div>
-    <div class="sb-item" onclick="nav('users')">
+    <div class="sb-item" data-page="users" onclick="nav('users')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       직원 관리
     </div>
-    <div class="sb-item" onclick="nav('companies')">
+    <div class="sb-item" data-page="companies" onclick="nav('companies')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
       업체 관리
     </div>
-    <div class="sb-item" onclick="nav('scores')">
+    <div class="sb-item" data-page="scores" onclick="nav('scores')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       퀴즈 점수 통계
     </div>
-    <div class="sb-item" onclick="nav('cert')">
+    <div class="sb-item" data-page="cert" onclick="nav('cert')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
       이수 확인증 발급
     </div>
@@ -208,80 +223,34 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div id="content">
 
     <!-- 전체 현황 -->
-    <div class="page on" id="pgOverview">
-      <!-- MVP 시연 모드 카드 -->
-      <div id="mvpCard" style="
-        background:#FFFFFF;
-        border:1px solid #E2E2E7;
-        border-radius:18px;
-        padding:22px;
-        margin-bottom:24px;
-        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      ">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-          <span style="background:#FF6B35;color:#fff;font-size:11px;font-weight:700;
-            padding:4px 10px;border-radius:20px;letter-spacing:.3px">MVP 시연 모드</span>
+    <!-- 시연 모드 — 역할 선택 -->
+    <div class="page" id="pgDemo">
+      <div style="max-width:560px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.3px">시연 모드</span>
         </div>
-        <h2 style="font-size:18px;font-weight:700;color:#1D1D1F;margin-bottom:4px">
-          어떤 입장에서 볼까요?
-        </h2>
-        <p style="font-size:13px;color:#8E8E93;margin-bottom:20px">
-          버튼을 누르면 해당 화면으로 이동해요
-        </p>
+        <h2 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">어떤 입장에서 볼까요?</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:22px">버튼을 누르면 그 입장에서의 화면이 보여요</p>
 
-        <!-- 버튼 1: 근로자 -->
-        <button onclick="window.open('education.html','_blank')" style="
-          display:flex;align-items:center;gap:14px;
-          width:100%;padding:16px 20px;border-radius:14px;
-          background:#FF6B35;border:none;cursor:pointer;
-          margin-bottom:10px;text-align:left;
-          transition:transform .1s ease, opacity .1s ease;
-        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
-           onmouseup="this.style.transform='';this.style.opacity=''"
-           onmouseleave="this.style.transform='';this.style.opacity=''">
-          <span style="font-size:32px;flex-shrink:0">👷</span>
-          <div>
-            <div style="font-size:15px;font-weight:500;color:#fff">근로자 입장으로 보기</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">Sardor씨가 한국어를 배우는 화면</div>
-          </div>
+        <button class="demo-role" onclick="window.open('education.html','_blank')" style="background:var(--accent);border:none">
+          <span class="dr-ico">👷</span>
+          <div><div class="dr-t" style="color:#fff">외국인 근로자</div><div class="dr-s" style="color:rgba(255,255,255,.82)">근로자가 한국어를 배우는 학습 화면 (새 탭으로 열림)</div></div>
         </button>
 
-        <!-- 버튼 2: 업주 -->
-        <button onclick="window.open('employer.html','_blank')" style="
-          display:flex;align-items:center;gap:14px;
-          width:100%;padding:16px 20px;border-radius:14px;
-          background:#fff;border:1px solid #FF6B35;cursor:pointer;
-          margin-bottom:10px;text-align:left;
-          transition:transform .1s ease, opacity .1s ease;
-        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
-           onmouseup="this.style.transform='';this.style.opacity=''"
-           onmouseleave="this.style.transform='';this.style.opacity=''">
-          <span style="font-size:32px;flex-shrink:0">🏭</span>
-          <div>
-            <div style="font-size:15px;font-weight:500;color:#FF6B35">업주 입장으로 보기</div>
-            <div style="font-size:12px;color:#8E8E93;margin-top:2px">공장 사장님이 직원 현황을 보는 화면</div>
-          </div>
+        <button class="demo-role" onclick="nav('employer')" style="background:var(--surface);border:1px solid var(--accent)">
+          <span class="dr-ico">🏭</span>
+          <div><div class="dr-t" style="color:var(--accent)">기업 (업주)</div><div class="dr-s">공장 사장님이 우리 회사 직원 학습 현황을 보는 화면</div></div>
         </button>
 
-        <!-- 버튼 3: 관리자 -->
-        <button onclick="window.open('admin_dashboard.html','_blank')" style="
-          display:flex;align-items:center;gap:14px;
-          width:100%;padding:16px 20px;border-radius:14px;
-          background:#F5F5F7;border:1px solid #C7C7CC;cursor:pointer;
-          margin-bottom:0;text-align:left;
-          transition:transform .1s ease, opacity .1s ease;
-        " onmousedown="this.style.transform='scale(0.97)';this.style.opacity='0.88'"
-           onmouseup="this.style.transform='';this.style.opacity=''"
-           onmouseleave="this.style.transform='';this.style.opacity=''">
-          <span style="font-size:32px;flex-shrink:0">🛠️</span>
-          <div>
-            <div style="font-size:15px;font-weight:500;color:#3A3A3C">플랫폼 관리자 보기</div>
-            <div style="font-size:12px;color:#8E8E93;margin-top:2px">전체 업체·수강생·매출을 관리하는 화면</div>
-          </div>
+        <button class="demo-role" onclick="nav('overview')" style="background:var(--surface);border:1px solid var(--border)">
+          <span class="dr-ico">🛠️</span>
+          <div><div class="dr-t">플랫폼 관리자</div><div class="dr-s">전체 업체·수강생·통계를 관리하는 대시보드</div></div>
         </button>
-
-        <hr style="border:none;border-top:1px solid #E2E2E7;margin:20px 0 0">
       </div>
+    </div>
+
+    <!-- 전체 현황 -->
+    <div class="page on" id="pgOverview">
       <div class="kpi-grid" id="kpiGrid"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div class="section">
@@ -298,6 +267,17 @@ tr:hover td{background:rgba(255,255,255,.02)}
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 기업(업주) 화면 -->
+    <div class="page" id="pgEmployer">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+        <button class="btn-sm" onclick="nav('demo')">← 시연 모드</button>
+        <span style="font-size:13px;color:var(--muted)">회사 선택:</span>
+        <select id="empCompany" onchange="renderEmployer()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;outline:none"></select>
+        <span style="margin-left:auto;font-size:12px;color:var(--muted)">🏭 업주 입장 — 우리 회사 직원만 보입니다</span>
+      </div>
+      <div id="empContent"></div>
     </div>
 
     <!-- 직원 관리 -->
@@ -452,20 +432,64 @@ function logout(){
 }
 
 // ── Nav ──
-const PAGE_TITLES = {overview:'전체 현황',users:'직원 관리',companies:'업체 관리',scores:'퀴즈 점수 통계',cert:'이수 확인증 발급'};
+const PAGE_TITLES = {demo:'시연 모드',overview:'전체 현황',users:'직원 관리',companies:'업체 관리',scores:'퀴즈 점수 통계',cert:'이수 확인증 발급',employer:'기업(업주) 화면'};
 function nav(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('on'));
-  document.getElementById('pg'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on');
-  const items = document.querySelectorAll('.sb-item');
-  const idx = {overview:0,users:1,companies:2,scores:3,cert:4};
-  items[idx[id]].classList.add('on');
+  const pg=document.getElementById('pg'+id.charAt(0).toUpperCase()+id.slice(1));
+  if(pg) pg.classList.add('on');
+  const item=document.querySelector('.sb-item[data-page="'+id+'"]');
+  if(item) item.classList.add('on');
   document.getElementById('pageTitle').textContent = PAGE_TITLES[id]||id;
   if(id==='overview') renderOverview();
   if(id==='users') renderUsers();
   if(id==='companies') renderCompanies();
   if(id==='scores'){ renderScores(); renderDayCompletionChart(); renderNationalityChart(); }
   if(id==='cert') renderCertList();
+  if(id==='employer') renderEmployer();
+}
+
+// ── 기업(업주) 화면: 자기 회사 직원 학습 현황 ──
+function renderEmployer(){
+  const compUsers = getUsers().filter(u=>u.type==='company' && u.companyCode);
+  const codes = [...new Set(compUsers.map(u=>u.companyCode))];
+  const sel = document.getElementById('empCompany');
+  if(sel.options.length !== codes.length){
+    const cur = sel.value;
+    sel.innerHTML = codes.length ? codes.map(c=>`<option value="${c}">${c}</option>`).join('') : '<option value="">(등록된 업체 없음)</option>';
+    if(cur && codes.includes(cur)) sel.value = cur;
+  }
+  const code = sel.value || codes[0] || '';
+  const cont = document.getElementById('empContent');
+  if(!code){ cont.innerHTML = '<div class="section"><p style="color:var(--muted);font-size:13px;padding:8px 0">아직 등록된 업체가 없습니다. 업체 코드로 가입한 직원이 생기면 여기에 표시됩니다.</p></div>'; return; }
+  const emp = compUsers.filter(u=>u.companyCode===code);
+  const avgPct   = emp.length ? Math.round(emp.reduce((s,u)=>s+getProgressPct(u),0)/emp.length) : 0;
+  const avgScore = emp.length ? Math.round(emp.reduce((s,u)=>s+getAvgQuizScore(u),0)/emp.length) : 0;
+  const passCnt  = emp.filter(u=>getProgressPct(u)>=80).length;
+  cont.innerHTML = `
+    <div class="kpi-grid">
+      <div class="kpi accent"><div class="label">우리 직원</div><div class="val">${emp.length}</div><div class="sub">명</div></div>
+      <div class="kpi green"><div class="label">이수 완료</div><div class="val">${passCnt}</div><div class="sub">진도율 80%↑</div></div>
+      <div class="kpi"><div class="label">평균 진도율</div><div class="val">${avgPct}%</div></div>
+      <div class="kpi yellow"><div class="label">평균 퀴즈 점수</div><div class="val">${avgScore}</div><div class="sub">점</div></div>
+    </div>
+    <div class="section">
+      <div class="section-hdr"><h3>${code} · 직원 학습 현황</h3></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>이름</th><th>직원번호</th><th>진도율</th><th>완료</th><th>평균 점수</th><th>상태</th></tr></thead>
+        <tbody>${emp.map(u=>{
+          const p=getProgressPct(u), done=getDone(u.id).length, sc=getAvgQuizScore(u), pass=p>=80;
+          return `<tr>
+            <td>${u.name||u.username}</td>
+            <td style="color:var(--muted)">${u.employeeNum||'—'}</td>
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="bar-wrap" style="width:80px"><div class="bar-fill" style="width:${p}%"></div></div><span style="font-size:11px;color:var(--muted)">${p}%</span></div></td>
+            <td>${done}/${TOTAL_DAYS}</td>
+            <td>${sc||'—'}</td>
+            <td><span class="badge ${pass?'green':'yellow'}">${pass?'이수':'학습중'}</span></td>
+          </tr>`;
+        }).join('') || '<tr><td colspan="6" style="color:var(--muted)">이 회사에 등록된 직원이 없습니다</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
 }
 
 // ── Data helpers ──
@@ -489,10 +513,10 @@ function renderOverview(){
   const total = users.length;
   let completed=0, inProg=0, totalPts=0;
   users.forEach(u=>{
-    const d=getDone(u.username);
+    const d=getDone(u.id);
     if(d.length>=TOTAL_DAYS) completed++;
     else if(d.length>0) inProg++;
-    totalPts+=getPoints(u.username);
+    totalPts+=getPoints(u.id);
   });
   const avgPts = total? Math.round(totalPts/total):0;
 
@@ -512,7 +536,7 @@ function renderOverview(){
   const counts={};
   days.forEach(d=>counts[d]=0);
   users.forEach(u=>{
-    getSessions(u.username).forEach(s=>{
+    getSessions(u.id).forEach(s=>{
       const dt=(s.date||'').slice(0,10);
       if(counts[dt]!==undefined) counts[dt]++;
     });
@@ -532,8 +556,8 @@ function renderOverview(){
   }).slice(0,8);
   const tbody=document.querySelector('#recentTbl tbody');
   tbody.innerHTML=sorted.map(u=>{
-    const p=pct(u.username);
-    return `<tr><td>${u.name||u.username}</td><td>${getSessions(u.username).slice(-1)[0]?.date?.slice(0,10)||'—'}</td>
+    const p=pct(u.id);
+    return `<tr><td>${u.name||u.username}</td><td>${getSessions(u.id).slice(-1)[0]?.date?.slice(0,10)||'—'}</td>
     <td><div class="bar-wrap" style="width:80px"><div class="bar-fill" style="width:${p}%"></div></div> <span style="font-size:10px;color:var(--muted)">${p}%</span></td></tr>`;
   }).join('');
 
@@ -551,10 +575,10 @@ function renderUsers(){
   });
   document.getElementById('userCount').textContent=`총 ${users.length}명`;
   document.getElementById('usersTbody').innerHTML=users.map(u=>{
-    const done=getDone(u.username).length;
+    const done=getDone(u.id).length;
     const p=Math.round(done/TOTAL_DAYS*100);
-    const pts=getPoints(u.username);
-    const sess=getSessions(u.username);
+    const pts=getPoints(u.id);
+    const sess=getSessions(u.id);
     const last=sess.slice(-1)[0]?.date?.slice(0,10)||'—';
     const status=p>=100?'<span class="badge green">이수완료</span>':done>0?'<span class="badge yellow">학습중</span>':'<span class="badge gray">미시작</span>';
     return `<tr>
@@ -575,19 +599,19 @@ function renderScores(){
   const users=getUsers();
   let allSess=[];
   users.forEach(u=>{
-    getSessions(u.username).forEach(s=>allSess.push({...s,user:u}));
+    getSessions(u.id).forEach(s=>allSess.push({...s,user:u}));
   });
 
   // Per-user avg for pass/fail
   let totalAvg=0,pass=0,fail=0;
   users.forEach(u=>{
-    const sess=getSessions(u.username);
+    const sess=getSessions(u.id);
     if(!sess.length) return;
     const avg=sess.reduce((a,s)=>a+(s.score||0),0)/sess.length;
     totalAvg+=avg;
     if(avg>=80) pass++; else fail++;
   });
-  const cnt=users.filter(u=>getSessions(u.username).length>0).length||1;
+  const cnt=users.filter(u=>getSessions(u.id).length>0).length||1;
   document.getElementById('avgScore').textContent=Math.round(totalAvg/cnt);
   document.getElementById('passCount').textContent=pass;
   document.getElementById('failCount').textContent=fail;
@@ -625,7 +649,7 @@ function renderSessions(){
   const dayF=document.getElementById('dayFilter')?.value||'';
   let rows=[];
   users.forEach(u=>{
-    getSessions(u.username).forEach(s=>{
+    getSessions(u.id).forEach(s=>{
       const d='Day '+(s.day||'?');
       if(dayF&&d!==dayF) return;
       rows.push({...s,uname:u.name||u.username});
@@ -652,8 +676,8 @@ function renderCertList(){
   const sel=document.getElementById('certUserSel');
   sel.innerHTML='<option value="">학습자 선택...</option>'+
     users.map(u=>{
-      const p=pct(u.username);
-      const sess=getSessions(u.username);
+      const p=pct(u.id);
+      const sess=getSessions(u.id);
       const avgSc=sess.length?Math.round(sess.reduce((a,s)=>a+(s.score||0),0)/sess.length):0;
       const meets=p>=80&&avgSc>=80;
       const suffix=meets?'✅ 이수완료':'⚠️ 미달';
@@ -835,14 +859,14 @@ function renderCompanies() {
 
 function getProgressPct(u) {
   try {
-    const done = JSON.parse(localStorage.getItem('sk_done_' + u.username) || '[]');
+    const done = JSON.parse(localStorage.getItem('sk_done_' + u.id) || '[]');
     return Math.round(done.length / TOTAL_DAYS * 100);
   } catch { return 0; }
 }
 
 function getAvgQuizScore(u) {
   try {
-    const sessions = JSON.parse(localStorage.getItem('sk_sess_' + u.username) || '[]');
+    const sessions = JSON.parse(localStorage.getItem('sk_sess_' + u.id) || '[]');
     if (!sessions.length) return 0;
     const withScore = sessions.filter(s=>s.score!=null);
     if (!withScore.length) return 0;
@@ -857,8 +881,8 @@ function downloadUsersCSV() {
   users.forEach(u => {
     const p = getProgressPct(u);
     const score = getAvgQuizScore(u);
-    const done = getDone(u.username).length;
-    const sess = getSessions(u.username);
+    const done = getDone(u.id).length;
+    const sess = getSessions(u.id);
     const last = sess.slice(-1)[0]?.date?.slice(0,10)||'—';
     rows.push([
       u.name||'—', u.username||'—', u.lang||'—',
@@ -904,7 +928,7 @@ function renderDayCompletionChart() {
   const bars = Array.from({length:TOTAL_DAYS},(_,i)=>{
     const day = i+1;
     const count = users.filter(u=>{
-      try { return getDone(u.username).includes(day); } catch { return false; }
+      try { return getDone(u.id).includes(day); } catch { return false; }
     }).length;
     const pct = Math.round(count/total*100);
     return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px">
