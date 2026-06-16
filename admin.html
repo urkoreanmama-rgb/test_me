@@ -607,7 +607,7 @@ function renderScores(){
   users.forEach(u=>{
     const sess=getSessions(u.id);
     if(!sess.length) return;
-    const avg=sess.reduce((a,s)=>a+(s.score||0),0)/sess.length;
+    const avg=sess.reduce((a,s)=>a+(s.pct||0),0)/sess.length;
     totalAvg+=avg;
     if(avg>=80) pass++; else fail++;
   });
@@ -621,7 +621,7 @@ function renderScores(){
   allSess.forEach(s=>{
     const d='Day '+(s.day||'?');
     if(!dayMap[d]) dayMap[d]=[];
-    dayMap[d].push(s.score||0);
+    dayMap[d].push(s.pct||0);
   });
   const days=Object.keys(dayMap).sort((a,b)=>{
     const na=parseInt(a.replace('Day ','')),nb=parseInt(b.replace('Day ',''));
@@ -657,7 +657,7 @@ function renderSessions(){
   });
   rows.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   document.getElementById('sessTbody').innerHTML=rows.slice(0,50).map(r=>{
-    const sc=r.score||0;
+    const sc=r.pct!=null?r.pct:(r.score||0);
     const badge=sc>=80?'green':sc>=60?'yellow':'red';
     return `<tr>
       <td>${r.uname}</td>
@@ -678,7 +678,7 @@ function renderCertList(){
     users.map(u=>{
       const p=pct(u.id);
       const sess=getSessions(u.id);
-      const avgSc=sess.length?Math.round(sess.reduce((a,s)=>a+(s.score||0),0)/sess.length):0;
+      const avgSc=sess.length?Math.round(sess.reduce((a,s)=>a+(s.pct||0),0)/sess.length):0;
       const meets=p>=80&&avgSc>=80;
       const suffix=meets?'✅ 이수완료':'⚠️ 미달';
       return `<option value="${u.username}">${u.name||u.username} (진도 ${p}% · 퀴즈 ${avgSc}점) — ${suffix}</option>`;
@@ -697,7 +697,7 @@ function renderCertPreview(){
   const sess=getSessions(uid);
   const doneDays=done.length;
   const totalSess=sess.length;
-  const avgScore=totalSess?Math.round(sess.reduce((a,s)=>a+(s.score||0),0)/totalSess):0;
+  const avgScore=totalSess?Math.round(sess.reduce((a,s)=>a+(s.pct||0),0)/totalSess):0;
   const pctVal=Math.round(doneDays/TOTAL_DAYS*100);
   const passed=pctVal>=80&&avgScore>=80;
   const issueDate=new Date().toISOString().slice(0,10);
@@ -868,9 +868,9 @@ function getAvgQuizScore(u) {
   try {
     const sessions = JSON.parse(localStorage.getItem('sk_sess_' + u.id) || '[]');
     if (!sessions.length) return 0;
-    const withScore = sessions.filter(s=>s.score!=null);
+    const withScore = sessions.filter(s=>s.pct!=null);
     if (!withScore.length) return 0;
-    return Math.round(withScore.reduce((s,x)=>s+x.score,0)/withScore.length);
+    return Math.round(withScore.reduce((s,x)=>s+x.pct,0)/withScore.length);
   } catch { return 0; }
 }
 
