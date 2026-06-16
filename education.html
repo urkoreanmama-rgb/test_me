@@ -2149,7 +2149,7 @@ const STRINGS = {
     lsn_sp_next:'다음 →',lsn_sp_done_msg:'문장 연습 완료!',
     lsn_sp_follow:'소리를 듣고 따라 말해보세요',lsn_sp_repeat:'따라 말하기',
     lsn_sp_done_btn:'완료 →',lsn_play:'▶ 발음 듣기',lsn_slow:'🐢 천천히',lsn_next_expr:'다음 →',lsn_prev_expr:'← 이전',lsn_today_words:'오늘의 단어',
-    lsn_fc_know:'알아요',lsn_fc_again:'다시',
+    lsn_fc_know:'알아요',lsn_fc_again:'모르겠어요',
     lsn_next_sb:'문장 만들기 →',lsn_sb_title:'문장 만들기',lsn_sb_hint:'단어를 순서대로 탭하세요',lsn_sb_check:'확인',lsn_sb_clear:'지우기',
     lsn_final_title:'종합 테스트',lsn_final_sub:'오늘 배운 내용을 확인해요',lsn_final_done:'종합 테스트 완료!',lsn_final_pass:'완벽해요! 🏆',lsn_final_fail:'다시 해봐요 💪',lsn_final_retry:'다시 →',lsn_final_next:'결과 보기 →',lsn_final_q:'문제',lsn_next_home:'홈으로 →',
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
@@ -2231,7 +2231,7 @@ const STRINGS = {
     lsn_sp_next:"Keyingi →",lsn_sp_done_msg:"Gap mashqi tugadi!",
     lsn_sp_follow:"Gapni tinglang va takrorlang",lsn_sp_repeat:"Takrorlash",
     lsn_sp_done_btn:"Tugadi →",lsn_play:"▶ Tinglash",lsn_slow:'🐢 Sekinroq',lsn_next_expr:"Keyingi →",lsn_prev_expr:'← Oldingi',lsn_today_words:"Bugungi so'zlar",
-    lsn_fc_know:"Bilaman",lsn_fc_again:"Qayta",
+    lsn_fc_know:"Bilaman",lsn_fc_again:"Bilmadim",
     lsn_next_sb:"Gap tuzing →",lsn_sb_title:"Gap tuzing",lsn_sb_hint:"So'zlarni tartib bilan bosing",lsn_sb_check:"Tekshirish",lsn_sb_clear:"Tozalash",
     lsn_final_title:"Yakuniy test",lsn_final_sub:"Bugun o'rganganlaringizni tekshiramiz",lsn_final_done:"Yakuniy test tugadi!",lsn_final_pass:"Ajoyib! 🏆",lsn_final_fail:"Qayta urinib ko'ring 💪",lsn_final_retry:"Qayta →",lsn_final_next:"Natija →",lsn_final_q:"Savol",lsn_next_home:"Bosh sahifa →",
     lbl_curriculum:"📅 3 haftalik MVP o'quv dasturi (1–21-kun)",
@@ -2421,7 +2421,7 @@ const STRINGS = {
     lsn_sp_next:"Tuir mai →",lsn_sp_done_msg:"Prátika fraze remata!",
     lsn_sp_follow:"Rona no repete",lsn_sp_repeat:"Repete",
     lsn_sp_done_btn:"Remata →",lsn_play:"▶ Rona pronunsiasaun",lsn_slow:'🐢 Neineik',lsn_next_expr:'Tuir mai →',lsn_prev_expr:'← Antes',lsn_today_words:"Liafuan ohin",
-    lsn_fc_know:"Hatene",lsn_fc_again:"Fali",
+    lsn_fc_know:"Hatene",lsn_fc_again:"La hatene",
     lsn_next_sb:"Halo fraze →",lsn_sb_title:"Halo fraze",lsn_sb_hint:"Klik liafuan tuir ordem",lsn_sb_check:"Verifika",lsn_sb_clear:"Hamoos",
     lsn_final_title:"Teste final",lsn_final_sub:"Verifika hotu ne'ebé aprende ohin",lsn_final_done:"Teste final remata!",lsn_final_pass:"Ekselente! 🏆",lsn_final_fail:"Koko fali 💪",lsn_final_retry:"Fali →",lsn_final_next:"Rezultadu →",lsn_final_q:"Pergunta",lsn_next_home:"Pájina inísiu →",
     lbl_curriculum:'📅 Kuríkulu MVP semana 3 (Loron 1–21)',
@@ -3284,7 +3284,7 @@ function rFlashcard(d,el,uz){
     el.innerHTML=`
       <div class="act-complete">
         <div class="act-complete-msg">${t('lsn_fc_done')}</div>
-        <div class="act-complete-sub">${t('lsn_fc_known')} ${fc.known} / ${words.length}</div>
+        <div class="act-complete-sub">${t('lsn_fc_known')} ${Math.min(fc.known,words.length)} / ${words.length}</div>
       </div>
       <button class="btn red" data-adv onclick="ST._fc=null;next()">${t('lsn_next_match')}</button>`;
     return;
@@ -3340,9 +3340,8 @@ function fcKnow(){
 }
 function fcAgain(){
   if(!ST._fc) return;
-  // push current to end
-  const item=ST._fc.items.splice(ST._fc.idx,1)[0];
-  ST._fc.items.push(item);
+  // "모르겠어요" — 외운 것으로 치지 않고 다음 카드로 진행 (카운터도 같이 넘어감)
+  ST._fc.idx++;
   renderLesson();
 }
 
