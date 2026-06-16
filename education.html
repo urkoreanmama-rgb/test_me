@@ -1286,6 +1286,78 @@ body.in-lesson #mainHdr{display:none!important}
   .lesson-2col{display:block!important}
   .lbody-inner{max-width:none!important;width:auto!important;margin:0!important;padding:14px 16px!important;display:block!important}
 }
+
+/* ══ 스트릭 캘린더 (Feature 4) ══ */
+.streak-hero{display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:linear-gradient(135deg,#FFFBEB,#FFF);border-radius:14px;
+  border:1.5px solid #FDE68A;margin-bottom:10px;cursor:default}
+.streak-num{font-size:32px;font-weight:900;color:#F59E0B;line-height:1;flex-shrink:0}
+.streak-info h4{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 1px}
+.streak-info p{font-size:11px;color:var(--muted);margin:0}
+.streak-cal{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:6px 0}
+.sc-dot{aspect-ratio:1;border-radius:4px;background:var(--border)}
+.sc-dot.done{background:var(--green)}
+.sc-dot.today{background:var(--blue-m);box-shadow:0 0 0 2px var(--blue-m),0 0 0 4px var(--blue-l)}
+.sc-dot.missed{background:#FFCDD2}
+
+/* ══ 간격반복 뱃지 (Feature 1) ══ */
+.sr-badge{display:inline-flex;align-items:center;gap:6px;
+  background:#FFF0F0;border:1.5px solid var(--red);border-radius:20px;
+  padding:5px 14px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;
+  margin-bottom:10px;transition:all .15s}
+.sr-badge:hover{background:var(--red);color:#fff}
+
+/* ══ 받아쓰기 (Feature 6) ══ */
+.dic-inp{width:100%;box-sizing:border-box;font-size:24px;font-weight:700;
+  text-align:center;padding:16px 12px;border:2px solid var(--border);
+  border-radius:14px;background:var(--card);color:var(--ink);font-family:inherit;
+  margin:10px 0;transition:border-color .2s;letter-spacing:2px}
+.dic-inp:focus{outline:none;border-color:var(--blue-m)}
+.dic-inp.ok{border-color:var(--green);background:var(--green-l)}
+.dic-inp.no{border-color:var(--red);background:var(--red-l)}
+.dic-chars{display:flex;justify-content:center;gap:5px;margin:8px 0;flex-wrap:wrap}
+.dic-char{font-size:22px;font-weight:800;border-bottom:3px solid var(--border);
+  padding:0 4px;min-width:26px;text-align:center;transition:all .2s;color:var(--muted)}
+.dic-char.ok{color:var(--green);border-color:var(--green)}
+.dic-char.no{color:var(--red);border-color:var(--red)}
+.dic-char.filled{color:var(--ink);border-color:var(--ink)}
+
+/* ══ 발음 녹음 (Feature 3) ══ */
+.rec-row{display:flex;gap:8px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.rec-btn{display:flex;align-items:center;gap:6px;padding:9px 18px;
+  border-radius:24px;border:1.5px solid var(--border);background:var(--card);
+  color:var(--ink);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.rec-btn:hover{border-color:var(--red);color:var(--red)}
+.rec-btn.recording{background:var(--red);color:#fff;border-color:var(--red);animation:recPulse 1s infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.65}}
+.rec-playback{width:100%;margin-top:8px;border-radius:10px;max-height:40px}
+.rec-compare-note{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
+
+/* ══ 현장 사진 매칭 (Feature 7) ══ */
+.ws-wrap{padding:6px 0}
+.ws-scene-box{position:relative;width:100%;border-radius:14px;overflow:hidden;
+  background:linear-gradient(160deg,#D0E8F5,#B8D4E8);
+  border:1.5px solid var(--border);margin-bottom:10px;user-select:none}
+.ws-scene-box svg{display:block;width:100%;height:auto}
+.ws-hotspot{position:absolute;width:40px;height:40px;border-radius:50%;
+  background:rgba(220,38,38,.9);border:3px solid #fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#fff;
+  transform:translate(-50%,-50%);
+  box-shadow:0 2px 10px rgba(0,0,0,.35);transition:all .25s;z-index:10;
+  animation:wsPulse 2s infinite}
+.ws-hotspot:hover{transform:translate(-50%,-50%) scale(1.15)}
+.ws-hotspot.found{background:var(--green);animation:none;
+  transform:translate(-50%,-50%) scale(1.05)}
+@keyframes wsPulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.35),0 0 0 0 rgba(220,38,38,.4)}
+  50%{box-shadow:0 2px 10px rgba(0,0,0,.35),0 0 0 8px rgba(220,38,38,0)}}
+.ws-tooltip{position:absolute;bottom:calc(100%+6px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-size:11px;font-weight:700;
+  padding:4px 9px;border-radius:8px;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .2s;z-index:20}
+.ws-hotspot.found .ws-tooltip{opacity:1}
+.ws-score-row{display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -1507,10 +1579,12 @@ body.in-lesson #mainHdr{display:none!important}
   <!-- ② 수업 내용 -->
   <div id="homeDayPanel">
   <div class="home">
-    <div class="hero">
-      <div class="e">🗣️</div>
-      <h2 id="heroT" data-i18n="hero_title">한국어로 안전하게 일해요</h2>
-    </div>
+
+    <!-- Feature 4: 스트릭 캘린더 -->
+    <div id="streakBox" style="display:none;margin-bottom:10px"></div>
+
+    <!-- Feature 1: 간격반복 뱃지 -->
+    <div id="srBadge" class="sr-badge" style="display:none" onclick="goSRReview()"></div>
 
     <div class="slabel" data-i18n="lbl_curriculum">📅 1개월 안전 한국어 과정 (Day 1–20, 하루 5분)</div>
     <div class="day-grid" id="dayGrid"></div>
@@ -1523,6 +1597,18 @@ body.in-lesson #mainHdr{display:none!important}
 
     <div class="slabel" data-i18n="prac_label">🛠️ 실용 한국어 (언제든 학습)</div>
     <div class="day-grid" id="practicalGrid" style="margin-bottom:14px"></div>
+
+    <!-- Feature 7: 현장 안전 탐색 버튼 -->
+    <div style="background:linear-gradient(135deg,#1A3A4A,#2E5F74);border-radius:var(--r);
+      padding:16px;color:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;
+      margin-bottom:10px;transition:opacity .2s" onclick="goWorkplace()" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+      <div style="font-size:44px;flex-shrink:0">🏭</div>
+      <div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="ws_title">현장 안전 탐색</div>
+        <div style="font-size:11px;opacity:.8;line-height:1.5" data-i18n="ws_instr">빨간 점을 탭해서 안전 용어를 찾아보세요</div>
+      </div>
+      <div style="margin-left:auto;font-size:20px;flex-shrink:0">▶</div>
+    </div>
 
     <div class="slabel" data-i18n="g_title">단어 게임</div>
     <div style="background:linear-gradient(135deg,#000000,#1D1D1F);border-radius:var(--r);
@@ -1552,6 +1638,18 @@ body.in-lesson #mainHdr{display:none!important}
     </div>
   </div>
   <div class="prof" id="profContent"></div>
+</div>
+
+<!-- WORKPLACE SCENE (Feature 7) -->
+<div id="workplaceScr" class="scr">
+  <div class="lhdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="lhdr-info">
+      <h2 data-i18n="ws_title">현장 안전 탐색</h2>
+      <p data-i18n="ws_instr">빨간 점을 탭해서 안전 용어를 찾아보세요</p>
+    </div>
+  </div>
+  <div style="padding:12px 14px;max-width:540px;margin:0 auto" id="workplaceContent"></div>
 </div>
 
 <!-- GAME -->
@@ -2152,6 +2250,27 @@ const STRINGS = {
     lsn_fc_know:'알아요',lsn_fc_again:'모르겠어요',
     lsn_next_sb:'문장 만들기 →',lsn_sb_title:'문장 만들기',lsn_sb_hint:'단어를 순서대로 탭하세요',lsn_sb_check:'확인',lsn_sb_clear:'지우기',
     lsn_final_title:'종합 테스트',lsn_final_sub:'오늘 배운 내용을 확인해요',lsn_final_done:'종합 테스트 완료!',lsn_final_pass:'완벽해요! 🏆',lsn_final_fail:'다시 해봐요 💪',lsn_final_retry:'다시 →',lsn_final_next:'결과 보기 →',lsn_final_q:'문제',lsn_next_home:'홈으로 →',
+    // ── Feature 6: 받아쓰기 ──
+    dic_title:'받아쓰기',dic_instr:'소리를 듣고 한국어로 타이핑하세요',dic_check:'확인',
+    dic_correct:'정답!',dic_wrong:'오답',dic_show:'정답 보기',dic_next:'다음 →',
+    dic_done_msg:'받아쓰기 완료! 🎉',dic_score:'맞힌 개수:',lsn_next_dic:'받아쓰기 →',
+    // ── Feature 3: 발음 녹음 ──
+    rec_start:'🎤 따라 말하기',rec_stop:'⏹ 중지',rec_play:'내 발음 듣기',
+    rec_compare:'원어민 발음과 비교해봐요',rec_hint:'마이크 버튼을 눌러 따라 말하세요',
+    // ── Feature 1: 간격반복 ──
+    sr_due:'{n}개 단어 복습 대기',sr_btn:'복습하기 →',sr_review_title:'복습 단어',
+    sr_review_tag:'📌 복습',
+    // ── Feature 4: 스트릭 시각화 ──
+    streak_hero_title:'{n}일 연속 학습 중! 🔥',streak_hero_sub:'20일 학습 캘린더',
+    streak_zero:'오늘 첫 수업을 시작해봐요',streak_one:'좋은 시작이에요! ✨',
+    // ── Feature 2: 상황 퀴즈 ──
+    sit_quiz_tag:'상황 퀴즈',sit_quiz_instr:'이 상황에서 뭐라고 말해요?',
+    // ── Feature 7: 현장 탐색 ──
+    ws_title:'현장 안전 탐색',ws_instr:'빨간 점을 탭해서 안전 용어를 찾아보세요',
+    ws_found:'{n}/{t} 발견',ws_all_done:'모두 찾았어요! 훌륭해요! 🎉',
+    ws_btn:'현장 탐색',ws_next:'다음 →',
+    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','받아쓰기','완료'],
+    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','듣고 타이핑','완료!'],
     lbl_curriculum:'📅 3주일 MVP 커리큘럼 (Day 1–21)',
     lbl_progress:'나의 진행률',
     lbl_profile:'나의 학습 현황',
@@ -2201,8 +2320,8 @@ const STRINGS = {
     pw_hint:'8자 이상, 영문+숫자 필수 / 기호 포함 시 더 안전해요', pw_weak:'⚠️ 약한 비밀번호 — 숫자와 영문을 함께 써주세요', pw_mid:'👍 보통 — 기호를 추가하면 더 안전해요', pw_strong:'✅ 강함 — 안전한 비밀번호예요', pw_vstrong:'🛡️ 매우 강함!',
     uid_rule:'아이디는 영문 소문자, 숫자, _만 사용하고 4–20자로 입력해주세요.', uid_taken_alert:'이미 사용 중인 아이디예요. 다른 아이디를 입력해주세요.', pw_rule:'비밀번호는 8자 이상, 영문+숫자를 모두 포함해야 해요.', pw_mismatch:'비밀번호가 일치하지 않아요. 다시 확인해주세요.',
     rec_need_both:'이름과 핸드폰 번호를 모두 입력해주세요.', rec_not_found:'❌ 일치하는 계정을 찾지 못했어요.<br>이름과 번호를 다시 확인해주세요.', rec_found:'찾은 계정', rec_pw_label:'비밀번호', rec_no_pw:'(설정 안됨 — 재가입 필요)',
-    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','완료'],
-    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','완료!'],
+    steps:['오늘의 문장','플래시카드','단어 듣기','매칭 게임','문장 만들기','문장 연습','퀴즈','종합 테스트','받아쓰기','완료'],
+    step_hints:['문장 확인하기','카드 뒤집어 외우기','들은 단어 찾기','단어 짝 맞추기','단어 배열하기','문장 익히기','이해도 확인','전체 복습','듣고 타이핑','완료!'],
   },
   uz:{
     tab_login:'Kirish', tab_ind:'Shaxsiy', tab_co:'Korxona',
@@ -2283,7 +2402,20 @@ const STRINGS = {
     pw_hint:"Kamida 8 belgi, harf+raqam shart / belgi qo'shsangiz xavfsizroq", pw_weak:"⚠️ Zaif parol — harf va raqamni birga ishlating", pw_mid:"👍 O'rtacha — belgi qo'shing", pw_strong:"✅ Kuchli — xavfsiz parol", pw_vstrong:"🛡️ Juda kuchli!",
     uid_rule:"Login faqat kichik lotin harf, raqam, _ va 4–20 belgi bo'lsin.", uid_taken_alert:"Bu login band. Boshqa login kiriting.", pw_rule:"Parol kamida 8 belgi, harf+raqam bo'lishi shart.", pw_mismatch:"Parollar mos kelmadi. Qayta tekshiring.",
     rec_need_both:"Ism va telefon raqamini kiriting.", rec_not_found:"❌ Mos hisob topilmadi.<br>Ism va raqamni qayta tekshiring.", rec_found:"Topilgan hisob", rec_pw_label:"Parol", rec_no_pw:"(o'rnatilmagan — qayta ro'yxatdan o'ting)",
-    steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Yakuniy test","Tugadi"],
+    dic_title:"Diktant",dic_instr:"Eshiting va koreys tilida yozing",dic_check:"Tekshirish",
+    dic_correct:"To'g'ri!",dic_wrong:"Xato",dic_show:"Javobni ko'rish",dic_next:"Keyingi →",
+    dic_done_msg:"Diktant tugadi! 🎉",dic_score:"To'g'ri javoblar:",lsn_next_dic:"Diktant →",
+    rec_start:"🎤 Takrorlash",rec_stop:"⏹ To'xtatish",rec_play:"Ovozimni eshitish",
+    rec_compare:"Ona tili talaffuzi bilan solishtiring",rec_hint:"Mikrofon tugmasini bosib takrorlang",
+    sr_due:"{n} ta so'z takrorlashni kutmoqda",sr_btn:"Takrorlash →",sr_review_title:"Takrorlash so'zlari",
+    sr_review_tag:"📌 Takrorlash",
+    streak_hero_title:"{n} kun ketma-ket! 🔥",streak_hero_sub:"20 kunlik o'quv kalendari",
+    streak_zero:"Bugun birinchi darsni boshlang",streak_one:"Ajoyib boshlang'ich! ✨",
+    sit_quiz_tag:"Vaziyat testi",sit_quiz_instr:"Bu vaziyatda nima deysiz?",
+    ws_title:"Ish joyi xavfsizligi",ws_instr:"Qizil nuqtalarni bosib xavfsizlik atamalarini toping",
+    ws_found:"{n}/{t} topildi",ws_all_done:"Hammasi topildi! Ajoyib! 🎉",
+    ws_btn:"Ish joyini o'rganish",ws_next:"Keyingi →",
+    steps:["Bugungi gap","Kartochkalar","So'z tinglash","Moslashtirish","Gap tuzing","Gap mashqi","Test","Yakuniy test","Diktant","Tugadi"],
     step_hints:["Gap bilan tanishuv","Kartochkalarni ag'darish","Eshitib toping","So'zlarni moslashtirish","Gap tuzing","Gap mashqi","Test savollari","Barcha takrorlash","Tugadi!"],
   },
   vi:{
@@ -2473,7 +2605,13 @@ const STRINGS = {
     pw_hint:"Karakter 8+, letra+númeru obrigatóriu / aumenta símbolu seguru liu", pw_weak:"⚠️ Liafuan-passe fraku — uza letra ho númeru", pw_mid:"👍 Klaru — aumenta símbolu", pw_strong:"✅ Forte — liafuan-passe seguru", pw_vstrong:"🛡️ Forte tebes!",
     uid_rule:"Naran utilizadór uza letra ki'ik, númeru, _ no 4–20 karakter.", uid_taken_alert:"Naran ne'e uza ona. Hatama naran seluk.", pw_rule:"Liafuan-passe presiza karakter 8+, letra+númeru.", pw_mismatch:"Liafuan-passe la hanesan. Verifika fali.",
     rec_need_both:"Hatama naran no númeru telefone.", rec_not_found:"❌ La hetan konta ne'ebé hanesan.<br>Verifika naran no númeru.", rec_found:"Konta hetan", rec_pw_label:"Liafuan-passe", rec_no_pw:"(la konfigura — rejistu fali)",
-    steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Teste final','Remata'],
+    dic_title:'Ditadu',dic_instr:'Rona no hakerek Koreanu',dic_check:'Verifika',dic_correct:'Loos!',dic_wrong:'Los sala',dic_show:'Haree resposta',dic_next:'Tuir mai →',dic_done_msg:'Ditadu remata! 🎉',dic_score:'Resposta loos:',lsn_next_dic:'Ditadu →',
+    rec_start:'🎤 Repete',rec_stop:'⏹ Para',rec_play:'Rona ha\'u-nia lian',rec_compare:'Kompara ho pronunsiasaun nativa',rec_hint:'Taka botaun mikrofone no repete',
+    sr_due:'{n} liafuan presiza repete',sr_btn:'Repete →',sr_review_title:'Liafuan repete',sr_review_tag:'📌 Repete',
+    streak_hero_title:'{n} loron tuir fali! 🔥',streak_hero_sub:'Kalendáriu aprendizajen loron 20',streak_zero:'Hahu lisaun primeiru ohin',streak_one:'Hahu di\'ak! ✨',
+    sit_quiz_tag:'Quiz situasaun',sit_quiz_instr:'Iha situasaun ida-ne\'e, dehan saida?',
+    ws_title:'Explorasaun fatin servisu',ws_instr:'Taka pontu mean sira atu hetan termu seguransa',ws_found:'{n}/{t} hetan',ws_all_done:'Hetan hotu! Parabéns! 🎉',ws_btn:'Esplora fatin servisu',ws_next:'Tuir mai →',
+    steps:['Fraze ohin','Kartaun','Rona liafuan','Kombina','Halo fraze','Prátika fraze','Teste','Teste final','Ditadu','Remata'],
     step_hints:['Lee fraze','Hira-fali kartaun','Rona & hili','Kombina','Hili liafuan','Prátika','Teste','Revizaun','Remata!'],
   },
   ru:{
@@ -3099,22 +3237,45 @@ function renderHome(){
     });
   }
 
-  // 스트릭 메시지 hero에 표시
+  // Feature 4: 스트릭 캘린더 렌더
   const streak = getStreak();
-  const heroEl = document.querySelector('#homeDayPanel .hero');
-  if(heroEl){
-    let oldStreakEl = heroEl.querySelector('.hero-streak-msg');
-    if(oldStreakEl) oldStreakEl.remove();
-    let streakMsg = '';
-    if(streak >= 3) streakMsg = tf('home_streak_on',{n:streak});
-    else if(streak === 1) streakMsg = t('home_streak_start');
-    else if(streak === 0) streakMsg = t('home_streak_back');
-    if(streakMsg){
-      const sm = document.createElement('div');
-      sm.className = 'hero-streak-msg';
-      sm.style.cssText = 'font-size:13px;font-weight:700;margin-top:6px;opacity:.9';
-      sm.textContent = streakMsg;
-      heroEl.appendChild(sm);
+  const streakBox = document.getElementById('streakBox');
+  if(streakBox){
+    const sessions = getSessions();
+    const doneByDate = {};
+    sessions.forEach(s=>{ if(s.date) doneByDate[s.date]=true; });
+    const today = new Date().toISOString().slice(0,10);
+    let calDots = '';
+    for(let i=19;i>=0;i--){
+      const d2 = new Date(); d2.setDate(d2.getDate()-i);
+      const ds = d2.toISOString().slice(0,10);
+      const cls = ds===today?'today':doneByDate[ds]?'done':'';
+      calDots += `<div class="sc-dot ${cls}" title="${ds}"></div>`;
+    }
+    const heroMsg = streak>=2
+      ? tf('streak_hero_title',{n:streak})
+      : streak===1 ? t('streak_one') : t('streak_zero');
+    streakBox.innerHTML = `
+      <div class="streak-hero">
+        <div class="streak-num">${streak>0?'🔥':streak===0?'💤':''} ${streak}</div>
+        <div class="streak-info">
+          <h4>${heroMsg}</h4>
+          <p>${t('streak_hero_sub')}</p>
+        </div>
+      </div>
+      <div class="streak-cal">${calDots}</div>`;
+    streakBox.style.display='';
+  }
+
+  // Feature 1: 간격반복 뱃지
+  const srBadge = document.getElementById('srBadge');
+  if(srBadge){
+    const srList = getSR();
+    if(srList.length>0){
+      srBadge.innerHTML = `<span>📌</span> ${tf('sr_due',{n:srList.length})} &nbsp; ${t('sr_btn')}`;
+      srBadge.style.display='';
+    } else {
+      srBadge.style.display='none';
     }
   }
 
@@ -3162,6 +3323,22 @@ function goHome(){
 }
 function next(){ST.step++;renderLesson();}
 
+function goWorkplace(){
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  ['homeScr','lessonScr','profileScr','gameScr'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
+  document.getElementById('workplaceScr').classList.add('on');
+  applyLang();
+  renderWorkplaceScene(document.getElementById('workplaceContent'));
+}
+
+function goSRReview(){
+  // 간격반복 복습: Day 1부터 틀린 단어가 있는 첫 번째 날 열기
+  const srList=getSR();
+  if(!srList.length) return;
+  const dayIdx=srList[0].dayIdx??0;
+  startLesson(Math.max(0,Math.min(dayIdx,CUR.length-1)));
+}
+
 function renderLesson(){
   const CUR_SRC = ST.isPractical ? PRACTICAL_CUR : CUR;
   const d = L10n(CUR_SRC[ST.dayIdx]), s = ST.step;
@@ -3205,7 +3382,7 @@ function renderLesson(){
 
   const el=document.getElementById('lcontent'); el.innerHTML='';
   const footer=document.getElementById('lsnFooter'); if(footer) footer.innerHTML='';
-  // 8단계: 문장→플래시카드→듣기→매칭→문장만들기→문장연습→퀴즈→종합테스트→완료
+  // 9단계: 문장→플래시카드→듣기→매칭→문장만들기→문장연습→퀴즈→종합테스트→받아쓰기→완료
   if(s===0) rSentView(d,el,uz);
   else if(s===1) rFlashcard(d,el,uz);
   else if(s===2) rListenPick(d,el,uz);
@@ -3214,7 +3391,8 @@ function renderLesson(){
   else if(s===5) rSentPractice(d,el,uz);
   else if(s===6) rQuiz(d,el,uz);
   else if(s===7) rFinalTest(d,el,uz);
-  else if(s===8) rResult(d,el,uz);
+  else if(s===8) rDictation(d,el,uz);  // Feature 6: 받아쓰기
+  else if(s===9) rResult(d,el,uz);
   // class="lsn-adv" 버튼들을 하단 고정 footer로 이동
   liftAdvanceButtons(el, footer);
 }
@@ -3260,6 +3438,11 @@ function rSentView(d,el,uz){
       </button>
     </div>
 
+    <div class="rec-row">
+      <button class="rec-btn" id="rec-btn" onclick="startRecording()">🎤 ${t('rec_start')}</button>
+    </div>
+    <div id="rec-playback-wrap" style="display:none;padding:0 4px 4px"></div>
+
     <div class="expr-nav">
       ${idx>0
         ? `<button class="btn gray" onclick="ST._sv.idx=${idx-1};renderLesson()">${t('lsn_prev_expr')}</button>`
@@ -3275,9 +3458,11 @@ function rFlashcard(d,el,uz){
   const words=d.words||[];
   const sent=d.sentence||{ko:'',uz:''};
   if(!ST._fc||ST._fc.day!==d.day){
-    // 단어 카드 뒤에 문장 카드 1장 추가
     const sentCard={type:'sentence', ko:sent.ko, uz:sent.uz};
-    ST._fc={day:d.day, items:[...words, sentCard], idx:0, known:0};
+    // Feature 1: 다른 날 틀린 단어 최대 3개를 복습 카드로 앞에 삽입
+    const srWords=getSR().filter(x=>x.dayIdx!==ST.dayIdx).slice(0,3)
+      .map(w=>({...w,type:'review'}));
+    ST._fc={day:d.day, items:[...srWords,...words,sentCard], idx:0, known:0, srCount:srWords.length};
   }
   const fc=ST._fc;
   if(fc.idx>=fc.items.length){
@@ -3293,10 +3478,13 @@ function rFlashcard(d,el,uz){
   const isSent=(w.type==='sentence');
   const prog=`${fc.idx+1}/${fc.items.length}`;
   const tipText = t('lsn_fc_tip');
+  const isReview=(w.type==='review');
   const frontHTML = isSent
     ? `<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:8px">${t('lsn_today_sent')}</div>
        <div style="font-size:20px;font-weight:900;line-height:1.45;letter-spacing:-.3px">${w.ko}</div>`
-    : `<div style="font-size:26px;font-weight:900;letter-spacing:1px">${w.ko}</div>
+    : `${isReview?`<div style="font-size:10px;font-weight:700;color:#FFD700;margin-bottom:6px;letter-spacing:.5px">${t('sr_review_tag')}</div>`:''}
+       <div style="font-size:44px;margin-bottom:6px;line-height:1">${w.e||'📢'}</div>
+       <div style="font-size:26px;font-weight:900;letter-spacing:1px">${w.ko}</div>
        <div style="font-size:13px;opacity:.8;margin-top:4px">[${w.rom}]</div>`;
   const backHTML = isSent
     ? `<div style="font-size:11px;font-weight:700;color:var(--blue-m);margin-bottom:8px">${t('lsn_translation')}</div>
@@ -3340,10 +3528,269 @@ function fcKnow(){
 }
 function fcAgain(){
   if(!ST._fc) return;
-  // "모르겠어요" — 외운 것으로 치지 않고 다음 카드로 진행 (카운터도 같이 넘어감)
+  const item=ST._fc.items[ST._fc.idx];
+  if(item && item.type!=='sentence' && item.type!=='review'){
+    addSR(item, ST.dayIdx); // Feature 1: 간격반복 큐에 추가
+  }
   ST._fc.idx++;
   renderLesson();
 }
+
+// ════════════════════════════════════
+// Feature 1: 간격 반복 (Spaced Repetition)
+// ════════════════════════════════════
+function srKey(uid){ return 'sk_sr_'+uid; }
+function getSR(){
+  const u=getUser(); if(!u) return [];
+  try{ return JSON.parse(localStorage.getItem(srKey(u.id)))||[]; }catch(e){ return []; }
+}
+function saveSR(list){
+  const u=getUser(); if(!u) return;
+  localStorage.setItem(srKey(u.id), JSON.stringify(list));
+}
+function addSR(word, dayIdx){
+  const list=getSR();
+  const existing=list.find(x=>x.ko===word.ko);
+  if(existing){ existing.count=(existing.count||1)+1; existing.dayIdx=dayIdx; existing.date=new Date().toISOString().slice(0,10); }
+  else{ list.push({ko:word.ko,rom:word.rom,uz:word.uz,e:word.e||'',dayIdx,count:1,date:new Date().toISOString().slice(0,10)}); }
+  if(list.length>60) list.splice(0,list.length-60);
+  saveSR(list);
+}
+function removeSR(ko){
+  saveSR(getSR().filter(x=>x.ko!==ko));
+}
+
+// ════════════════════════════════════
+// Feature 3: 발음 녹음 (Voice Recording)
+// ════════════════════════════════════
+let _recStream=null,_recorder=null,_recChunks=[],_recUrl=null;
+async function startRecording(){
+  const btn=document.getElementById('rec-btn');
+  if(_recorder&&_recorder.state==='recording'){ _recorder.stop(); return; }
+  try{
+    _recStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    _recorder=new MediaRecorder(_recStream);
+    _recChunks=[];
+    _recorder.ondataavailable=e=>{if(e.data.size>0) _recChunks.push(e.data);};
+    _recorder.onstop=()=>{
+      _recStream.getTracks().forEach(t=>t.stop());
+      if(_recUrl) URL.revokeObjectURL(_recUrl);
+      _recUrl=URL.createObjectURL(new Blob(_recChunks,{type:'audio/webm'}));
+      const wrap=document.getElementById('rec-playback-wrap');
+      if(wrap){ wrap.innerHTML=`<audio class="rec-playback" controls src="${_recUrl}"></audio><div class="rec-compare-note">${t('rec_compare')}</div>`; wrap.style.display=''; }
+      if(btn){ btn.classList.remove('recording'); btn.innerHTML=`🔊 ${t('rec_play')}`; btn.onclick=()=>{ const a=wrap&&wrap.querySelector('audio'); if(a){a.currentTime=0;a.play();} }; }
+    };
+    _recorder.start();
+    if(btn){ btn.classList.add('recording'); btn.innerHTML=`⏹ ${t('rec_stop')}`; btn.onclick=startRecording; }
+    setTimeout(()=>{ if(_recorder&&_recorder.state==='recording') _recorder.stop(); },6000);
+  }catch(e){
+    console.warn('Mic:',e);
+    if(btn){ btn.textContent='🚫 마이크 권한 필요'; btn.disabled=true; }
+  }
+}
+
+// ════════════════════════════════════
+// Feature 6: 받아쓰기 (Dictation)
+// ════════════════════════════════════
+function rDictation(d,el,uz){
+  const words=(d.words||[]).filter(w=>w.ko&&w.ko.length>=2);
+  if(!ST._dic||ST._dic.day!==d.day){
+    ST._dic={day:d.day,items:shuffle([...words]).slice(0,Math.min(5,words.length)),idx:0,score:0};
+  }
+  const dic=ST._dic;
+  if(dic.idx>=dic.items.length){
+    el.innerHTML=`
+      <div class="act-complete">
+        <div class="act-complete-msg">${t('dic_done_msg')}</div>
+        <div class="act-complete-sub">${t('dic_score')} ${dic.score} / ${dic.items.length}</div>
+      </div>
+      <button class="btn red" data-adv onclick="ST._dic=null;next()">${t('lsn_next_home').replace('홈으로','결과 보기')}</button>`;
+    return;
+  }
+  const w=dic.items[dic.idx];
+  const blanks=w.ko.split('').map(()=>'<div class="dic-char">_</div>').join('');
+  el.innerHTML=`
+    <div style="text-align:right;font-size:12px;color:var(--muted);font-weight:700;padding:2px 0 6px">${dic.idx+1}/${dic.items.length} <span class="act-score">${dic.score}✅</span></div>
+    <div class="goal-box" style="margin-bottom:12px">
+      <div class="g-label">${t('dic_instr')}</div>
+      <div style="font-size:44px;margin:8px 0">${w.e||'🎧'}</div>
+      <div style="font-size:13px;color:var(--muted);font-weight:600">${w.uz.split('—')[0].trim()}</div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px">
+      <button class="expr-tts-btn" onclick="sayHQ(${jq(w.ko)},null)">▶ ${t('lsn_play')}</button>
+      <button class="expr-tts-btn" id="dic-slow" onclick="sayBtnSlow('dic-slow',${jq(w.ko)})">${t('lsn_slow')}</button>
+    </div>
+    <input class="dic-inp" id="dicInp" type="text" placeholder="한국어로 입력…"
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+      oninput="dicPreview(this.value,${jq(w.ko)})"
+      onkeydown="if(event.key==='Enter')dicCheck(${jq(w.ko)})">
+    <div class="dic-chars" id="dicChars">${blanks}</div>
+    <div id="dic-fb" class="act-fb" style="text-align:center;min-height:22px;margin:6px 0"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn red" style="flex:1" onclick="dicCheck(${jq(w.ko)})">${t('dic_check')}</button>
+      <button class="btn gray" style="flex:none;padding:10px 16px" onclick="dicReveal(${jq(w.ko)})">${t('dic_show')}</button>
+    </div>
+    <div id="dic-next" style="display:none;margin-top:8px">
+      <button class="btn red" data-adv onclick="ST._dic.idx++;renderLesson()">${t('dic_next')}</button>
+    </div>`;
+  setTimeout(()=>sayHQ(w.ko,null),450);
+}
+window.dicPreview=function(val,correct){
+  const chars=document.querySelectorAll('.dic-char');
+  chars.forEach((ch,i)=>{
+    if(i<val.length){ ch.textContent=val[i]; ch.className='dic-char filled'+(val[i]===correct[i]?' ok':''); }
+    else{ ch.textContent='_'; ch.className='dic-char'; }
+  });
+};
+window.dicCheck=function(correct){
+  const inp=document.getElementById('dicInp');
+  const fb=document.getElementById('dic-fb');
+  const nxt=document.getElementById('dic-next');
+  if(!inp||inp.disabled) return;
+  const val=inp.value.trim();
+  const ok=val===correct;
+  inp.classList.add(ok?'ok':'no'); inp.disabled=true;
+  if(ok){ ST._dic.score++; if(fb){fb.textContent=t('lsn_match_ok');fb.className='act-fb ok';} }
+  else{
+    if(fb){fb.innerHTML=`${t('lsn_match_no')} → <strong>${correct}</strong>`;fb.className='act-fb no';}
+    const chars=document.querySelectorAll('.dic-char');
+    chars.forEach((ch,i)=>{ ch.textContent=correct[i]||''; ch.className='dic-char'+(val[i]===correct[i]?' ok':' no'); });
+  }
+  if(nxt) nxt.style.display='';
+};
+window.dicReveal=function(correct){
+  const inp=document.getElementById('dicInp');
+  const nxt=document.getElementById('dic-next');
+  if(!inp||inp.disabled) return;
+  inp.value=correct; inp.disabled=true; inp.classList.add('no');
+  const chars=document.querySelectorAll('.dic-char');
+  chars.forEach((ch,i)=>{ ch.textContent=correct[i]; ch.className='dic-char ok'; });
+  if(nxt) nxt.style.display='';
+};
+
+// ════════════════════════════════════
+// Feature 7: 현장 안전 탐색 (Workplace Scene)
+// ════════════════════════════════════
+const WS_HOTSPOTS=[
+  {id:'ws1',x:'18%',y:'22%',label:'안전모',rom:'anjeongmo',uz:'xavfsizlik dubulg\'asi',e:'⛑️'},
+  {id:'ws2',x:'72%',y:'18%',label:'소화기',rom:'sohwagi',uz:'o\'t o\'chiruvchi',e:'🧯'},
+  {id:'ws3',x:'88%',y:'55%',label:'비상구',rom:'bisanggu',uz:'favqulodda chiqish',e:'🚪'},
+  {id:'ws4',x:'12%',y:'68%',label:'안전장갑',rom:'anjeongjanggap',uz:'xavfsizlik qo\'lqoplari',e:'🧤'},
+  {id:'ws5',x:'45%',y:'78%',label:'안전화',rom:'anjeonghwa',uz:'xavfsizlik poyabzali',e:'👟'},
+  {id:'ws6',x:'62%',y:'42%',label:'경고 표지',rom:'gyeonggo pyoji',uz:'ogohlantirish belgisi',e:'⚠️'},
+  {id:'ws7',x:'30%',y:'50%',label:'사다리',rom:'sadari',uz:'narvon',e:'🪜'},
+  {id:'ws8',x:'78%',y:'78%',label:'응급처치함',rom:'eunggeupcheojiham',uz:'birinchi yordam qutisi',e:'🩺'},
+];
+let _wsFound=new Set();
+function renderWorkplaceScene(container){
+  _wsFound=new Set();
+  const lang=getUILang();
+  container.innerHTML=`
+    <div class="ws-wrap">
+      <div class="ws-score-row">
+        <span>${t('ws_instr')}</span>
+        <span id="ws-score">${tf('ws_found',{n:0,t:WS_HOTSPOTS.length})}</span>
+      </div>
+      <div class="ws-scene-box" id="ws-scene">
+        <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- 배경: 공장 바닥 -->
+          <rect width="400" height="260" fill="#C8DCE8"/>
+          <!-- 하늘 -->
+          <rect width="400" height="120" fill="#87CEEB"/>
+          <!-- 지면 -->
+          <rect y="180" width="400" height="80" fill="#8B7355"/>
+          <!-- 건물 외벽 -->
+          <rect x="30" y="60" width="160" height="130" fill="#B0B0B0" rx="2"/>
+          <rect x="30" y="60" width="160" height="130" fill="none" stroke="#888" stroke-width="1"/>
+          <!-- 창문들 -->
+          <rect x="50" y="80" width="30" height="25" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <rect x="100" y="80" width="30" height="25" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <rect x="50" y="120" width="30" height="25" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <rect x="100" y="120" width="30" height="25" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <!-- 문 -->
+          <rect x="145" y="140" width="35" height="50" fill="#8B6914" rx="2"/>
+          <circle cx="155" cy="166" r="3" fill="#FFD700"/>
+          <!-- 비상구 표지 -->
+          <rect x="167" y="55" width="28" height="14" fill="#00AA44" rx="2"/>
+          <text x="181" y="65" text-anchor="middle" font-size="5" fill="#fff" font-family="sans-serif">EXIT</text>
+          <!-- 오른쪽 구조물 -->
+          <rect x="260" y="100" width="100" height="90" fill="#9E9E9E" rx="2"/>
+          <rect x="270" y="110" width="35" height="30" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <rect x="315" y="110" width="35" height="30" fill="#87CEEB" stroke="#666" stroke-width="1"/>
+          <!-- 소화기 (빨간 원통) -->
+          <rect x="278" y="60" width="12" height="28" fill="#CC0000" rx="3"/>
+          <rect x="280" y="55" width="8" height="8" fill="#888" rx="1"/>
+          <!-- 경고 표지판 -->
+          <polygon points="245,140 260,115 275,140" fill="#FFD700" stroke="#FF6600" stroke-width="1.5"/>
+          <text x="260" y="135" text-anchor="middle" font-size="8" fill="#333">!</text>
+          <!-- 사다리 -->
+          <line x1="120" y1="60" x2="120" y2="190" stroke="#8B6914" stroke-width="4"/>
+          <line x1="135" y1="60" x2="135" y2="190" stroke="#8B6914" stroke-width="4"/>
+          <line x1="120" y1="80" x2="135" y2="80" stroke="#8B6914" stroke-width="2"/>
+          <line x1="120" y1="100" x2="135" y2="100" stroke="#8B6914" stroke-width="2"/>
+          <line x1="120" y1="120" x2="135" y2="120" stroke="#8B6914" stroke-width="2"/>
+          <line x1="120" y1="140" x2="135" y2="140" stroke="#8B6914" stroke-width="2"/>
+          <line x1="120" y1="160" x2="135" y2="160" stroke="#8B6914" stroke-width="2"/>
+          <!-- 안전모 (인물 머리) -->
+          <circle cx="70" cy="195" r="10" fill="#FFDAB9"/>
+          <path d="M58,192 Q70,175 82,192" fill="#FFD700"/>
+          <rect x="57" y="192" width="26" height="4" fill="#FFD700" rx="1"/>
+          <!-- 인물 몸 -->
+          <rect x="64" y="205" width="12" height="20" fill="#FF6600"/>
+          <line x1="70" y1="208" x2="60" y2="225" stroke="#FF6600" stroke-width="3"/>
+          <line x1="70" y1="208" x2="80" y2="225" stroke="#FF6600" stroke-width="3"/>
+          <line x1="70" y1="225" x2="63" y2="245" stroke="#1A237E" stroke-width="3"/>
+          <line x1="70" y1="225" x2="77" y2="245" stroke="#1A237E" stroke-width="3"/>
+          <!-- 안전장갑 (손 부분) -->
+          <ellipse cx="60" cy="226" rx="5" ry="4" fill="#FF6600"/>
+          <ellipse cx="80" cy="226" rx="5" ry="4" fill="#FF6600"/>
+          <!-- 안전화 -->
+          <ellipse cx="63" cy="248" rx="7" ry="4" fill="#333"/>
+          <ellipse cx="77" cy="248" rx="7" ry="4" fill="#333"/>
+          <!-- 응급처치함 -->
+          <rect x="313" y="160" width="30" height="22" fill="#fff" stroke="#CC0000" stroke-width="1.5" rx="2"/>
+          <line x1="328" y1="164" x2="328" y2="178" stroke="#CC0000" stroke-width="2"/>
+          <line x1="321" y1="171" x2="335" y2="171" stroke="#CC0000" stroke-width="2"/>
+        </svg>
+        ${WS_HOTSPOTS.map(h=>`
+          <div class="ws-hotspot" id="${h.id}"
+            style="left:${h.x};top:${h.y}"
+            onclick="wsClick(${jq(h.id)},${jq(h.label)},${jq(h.rom)},${jq(lang==='ko'?h.label:h.uz)},${jq(h.e)})">
+            ?
+            <div class="ws-tooltip">${h.e} ${h.label}</div>
+          </div>`).join('')}
+      </div>
+      <div id="ws-popup" style="display:none;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px;text-align:center;margin-bottom:10px">
+        <div style="font-size:36px" id="ws-pop-e">⛑️</div>
+        <div style="font-size:22px;font-weight:900;color:var(--ink);margin:4px 0" id="ws-pop-ko"></div>
+        <div style="font-size:12px;color:var(--muted)" id="ws-pop-rom"></div>
+        <div style="font-size:14px;font-weight:600;color:var(--ink-m);margin-top:4px" id="ws-pop-uz"></div>
+        <button onclick="sayHQ(document.getElementById('ws-pop-ko').textContent,null)"
+          style="margin-top:8px;padding:6px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-weight:700;font-size:12px">▶ ${t('lsn_play')}</button>
+      </div>
+    </div>`;
+}
+window.wsClick=function(id,labelKo,rom,labelNative,e){
+  const hs=document.getElementById(id);
+  if(hs){ hs.classList.add('found'); hs.innerHTML=`✓<div class="ws-tooltip">${e} ${labelKo}</div>`; }
+  _wsFound.add(id);
+  const sc=document.getElementById('ws-score');
+  if(sc) sc.textContent=tf('ws_found',{n:_wsFound.size,t:WS_HOTSPOTS.length});
+  const pop=document.getElementById('ws-popup');
+  if(pop){
+    pop.style.display='';
+    document.getElementById('ws-pop-e').textContent=e;
+    document.getElementById('ws-pop-ko').textContent=labelKo;
+    document.getElementById('ws-pop-rom').textContent='['+rom+']';
+    document.getElementById('ws-pop-uz').textContent=labelNative;
+    pop.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  sayHQ(labelKo,null);
+  if(_wsFound.size>=WS_HOTSPOTS.length){
+    const sc2=document.getElementById('ws-score');
+    if(sc2) sc2.textContent=t('ws_all_done');
+  }
+};
 
 // ── Step 2: 매칭 게임 ──
 function rMatching(d,el,uz){
@@ -3681,6 +4128,21 @@ function buildQuizAll(d){
         qu:`Bu gapning ma'nosi nima?\n"${sent.ko}"`,
         opts, ans:opts.indexOf(sent.uz)});
     }
+  }
+  // Feature 2: 상황 롤플레이 퀴즈 — situation 필드가 있는 단어에서 자동 생성
+  const sitWords=(d.words||[]).filter(w=>w.situation_uz||w.situation);
+  if(sitWords.length>=2){
+    shuffle([...sitWords]).slice(0,2).forEach(w=>{
+      const sit=getUILang()==='ko'?(w.situation||w.situation_uz):w.situation_uz;
+      if(!sit) return;
+      const distractors=shuffle((d.words||[]).filter(x=>x.ko!==w.ko)).slice(0,3).map(x=>x.ko);
+      if(distractors.length<1) return;
+      const opts=shuffle([w.ko,...distractors]).slice(0,4);
+      qs.push({tag:t('sit_quiz_tag'),
+        q:`💬 "${sit}"\n${t('sit_quiz_instr')}`,
+        qu:`💬 "${sit}"\n${t('sit_quiz_instr')}`,
+        opts, ans:opts.indexOf(w.ko), hint_uz:w.uz});
+    });
   }
   // 자동 문장 문제 2: 빈칸 채우기 (첫 번째 명사)
   const noun=d.words?.find(w=>w.pos==='명사'||w.pos?.includes('명사'));
