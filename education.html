@@ -1184,7 +1184,13 @@ body.in-lesson #mainHdr{display:none!important}
     background:linear-gradient(135deg,var(--blue-m),var(--blue-d));
     border:none;color:#fff;font-size:11px;cursor:pointer;
   }
-  .lbody-inner{padding:18px 24px;}
+  /* 데스크톱: 콘텐츠를 읽기 좋은 폭으로 + 세로 중앙 정렬 (긴 내용은 스크롤) */
+  .lbody-inner{max-width:600px;width:100%;margin:0 auto;padding:36px 28px;
+    display:flex;flex-direction:column;justify-content:safe center;}
+  .fc-wrap{max-width:460px}
+  .expr-card,.fc-card{min-height:230px}
+  .expr-ko{font-size:32px}
+  .expr-uz{font-size:17px}
 
   /* Auth: full overlay, no sidebar */
   #authScr{position:fixed;inset:0;z-index:500;overflow-y:auto;}
@@ -1270,6 +1276,15 @@ body.in-lesson #mainHdr{display:none!important}
 @media(min-width:1100px){
   #dsb{width:260px}
   #appMain{margin-left:260px}
+}
+
+/* 모바일(<768px): 데스크톱 전용 요소 강제 숨김 + 단일 컬럼 (inline 스타일도 덮어씀) */
+@media(max-width:767px){
+  #dsb{display:none!important}
+  #appMain{margin-left:0!important}
+  .lesson-ref{display:none!important}
+  .lesson-2col{display:block!important}
+  .lbody-inner{max-width:none!important;width:auto!important;margin:0!important;padding:14px 16px!important;display:block!important}
 }
 </style>
 </head>

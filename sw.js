@@ -1,5 +1,5 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v12'; // 모바일: 리디렉트 응답 재구성 (cleanUrls 308로 페이지 안 열리던 문제 해결)
+const CACHE = 'sk-v13'; // 모바일: 리디렉트 응답 재구성 (cleanUrls 308로 페이지 안 열리던 문제 해결)
 // HTML(내비게이션)은 precache 안 함 — cleanUrls 308 리디렉트를 캐시하면 안 되므로 런타임 캐시만 사용
 const ASSETS = ['./manifest.json', './icon.svg', './sk-supabase.js'];
 
