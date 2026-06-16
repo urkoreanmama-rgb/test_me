@@ -1,6 +1,7 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v9'; // 디자인 개편: 오렌지 제거, 애플/앤트로픽 미니멀
-const ASSETS = ['./education.html', './manifest.json', './icon.svg', './sk-supabase.js'];
+const CACHE = 'sk-v10'; // 모바일: 리디렉트 응답 재구성 (cleanUrls 308로 페이지 안 열리던 문제 해결)
+// HTML(내비게이션)은 precache 안 함 — cleanUrls 308 리디렉트를 캐시하면 안 되므로 런타임 캐시만 사용
+const ASSETS = ['./manifest.json', './icon.svg', './sk-supabase.js'];
 
 self.addEventListener('install', e => {
   // 개별 캐시(실패 무시) — 자산 하나가 실패해도 설치가 깨지지 않음
@@ -17,18 +18,29 @@ self.addEventListener('activate', e => {
   );
 });
 
+// 리디렉트된 응답은 내비게이션에서 브라우저가 거부함 → 깨끗한(redirect 플래그 없는) 복사본으로 재구성
+async function cleanRedirect(res){
+  const body = await res.clone().blob();
+  return new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
+}
+
 // 네트워크 우선: 온라인이면 항상 최신을 받고, 실패(오프라인) 시에만 캐시 사용
 self.addEventListener('fetch', e => {
   if(e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request).then(res => {
-      if(res && res.ok && new URL(e.request.url).origin === location.origin){
+  e.respondWith((async () => {
+    try {
+      let res = await fetch(e.request);
+      if(res.redirected) res = await cleanRedirect(res);   // cleanUrls 308 대응
+      if(res.ok && new URL(e.request.url).origin === location.origin){
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
       }
       return res;
-    }).catch(() => caches.match(e.request))
-  );
+    } catch(err) {
+      const cached = await caches.match(e.request);
+      return cached || Response.error();
+    }
+  })());
 });
 
 // ── 알람 (Notification) ──

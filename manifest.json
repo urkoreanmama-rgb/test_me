@@ -2,7 +2,7 @@
   "name": "안전 한국어 Safety Korean",
   "short_name": "안전 한국어",
   "description": "외국인 공장 근로자를 위한 산업안전 한국어 교육",
-  "start_url": "./education.html",
+  "start_url": "./education",
   "scope": "./",
   "display": "standalone",
   "background_color": "#F5F5F7",
