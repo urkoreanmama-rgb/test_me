@@ -111,6 +111,7 @@ body.in-lesson #mainHdr{display:none!important}
   display:flex;align-items:center;gap:9px;transition:all .15s;text-align:left;
 }
 .hlp-btn:active{transform:scale(.97);}
+.hlp-btn:hover{border-color:var(--ink);background:#FAFAFA}
 .hlp-btn.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink);}
 .hlp-flag{font-size:24px;flex-shrink:0}
 .hlp-name{font-size:14px;font-weight:700;color:var(--ink);line-height:1.2}
@@ -286,6 +287,7 @@ body.in-lesson #mainHdr{display:none!important}
   font-size:13px;font-weight:600;
   transition:all .15s;
 }
+.expr-tts-btn:hover{background:#F0F0F2;border-color:var(--ink)}
 .expr-tts-btn:active{background:#ECECEF;transform:scale(.97)}
 .expr-nav{display:flex;justify-content:space-between;gap:8px}
 .expr-nav .btn{flex:1}
@@ -524,6 +526,12 @@ body.in-lesson #mainHdr{display:none!important}
 /* Design system — 옵션/탭 인터랙션 (cursor:pointer + scale 탭) */
 .gopt,.qopt,.lang-opt,.hlp-btn,.gmode-card,.expr-tts-btn,.auth-tab,.lang-chip,.opt{cursor:pointer}
 .gopt:active,.qopt:active,.gmode-card:active,.expr-tts-btn:active,.hlp-btn:active,.lang-opt:active,.opt:active{transform:scale(.97)}
+/* 호버 색 변화 (데스크톱) */
+@media(hover:hover){
+  .auth-tab:hover:not(.on),.lang-chip:hover:not(.on),.opt:hover:not(.sel):not(.correct):not(.wrong){border-color:var(--ink)}
+  .gmode-card:hover{transform:translateY(-2px);border-color:var(--ink)}
+  .lang-opt:hover{background:#F0F0F2}
+}
 
 .info{background:var(--blue-l);border-left:3px solid var(--blue-m);border-radius:0 8px 8px 0;
   padding:9px 13px;font-size:12px;line-height:1.6;margin-bottom:12px;color:var(--ink-m)}
@@ -939,7 +947,7 @@ body.in-lesson #mainHdr{display:none!important}
   box-shadow:none!important;
 }
 .btn.red:hover{
-  background:#000000!important;
+  background:#3A3A3C!important;
   box-shadow:none!important;transform:none;
 }
 .btn.red:active{transform:scale(.97)!important;}
@@ -1065,13 +1073,13 @@ body.in-lesson #mainHdr{display:none!important}
 #dsb{display:none}
 
 @media(min-width:768px){
-  body{max-width:100%;background:linear-gradient(135deg,#000000 0%,#1D1D1F 55%,#515154 100%);min-height:100vh}
+  body{max-width:100%;background:var(--bg);min-height:100vh}
 
   #dsb{
     display:flex;flex-direction:column;
     width:240px;min-height:100vh;
-    background:linear-gradient(180deg,#023E8A 0%,#000000 50%,#000000 100%);
-    border-right:1px solid rgba(255,255,255,.12);
+    background:#1D1D1F;
+    border-right:1px solid rgba(255,255,255,.10);
     position:fixed;left:0;top:0;bottom:0;z-index:400;
     overflow-y:auto;
   }
@@ -2084,7 +2092,7 @@ const LANG_META = {
 // 데이터(LANG_META·STRINGS)는 모두 유지하고, 선택 화면에 보이는 언어만 제한한다.
 // 다른 언어를 다시 켤 때: 아래 배열에 코드만 추가하면 됨 (vi, ne, kk, ru, en).
 // 우즈벡어(uz)를 기준으로 나머지 언어 개발 완료 후 순차 노출 예정.
-const ENABLED_LANGS = ['ko','uz','tet'];
+const ENABLED_LANGS = ['uz','tet']; // 한국어(ko)는 학습 대상 언어라 선택지에서 숨김 (데이터는 유지)
 function langEntries(){
   return Object.entries(LANG_META).filter(([code])=>ENABLED_LANGS.includes(code));
 }
