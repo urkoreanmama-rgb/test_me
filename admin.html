@@ -7,15 +7,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#060911;--surface:#0D1117;--surface2:#131929;--border:rgba(255,255,255,.08);
-  --text:#E8EDF5;--muted:#8892A4;--accent:#FF6B35;--accent2:#E85520;
-  --green:#34C759;--red:#FF3B30;--yellow:#F59E0B;--cyan:#22D3EE;
+  --bg:#F5F5F7;--surface:#FFFFFF;--surface2:#F0F0F2;--border:#D2D2D7;
+  --text:#1D1D1F;--muted:#86868B;--accent:#1D1D1F;--accent2:#000000;
+  --green:#34C759;--red:#FF3B30;--yellow:#86868B;--cyan:#1D1D1F;
   --font:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Segoe UI',system-ui,sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex}
 
 /* ── Sidebar ── */
-#sidebar{width:240px;min-height:100vh;background:#080C18;border-right:1px solid var(--border);
+#sidebar{width:240px;min-height:100vh;background:#FAFAFA;border-right:1px solid var(--border);
   display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100}
 .sb-brand{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
 .sb-brand h1{font-size:15px;font-weight:700;color:var(--text);letter-spacing:.5px}
@@ -23,8 +23,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .sb-nav{flex:1;padding:16px 12px}
 .sb-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;
   cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:.15s;margin-bottom:2px}
-.sb-item:hover{background:rgba(255,255,255,.05);color:var(--text)}
-.sb-item.on{background:rgba(255,107,53,.15);color:var(--accent)}
+.sb-item:hover{background:rgba(0,0,0,.05);color:var(--text)}
+.sb-item.on{background:rgba(0,0,0,.10);color:var(--accent)}
 .sb-item svg{width:16px;height:16px;flex-shrink:0}
 .sb-foot{padding:16px;border-top:1px solid var(--border)}
 .sb-logout{width:100%;padding:9px;border:1px solid var(--border);background:transparent;
@@ -62,9 +62,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{padding:9px 12px;text-align:left;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text)}
+td{padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.05);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,.02)}
+tr:hover td{background:rgba(0,0,0,.03)}
 
 /* ── Badge ── */
 .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
@@ -74,13 +74,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .badge.gray{background:rgba(136,146,164,.12);color:var(--muted)}
 
 /* ── Progress bar ── */
-.bar-wrap{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.bar-wrap{height:6px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:3px;transition:.4s}
 
 /* ── Activity chart ── */
 .chart-row{display:flex;align-items:flex-end;gap:6px;height:80px;padding-bottom:4px}
 .chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.chart-bar{width:100%;background:rgba(255,107,53,.35);border-radius:3px 3px 0 0;min-height:3px;transition:.3s}
+.chart-bar{width:100%;background:rgba(0,0,0,.10);border-radius:3px 3px 0 0;min-height:3px;transition:.3s}
 .chart-col:hover .chart-bar{background:var(--accent)}
 .chart-label{font-size:9px;color:var(--muted);white-space:nowrap}
 
@@ -95,7 +95,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .score-day{margin-bottom:12px}
 .score-day-label{font-size:11px;color:var(--muted);margin-bottom:5px}
 .score-bars{display:flex;gap:3px;align-items:flex-end;height:50px}
-.score-bar{flex:1;background:rgba(255,107,53,.3);border-radius:2px 2px 0 0;min-height:2px}
+.score-bar{flex:1;background:rgba(0,0,0,.10);border-radius:2px 2px 0 0;min-height:2px}
 .score-bar:hover{background:var(--accent)}
 
 /* ── Certificate ── */
@@ -135,13 +135,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
 #certDoc{display:none}
 
 /* ── Small button ── */
-.btn-sm{padding:5px 12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600}
-.btn-sm:hover{background:rgba(255,255,255,.1)}
+.btn-sm{padding:5px 12px;border:1px solid var(--border);background:rgba(0,0,0,.05);color:var(--text);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600}
+.btn-sm:hover{background:rgba(0,0,0,.08)}
 
 /* ── 시연 모드 ── */
-.sb-item.demo-nav{background:rgba(255,107,53,.12);color:var(--accent);font-weight:700;margin-bottom:8px}
+.sb-item.demo-nav{background:rgba(0,0,0,.10);color:var(--accent);font-weight:700;margin-bottom:8px}
 .sb-item.demo-nav.on{background:var(--accent);color:#fff}
-.sb-item.demo-nav:hover{background:rgba(255,107,53,.22);color:var(--accent)}
+.sb-item.demo-nav:hover{background:rgba(0,0,0,.10);color:var(--accent)}
 .demo-role{display:flex;align-items:center;gap:14px;width:100%;padding:16px 20px;border-radius:14px;
   cursor:pointer;margin-bottom:12px;text-align:left;transition:transform .1s ease,opacity .1s ease}
 .demo-role:active{transform:scale(.97);opacity:.9}
@@ -232,10 +232,10 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <h2 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">어떤 입장에서 볼까요?</h2>
         <p style="font-size:13px;color:var(--muted);margin-bottom:22px">버튼을 누르면 그 입장에서의 화면이 보여요</p>
 
-        <button class="demo-role" onclick="window.open('education.html','_blank')" style="background:var(--accent);border:none">
+        <a class="demo-role" href="./education.html" style="background:var(--accent);text-decoration:none">
           <span class="dr-ico">👷</span>
-          <div><div class="dr-t" style="color:#fff">외국인 근로자</div><div class="dr-s" style="color:rgba(255,255,255,.82)">근로자가 한국어를 배우는 학습 화면 (새 탭으로 열림)</div></div>
-        </button>
+          <div><div class="dr-t" style="color:#fff">외국인 근로자</div><div class="dr-s" style="color:rgba(255,255,255,.75)">근로자가 한국어를 배우는 학습 화면</div></div>
+        </a>
 
         <button class="demo-role" onclick="nav('employer')" style="background:var(--surface);border:1px solid var(--accent)">
           <span class="dr-ico">🏭</span>
@@ -715,8 +715,8 @@ function renderCertPreview(){
   ${conditionBadge}
   <div style="font-family:'Malgun Gothic',sans-serif;max-width:680px;margin:0 auto;background:#fff;
     border:2px solid #2d3748;padding:48px;color:#1a202c;position:relative">
-    <div style="text-align:center;border-bottom:3px double #FF6B35;padding-bottom:24px;margin-bottom:24px">
-      <div style="font-size:11px;letter-spacing:4px;color:#FF6B35;margin-bottom:8px">CERTIFICATE OF COMPLETION</div>
+    <div style="text-align:center;border-bottom:3px double #1D1D1F;padding-bottom:24px;margin-bottom:24px">
+      <div style="font-size:11px;letter-spacing:4px;color:#1D1D1F;margin-bottom:8px">CERTIFICATE OF COMPLETION</div>
       <h1 style="font-size:26px;font-weight:800;color:#1a202c;margin-bottom:4px">안전 한국어 교육 이수증</h1>
       <div style="font-size:12px;color:#666">Safety Korean Language Program</div>
     </div>
@@ -754,9 +754,9 @@ function renderCertPreview(){
       </div>
       <div style="text-align:center">
         <div style="font-size:10px;color:#aaa;margin-bottom:4px">직인</div>
-        <div style="width:70px;height:70px;border:2px solid #FF6B35;border-radius:50%;
+        <div style="width:70px;height:70px;border:2px solid #1D1D1F;border-radius:50%;
           display:flex;align-items:center;justify-content:center;margin:0 auto;
-          font-size:9px;color:#FF6B35;text-align:center;font-weight:700">Safety<br>Korean</div>
+          font-size:9px;color:#1D1D1F;text-align:center;font-weight:700">Safety<br>Korean</div>
       </div>
       <div style="text-align:center">
         <div style="width:120px;height:1px;background:#1a202c;margin:0 auto 6px"></div>
@@ -933,7 +933,7 @@ function renderDayCompletionChart() {
     const pct = Math.round(count/total*100);
     return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px">
       <span style="width:44px;color:var(--muted);flex-shrink:0">Day ${day}</span>
-      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:3px;height:14px;overflow:hidden">
+      <div style="flex:1;background:rgba(0,0,0,.06);border-radius:3px;height:14px;overflow:hidden">
         <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:3px;transition:.4s"></div>
       </div>
       <span style="width:36px;text-align:right;color:var(--text)">${pct}%</span>
@@ -956,7 +956,7 @@ function renderNationalityChart() {
     const p = Math.round(cnt/total*100);
     return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11px">
       <span style="width:70px;color:var(--muted);flex-shrink:0">${LANG_NAMES[lang]||lang}</span>
-      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:3px;height:14px;overflow:hidden">
+      <div style="flex:1;background:rgba(0,0,0,.06);border-radius:3px;height:14px;overflow:hidden">
         <div style="height:100%;width:${p}%;background:${colors[i%colors.length]};border-radius:3px"></div>
       </div>
       <span style="width:30px;text-align:right;color:var(--text)">${p}%</span>
