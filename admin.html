@@ -157,11 +157,42 @@ tr:hover td{background:rgba(0,0,0,.03)}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
-  #sidebar{display:none}
+  /* 세로 사이드바 → 상단 가로 스크롤 내비게이션 */
+  body{display:block}
+  #sidebar{
+    position:sticky;top:0;left:auto;bottom:auto;width:100%;min-height:0;height:auto;
+    flex-direction:row;align-items:center;overflow-x:auto;overflow-y:hidden;
+    border-right:none;border-bottom:1px solid var(--border);display:flex;z-index:200;
+    -webkit-overflow-scrolling:touch;
+  }
+  #sidebar::-webkit-scrollbar{display:none}
+  .sb-brand{display:none}
+  .sb-nav{display:flex;flex-direction:row;gap:6px;padding:8px 10px;flex:0 0 auto}
+  .sb-item{white-space:nowrap;padding:9px 13px;margin-bottom:0;font-size:12.5px;flex-shrink:0}
+  .sb-item.demo-nav{margin-bottom:0}
+  .sb-foot{padding:8px 10px 8px 0;border-top:none;flex:0 0 auto}
+  .sb-logout{width:auto;white-space:nowrap;padding:9px 14px}
+
   #main{margin-left:0}
-  #content{padding:16px}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .top-bar{padding:14px 16px}
+  #content{padding:14px}
+  .top-bar{padding:12px 14px}
+  .top-bar h2{font-size:15px}
+  .top-bar span{font-size:11px}
+
+  /* 그리드 단순화 */
+  .kpi-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px;margin-bottom:18px}
+  .kpi{padding:14px}
+  .kpi .val{font-size:22px}
+  .kpi .label{font-size:10px}
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+
+  .section{padding:16px;margin-bottom:14px}
+  table{font-size:11px}
+  th,td{padding:7px 9px}
+  .filter-row{flex-wrap:wrap}
+  .filter-row input,.filter-row select{flex:1;min-width:0}
+  .demo-role{padding:14px 16px}
+  .gate-card{width:min(360px,92vw);padding:32px 24px}
 }
 </style>
 </head>
