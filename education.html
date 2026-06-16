@@ -379,8 +379,14 @@ body.in-lesson #mainHdr{display:none!important}
 .fc-ex{font-size:11px;color:var(--muted);font-style:italic}
 .fc-prog{text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .fc-btns{display:flex;gap:10px;justify-content:center;margin-top:14px}
-.fc-btn-again{flex:1;background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
-.fc-btn-know{flex:1;background:linear-gradient(135deg,#000000,#1D1D1F);color:#fff;border:none;border-radius:20px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;max-width:140px}
+.fc-btn-again{flex:1;background:var(--card);color:var(--ink-m);border:1.5px solid var(--border);border-radius:20px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;max-width:150px}
+.fc-btn-again:hover{background:#F0F0F2;border-color:var(--ink)}
+.fc-btn-know{flex:1;background:linear-gradient(135deg,#000000,#1D1D1F);color:#fff;border:none;border-radius:20px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;max-width:150px}
+.fc-btn-know:hover{background:#3A3A3C}
+/* 탭 안내 + 펄스 힌트 (카드 앞면) */
+.fc-tap-hint{font-size:12px;color:rgba(255,255,255,.7);margin-top:16px;font-weight:600;letter-spacing:.2px}
+@keyframes fcpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+.fc-card.fc-pulse{animation:fcpulse 1.5s ease-in-out infinite}
 
 /* ── Matching Game (Step 2) ── */
 .match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -3282,23 +3288,30 @@ function rFlashcard(d,el,uz){
          onclick="event.stopPropagation();sayBtn('fc-play-btn',${jq(w.ko)},'word')">${t('lsn_play')}</button>`;
   el.innerHTML=`
     <div style="text-align:right;font-size:12px;color:var(--muted);font-weight:700;padding:2px 0 4px">${prog} <span class="act-score">✅ ${fc.known}</span></div>
-    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${tipText}</div>
     <div class="fc-wrap">
-      <div class="fc-card" id="fc-card" onclick="flipCard()">
-        <div class="fc-front">${frontHTML}</div>
+      <div class="fc-card fc-pulse" id="fc-card" onclick="flipCard()">
+        <div class="fc-front">
+          ${frontHTML}
+          <div class="fc-tap-hint">👆 ${tipText}</div>
+        </div>
         <div class="fc-back">${backHTML}</div>
       </div>
     </div>
-    <div id="fc-btns" style="display:none;gap:10px;margin-top:12px;justify-content:center">
-      <button class="fc-btn-know" onclick="fcKnow()">${t('lsn_fc_know')}</button>
-      <button class="fc-btn-again" onclick="fcAgain()">${t('lsn_fc_again')}</button>
+    <div id="fc-btns" class="fc-btns" style="display:none">
+      <button class="fc-btn-know" onclick="fcKnow()">✅ ${t('lsn_fc_know')}</button>
+      <button class="fc-btn-again" onclick="fcAgain()">🔄 ${t('lsn_fc_again')}</button>
     </div>
   `;
-  setTimeout(()=>{ const b=document.getElementById('fc-btns'); if(b) b.style.display='flex'; },100);
 }
 function flipCard(){
   const c=document.getElementById('fc-card');
-  if(c){ c.classList.toggle('flipped'); sayBtn('fc-play-btn',(ST._fc?.items[ST._fc?.idx]?.ko||''),'word'); }
+  if(!c) return;
+  c.classList.toggle('flipped');
+  c.classList.remove('fc-pulse');           // 처음 탭하면 펄스 힌트 멈춤
+  const flipped=c.classList.contains('flipped');
+  const b=document.getElementById('fc-btns');
+  if(b) b.style.display=flipped?'flex':'none';   // 뜻을 본 뒤에만 평가 버튼 표시
+  if(flipped) sayBtn('fc-play-btn',(ST._fc?.items[ST._fc?.idx]?.ko||''),'word');
 }
 function fcKnow(){
   if(!ST._fc) return;
