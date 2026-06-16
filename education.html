@@ -3930,7 +3930,7 @@ function rSentBuilder(d,el,uz){
     <div class="sb-fb" id="sb-fb"></div>
     <div class="sb-actions">
       <button class="btn gray" onclick="sbClear()">${t('lsn_sb_clear')}</button>
-      <button class="btn red" onclick="sbCheck(${JSON.stringify(sent.ko)})">${t('lsn_sb_check')}</button>
+      <button class="btn red" onclick="sbCheck(${jq(sent.ko)})">${t('lsn_sb_check')}</button>
     </div>
   `;
 }
