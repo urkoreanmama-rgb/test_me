@@ -2098,9 +2098,12 @@ const LANG_META = {
 // 데이터(LANG_META·STRINGS)는 모두 유지하고, 선택 화면에 보이는 언어만 제한한다.
 // 다른 언어를 다시 켤 때: 아래 배열에 코드만 추가하면 됨 (vi, ne, kk, ru, en).
 // 우즈벡어(uz)를 기준으로 나머지 언어 개발 완료 후 순차 노출 예정.
-const ENABLED_LANGS = ['uz','tet']; // 한국어(ko)는 학습 대상 언어라 선택지에서 숨김 (데이터는 유지)
+const ENABLED_LANGS = ['uz','tet']; // 근로자용 — 한국어(ko)는 학습 대상이라 숨김
+// 검수 모드: URL에 ?lang=ko (또는 ?review) 가 있으면 한국어를 선택지에 추가 (개발자 검수용, 근로자에겐 안 보임)
+function isReviewKo(){ try{ const p=new URLSearchParams(location.search); return p.get('lang')==='ko'||p.has('review'); }catch(e){ return false; } }
+function enabledLangs(){ return isReviewKo()? ['ko',...ENABLED_LANGS] : ENABLED_LANGS; }
 function langEntries(){
-  return Object.entries(LANG_META).filter(([code])=>ENABLED_LANGS.includes(code));
+  return Object.entries(LANG_META).filter(([code])=>enabledLangs().includes(code));
 }
 
 const STRINGS = {
@@ -2588,6 +2591,7 @@ function biTHtml(ko, i18nKey){
 
 function setUILang(code){
   localStorage.setItem(UILANG_KEY, code);
+  ST.lang = (code==='ko') ? 'ko' : 'uz'; // 콘텐츠도 UI 언어 따라감 (ko=한국어, uz/tet=우즈벡 슬롯 → L10n이 tet 채움)
   applyLang();
   renderLangChips();
   renderLangGrid();
@@ -3229,7 +3233,7 @@ function rSentView(d,el,uz){
       <div class="expr-ko">${w.ko}</div>
       <div class="expr-rom">[${w.rom}]</div>
       <div class="expr-uz">${w.uz.split(' — ')[0]||w.uz}</div>
-      ${w.situation_uz?`<div class="expr-sit">💬 ${w.situation_uz}</div>`:''}
+      ${(()=>{const sit=getUILang()==='ko'?(w.situation||w.situation_uz):w.situation_uz;return sit?`<div class="expr-sit">💬 ${sit}</div>`:'';})()}
     </div>
 
     <div class="expr-tts-row">
