@@ -1,5 +1,5 @@
 // Service Worker — 안전 한국어 Safety Korean
-const CACHE = 'sk-v7'; // 네트워크 우선 전환 (옛 캐시에 갇히는 문제 해결)
+const CACHE = 'sk-v8'; // 디자인 개편: 오렌지 제거, 애플/앤트로픽 미니멀
 const ASSETS = ['./education.html', './manifest.json', './icon.svg', './sk-supabase.js'];
 
 self.addEventListener('install', e => {
